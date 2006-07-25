@@ -1,0 +1,36 @@
+--- SConstruct	2006-04-14 12:13:03.000000000 +0200
++++ SConstruct	2006-04-16 16:41:44.000000000 +0200
+@@ -17,8 +17,8 @@
+ # glbase = '/Microsoft Visual Studio/vc98/Include/gl/'
+ 
+ ################ change base of dirs (unix OS)
+-installbindir = '/usr/local/bin'
+-installdatadir = '/usr/local/share/dangerdeep'
++installbindir = '/usr/games/bin'
++installdatadir = '/usr/share/games/dangerdeep'
+ if ARGUMENTS.get('installbindir', 0):
+ 	installbindir = ARGUMENTS.get('installbindir', 0)
+ if ARGUMENTS.get('installdatadir', 0):
+@@ -287,22 +287,6 @@
+ 
+ BuildDir(target_dir, source_base_dir, duplicate=0)
+ 
+-############### option so that "scons tarball" builds a tarball of source and data
+-# tar building works only on linux
+-if ( build_dir == 'linux' ) or ( build_dir == 'freebsd' ):
+-	basetarfilename = 'dangerdeep-' + version
+-	os.system('rm -rf ' + basetarfilename)
+-	os.system('ln -s . ' + basetarfilename)
+-	filestopack = []
+-	for i in allcvsfiles:
+-		if not(i.endswith('.xcf')) and not(i.startswith('./data/xcf')):
+-			if not(i.startswith('.' + os.sep + 'build')):
+-				filestopack += [basetarfilename + os.sep + i]
+-	env.Append(TARFLAGS = '-zh')
+-	env.Append(TARSUFFIX = '.gz')
+-	tgz = env.Tar(basetarfilename + '.tar.gz', filestopack)
+-	env.Alias('tarball', tgz)
+-
+ #also env.Zip is possible...
+ 
+ # fixme: maybe try env.MSVSProject(...) to create MS VS project files

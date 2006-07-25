@@ -1,0 +1,4 @@
+MD5 1734d9620ec8db5f8c0e7602124d9c03 dchroot-0.11.ebuild 947
+MD5 4391fb513f182fef74c8d46cd4ccaf32 files/dchroot-0.11-no_gnu_su.patch 2748
+MD5 d11d3866d69f2a5370c943b3de5e5ee6 files/dchroot-0.11-option_fix.patch 2512
+MD5 8c472b21b45797e3a777b50b32516719 files/digest-dchroot-0.11 63

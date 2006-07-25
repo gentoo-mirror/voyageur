@@ -1,0 +1,15 @@
+#!/bin/sh
+GAMESDIR="/usr/share/games"
+PRIVDIR="$GAMESDIR/privateer"
+
+VERSION=`head -1 $PRIVDIR/Version.txt`
+mkdir -p $HOME/$VERSION
+cd $HOME/$VERSION
+if [ \! -e ~/$VERSION/setup.config ]; then
+  cp $PRIVDIR/setup.config .
+fi
+if [ \! -e ~/$VERSION/vegastrike.config ]; then
+  cp $PRIVDIR/vegastrike.config .
+  cd $PRIVDIR/bin && ./setup
+fi
+cd $PRIVDIR/bin && ./vegastrike

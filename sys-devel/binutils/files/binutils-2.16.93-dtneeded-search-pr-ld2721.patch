@@ -1,0 +1,133 @@
+From jakub@redhat.com Thu Jun  1 17:09:07 2006
+Date: Thu, 1 Jun 2006 17:09:07 +0200
+From: Jakub Jelinek <jakub@redhat.com>
+To: binutils@sources.redhat.com
+Subject: [PATCH] Fix DT_NEEDED search with --as-needed libraries (PR ld/2721)
+Message-ID: <20060601150907.GD3823@sunsite.mff.cuni.cz>
+Reply-To: Jakub Jelinek <jakub@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+  charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+X-IsSubscribed: yes
+Precedence: bulk
+X-Length: 8109
+X-UID: 1457
+
+Hi!
+
+If some --as-needed library mentioned on the command line isn't directly
+needed by executable being linked, but it is mentioned in DT_NEEDED of some
+needed library, then without this patch ld will disregard the library
+mentioned on the command line and look for a different one (e.g. in system
+paths).
+
+2006-06-01  Jakub Jelinek  <jakub@redhat.com>
+
+	PR ld/2721
+	* emultempl/elf32.em (global_found_as_needed): New variable.
+	(gld${EMULATION_NAME}_check_needed): Succeed even for DYN_AS_NEEDED
+	libraries.
+	(gld${EMULATION_NAME}_after_open): If needed library is already
+	loaded with DYN_AS_NEEDED flag set, try to open that library again.
+
+--- ld/emultempl/elf32.em.jj	2006-06-01 15:50:34.000000000 +0200
++++ ld/emultempl/elf32.em	2006-06-01 16:55:02.000000000 +0200
+@@ -149,6 +149,7 @@ cat >>e${EMULATION_NAME}.c <<EOF
+ static struct bfd_link_needed_list *global_needed;
+ static struct stat global_stat;
+ static bfd_boolean global_found;
++static const char *global_found_as_needed;
+ static struct bfd_link_needed_list *global_vercheck_needed;
+ static bfd_boolean global_vercheck_failed;
+ 
+@@ -809,7 +810,9 @@ cat >>e${EMULATION_NAME}.c <<EOF
+ static void
+ gld${EMULATION_NAME}_check_needed (lang_input_statement_type *s)
+ {
+-  if (global_found)
++  const char *found_as_needed = NULL;
++
++  if (global_found && global_found_as_needed == NULL)
+     return;
+ 
+   /* If this input file was an as-needed entry, and wasn't found to be
+@@ -817,7 +820,11 @@ gld${EMULATION_NAME}_check_needed (lang_
+   if (s->as_needed
+       && (s->the_bfd == NULL
+ 	  || (bfd_elf_get_dyn_lib_class (s->the_bfd) & DYN_AS_NEEDED) != 0))
+-    return;
++    {
++      if (global_found || s->filename == NULL)
++	return;
++      found_as_needed = s->filename;
++    }
+ 
+   if (s->filename != NULL)
+     {
+@@ -826,6 +833,7 @@ gld${EMULATION_NAME}_check_needed (lang_
+       if (strcmp (s->filename, global_needed->name) == 0)
+ 	{
+ 	  global_found = TRUE;
++	  global_found_as_needed = found_as_needed;
+ 	  return;
+ 	}
+ 
+@@ -836,6 +844,7 @@ gld${EMULATION_NAME}_check_needed (lang_
+ 	      && strcmp (f + 1, global_needed->name) == 0)
+ 	    {
+ 	      global_found = TRUE;
++	      global_found_as_needed = found_as_needed;
+ 	      return;
+ 	    }
+ 	}
+@@ -850,6 +859,7 @@ gld${EMULATION_NAME}_check_needed (lang_
+ 	  && strcmp (soname, global_needed->name) == 0)
+ 	{
+ 	  global_found = TRUE;
++	  global_found_as_needed = found_as_needed;
+ 	  return;
+ 	}
+     }
+@@ -886,6 +896,7 @@ gld${EMULATION_NAME}_after_open (void)
+       struct bfd_link_needed_list *ll;
+       struct dt_needed n, nn;
+       int force;
++      const char *found_as_needed;
+ 
+       /* If the lib that needs this one was --as-needed and wasn't
+ 	 found to be needed, then this lib isn't needed either.  */
+@@ -906,8 +917,14 @@ gld${EMULATION_NAME}_after_open (void)
+       global_needed = l;
+       global_found = FALSE;
+       lang_for_each_input_file (gld${EMULATION_NAME}_check_needed);
++      found_as_needed = NULL;
+       if (global_found)
+-	continue;
++	{
++	  if (global_found_as_needed == NULL)
++	    continue;
++	  else
++	    found_as_needed = global_found_as_needed;
++	}
+ 
+       n.by = l->by;
+       n.name = l->name;
+@@ -944,6 +961,13 @@ EOF
+ fi
+ cat >>e${EMULATION_NAME}.c <<EOF
+ 
++	  if (found_as_needed != NULL)
++	    {
++	      nn.name = found_as_needed;
++	      if (gld${EMULATION_NAME}_try_needed (&nn, force))
++		break;
++	    }
++
+ 	  if (gld${EMULATION_NAME}_search_needed (command_line.rpath_link,
+ 						  &n, force))
+ 	    break;
+
+	Jakub
+

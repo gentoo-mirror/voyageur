@@ -1,0 +1,570 @@
+Index: binutils-2.16.93/bfd/elf-bfd.h
+===================================================================
+--- binutils-2.16.93.orig/bfd/elf-bfd.h
++++ binutils-2.16.93/bfd/elf-bfd.h
+@@ -170,6 +170,14 @@ struct elf_link_hash_entry
+      matters.  */
+   unsigned int pointer_equality_needed : 1;
+ 
++  /* FIXME: these 2 bits consume another 4 bytes.  */
++  /* Symbol is concrete, ie. non-vague if we can detect that, from the
++     .direct section.  */
++  unsigned int concrete_ref : 1;
++  /* Symbol is certainly vague (if we can detect that), from the
++     .direct section.  */
++  unsigned int vague_ref : 1;
++
+   /* String table index in .dynstr if this is a dynamic symbol.  */
+   unsigned long dynstr_index;
+ 
+@@ -401,6 +409,9 @@ struct elf_link_hash_table
+   asection *tls_sec;
+   bfd_size_type tls_size;
+ 
++  /* Direct linkage output section.  */
++  asection *direct_sec;
++
+   /* A linked list of BFD's loaded in the link.  */
+   struct elf_link_loaded_list *loaded;
+ 
+@@ -1294,6 +1305,7 @@ struct elf_obj_tdata
+      name actually used, which will be the DT_SONAME entry if there is
+      one.  */
+   const char *dt_name;
++  int         dt_needed_idx;
+ 
+   /* Records the result of `get_program_header_size'.  */
+   bfd_size_type program_header_size;
+@@ -1397,6 +1409,7 @@ struct elf_obj_tdata
+ #define elf_local_got_offsets(bfd) (elf_tdata(bfd) -> local_got.offsets)
+ #define elf_local_got_ents(bfd) (elf_tdata(bfd) -> local_got.ents)
+ #define elf_dt_name(bfd)	(elf_tdata(bfd) -> dt_name)
++#define elf_dt_needed_idx(bfd)	(elf_tdata(bfd) -> dt_needed_idx)
+ #define elf_dyn_lib_class(bfd)	(elf_tdata(bfd) -> dyn_lib_class)
+ #define elf_bad_symtab(bfd)	(elf_tdata(bfd) -> bad_symtab)
+ #define elf_flags_init(bfd)	(elf_tdata(bfd) -> flags_init)
+Index: binutils-2.16.93/bfd/elf.c
+===================================================================
+--- binutils-2.16.93.orig/bfd/elf.c
++++ binutils-2.16.93/bfd/elf.c
+@@ -1233,6 +1233,7 @@ _bfd_elf_print_private_bfd_data (bfd *ab
+ 	    case DT_RELCOUNT: name = "RELCOUNT"; break;
+ 	    case DT_FLAGS_1: name = "FLAGS_1"; break;
+ 	    case DT_VERSYM: name = "VERSYM"; break;
++	    case DT_SUSE_DIRECT: name = "SUSE_DIRECT"; break;
+ 	    case DT_VERDEF: name = "VERDEF"; break;
+ 	    case DT_VERDEFNUM: name = "VERDEFNUM"; break;
+ 	    case DT_VERNEED: name = "VERNEED"; break;
+@@ -1588,6 +1589,7 @@ _bfd_elf_link_hash_table_init
+   table->runpath = NULL;
+   table->tls_sec = NULL;
+   table->tls_size = 0;
++  table->direct_sec = NULL;
+   table->loaded = NULL;
+   table->is_relocatable_executable = FALSE;
+ 
+Index: binutils-2.16.93/bfd/elflink.c
+===================================================================
+--- binutils-2.16.93.orig/bfd/elflink.c
++++ binutils-2.16.93/bfd/elflink.c
+@@ -204,6 +204,16 @@ _bfd_elf_link_create_dynamic_sections (b
+       elf_hash_table (info)->eh_info.hdr_sec = s;
+     }
+ 
++  if ( info->direct && !info->executable )
++    {
++      s = bfd_make_section (abfd, ".suse.direct");
++      if (s == NULL
++	  || ! bfd_set_section_flags (abfd, s, flags | SEC_READONLY)
++	  || ! bfd_set_section_alignment (abfd, s, 2))
++	return FALSE;
++      elf_hash_table (info)->direct_sec = s;
++    }
++
+   /* Create sections to hold version informations.  These are removed
+      if they are not needed.  */
+   s = bfd_make_section_with_flags (abfd, ".gnu.version_d",
+@@ -2897,6 +2907,7 @@ elf_add_dt_needed_tag (bfd *abfd,
+ 
+       if (!_bfd_elf_add_dynamic_entry (info, DT_NEEDED, strindex))
+ 	return -1;
++      elf_dt_needed_idx (abfd) = ++(info->dt_needed_index);
+     }
+   else
+     /* We were just checking for existence of the tag.  */
+@@ -3092,6 +3103,8 @@ elf_link_add_object_symbols (bfd *abfd, 
+   bfd_boolean add_needed;
+   struct elf_link_hash_table *htab;
+   bfd_size_type amt;
++  asection *direct_sec;
++  unsigned char *direct_data;
+   void *alloc_mark = NULL;
+   void *old_tab = NULL;
+   void *old_hash;
+@@ -3105,6 +3118,9 @@ elf_link_add_object_symbols (bfd *abfd, 
+   htab = elf_hash_table (info);
+   bed = get_elf_backend_data (abfd);
+ 
++  direct_sec = NULL;
++  direct_data = NULL;
++
+   if ((abfd->flags & DYNAMIC) == 0)
+     dynamic = FALSE;
+   else
+@@ -3124,6 +3140,16 @@ elf_link_add_object_symbols (bfd *abfd, 
+ 	    bfd_set_error (bfd_error_wrong_format);
+ 	  goto error_return;
+ 	}
++      if (info->direct)
++	  direct_sec = bfd_get_section_by_name (abfd, ".suse.direct");
++      if (direct_sec != NULL)
++        {
++	  direct_data = bfd_alloc (abfd, direct_sec->size);
++	  if (direct_data == NULL
++	      || ! bfd_get_section_contents (abfd, direct_sec,
++					     direct_data, 0, direct_sec->size))
++	    goto error_return;
++	}
+     }
+ 
+   /* As a GNU extension, any input sections which are named
+@@ -3831,6 +3857,23 @@ elf_link_add_object_symbols (bfd *abfd, 
+ 	      && vernum > 1
+ 	      && definition)
+ 	    h->verinfo.verdef = &elf_tdata (abfd)->verdef[vernum - 1];
++
++        if (direct_sec != NULL)
++          {
++            unsigned long d_idx = isym - isymbuf;
++            unsigned long direct_entry;
++            d_idx += extsymoff;
++            d_idx *= 2;
++             BFD_ASSERT (d_idx <= bfd_get_section_size (direct_sec));
++            direct_entry = bfd_get_16 (abfd, direct_data + d_idx);
++            if ((direct_entry & DT_SUSE_DIRECT_VAGUE) != 0)
++              h->vague_ref = 1;
++            if (!h->vague_ref
++                 && (direct_entry & DT_SUSE_DIRECT_MASK) !=
++                                      DT_SUSE_DIRECT_UNKNOWN)
++              h->concrete_ref = 1;
++          }
++
+ 	}
+ 
+       if (! (_bfd_generic_link_add_one_symbol
+@@ -4499,6 +4542,8 @@ elf_link_add_object_symbols (bfd *abfd, 
+   if (isymbuf != NULL)
+     free (isymbuf);
+  error_return:
++  if (direct_data != NULL)
++    free (direct_data);
+   return FALSE;
+ }
+ 
+@@ -5766,6 +5811,24 @@ bfd_elf_size_dynsym_hash_dynstr (bfd *ou
+ 	    return FALSE;
+ 	}
+ 
++      /* Create the direct bindings section - 1 entry per dynsym.  */
++      s = bfd_get_section_by_name (dynobj, ".suse.direct");
++      if (s != NULL)
++        {
++  	  if (dynsymcount == 0)
++            s->flags |= SEC_EXCLUDE;
++	  else
++	    {
++	      s->size = dynsymcount * sizeof (Elf_External_Direct);
++	      s->contents = bfd_zalloc (output_bfd, s->size);
++	      if (s->contents == NULL)
++	        return FALSE;
++	      memset (s->contents, 0xff, s->size);
++	      if (!_bfd_elf_add_dynamic_entry (info, DT_SUSE_DIRECT, 0))
++	        return FALSE;
++	    }
++	}
++
+       /* Set the size of the .dynsym and .hash sections.  We counted
+ 	 the number of dynamic symbols in elf_link_add_object_symbols.
+ 	 We will build the contents of .dynsym and .hash when we build
+@@ -5858,6 +5921,8 @@ struct elf_final_link_info
+   asection *hash_sec;
+   /* symbol version section (.gnu.version).  */
+   asection *symver_sec;
++  /* .direct linkage section.  */
++  asection *direct_sec;
+   /* Buffer large enough to hold contents of any section.  */
+   bfd_byte *contents;
+   /* Buffer large enough to hold external relocs of any section.  */
+@@ -6761,6 +6826,46 @@ elf_link_output_extsym (struct elf_link_
+ 	  eversym += h->dynindx;
+ 	  _bfd_elf_swap_versym_out (finfo->output_bfd, &iversym, eversym);
+ 	}
++
++      if (finfo->direct_sec != NULL)
++	{
++	  int dt_index = DT_SUSE_DIRECT_UNKNOWN;
++	  bfd_vma offset = 2 * h->dynindx;
++         BFD_ASSERT (offset <= finfo->direct_sec->size);
++
++	  if ((h->root.type == bfd_link_hash_defined
++	       || h->root.type == bfd_link_hash_defweak)
++	      && h->root.u.def.section != NULL
++	      && h->root.u.def.section->owner != NULL)
++	    {
++	      asection *sec = h->root.u.def.section;
++
++	      dt_index = elf_dt_needed_idx (sec->owner);
++
++	      if ((sec->owner->flags & DYNAMIC) == 0)
++		{
++		  if (sec->name == NULL
++		      || strncmp (sec->name, ".gnu.linkonce",
++			          sizeof ".gnu.linkonce" - 1) == 0)
++		    dt_index |= DT_SUSE_DIRECT_VAGUE;
++
++		  /* app -> library data references get turned into copy
++		     relocs, so objects can migrate unpredictably into the
++		     application itself.  */
++		  else if (h->type == STT_OBJECT)
++		    dt_index |= DT_SUSE_DIRECT_VAGUE;
++		}
++	      else if (h->vague_ref)
++		dt_index |= DT_SUSE_DIRECT_VAGUE;
++
++	      else if (!h->concrete_ref)
++		dt_index = DT_SUSE_DIRECT_UNKNOWN;
++
++	    }
++	  bfd_put_16 (finfo->output_bfd,
++		      dt_index,
++		      finfo->direct_sec->contents + offset);
++	}
+     }
+ 
+   /* If we're stripping it, then it was just a dynamic symbol, and
+@@ -7896,6 +8001,7 @@ bfd_elf_final_link (bfd *abfd, struct bf
+ 
+   if (! dynamic)
+     {
++      finfo.direct_sec = NULL;
+       finfo.dynsym_sec = NULL;
+       finfo.hash_sec = NULL;
+       finfo.symver_sec = NULL;
+@@ -7903,6 +8009,7 @@ bfd_elf_final_link (bfd *abfd, struct bf
+     }
+   else
+     {
++      finfo.direct_sec = bfd_get_section_by_name (dynobj, ".suse.direct");
+       finfo.dynsym_sec = bfd_get_section_by_name (dynobj, ".dynsym");
+       finfo.hash_sec = bfd_get_section_by_name (dynobj, ".hash");
+       BFD_ASSERT (finfo.dynsym_sec != NULL && finfo.hash_sec != NULL);
+@@ -8667,6 +8774,9 @@ bfd_elf_final_link (bfd *abfd, struct bf
+ 	    case DT_VERNEED:
+ 	      name = ".gnu.version_r";
+ 	      goto get_vma;
++	    case DT_SUSE_DIRECT:
++	      name = ".suse.direct";
++	      goto get_vma;
+ 	    case DT_VERSYM:
+ 	      name = ".gnu.version";
+ 	    get_vma:
+Index: binutils-2.16.93/binutils/readelf.c
+===================================================================
+--- binutils-2.16.93.orig/binutils/readelf.c
++++ binutils-2.16.93/binutils/readelf.c
+@@ -145,6 +145,7 @@ static int show_name;
+ static int do_dynamic;
+ static int do_syms;
+ static int do_reloc;
++static int do_direct;
+ static int do_sections;
+ static int do_section_groups;
+ static int do_section_details;
+@@ -1479,6 +1480,7 @@ get_dynamic_type (unsigned long type)
+     case DT_SYMINFO:	return "SYMINFO"; /* aka ADDRRNGHI */
+ 
+     case DT_VERSYM:	return "VERSYM";
++    case DT_SUSE_DIRECT:	return "SUSE_DIRECT";
+ 
+     case DT_TLSDESC_GOT: return "TLSDESC_GOT";
+     case DT_TLSDESC_PLT: return "TLSDESC_PLT";
+@@ -2643,6 +2645,7 @@ static struct option options[] =
+   {"symbols",	       no_argument, 0, 's'},
+   {"syms",	       no_argument, 0, 's'},
+   {"relocs",	       no_argument, 0, 'r'},
++  {"direct",	       no_argument, 0, 'y'},
+   {"notes",	       no_argument, 0, 'n'},
+   {"dynamic",	       no_argument, 0, 'd'},
+   {"arch-specific",    no_argument, 0, 'A'},
+@@ -2680,6 +2683,7 @@ usage (void)
+       --symbols          An alias for --syms\n\
+   -n --notes             Display the core notes (if present)\n\
+   -r --relocs            Display the relocations (if present)\n\
++  -y --direct            Display direct linkage table (if present)\n\
+   -u --unwind            Display the unwind info (if present)\n\
+   -d --dynamic           Display the dynamic section (if present)\n\
+   -V --version-info      Display the version sections (if present)\n\
+@@ -2769,7 +2773,7 @@ parse_args (int argc, char **argv)
+     usage ();
+ 
+   while ((c = getopt_long
+-	  (argc, argv, "ersuahnldSDAINtgw::x:i:vVWH", options, NULL)) != EOF)
++	  (argc, argv, "erysuahnldSDAINtgw::x:i:vVWH", options, NULL)) != EOF)
+     {
+       char *cp;
+       int section;
+@@ -2786,6 +2790,7 @@ parse_args (int argc, char **argv)
+ 	case 'a':
+ 	  do_syms++;
+ 	  do_reloc++;
++	  do_direct++;
+ 	  do_unwind++;
+ 	  do_dynamic++;
+ 	  do_header++;
+@@ -2819,6 +2824,9 @@ parse_args (int argc, char **argv)
+ 	case 'r':
+ 	  do_reloc++;
+ 	  break;
++	case 'y':
++	  do_direct++;
++	  break;
+ 	case 'u':
+ 	  do_unwind++;
+ 	  break;
+@@ -3028,7 +3036,7 @@ parse_args (int argc, char **argv)
+   if (!do_dynamic && !do_syms && !do_reloc && !do_unwind && !do_sections
+       && !do_segments && !do_header && !do_dump && !do_version
+       && !do_histogram && !do_debugging && !do_arch && !do_notes
+-      && !do_section_groups)
++      && !do_section_groups && !do_direct)
+     usage ();
+   else if (argc < 3)
+     {
+@@ -4655,6 +4663,132 @@ process_relocs (FILE *file)
+   return 1;
+ }
+ 
++static void
++print_dt_needed_name (int idx)
++{
++  const char *name = NULL;
++  Elf_Internal_Dyn *entry;
++
++  idx &= DT_SUSE_DIRECT_MASK;
++ 
++  switch (idx)
++    {
++    case 0:
++      name = _("<self>");
++      break;
++    case DT_SUSE_DIRECT_UNKNOWN:
++      name = _("<unknown>");
++      break;
++    default:
++      idx--;
++
++      for (entry = dynamic_section;
++	   entry < dynamic_section + dynamic_nent && idx > 0;
++	   entry++)
++	if (entry->d_tag == DT_NEEDED)
++	  idx--;
++  
++      if (idx == 0)
++        {
++          if (VALID_DYNAMIC_NAME (entry->d_un.d_val))
++	    name = GET_DYNAMIC_NAME (entry->d_un.d_val);
++	  else
++	    name = NULL;
++	}
++      break;
++    }
++
++  if (!name)
++    name = _("<out-of-range>");
++  if (do_wide)
++    printf ("%s", name);
++  else
++    printf ("%-25s", name);
++}
++
++static int
++process_direct (FILE *file)
++{
++  unsigned int i;
++  unsigned int si;
++  char *strtab;
++  unsigned char *directtab;
++  Elf_Internal_Sym *symtab = NULL;
++  Elf_Internal_Sym *psym;
++  Elf_Internal_Shdr *direct = NULL;
++  Elf_Internal_Shdr *dynsym = NULL;
++  Elf_Internal_Shdr *section;
++
++  if (!do_direct)
++    return 1;
++  if (!dynamic_symbols || !dynamic_section || !dynamic_strings)
++    return 1;
++
++  for (i = 0, section = section_headers;
++       i < elf_header.e_shnum;
++       i++, section++)
++    {
++      if (section->sh_type == SHT_DYNSYM)
++        dynsym = section;
++      if (!strcmp (SECTION_NAME (section), ".suse.direct"))
++        direct = section;
++    }
++  if (!dynsym || !direct)
++    return 1;
++  
++  symtab = GET_ELF_SYMBOLS (file, dynsym);
++  if (!symtab)
++    return 1;
++
++  directtab = get_data (NULL, file, direct->sh_offset,
++			direct->sh_size, 1, _("direct linkage table"));
++  if (!symtab)
++  {
++    free (symtab);
++    return 1;
++  }
++
++  if (dynsym->sh_link == elf_header.e_shstrndx)
++    strtab = string_table;
++  else
++    {
++      Elf_Internal_Shdr *string_sec;
++
++      string_sec = SECTION_HEADER (dynsym->sh_link);
++
++      strtab = get_data (NULL, file, string_sec->sh_offset,
++			 string_sec->sh_size, 1, _("string table"));
++    }
++
++  assert (strtab != NULL);
++
++  printf (_("\nDirect relocations for image:\n"));
++  printf (_("   Num:  Index     Vague   Binding                    Symbol\n"));
++  for (si = 0, psym = symtab;
++       si < dynsym->sh_size / dynsym->sh_entsize;
++       si++, psym++)
++    {
++       unsigned int field;
++       printf ("%6d: ", si);
++       field = byte_get (directtab + (si * 2), 2);
++       printf ("[0x%.4x]   ", field);
++       printf ("%s", (field & DT_SUSE_DIRECT_VAGUE) ? "Vague" : "     ");
++       printf ("  ");
++       print_dt_needed_name (field);
++       printf ("  ");
++       print_symbol (25, strtab + psym->st_name);
++       printf ("\n");
++    }
++
++
++  free (symtab);
++  if (strtab != string_table)
++    free (strtab);
++
++  return 1;
++}
++
++
+ /* Process the unwind section.  */
+ 
+ #include "unwind-ia64.h"
+@@ -8990,6 +9124,8 @@ process_object (char *file_name, FILE *f
+ 
+   process_relocs (file);
+ 
++  process_direct (file);
++
+   process_unwind (file);
+ 
+   process_symbol_table (file);
+Index: binutils-2.16.93/include/bfdlink.h
+===================================================================
+--- binutils-2.16.93.orig/include/bfdlink.h
++++ binutils-2.16.93/include/bfdlink.h
+@@ -244,6 +244,9 @@ struct bfd_link_info
+   /* TRUE if BFD should pre-bind symbols in a shared object.  */
+   unsigned int symbolic: 1;
+ 
++  /* TRUE if BFD should bind symbols directly to resolved at link time.  */
++  unsigned int direct: 1;
++
+   /* TRUE if BFD should export all symbols in the dynamic symbol table
+      of an executable, rather than only those used.  */
+   unsigned int export_dynamic: 1;
+@@ -434,6 +437,9 @@ struct bfd_link_info
+ 
+   /* Start and end of RELRO region.  */
+   bfd_vma relro_start, relro_end;
++
++  /* current max dtinfo section number.  */
++  int dt_needed_index;
+ };
+ 
+ /* This structures holds a set of callback functions.  These are
+Index: binutils-2.16.93/include/elf/common.h
+===================================================================
+--- binutils-2.16.93.orig/include/elf/common.h
++++ binutils-2.16.93/include/elf/common.h
+@@ -671,6 +671,11 @@
+ #define DF_BIND_NOW	(1 << 3)
+ #define DF_STATIC_TLS	(1 << 4)
+ 
++/* Constants for the DT_DIRECT entries.  */
++#define DT_SUSE_DIRECT_VAGUE   (1<<15)
++#define DT_SUSE_DIRECT_MASK     0xfff
++#define DT_SUSE_DIRECT_UNKNOWN  DT_SUSE_DIRECT_MASK
++
+ /* These constants are used for the version number of a Elf32_Verdef
+    structure.  */
+ 
+Index: binutils-2.16.93/include/elf/external.h
+===================================================================
+--- binutils-2.16.93.orig/include/elf/external.h
++++ binutils-2.16.93/include/elf/external.h
+@@ -213,6 +213,10 @@ typedef struct {
+   unsigned char		vd_next[4];
+ } Elf_External_Verdef;
+ 
++typedef struct {
++  unsigned char		dir_libidx[2];
++} Elf_External_Direct;
++
+ /* This structure appears in a SHT_GNU_verdef section.  */
+ 
+ typedef struct {
+Index: binutils-2.16.93/ld/lexsup.c
+===================================================================
+--- binutils-2.16.93.orig/ld/lexsup.c
++++ binutils-2.16.93/ld/lexsup.c
+@@ -71,6 +71,7 @@ enum option_values
+   OPTION_CREF,
+   OPTION_DEFSYM,
+   OPTION_DEMANGLE,
++  OPTION_DIRECT,
+   OPTION_DYNAMIC_LINKER,
+   OPTION_SYSROOT,
+   OPTION_EB,
+@@ -345,6 +346,8 @@ static const struct ld_option ld_options
+     '\0', NULL, N_("Store pre-computed elf hash codes"), ONE_DASH },
+   { {"Bsymbolic", no_argument, NULL, OPTION_SYMBOLIC},
+     '\0', NULL, N_("Bind global references locally"), ONE_DASH },
++  { {"Bdirect", no_argument, NULL, OPTION_DIRECT},
++    '\0', NULL, N_("Direct-linkage the the shared libraries"), ONE_DASH },
+   { {"check-sections", no_argument, NULL, OPTION_CHECK_SECTIONS},
+     '\0', NULL, N_("Check section addresses for overlaps (default)"),
+     TWO_DASHES },
+@@ -750,6 +753,9 @@ parse_args (unsigned argc, char **argv)
+ 	      cplus_demangle_set_style (style);
+ 	    }
+ 	  break;
++	case OPTION_DIRECT:
++	  link_info.direct = TRUE;
++	  break;
+ 	case 'I':		/* Used on Solaris.  */
+ 	case OPTION_DYNAMIC_LINKER:
+ 	  command_line.interpreter = optarg;

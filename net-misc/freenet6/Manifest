@@ -1,0 +1,4 @@
+MD5 f592f25e92d8d5bd6354aed33eb1e46d files/digest-freenet6-2.1.1 64
+MD5 19f35aa612b0644c09aff7352b4af538 files/tspc.conf 7075
+MD5 1dd245fdccb36878ec96ffe243dbc46d files/tspc.rc 432
+MD5 3e2e5d5e821e4b691553d8d8658bc1ff freenet6-2.1.1.ebuild 1372

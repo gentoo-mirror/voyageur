@@ -1,0 +1,129 @@
+--- dchroot.c.old	2005-04-30 02:09:35.000000000 +1000
++++ dchroot.c	2005-05-01 22:37:26.000000000 +1000
+@@ -199,15 +199,42 @@
+ 		return -1;
+ 	} else if (pid == 0) {
+ 
+-		if (!argv) {
+-			/* Will execute a shell in the new chroot. */
++    int cmdnum = 0;
++    int argc = 0;
+ 
+-			cmd = malloc(sizeof(char *) * 4);
++    /* estimate length of command list to su */
++		if (!argv) {
++      argc = 4;
++		} else {
++			while (argv[argc] != NULL) {
++        argc++;
++      }
++      argc += 5;
++    }
++    cmd = malloc(sizeof(char *) * argc);
++
++    if (!cmd) {
++      dchroot_perror("malloc");
++      exit(EXIT_FAILURE);
++    }
++
++    cmd[cmdnum++] = "/bin/su";
++
++    if (opts.dir[0] == '\0') {
++      /* /bin/su, -, username, ... */
++      cmd[cmdnum++] = "-";
++    } else {
++#ifdef WITH_GNU_SU
++      /* /bin/su, -p, username, ... */
++      cmd[cmdnum++] = "-p";
++#endif
++      /* /bin/su, username, ... */
++      /* su from shadow package doesn't know about -p option. */
++    }
++    cmd[cmdnum++] = username;
+ 
+-			if (!cmd) {
+-				dchroot_perror("malloc");
+-				exit(EXIT_FAILURE);
+-			}
++		if (!argv) {
++			/* Will execute a shell in the new chroot. */
+ 
+ 			if (!opts.quiet) {
+ 				printf("Executing shell in '%s' chroot.\n",
+@@ -215,61 +242,32 @@
+ 				fflush(NULL);
+ 			}
+ 
+-			cmd[0] = "/bin/su";
+-
+-			if (opts.dir[0] == '\0') {
+-				/* /bin/su, -, username, NULL */
+-				cmd[1] = "-";
+-			} else {
+-				/* /bin/su, -p, username, NULL */
+-				cmd[1] = "-p";
+-			}
+-			cmd[2] = username;
+-			cmd[3] = NULL;
++			cmd[cmdnum++] = NULL;
+ 
+ 		} else {
+-			/* Will execute the command in argv[] in the
++			/* Will execute the commands in argv[] in the
+ 			 * new chroot. 
+ 			 */
+ 
+-			int argc = 0;
+-			int i = 0, j = 0;
++			int i = 0;
++      int shcmdstart = 0;
+ 			
+-			while (argv[i++] != NULL) {
+-				argc++;
+-			}
+-			
+-			cmd = malloc(sizeof(char *) * (argc + 5));
+-			
+-			if (!cmd) {
+-				dchroot_perror("malloc");
+-				exit(EXIT_FAILURE);
+-			}
+-		
+-			i = 0;
+-			cmd[i++] = "/bin/su";
+-			
+-			if (opts.dir[0] == '\0') {
+-				/* /bin/su - username argv[0] argv[1] ... */
+-				cmd[i++] = "-";
+-			} else {
+-				/* /bin/su -p username argv[0] argv[1] ... */
+-				cmd[i++] = "-p";
+-			}
+-			
+-			cmd[i++] = username;
+-			cmd[i++] = "--";
+-
+-			while (argv[j] != NULL) {
+-				cmd[i++] = argv[j];
+-				j++;
++#ifdef WITH_GNU_SU
++      /* prevent gnu su from grabbing options inteded for the shell */
++			cmd[cmdnum++] = "--";
++#endif
++
++      shcmdstart = cmdnum + 1;
++			while (argv[i] != NULL) {
++				cmd[cmdnum++] = argv[i];
++				i++;
+ 			}
+ 
+-			cmd[i] = NULL;
++			cmd[cmdnum] = NULL;
+ 
+ 			if (!opts.quiet) {
+ 				printf("(%s) ", chroot_to->name);
+-				i = 4;
++				i = shcmdstart;
+ 				while (cmd[i]) {
+ 					printf("%s ", cmd[i]);
+ 					i++;

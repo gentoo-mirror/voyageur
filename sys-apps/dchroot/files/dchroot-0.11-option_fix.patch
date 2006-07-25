@@ -1,0 +1,96 @@
+--- dchroot.c.mid	2005-05-01 22:49:30.000000000 +1000
++++ dchroot.c	2005-05-02 00:09:56.000000000 +1000
+@@ -250,14 +250,14 @@
+ 			 */
+ 
+ 			int i = 0;
+-      int shcmdstart = 0;
++      int sh_cmd_start = 0;
+ 			
+ #ifdef WITH_GNU_SU
+       /* prevent gnu su from grabbing options inteded for the shell */
+ 			cmd[cmdnum++] = "--";
+ #endif
+ 
+-      shcmdstart = cmdnum + 1;
++      sh_cmd_start = cmdnum;
+ 			while (argv[i] != NULL) {
+ 				cmd[cmdnum++] = argv[i];
+ 				i++;
+@@ -267,7 +267,7 @@
+ 
+ 			if (!opts.quiet) {
+ 				printf("(%s) ", chroot_to->name);
+-				i = shcmdstart;
++				i = sh_cmd_start;
+ 				while (cmd[i]) {
+ 					printf("%s ", cmd[i]);
+ 					i++;
+@@ -345,11 +345,13 @@
+ 
+ static void usage(char *cmd)
+ {
+-	printf("Usage: %s [OPTION...] [COMMAND]\n", cmd);
+-	printf
+-	    ("Execute COMMAND under a different root filesystem, " 
+-	     "or if no command is given\n");
+-	printf("invoke a shell.\n");
++	printf("Usage:  %s [OPTION...] [[--] COMMAND]\n", cmd);
++	printf("\n");
++	printf("Execute COMMAND under a different root filesystem, "
++                                  "or if no command is given\n");
++	printf("invoke a shell.  Using -- causes all subsequent input "
++                                  "to go to the shell\n");
++  printf("in the chroot.\n");
+ 	printf("\n");
+ 	printf("  -a               Execute in all known chroots.\n");
+ 	printf("  -c newroot       Execute in specified chroot.\n");
+@@ -359,7 +361,6 @@
+ 	printf("  -q               Be quiet.\n");
+ 	printf("  -h               Print help message.\n");
+ 	printf("  -V               Print program version.\n");
+-
+ }
+ 
+ 
+@@ -369,9 +370,10 @@
+ 	int rv = 0;
+ 	char **cmd;
+ 	int index = 1;
++  int opts_finished = 0;
+ 	struct passwd *pwd;
+ 
+-	while (argv[index] && argv[index][0] == '-') {
++	while (argv[index] && argv[index][0] == '-' && ! opts_finished) {
+ 
+ 		if (argv[index][1] == '\0' || argv[index][2] != '\0') {
+ 			dchroot_printf("Unknown option '-%c%c'.\n",
+@@ -394,9 +396,7 @@
+ 			}
+ 			break;
+ 		case 'l':
+-			if ((chroots = read_chroots(CHROOTS_CONF)) == NULL) {
+-				printf("No chroots found.\n");
+-			} else {
++			if ((chroots = read_chroots(CHROOTS_CONF)) != NULL) {
+ 				list_chroots(chroots);
+ 				printf("\n");
+ 			}
+@@ -413,6 +413,9 @@
+ 			usage(argv[0]);
+ 			exit(EXIT_SUCCESS);
+ 			break;
++    case '-':
++      opts_finished = 1;
++      break;
+ 		default:
+ 			dchroot_printf("Unknown option '%s'.\n",
+ 				       argv[index]);
+@@ -425,6 +428,7 @@
+ 			usage(argv[0]);
+ 			exit(EXIT_FAILURE);
+ 		}
++
+ 		index++;
+ 	}
+ 
