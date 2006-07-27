@@ -1,6 +1,6 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817.ebuild,v 1.6 2005/06/23 16:01:40 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817.ebuild,v 1.8 2006/03/05 13:40:16 chainsaw Exp $
 
 fromcvs=0
 ECVS_MODULE="duke3d"
@@ -19,13 +19,13 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 hppa ppc x86"
-IUSE="hardened opengl" # nophysfs"
+IUSE="hardened perl opengl"
 
-RDEPEND="virtual/x11
-	media-libs/libsdl
+RDEPEND="media-libs/libsdl
 	media-libs/sdl-mixer
 	media-sound/timidity++
 	media-sound/timidity-eawpatches
+	perl? ( dev-lang/perl )
 	opengl? ( virtual/opengl )"
 DEPEND="${RDEPEND}
 	!hardened? ( x86? ( dev-lang/nasm ) )"
@@ -65,6 +65,7 @@ src_unpack() {
 	# configure buildengine
 	cd "${S}/source/buildengine"
 	sed -i \
+		-e "/^useperl := / s:=.*:= $(use_tf perl):" \
 		-e "/^useopengl := / s:=.*:= $(use_tf opengl):" \
 		-e "/^usephysfs := / s:=.*:= false:" \
 		-e 's:-O3::' -e 's: -g : :' \
@@ -79,6 +80,8 @@ src_unpack() {
 	# need to sync features with build engine
 	epatch "${FILESDIR}/${PV}-duke3d-makefile-opts.patch"
 	epatch "${FILESDIR}/${PV}-gcc34.patch" # compile fixes for GCC 3.4
+	epatch "${FILESDIR}/${PV}-gcc4-r1.patch" # compile fixes for GCC 4.0/4.1 by Mark Loeser
+	epatch "${FILESDIR}/${PV}-gcc4-alias.patch" # compile fixes for GCC 4.0/4.1 
 	sed -i \
 		-e "/^use_opengl := / s:=.*:= $(use_tf opengl):" \
 		-e "/^use_physfs := / s:=.*:= false:" \
