@@ -13,7 +13,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-RDEPEND="media-libs/jpeg
+RDEPEND="app-arch/bzip2
+	media-libs/jpeg
 	media-libs/libpng
 	sys-libs/zlib
 	media-libs/libsdl
