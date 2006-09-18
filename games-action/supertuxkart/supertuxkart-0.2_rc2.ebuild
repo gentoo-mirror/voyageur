@@ -5,7 +5,7 @@
 inherit games
 
 MY_P="${P/_/}"
-DESCRIPTION="A racing game starring Tux, the linux penguin (improved fork of TuxKart)"
+DESCRIPTION="A kart racing game starring Tux, the linux penguin (improved fork of TuxKart)"
 HOMEPAGE="http://supertuxkart.berlios.de"
 SRC_URI="http://download.berlios.de/${PN}/${MY_P}.tar.bz2"
 
@@ -13,13 +13,12 @@ S=${WORKDIR}/${MY_P}
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 RDEPEND=">=media-libs/plib-1.8.0
 	virtual/opengl"
-DEPEND="${RDEPEND}
-	>=sys-apps/sed-4"
+DEPEND="${RDEPEND}"
 
 src_compile() {
 	egamesconf --datadir="${GAMES_DATADIR_BASE}" || die
@@ -29,8 +28,6 @@ src_compile() {
 src_install() {
 	make DESTDIR="${D}" install || die "make install failed"
 	dodoc AUTHORS NEWS README
-	dohtml ${D}/usr/share/supertuxkart/*.{html,png}
-	rm -rf ${D}/usr/share/supertuxkart/
 
 	prepgamesdirs
 }
