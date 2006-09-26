@@ -4,12 +4,10 @@
 
 inherit games
 
-MY_P="${P/_/}"
-DESCRIPTION="A kart racing game starring Tux, the linux penguin (improved fork of TuxKart)"
+MY_P="SuperTuxKart-${PV}"
+DESCRIPTION="A racing game starring Tux, the linux penguin (improved fork of TuxKart)"
 HOMEPAGE="http://supertuxkart.berlios.de"
 SRC_URI="http://download.berlios.de/${PN}/${MY_P}.tar.bz2"
-
-S=${WORKDIR}/${MY_P}
 
 LICENSE="GPL-2"
 SLOT="0"
