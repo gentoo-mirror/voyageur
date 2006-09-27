@@ -7,11 +7,11 @@ inherit games
 MY_PN="${PN}-linux"
 DESCRIPTION="The new Blobby Volley, a volley-game with colorful blobs"
 HOMEPAGE="http://blobby.sourceforge.net"
-SRC_URI="mirror://sourceforge/${MY_PN}-${PV}.tar.bz2"
+SRC_URI="mirror://sourceforge/blobby/${MY_PN}-${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 
 DEPEND=""
 RDEPEND=""
