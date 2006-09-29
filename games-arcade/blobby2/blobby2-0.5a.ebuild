@@ -13,8 +13,9 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-DEPEND=""
-RDEPEND=""
+RDEPEND="virutal/opengl
+	media-libs/libsdl
+	dev-games/physfs"
 
 # Hardcoded to version...
 S="${WORKDIR}/blobby-alpha-5"
