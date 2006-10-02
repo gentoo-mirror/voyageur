@@ -13,7 +13,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-RDEPEND="virutal/opengl
+RDEPEND="virtual/opengl
 	media-libs/libsdl
 	dev-games/physfs"
 
