@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit distutils eutils
+inherit distutils eutils bash-completion
 
 DESCRIPTION="biniou is a command-line oriented binary newsreader"
-HOMEPAGE="http://binaryniouzrideur.free.fr"
-SRC_URI="${HOMEPAGE}/releases/${P}.tar.bz2"
+HOMEPAGE="http://gna.org/projects/biniou"
+SRC_URI="http://download.gna.org/biniou/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -26,4 +26,6 @@ src_install() {
 	newexe biniou
 
 	dodoc README AUTHORS COPYING CREDITS ChangeLog doc/*
+
+	dobashcompletion share/biniou biniou
 }
