@@ -1,2 +1,12 @@
-MD5 345642df6805df84c4bd1981d0d3e6e7 files/digest-winetools-0.9 71
-MD5 82edcf86076ad834e2ff27f7377f5ed5 winetools-0.9.ebuild 1349
+AUX winetools-0.9-clear_and_version-check.patch 1147 RMD160 a91c83d3679212517992f91de2d0068b54b3201c SHA1 42fb3f64d14a34587104d9064b741a551f22eec6 SHA256 7a031497bffe75485a9aa883b39b975185b47198b7b3f3e7eb3516a0daf2933c
+MD5 5cdebf6491a9a8e44b4e890001ceb0f3 files/winetools-0.9-clear_and_version-check.patch 1147
+RMD160 a91c83d3679212517992f91de2d0068b54b3201c files/winetools-0.9-clear_and_version-check.patch 1147
+SHA256 7a031497bffe75485a9aa883b39b975185b47198b7b3f3e7eb3516a0daf2933c files/winetools-0.9-clear_and_version-check.patch 1147
+DIST winetools-0.9jo-III.tar.gz 203976 RMD160 361d7e8b636cc69e7d58ceb813fe4d74c1d2e87b SHA1 e8d510139cce7267d6040f77f9e73b2cbd84a65f SHA256 ef25dacc78c35dbd827cc160de69c3ae0ba30ce497b03ab9c7a6352cdad84ee1
+EBUILD winetools-0.9-r3.ebuild 2579 RMD160 5196282de738962a72ee137dae9ac8aeb74b4c91 SHA1 9b259c595e10bd864d107ab95232462e43d29c8e SHA256 fe99da570efd7fc379401a4cfad5d8f6877bff659b00d7d2a953757f4e7db904
+MD5 3f3709edf39f17caaa23c43932535f2f winetools-0.9-r3.ebuild 2579
+RMD160 5196282de738962a72ee137dae9ac8aeb74b4c91 winetools-0.9-r3.ebuild 2579
+SHA256 fe99da570efd7fc379401a4cfad5d8f6877bff659b00d7d2a953757f4e7db904 winetools-0.9-r3.ebuild 2579
+MD5 1dd4a6addf17d376eb249135b9f3b119 files/digest-winetools-0.9-r3 259
+RMD160 3001b7c95136c55a6d7303ff75af634bab02a53d files/digest-winetools-0.9-r3 259
+SHA256 b0bf5228e3aade41caf082fe14855815ddb3ed69282b85fc113c27647dc8b12d files/digest-winetools-0.9-r3 259

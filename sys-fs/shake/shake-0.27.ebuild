@@ -3,11 +3,11 @@
 # version 2, or (at your option) any later version
 
 DESCRIPTION="Defragmenter (rewrite fragmented or misplaced files)"
-SRC_URI="http://vleu.net/shake/shake-${PV}.tar.bz2"
+SRC_URI="http://download.savannah.nongnu.org/releases/shake/shake-${PV}.tar.bz2"
 
-LICENSE="GPL-2"
+LICENSE="GPL-2 FDL-1.2"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~x86 ~amd64 ~ppc"
 IUSE="static"
 DEPEND="sys-apps/attr"
 

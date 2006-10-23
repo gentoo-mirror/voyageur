@@ -1,6 +1,6 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-plugins/wsoundserver/wsoundserver-0.4.1.ebuild,v 1.1 2005/06/15 09:26:09 s4t4n Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-plugins/wsoundserver/wsoundserver-0.4.1.ebuild,v 1.4 2006/01/24 23:25:19 nelchael Exp $
 
 MY_P="${P/wsoundserver/WSoundServer}-new"
 S="${WORKDIR}/${MY_P}"
@@ -11,8 +11,7 @@ DESCRIPTION="WindowMaker sound server"
 SRC_URI="http://vlaadworld.net/public/${MY_P}.tar.gz"
 HOMEPAGE="http://vlaadworld.net/"
 
-DEPEND="virtual/x11
-	>=x11-wm/windowmaker-0.91.0-r1
+DEPEND=">=x11-wm/windowmaker-0.91.0-r1
 	>=x11-libs/libdockapp-0.6.0
 	>=x11-libs/libPropList-0.10.1-r3
 	>=media-libs/audiofile-0.2.6-r1
@@ -22,7 +21,7 @@ RDEPEND="${DEPEND}
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~ppc x86"
 
 src_compile() {
 	local myconf="--prefix=/usr --with-x --sysconfdir=/etc/X11"

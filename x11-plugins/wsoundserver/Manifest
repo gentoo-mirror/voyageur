@@ -1,2 +1,8 @@
-MD5 92fd02aedb955bd65321169d62bcce6c wsoundserver-0.4.1.ebuild 1286
-MD5 327ba71e47dc0fbfdc91738e1ca2a70c files/digest-wsoundserver-0.4.1 74
+DIST WSoundServer-0.4.1-new.tar.gz 427676 RMD160 83b2b1dca322be5ba7ca627e49160b4fdb5793c3 SHA1 72347d560f199f41ee2f9f4c4fe67927799de56d SHA256 8653564da3a4ddd29b3521b14ff6d7f34edfe0eaa0f9359a87852ec5dcca58af
+EBUILD wsoundserver-0.4.1.ebuild 1280 RMD160 8451cf5d435525ec053f4b5fb1898f00bec586d3 SHA1 1b5216932532884e080b1b2d32b0d454046a2511 SHA256 409b2176aca67b54c2d3cd639c84ba893d16e9b8ef81e2dcca53707f603dd8b1
+MD5 be5dc592bb2db2bbd846e85785a9605b wsoundserver-0.4.1.ebuild 1280
+RMD160 8451cf5d435525ec053f4b5fb1898f00bec586d3 wsoundserver-0.4.1.ebuild 1280
+SHA256 409b2176aca67b54c2d3cd639c84ba893d16e9b8ef81e2dcca53707f603dd8b1 wsoundserver-0.4.1.ebuild 1280
+MD5 1e894021ef6f9b81dbdef92375c31df0 files/digest-wsoundserver-0.4.1 268
+RMD160 8a6f392620fbe472e44a14728ef0083a319794f0 files/digest-wsoundserver-0.4.1 268
+SHA256 45eb879ddec38ea88c83bcb07501aa68c1fb4bd337e978c13462c05a4cdd6e76 files/digest-wsoundserver-0.4.1 268
