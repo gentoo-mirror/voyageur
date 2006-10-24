@@ -1,27 +1,35 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-emulation/dgen-sdl/dgen-sdl-1.23.ebuild,v 1.8 2005/01/09 10:50:14 swegener Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-emulation/dgen-sdl/dgen-sdl-1.23.ebuild,v 1.12 2006/10/05 04:56:02 mr_bones_ Exp $
 
-inherit games gnuconfig
+inherit eutils games
 
 DESCRIPTION="A Linux/SDL-Port of the famous DGen MegaDrive/Genesis-Emulator"
 HOMEPAGE="http://www.pknet.com/~joe/dgen-sdl.html"
 SRC_URI="http://www.pknet.com/~joe/${P}.tar.gz"
 
 LICENSE="dgen-sdl"
-KEYWORDS="~amd64 x86"
 SLOT="0"
+KEYWORDS="~amd64 x86"
 IUSE="X mmx opengl"
 
 RDEPEND="media-libs/libsdl
-	X? ( virtual/x11 )
 	opengl? ( virtual/opengl )"
-DEPEND="${DEPEND}
+DEPEND="${RDEPEND}
+	X? ( x11-misc/imake )
 	dev-lang/nasm"
 
-src_compile() {
-	gnuconfig_update
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
+	# gcc34.patch for bug #116113
+	# gcc4.patch for bug #133203
+	epatch \
+		"${FILESDIR}/${P}-gcc34.patch" \
+		"${FILESDIR}/${P}-gcc4.patch"
+}
 
+src_compile() {
 	egamesconf \
 		$(use_with opengl) \
 		$(use_with X x) \
@@ -30,7 +38,7 @@ src_compile() {
 }
 
 src_install() {
-	make DESTDIR="${D}" install || die "make install failed"
+	emake DESTDIR="${D}" install || die "emake install failed"
 	dodoc AUTHORS ChangeLog README sample.dgenrc
 	prepgamesdirs
 }
