@@ -14,8 +14,7 @@ LICENSE="as-is"
 SLOT="0"
 IUSE=""
 
-RDEPEND="virtual/x11
-	virtual/opengl
+RDEPEND="virtual/opengl
 	>=media-libs/libsdl-1.2
 	sys-libs/zlib"
 

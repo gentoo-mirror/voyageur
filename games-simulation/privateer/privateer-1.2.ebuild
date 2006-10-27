@@ -11,8 +11,8 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-RDEPEND="virtual/opengl
-	virtual/x11"
+RDEPEND="virtual/opengl"
+
 DEPEND="${RDEPEND}"
 
 src_unpack() {
