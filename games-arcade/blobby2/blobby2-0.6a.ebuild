@@ -7,7 +7,7 @@ inherit games
 MY_PN="${PN}-linux"
 DESCRIPTION="The new Blobby Volley, a volley-game with colorful blobs"
 HOMEPAGE="http://blobby.sourceforge.net"
-SRC_URI="mirror://sourceforge/blobby/${MY_PN}-${PV}.tar.bz2"
+SRC_URI="mirror://sourceforge/blobby/${MY_PN}-${PV}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -17,12 +17,12 @@ RDEPEND="virtual/opengl
 	media-libs/libsdl
 	dev-games/physfs"
 
-# Hardcoded to version...
-S="${WORKDIR}/blobby-alpha-5"
+# TODO: hardcoded to version...
+S="${WORKDIR}/blobby-alpha-6"
 
 src_install() {
 	make DESTDIR=${D} install
-	dodoc AUTHORS ChangeLog README doc/* || die "installing docs failed"
+	dodoc AUTHORS README || die "installing docs failed"
 
 	prepgamesdirs
 }
