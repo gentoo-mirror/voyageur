@@ -47,6 +47,7 @@ pkg_setup() {
 		G2CONF="${G2CONF} --enable-gecko=seamonkey"
 	else
 		eerror " You must set one of the firefox/seamonkey/xulrunner USE flags"
+		die
 	fi
 
 	G2CONF="${G2CONF} --enable-man --enable-info"
