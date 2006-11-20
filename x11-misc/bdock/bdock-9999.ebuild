@@ -12,7 +12,7 @@ SRC_URI=""
 
 LICENSE="X11"
 SLOT="0"
-KEYWORDS="-* ~amd64 ~x86"
+KEYWORDS="-*"
 IUSE="dbus"
 
 DEPEND=">=x11-libs/gtk+-2

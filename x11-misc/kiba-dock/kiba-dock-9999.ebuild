@@ -15,7 +15,7 @@ HOMEPAGE="http://forum.beryl-project.org/forum-17-kiba-dock"
 SRC_URI="" 
 LICENSE="GPL" 
 SLOT="0" 
-KEYWORDS="~amd64 ~x86" 
+KEYWORDS="-*" 
 IUSE="glitz svg" 
 
 DEPEND=">=x11-libs/gtk+-2.8
