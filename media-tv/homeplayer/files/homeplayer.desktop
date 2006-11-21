@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=HomePlayer
+Name[fr]=HomePlayer
+Comment=Mod Freeplayer en Java
+Comment[fr]=Mod Freeplayer en Java
+Exec=homeplayer
+Icon=homeplayer.png
+Terminal=false
+Type=Application
+Categories=GNOME;Application;AudioVideo;
+GenericName[fr_FR]=
