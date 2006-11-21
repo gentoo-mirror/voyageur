@@ -1,0 +1,41 @@
+#!/sbin/runscript
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/net-p2p/amule/files/amuled.initd,v 1.2 2005/08/27 17:17:55 sekretarz Exp $
+
+depend() {
+	need net
+}
+
+start() {
+        if pgrep -u ${HNUSER} hydranode >/dev/null; then
+                eerror "An instance of hydranode is already running"
+                return 1
+        fi
+
+        rm /var/run/hydranode.pid
+
+	ebegin "Starting hydranode"
+        env LD_LIBRARY_PATH=/opt/hydranode/lib start-stop-daemon --start \
+                --quiet --background \
+                -c p2p -N 10 \
+                --make-pidfile --pidfile /var/run/hydranode.pid \
+                -x /opt/hydranode/hydranode > ${LOG}
+	sleep 2
+	if ! pgrep -u ${HNUSER} hydranode > /dev/null; then
+		eerror "hydranode core can't be started! Check logfile: ${LOG}"
+	fi
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping aMule daemon"
+	start-stop-daemon --oknodo --stop --pidfile /var/run/amuled.pid &>/dev/null
+	eend $?
+}
+
+restart() {
+	svc_stop
+	sleep 3
+	svc_start
+}
