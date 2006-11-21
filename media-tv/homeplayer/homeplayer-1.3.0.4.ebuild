@@ -10,7 +10,7 @@ SRC_URI="http://ovh.dl.sourceforge.net/sourceforge/homeplayer/HomePlayer-1.3.0.4
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=">=media-video/vlc-0.8.5"
