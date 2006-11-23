@@ -1,0 +1,8 @@
+DIST audacious-plugins-ugly-1.2.0.tgz 471737 RMD160 d9becd50439547a9e49105dd31a2b4dfa4da4be1 SHA1 57b039e0741cca33d279f969b5fe8c185ddc835c SHA256 7e92e2142595239f0117512f31404246a7efa1fce82acf20cae2921070d703bf
+EBUILD audacious-plugins-ugly-1.2.0.ebuild 1130 RMD160 d2197c4b6c208225fa1eaa3e42e9093de72070f6 SHA1 e1a7471c86bab44c03dfad4bb1d7a506b3547f18 SHA256 950cc6be2a81e13ba77f8be6f8fd72c4ca4fbb50e19e7f240fd1db2355a4f78e
+MD5 ea810d5bafa4cc884b7143857b55344a audacious-plugins-ugly-1.2.0.ebuild 1130
+RMD160 d2197c4b6c208225fa1eaa3e42e9093de72070f6 audacious-plugins-ugly-1.2.0.ebuild 1130
+SHA256 950cc6be2a81e13ba77f8be6f8fd72c4ca4fbb50e19e7f240fd1db2355a4f78e audacious-plugins-ugly-1.2.0.ebuild 1130
+MD5 9d64baa6b49e2a32acaeaf224192b116 files/digest-audacious-plugins-ugly-1.2.0 277
+RMD160 8c25d2b9df3885bffaa68e8eeecc4c61426334e5 files/digest-audacious-plugins-ugly-1.2.0 277
+SHA256 84d75f172c0527efe2b4e12027703f392c07dd0f819abea66d3534edcd02dda8 files/digest-audacious-plugins-ugly-1.2.0 277
