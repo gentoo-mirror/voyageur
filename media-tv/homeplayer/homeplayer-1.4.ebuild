@@ -11,7 +11,8 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_PN}-${PV}.zip"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="-*"
+#KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND=">=media-video/vlc-0.8.5"
