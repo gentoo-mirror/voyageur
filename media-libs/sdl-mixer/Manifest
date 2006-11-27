@@ -1,0 +1,16 @@
+AUX SDL_mixer-126-libmad-tremor.patch 132319 RMD160 744f2efc1eb9397cb8ea25c0ceb6d0740fad87b4 SHA1 74d35ffdd07f4005aa1443f42e069047dc5222a2 SHA256 ff1bcbc6d79709d3dbce0671be7945b5bb0123bbe60ce78b1e9a25eb564961dd
+MD5 695e6269311451decf77c2c4c226c0d4 files/SDL_mixer-126-libmad-tremor.patch 132319
+RMD160 744f2efc1eb9397cb8ea25c0ceb6d0740fad87b4 files/SDL_mixer-126-libmad-tremor.patch 132319
+SHA256 ff1bcbc6d79709d3dbce0671be7945b5bb0123bbe60ce78b1e9a25eb564961dd files/SDL_mixer-126-libmad-tremor.patch 132319
+AUX sdl-mixer-1.2.6-mikmod-music-init.patch 260 RMD160 7d53b04ec50bd48c4b85b4381640b741aba25c36 SHA1 19566d833e788a0865ea4658484b895515dbc1a1 SHA256 743e1c76daf96eb1f2497ba4159677103ebb8a786902b91a01800b7bb9d91a5f
+MD5 85c429a982fe437337599502a8fa6c1d files/sdl-mixer-1.2.6-mikmod-music-init.patch 260
+RMD160 7d53b04ec50bd48c4b85b4381640b741aba25c36 files/sdl-mixer-1.2.6-mikmod-music-init.patch 260
+SHA256 743e1c76daf96eb1f2497ba4159677103ebb8a786902b91a01800b7bb9d91a5f files/sdl-mixer-1.2.6-mikmod-music-init.patch 260
+DIST SDL_mixer-1.2.6.tar.gz 1147838 RMD160 f20e3b7db266d9a0da75f2319dcc403d869907e6 SHA1 d8e09d87a750c4bd989f0a3e4f1b6baff601b8f1 SHA256 89f94840b1b42ddfe53a8aee415331516f1bbdd942b42d25e74906a332cdf22a
+EBUILD sdl-mixer-1.2.6-r1.ebuild 1598 RMD160 02fce67062fc4a40e869de8919e6cc33d5e82648 SHA1 1e9c2c26362a7f1813cf072d21617a471a6028fe SHA256 6dbd2e86f03bffe0922b478a1719debc59e93ee664792f47d2b9ac5fc21ebf7f
+MD5 fa2311326356be02c2f5e0e6fe0ab911 sdl-mixer-1.2.6-r1.ebuild 1598
+RMD160 02fce67062fc4a40e869de8919e6cc33d5e82648 sdl-mixer-1.2.6-r1.ebuild 1598
+SHA256 6dbd2e86f03bffe0922b478a1719debc59e93ee664792f47d2b9ac5fc21ebf7f sdl-mixer-1.2.6-r1.ebuild 1598
+MD5 1807ead1243bb46cdac4b046d170ea67 files/digest-sdl-mixer-1.2.6-r1 250
+RMD160 c86401d1375317a78d19d15ae0d47e8c476ad183 files/digest-sdl-mixer-1.2.6-r1 250
+SHA256 447d23b557caac8fbc320df2e9502ec7f8f4665aa4242546b033b2e58ce07485 files/digest-sdl-mixer-1.2.6-r1 250
