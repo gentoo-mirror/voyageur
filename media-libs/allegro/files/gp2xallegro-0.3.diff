@@ -1,0 +1,3033 @@
+diff -urN orig/allegro-4.2.0/configure allegro-4.2.0/configure
+--- orig/allegro-4.2.0/configure	2005-11-06 09:54:00.000000000 +0000
++++ allegro-4.2.0/configure	2005-12-20 20:42:26.000000000 +0000
+@@ -316,7 +316,7 @@
+ # include <unistd.h>
+ #endif"
+ 
+-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SET_MAKE LN_S LDCONFIG MAKEINFO INSTALL_INFO ALLEGRO_MAYBE_ASM_FILES EGREP INCLUDE_PREFIX LIBALLEG LINK_LIBALLEG PLUGIN_LIB COMPILE_PROGRAM COMPILE_CXX_PROGRAM COMPILE_S_PROGRAM PROG_LDFLAGS LIB_TO_LINK LINK_WITH_STATIC_LIBS ALLEGRO_LIB_TARGETS ESD_CONFIG ARTSC_CONFIG ALLEGRO_MAYBE_XWINDOWS_FILES ALLEGRO_MAYBE_LIB_X_EXE_SOURCES ALLEGRO_MAYBE_LIB_X_EXES ALLEGRO_XWINDOWS_LIBDIR ALLEGRO_MAYBE_LINUX_FILES PKG_CONFIG ALLEGRO_MODULE_TARGETS AR ALLEGRO_DEBUG_CFLAGS ALLEGRO_PROFILE_CFLAGS ALLEGRO_SFLAGS ALLEGRO_SHAREDLIB_CFLAGS CXX CXXFLAGS ALLEGRO_DEBUG_CXXFLAGS ALLEGRO_PROFILE_CXXFLAGS FRAMEWORKS LIBOBJS LTLIBOBJS'
++ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SET_MAKE LN_S LDCONFIG MAKEINFO INSTALL_INFO ALLEGRO_MAYBE_ASM_FILES EGREP INCLUDE_PREFIX LIBALLEG LINK_LIBALLEG PLUGIN_LIB COMPILE_PROGRAM COMPILE_CXX_PROGRAM COMPILE_S_PROGRAM PROG_LDFLAGS LIB_TO_LINK LINK_WITH_STATIC_LIBS ALLEGRO_LIB_TARGETS ESD_CONFIG ARTSC_CONFIG ALLEGRO_MAYBE_XWINDOWS_FILES ALLEGRO_MAYBE_LIB_X_EXE_SOURCES ALLEGRO_MAYBE_LIB_X_EXES ALLEGRO_XWINDOWS_LIBDIR CROSSCOMPILE ALLEGRO_MAYBE_LINUX_FILES ALLEGRO_MAYBE_GP2X_FILES PKG_CONFIG ALLEGRO_MODULE_TARGETS AR ALLEGRO_DEBUG_CFLAGS ALLEGRO_PROFILE_CFLAGS ALLEGRO_SFLAGS ALLEGRO_SHAREDLIB_CFLAGS CXX CXXFLAGS ALLEGRO_DEBUG_CXXFLAGS ALLEGRO_PROFILE_CXXFLAGS FRAMEWORKS LIBOBJS LTLIBOBJS'
+ ac_subst_files=''
+ 
+ # Initialize some variables set by options.
+@@ -893,6 +893,7 @@
+   --enable-xim=x        enable the use of XIM keyboard input default=yes
+   --enable-pthreads=x   enable use of pthreads default=yes
+   --enable-linux=x      enable Linux console support default=yes
++  --enable-lgp2x=x      enable Linux GP2X support default=no
+   --enable-vga=x        enable VGA graphics driver default=yes
+   --enable-fbcon=x      enable fbcon graphics driver default=yes
+   --enable-vbeaf=x      enable VBE/AF graphics driver default=no
+@@ -1004,7 +1005,7 @@
+     else
+       echo "$as_me: WARNING: no configuration information is in $ac_dir" >&2
+     fi
+-    cd $ac_popdir
++    cd "$ac_popdir"
+   done
+ fi
+ 
+@@ -2137,8 +2138,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2196,8 +2196,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2313,8 +2312,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2368,8 +2366,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2414,8 +2411,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2459,8 +2455,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2551,8 +2546,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2847,8 +2841,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2909,8 +2902,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3221,8 +3213,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3270,8 +3261,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3320,8 +3310,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3383,8 +3372,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3448,8 +3436,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3537,8 +3524,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3625,8 +3611,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3714,8 +3699,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3763,8 +3747,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3837,8 +3820,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3880,8 +3862,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3938,8 +3919,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4078,8 +4058,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4149,8 +4128,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4216,8 +4194,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4271,8 +4248,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4424,8 +4400,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4595,8 +4570,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4672,8 +4646,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4814,8 +4787,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4880,8 +4852,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5065,8 +5036,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5220,8 +5190,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5381,8 +5350,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5531,8 +5499,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5681,8 +5648,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5831,8 +5797,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5987,8 +5952,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6078,8 +6042,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6125,8 +6088,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6223,8 +6185,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6270,8 +6231,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6406,8 +6366,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6531,8 +6490,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6624,8 +6582,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6713,8 +6670,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -6863,8 +6819,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7013,8 +6968,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7163,8 +7117,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7313,8 +7266,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7469,8 +7421,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7541,8 +7492,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7613,8 +7563,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7748,8 +7697,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7806,8 +7754,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7874,8 +7821,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -7956,6 +7902,7 @@
+ echo "$as_me:$LINENO: checking for X" >&5
+ echo $ECHO_N "checking for X... $ECHO_C" >&6
+ 
++ac_path_x_has_been_run=yes
+ 
+ # Check whether --with-x or --without-x was given.
+ if test "${with_x+set}" = set; then
+@@ -8048,7 +7995,7 @@
+ /usr/openwin/share/include'
+ 
+ if test "$ac_x_includes" = no; then
+-  # Guess where to find include files, by looking for Intrinsic.h.
++  # Guess where to find include files, by looking for a specified header file.
+   # First, try using that file with no special directory specified.
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+@@ -8056,7 +8003,7 @@
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+-#include <X11/Intrinsic.h>
++#include <X11/Xlib.h>
+ _ACEOF
+ if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+@@ -8083,7 +8030,7 @@
+ sed 's/^/| /' conftest.$ac_ext >&5
+ 
+   for ac_dir in $ac_x_header_dirs; do
+-  if test -r "$ac_dir/X11/Intrinsic.h"; then
++  if test -r "$ac_dir/X11/Xlib.h"; then
+     ac_x_includes=$ac_dir
+     break
+   fi
+@@ -8097,18 +8044,18 @@
+   # See if we find them without any special options.
+   # Don't add to $LIBS permanently.
+   ac_save_LIBS=$LIBS
+-  LIBS="-lXt $LIBS"
++  LIBS="-lX11 $LIBS"
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+-#include <X11/Intrinsic.h>
++#include <X11/Xlib.h>
+ int
+ main ()
+ {
+-XtMalloc (0)
++XrmInitialize ()
+   ;
+   return 0;
+ }
+@@ -8122,8 +8069,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8147,7 +8093,7 @@
+ do
+   # Don't even attempt the hair of trying to link an X program!
+   for ac_extension in a so sl; do
+-    if test -r $ac_dir/libXt.$ac_extension; then
++    if test -r $ac_dir/libX11.$ac_extension; then
+       ac_x_libraries=$ac_dir
+       break 2
+     fi
+@@ -8183,8 +8129,12 @@
+   # Update the cache value to reflect the command line values.
+   ac_cv_have_x="have_x=yes \
+ 		ac_x_includes=$x_includes ac_x_libraries=$x_libraries"
+-  echo "$as_me:$LINENO: result: libraries $x_libraries, headers $x_includes" >&5
+-echo "${ECHO_T}libraries $x_libraries, headers $x_includes" >&6
++  # It might be that x_includes is empty (headers are found in the
++  # standard search path. Then output the corresponding message
++  ac_out_x_includes=$x_includes
++  test "x$x_includes" = x && ac_out_x_includes="in standard search path"
++  echo "$as_me:$LINENO: result: libraries $x_libraries, headers $ac_out_x_includes" >&5
++echo "${ECHO_T}libraries $x_libraries, headers $ac_out_x_includes" >&6
+ fi
+ 
+ if test -z "$no_x"; then
+@@ -8244,8 +8194,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8306,8 +8255,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8452,8 +8400,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8533,8 +8480,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8588,8 +8534,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8659,8 +8604,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8735,8 +8679,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8812,8 +8755,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8892,8 +8834,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -8972,6 +8913,12 @@
+   _linux_console="$_linux_console enabled"
+ fi
+ 
++# Check whether --enable-lgp2x or --disable-lgp2x was given.
++if test "${enable_lgp2x+set}" = set; then
++  enableval="$enable_lgp2x"
++  test "X$enableval" != "Xno" && allegro_enable_lgp2x=yes
++fi;
++
+ # Check whether --enable-vga or --disable-vga was given.
+ if test "${enable_vga+set}" = set; then
+   enableval="$enable_vga"
+@@ -9005,6 +8952,7 @@
+ fi;
+ 
+ ALLEGRO_MAYBE_LINUX_FILES=ALLEGRO_EMPTY_LIST
++ALLEGRO_MAYBE_GP2X_FILES=ALLEGRO_EMPTY_LIST
+ 
+ allegro_system=`uname -s | tr A-Z a-z`
+ case "$allegro_system" in
+@@ -9054,8 +9002,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9171,6 +9118,21 @@
+ done
+ 
+ 
++    if test "X$allegro_enable_lgp2x" = "Xyes"; then
++
++cat >>confdefs.h <<\_ACEOF
++#define ALLEGRO_LINUX_GP2X 1
++_ACEOF
++
++      CROSSCOMPILE=1
++
++	  ALLEGRO_MAYBE_GP2X_FILES=ALLEGRO_SRC_GP2X_FILES
++      _linux_console="$_linux_console, GP2X"
++      allegro_enable_vga=no
++      allegro_enable_vbeaf=no
++      allegro_enable_svgalib=no
++    fi
++
+     if test "X$allegro_cv_processor_type" = "Xi386" -a "X$allegro_enable_vga" = "Xyes"; then
+       allegro_support_vga=yes
+ 
+@@ -9226,8 +9188,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9358,8 +9319,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9429,8 +9389,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9575,8 +9534,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9632,8 +9590,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9694,6 +9651,7 @@
+ 
+ 
+ 
++
+ _do_pthread="no"
+ if test "X$allegro_enable_pthreads" = "Xyes"; then
+   if test "${ac_cv_header_pthread_h+set}" = set; then
+@@ -9726,8 +9684,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -9872,8 +9829,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10001,8 +9957,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10158,8 +10113,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10331,8 +10285,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10404,8 +10357,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10459,8 +10411,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10531,8 +10482,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10586,8 +10536,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10654,8 +10603,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10724,8 +10672,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10916,8 +10863,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -10977,8 +10923,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -11051,8 +10996,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -11116,8 +11060,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -11187,8 +11130,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -11293,8 +11235,7 @@
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -12137,7 +12078,9 @@
+ s,@ALLEGRO_MAYBE_LIB_X_EXE_SOURCES@,$ALLEGRO_MAYBE_LIB_X_EXE_SOURCES,;t t
+ s,@ALLEGRO_MAYBE_LIB_X_EXES@,$ALLEGRO_MAYBE_LIB_X_EXES,;t t
+ s,@ALLEGRO_XWINDOWS_LIBDIR@,$ALLEGRO_XWINDOWS_LIBDIR,;t t
++s,@CROSSCOMPILE@,$CROSSCOMPILE,;t t
+ s,@ALLEGRO_MAYBE_LINUX_FILES@,$ALLEGRO_MAYBE_LINUX_FILES,;t t
++s,@ALLEGRO_MAYBE_GP2X_FILES@,$ALLEGRO_MAYBE_GP2X_FILES,;t t
+ s,@PKG_CONFIG@,$PKG_CONFIG,;t t
+ s,@ALLEGRO_MODULE_TARGETS@,$ALLEGRO_MODULE_TARGETS,;t t
+ s,@AR@,$AR,;t t
+@@ -12318,11 +12261,6 @@
+   *) ac_INSTALL=$ac_top_builddir$INSTALL ;;
+   esac
+ 
+-  if test x"$ac_file" != x-; then
+-    { echo "$as_me:$LINENO: creating $ac_file" >&5
+-echo "$as_me: creating $ac_file" >&6;}
+-    rm -f "$ac_file"
+-  fi
+   # Let's still pretend it is `configure' which instantiates (i.e., don't
+   # use $as_me), people would be surprised to read:
+   #    /* config.h.  Generated by config.status.  */
+@@ -12361,6 +12299,12 @@
+ 	 fi;;
+       esac
+     done` || { (exit 1); exit 1; }
++
++  if test x"$ac_file" != x-; then
++    { echo "$as_me:$LINENO: creating $ac_file" >&5
++echo "$as_me: creating $ac_file" >&6;}
++    rm -f "$ac_file"
++  fi
+ _ACEOF
+ cat >>$CONFIG_STATUS <<_ACEOF
+   sed "$ac_vpsub
+diff -urN orig/allegro-4.2.0/configure.in allegro-4.2.0/configure.in
+--- orig/allegro-4.2.0/configure.in	2005-08-07 22:50:49.000000000 +0100
++++ allegro-4.2.0/configure.in	2005-12-20 20:42:20.000000000 +0000
+@@ -491,6 +491,11 @@
+   _linux_console="$_linux_console enabled"
+ fi
+ 
++dnl Enable GP2X support
++AC_ARG_ENABLE(lgp2x,
++[  --enable-lgp2x[=x]      enable Linux GP2X support [default=no]],
++test "X$enableval" != "Xno" && allegro_enable_lgp2x=yes)
++
+ dnl Enable Linux console VGA driver
+ AC_ARG_ENABLE(vga,
+ [  --enable-vga[=x]        enable VGA graphics driver [default=yes]],
+@@ -517,6 +522,7 @@
+ 
+ dnl Some miscellaneous defines.
+ ALLEGRO_MAYBE_LINUX_FILES=ALLEGRO_EMPTY_LIST
++ALLEGRO_MAYBE_GP2X_FILES=ALLEGRO_EMPTY_LIST
+ 
+ allegro_system=`uname -s | tr A-Z a-z`
+ case "$allegro_system" in
+@@ -528,6 +534,17 @@
+ 
+     AC_CHECK_HEADERS(sys/io.h linux/joystick.h linux/input.h)
+ 
++    if test "X$allegro_enable_lgp2x" = "Xyes"; then
++      AC_DEFINE(ALLEGRO_LINUX_GP2X,1,[Define to enable GP2X support.])
++      CROSSCOMPILE=1
++      AC_SUBST(CROSSCOMPILE)
++	  ALLEGRO_MAYBE_GP2X_FILES=ALLEGRO_SRC_GP2X_FILES
++      _linux_console="$_linux_console, GP2X"
++      allegro_enable_vga=no
++      allegro_enable_vbeaf=no
++      allegro_enable_svgalib=no
++    fi
++
+     if test "X$allegro_cv_processor_type" = "Xi386" -a "X$allegro_enable_vga" = "Xyes"; then
+       allegro_support_vga=yes
+       AC_DEFINE(ALLEGRO_LINUX_VGA,1,
+@@ -589,6 +606,7 @@
+ esac
+ 
+ AC_SUBST(ALLEGRO_MAYBE_LINUX_FILES)
++AC_SUBST(ALLEGRO_MAYBE_GP2X_FILES)
+ 
+ _do_pthread="no"
+ dnl Test for pthreads.
+diff -urN orig/allegro-4.2.0/demo/demo.gpe allegro-4.2.0/demo/demo.gpe
+--- orig/allegro-4.2.0/demo/demo.gpe	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/demo/demo.gpe	2005-12-20 18:48:03.000000000 +0000
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++rm -f demo.txt
++
++./demo
++
++mv allegro.log demo.txt
++
++# return to the menu screen
++cd /usr/gp2x
++exec /usr/gp2x/gp2xmenu
++
+diff -urN orig/allegro-4.2.0/demo/title.c allegro-4.2.0/demo/title.c
+--- orig/allegro-4.2.0/demo/title.c	2005-10-27 22:23:38.000000000 +0100
++++ allegro-4.2.0/demo/title.c	2005-12-22 22:46:50.000000000 +0000
+@@ -863,6 +863,8 @@
+       if ((readkey() & 0xff) == 27)
+          return FALSE;
+ 
++   if (joy[0].button[1].b) return FALSE;
++   
+    return TRUE;
+ }
+ 
+diff -urN orig/allegro-4.2.0/examples/exflip.c allegro-4.2.0/examples/exflip.c
+--- orig/allegro-4.2.0/examples/exflip.c	2005-02-13 22:13:27.000000000 +0000
++++ allegro-4.2.0/examples/exflip.c	2005-12-28 22:11:53.000000000 +0000
+@@ -16,7 +16,9 @@
+    BITMAP *page1, *page2;
+    BITMAP *active_page;
+    int c;
+-
++   int w = 320;
++   int h = 200;
++   
+    if (allegro_init() != 0)
+       return 1;
+    install_timer();
+@@ -33,13 +35,20 @@
+     * this. So we try two different mode sets, first asking for the 320x400
+     * size, and if that doesn't work, for 320x200.
+     */
+-   if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 400) != 0) {
+-      if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
+-	 if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
++
++try_again:
++   if (set_gfx_mode(GFX_AUTODETECT, w, h, 0, h*2) != 0) {
++      if (set_gfx_mode(GFX_AUTODETECT, w, h, 0, 0) != 0) {
++	 if (set_gfx_mode(GFX_SAFE, w, h, 0, 0) != 0) {
+ 	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+ 	    allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
+ 	    return 1;
+          }
++	 if (SCREEN_W != w || SCREEN_H != h) {
++	    w = SCREEN_W;
++	    h = SCREEN_H;
++	    goto try_again;
++	 }
+       }
+    }
+ 
+diff -urN orig/allegro-4.2.0/examples/exgui.c allegro-4.2.0/examples/exgui.c
+--- orig/allegro-4.2.0/examples/exgui.c	2005-07-10 22:08:45.000000000 +0100
++++ allegro-4.2.0/examples/exgui.c	2005-12-27 13:07:13.000000000 +0000
+@@ -302,6 +302,7 @@
+    if (allegro_init() != 0)
+       return 1;
+    install_keyboard(); 
++   install_joystick(JOY_TYPE_AUTODETECT);
+    install_mouse();
+    install_timer();
+ 
+diff -urN orig/allegro-4.2.0/examples/exjoy.c allegro-4.2.0/examples/exjoy.c
+--- orig/allegro-4.2.0/examples/exjoy.c	2005-02-13 22:13:27.000000000 +0000
++++ allegro-4.2.0/examples/exjoy.c	2005-12-22 23:10:15.000000000 +0000
+@@ -9,6 +9,22 @@
+ 
+ 
+ #include <allegro.h>
++#include <stdio.h>
++
++
++void wait_joy_button(int num, int state)
++{
++   int pressed = 0;
++   do {
++      int c;
++      pressed = 0;
++      poll_joystick();
++      for (c=0; c<joy[num].num_buttons; c++) {
++	 if (joy[num].button[c].b)
++	    pressed = 1;
++      }
++   } while (pressed != state);
++}
+ 
+ 
+ 
+@@ -23,42 +39,53 @@
+    if (allegro_init() != 0)/* you NEED this man! ;-) */
+       return 1;
+ 
++   allegro_message("testing allegro_message\n");
++   
+    install_keyboard();     /* ahh... read the docs. I will explain only
+ 			    * joystick specific routines
+ 			    */
+ 
++   TRACE("1\n");
++   
+    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
+       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
+-	 set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
++//	 set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+ 	 allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
++	 printf ("Unable to set any graphic mode: %s\n", allegro_error);
+ 	 return 1;
+       }
+    }
+ 
++   TRACE("2\n");
++   
+    set_palette(default_palette);
++   
++   TRACE("3\n");
++   
+    clear_bitmap(screen);
+-   textout_centre_ex(screen, font, "Please center the joystick", SCREEN_W/2,
+-		     SCREEN_H/2 - 36, palette_color[255], 0);
+-   textout_centre_ex(screen, font, "and press a key.", SCREEN_W/2,
+-		     SCREEN_H/2 - 20, palette_color[255], 0);
+-
+-   if ((readkey()&0xFF) == 27)
+-      return 0;
+ 
++   TRACE("4\n");
++   
+    /* the first thing is to initialise the joystick driver */
+    if (install_joystick(JOY_TYPE_AUTODETECT) != 0) {
+-      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
++	   TRACE("Error initialising joystick: %s\n", allegro_error);
++	 printf ("Error initialising joystick: %s\n", allegro_error);
++//      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+       allegro_message("Error initialising joystick\n%s\n", allegro_error);
+       return 1;
+    }
+ 
++   TRACE("5\n");
++   
+    /* make sure that we really do have a joystick */
+    if (!num_joysticks) {
+-      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
++//      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+       allegro_message("Error: joystick not found\n");
+       return 1;
+    }
+ 
++   TRACE("going into calibration stage\n");
++   
+    /* before using the joystick, we have to calibrate it. This loop only
+     * calibrates joystick number 0, but you could do the same thing for
+     * other sticks if they are present (the num_joysticks variable will 
+@@ -71,8 +98,8 @@
+       textout_centre_ex(screen, font, msg, SCREEN_W/2, 64, palette_color[255], 0);
+       textout_centre_ex(screen, font, "and press a key.", SCREEN_W/2, 80, palette_color[255], 0);
+ 
+-      if ((readkey()&0xFF) == 27)
+-	 return 0;
++      wait_joy_button(0,0);
++      wait_joy_button(0,1);
+ 
+       if (calibrate_joystick(0) != 0) {
+ 	 set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+@@ -223,7 +250,7 @@
+ 
+       blit(bmp, screen, 0, 0, SCREEN_W/2 - 160, SCREEN_H/2 - 100, 320, 200);
+ 
+-   } while (!keypressed());
++   } while (!keypressed() && !(joy[0].button[4].b && joy[0].button[5].b));
+ 
+    destroy_bitmap(bmp);
+ 
+diff -urN orig/allegro-4.2.0/examples/extimer.c allegro-4.2.0/examples/extimer.c
+--- orig/allegro-4.2.0/examples/extimer.c	2005-03-04 11:36:40.000000000 +0000
++++ allegro-4.2.0/examples/extimer.c	2005-12-21 20:04:12.000000000 +0000
+@@ -15,6 +15,53 @@
+ 
+ 
+ 
++void wait_joy_button(int num, int state)
++{
++   int pressed = 0;
++   do {
++      int c;
++      pressed = 0;
++      poll_joystick();
++      for (c=0; c<joy[num].num_buttons; c++) {
++	 if (joy[num].button[c].b)
++	    pressed = 1;
++      }
++   } while (pressed != state);
++}
++
++
++void readjoy()
++{
++	wait_joy_button(0,0);
++	wait_joy_button(0,1);
++}
++
++
++int joypressed()
++{
++	static int pressed = 0;
++	
++    poll_joystick();
++
++	int stick,button;
++	int pressed_now = 0;
++	for (stick = 0; stick < num_joysticks; ++stick) {
++		for (button = 0; button < joy[stick].num_buttons; ++button) {
++			if (joy[stick].button[button].b) {
++				pressed_now = 1;
++				break;
++			}
++		}
++		if (pressed_now) break;
++	}
++
++	int ret = (pressed_now && !pressed);
++	pressed = pressed_now;
++	return ret;
++}
++
++
++
+ /* these must be declared volatile so the optimiser doesn't mess up */
+ volatile int x = 0;
+ volatile int y = 0;
+@@ -60,6 +107,7 @@
+       return 1;
+    install_keyboard(); 
+    install_timer();
++   install_joystick(JOY_TYPE_AUTODETECT);
+ 
+    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
+       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
+@@ -89,7 +137,17 @@
+    textprintf_centre_ex(screen, font, SCREEN_W/2, 142, makecol(0, 0, 0),
+ 			makecol(255, 255, 255),
+ 			"Press a key to set up interrupts");
+-   readkey();
++
++   TRACE("waiting for joy button\n");
++   readjoy();
++   TRACE("got joy button\n");
++
++   if (joypressed()) {
++	   TRACE("waiting for joystick release...\n");
++	   while(joypressed());
++   }
++
++   TRACE("registering timers\n");
+ 
+    /* all variables and code used inside interrupt handlers must be locked */
+    LOCK_VARIABLE(x);
+@@ -108,11 +166,15 @@
+    /* or in seconds (this is 10 seconds a tick) */
+    install_int_ex(inc_z, SECS_TO_TIMER(10));
+ 
++   TRACE("polling timers\n");
++
+    /* the interrupts are now active... */
+-   while (!keypressed())
++   while (!joypressed())
+       textprintf_centre_ex(screen, font, SCREEN_W/2, 176, makecol(0, 0, 0),
+ 			   makecol(255, 255, 255), "x=%d, y=%d, z=%d", x, y, z);
+ 
++   TRACE("exiting\n");
++
+    return 0;
+ }
+ 
+diff -urN orig/allegro-4.2.0/include/allegro/internal/aintern.h allegro-4.2.0/include/allegro/internal/aintern.h
+--- orig/allegro-4.2.0/include/allegro/internal/aintern.h	2005-04-09 09:09:09.000000000 +0100
++++ allegro-4.2.0/include/allegro/internal/aintern.h	2005-12-29 23:40:37.000000000 +0000
+@@ -331,7 +331,7 @@
+ 
+ AL_VAR(int, _safe_gfx_mode_change);
+ 
+-#ifdef ALLEGRO_I386
++#if defined(ALLEGRO_I386) || defined(ALLEGRO_LINUX_GP2X)
+    #define BYTES_PER_PIXEL(bpp)     (((int)(bpp) + 7) / 8)
+ #else
+    #ifdef ALLEGRO_MPW 
+diff -urN orig/allegro-4.2.0/include/allegro/platform/alunixac.hin allegro-4.2.0/include/allegro/platform/alunixac.hin
+--- orig/allegro-4.2.0/include/allegro/platform/alunixac.hin	2005-10-30 20:23:33.000000000 +0000
++++ allegro-4.2.0/include/allegro/platform/alunixac.hin	2005-12-20 20:46:55.000000000 +0000
+@@ -39,6 +39,9 @@
+ /* Define to enable Linux console fbcon driver. */
+ #undef ALLEGRO_LINUX_FBCON
+ 
++/* Define to enable GP2X support. */
++#undef ALLEGRO_LINUX_GP2X
++
+ /* Define to enable Linux console SVGAlib driver. */
+ #undef ALLEGRO_LINUX_SVGALIB
+ 
+diff -urN orig/allegro-4.2.0/include/allegro/platform/alunix.h allegro-4.2.0/include/allegro/platform/alunix.h
+--- orig/allegro-4.2.0/include/allegro/platform/alunix.h	2005-09-04 17:00:07.000000000 +0100
++++ allegro-4.2.0/include/allegro/platform/alunix.h	2005-12-22 00:41:17.000000000 +0000
+@@ -269,4 +269,11 @@
+ #endif /* ALLEGRO_LINUX_VGA */
+ 
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++
++#define JOY_TYPE_GP2X            AL_ID('G','P','2','X')
++#define GFX_GP2X                 AL_ID('G','P','2','X')
++
++#endif
++
+ #endif /* ALLEGRO_LINUX */
+diff -urN orig/allegro-4.2.0/makefile.in allegro-4.2.0/makefile.in
+--- orig/allegro-4.2.0/makefile.in	2005-09-10 21:17:51.000000000 +0100
++++ allegro-4.2.0/makefile.in	2005-12-20 18:27:10.000000000 +0000
+@@ -12,6 +12,8 @@
+ 
+ SHELL = /bin/sh
+ 
++CROSSCOMPILE = @CROSSCOMPILE@
++
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ bindir = @bindir@
+@@ -138,7 +140,8 @@
+ 	$(ALLEGRO_SRC_UNIX_FILES) \
+ 	$(@ALLEGRO_MAYBE_ASM_FILES@) \
+ 	$(@ALLEGRO_MAYBE_XWINDOWS_FILES@) \
+-	$(@ALLEGRO_MAYBE_LINUX_FILES@)
++	$(@ALLEGRO_MAYBE_LINUX_FILES@) \
++	$(@ALLEGRO_MAYBE_GP2X_FILES@)
+ 
+ ALLEGRO_EXE_TARGETS = \
+ 	$(ALLEGRO_LIB_EXES) \
+diff -urN orig/allegro-4.2.0/makefile.lst allegro-4.2.0/makefile.lst
+--- orig/allegro-4.2.0/makefile.lst	2005-06-22 18:34:59.000000000 +0100
++++ allegro-4.2.0/makefile.lst	2005-12-22 00:37:52.000000000 +0000
+@@ -306,6 +306,11 @@
+ 	src/misc/modex.c \
+ 	src/misc/modexgfx.s
+ 
++ALLEGRO_SRC_GP2X_FILES = \
++	src/gp2x/gp2x.c \
++	src/gp2x/gp2x_joy.c \
++	src/gp2x/gp2x_gfx.c
++
+ ALLEGRO_SRC_UNIX_FILES = \
+ 	src/unix/alsa5.c \
+ 	src/unix/alsa9.c \
+diff -urN orig/allegro-4.2.0/setup/setup.c allegro-4.2.0/setup/setup.c
+--- orig/allegro-4.2.0/setup/setup.c	2005-02-03 23:23:38.000000000 +0000
++++ allegro-4.2.0/setup/setup.c	2005-12-28 14:17:55.000000000 +0000
+@@ -59,7 +59,7 @@
+ 
+ #ifndef SETUP_SCREEN_W
+    #define SETUP_SCREEN_W        320
+-   #define SETUP_SCREEN_H        200
++   #define SETUP_SCREEN_H        240
+ #endif
+ 
+ /* define if you want to use compiled datafiles */
+@@ -2842,6 +2842,7 @@
+    install_mouse();
+    install_keyboard();
+    install_timer();
++	 install_joystick(JOY_TYPE_AUTODETECT);
+ 
+    fade_out(4);
+    if (set_gfx_mode(GFX_AUTODETECT, SETUP_SCREEN_W, SETUP_SCREEN_H, 0, 0) != 0) {
+diff -urN orig/allegro-4.2.0/setup/setup.gpe allegro-4.2.0/setup/setup.gpe
+--- orig/allegro-4.2.0/setup/setup.gpe	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/setup/setup.gpe	2005-12-28 02:28:32.000000000 +0000
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++rm -f setup.txt
++
++./setup
++
++mv allegro.log setup.txt
++
++# return to the menu screen
++cd /usr/gp2x
++exec /usr/gp2x/gp2xmenu
++
+diff -urN orig/allegro-4.2.0/src/file.c allegro-4.2.0/src/file.c
+--- orig/allegro-4.2.0/src/file.c	2005-09-25 00:33:48.000000000 +0100
++++ allegro-4.2.0/src/file.c	2005-12-20 18:41:57.000000000 +0000
+@@ -167,7 +167,7 @@
+ 
+    #endif
+ 
+-   #ifdef ALLEGRO_UNIX
++   #if defined(ALLEGRO_UNIX) && !defined(ALLEGRO_LINUX_GP2X)
+ 
+       /* if the filename starts with ~ then it's relative to a home directory */
+       if ((ugetc(filename) == '~')) {
+@@ -234,7 +234,7 @@
+ 	 }
+       }
+ 
+-   #endif   /* Unix */
++   #endif   /* Unix but not GP2X */
+ 
+    /* if the filename is relative, make it absolute */
+    if ((ugetc(filename) != '/') && (ugetc(filename) != OTHER_PATH_SEPARATOR) && (ugetc(filename) != '#')) {
+diff -urN orig/allegro-4.2.0/src/gp2x/gp2x.c allegro-4.2.0/src/gp2x/gp2x.c
+--- orig/allegro-4.2.0/src/gp2x/gp2x.c	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/src/gp2x/gp2x.c	2005-12-28 18:28:36.000000000 +0000
+@@ -0,0 +1,63 @@
++
++#include <allegro.h>
++#include <allegro/platform/aintlnx.h>
++#include <sys/mman.h>
++
++#include "gp2x.h"
++
++
++int __allegro_linux_gpio_base = 0;
++int __allegro_linux_mmsp2_blit_base = 0;
++
++
++static struct MAPPED_MEMORY gpio;
++static struct MAPPED_MEMORY mmsp2_blit;
++
++
++int __allegro_linux_gp2x_init()
++{
++	gpio.base = 0xc0000000;
++	gpio.size = 0x10000;
++	gpio.perms = PROT_READ|PROT_WRITE;
++
++	if (__al_linux_map_memory(&gpio)) {
++		TRACE("gp2x.c: failed to map GPIO region\n");
++		ustrcpy(allegro_error, "gp2x.c: failed to map GPIO region");
++		return 1;
++	}
++
++	__allegro_linux_gpio_base = (int)gpio.data;
++
++        
++	mmsp2_blit.base = 0xe0020000;
++	mmsp2_blit.size = 0x100;
++	mmsp2_blit.perms = PROT_READ|PROT_WRITE;
++	
++	if (__al_linux_map_memory(&mmsp2_blit)) {
++		TRACE("gp2x.c: failed to map MMSP2 blit registers\n");
++		ustrcpy(allegro_error, "gp2x.c: failed to map MMSP2 blit registers");
++		__al_linux_unmap_memory(&gpio);
++		return 2;
++	}
++
++	__allegro_linux_mmsp2_blit_base = (int)mmsp2_blit.data;
++
++	return 0;
++}
++
++
++int __allegro_linux_gp2x_exit()
++{
++	__al_linux_unmap_memory(&gpio);
++	__al_linux_unmap_memory(&mmsp2_blit);
++	
++	return 0;
++}
++
++
++
++unsigned short *__allegro_linux_gp2x_gpio_16(int offset)
++{
++	return (unsigned short *)((char *)gpio.data + offset);
++}
++
+diff -urN orig/allegro-4.2.0/src/gp2x/gp2x_gfx.c allegro-4.2.0/src/gp2x/gp2x_gfx.c
+--- orig/allegro-4.2.0/src/gp2x/gp2x_gfx.c	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/src/gp2x/gp2x_gfx.c	2005-12-30 13:34:37.000000000 +0000
+@@ -0,0 +1,723 @@
++/*         ______   ___    ___ 
++ *        /\  _  \ /\_ \  /\_ \ 
++ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
++ *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
++ *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
++ *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
++ *            \/_/\/_/\/____/\/____/\/____/\/___L\ \/_/ \/___/
++ *                                           /\____/
++ *                                           \_/__/
++ *
++ *      Video driver for the GP2X.
++ *
++ *      By George Foot.
++ *
++ *      Based on research from the gp2x community, partilucarly rlyeh and paeryn.
++ *      
++ *      See readme.txt for copyright information.
++ */
++
++
++#include "allegro.h"
++#include "allegro/internal/aintern.h"
++#include "allegro/platform/aintunix.h"
++
++#ifdef ALLEGRO_LINUX_GP2X
++
++#include "gp2x.h"
++#include "mmsp2_regs.h"
++
++#include <stdio.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <linux/fb.h>
++#include <sys/mman.h>
++
++
++static char gp2x_gfx_desc[256] = EMPTY_STRING;     /* description string */
++
++static int fbfd[2];                             /* file descriptors */
++static struct fb_fix_screeninfo fbfixinfo[2];   /* fbdev fixed screen info */
++static void *fbaddr[2];                         /* frame buffer addresses */
++
++
++extern GFX_DRIVER gfx_gp2x;
++
++static PALETTE palette;
++
++static struct MAPPED_MEMORY gp2x_vidmem;
++
++/* information about the mode we've set */
++static int gp2x_gfx_w;
++static int gp2x_gfx_h;
++static int gp2x_gfx_vw;
++static int gp2x_gfx_vh;
++static int gp2x_gfx_depth;
++
++/* original software drawing functions */
++static void (*orig_vline)(BITMAP *bmp, int x, int y1, int y2, int color);
++static void (*orig_hline)(BITMAP *bmp, int x1, int y, int x2, int color);
++static void (*orig_line)(BITMAP *bmp, int x1, int y1, int x2, int y2, int color);
++static void (*orig_rectfill)(BITMAP *bmp, int x1, int y1, int x2, int y2, int color);
++static void (*orig_draw_glyph)(BITMAP *bmp, AL_CONST FONT_GLYPH *glyph, int x, int y, int color, int bg);
++static void (*orig_draw_sprite)(BITMAP *bmp, BITMAP *sprite, int x, int y);
++static void (*orig_masked_blit)(BITMAP *source, BITMAP *dest, int source_x, int source_y, int dest_x, int dest_y, int width, int height);
++
++
++
++
++static inline void mmsp2_waitfifo(void)
++{
++   while (mmsp2_blit_getl(MESGFIFOSTATUS) & MESG_FULL);
++}
++
++static inline void mmsp2_waitidle(void)
++{
++   while (mmsp2_blit_getl(MESGSTATUS) & MESG_BUSY);
++}
++
++// dummy blit to force MMSP2's blitter to flush it's cache
++static void dummy_blit(void)
++{
++   mmsp2_waitidle();
++   mmsp2_blit_putl (MESGDSTCTRL, MESG_DSTBPP_16 | MESG_DSTENB);
++   mmsp2_blit_putl (MESGDSTADDR, 0x3101000);
++   mmsp2_blit_putl (MESGSRCCTRL, MESG_INVIDEO);
++   mmsp2_blit_putl (MESGPATCTRL, 0);
++   mmsp2_blit_putl (MESGSIZE, (1 << MESG_HEIGHT) | 8);
++   mmsp2_blit_putl (MESGCTRL, (MESG_XDIR_POS) | (MESG_YDIR_POS) | 0xaa | MESG_FFCLR);
++   mmsp2_blit_putl (MESGSTATUS, 1);
++   mmsp2_waitidle();
++}
++
++
++/* post-clip worker function for accelerated region filling */
++static void gp2x_gfx_rectfill_worker(BITMAP *bmp, int x1, int y1, int x2, int y2, int color)
++{
++   int dstctrl, dest, stride;
++
++   switch (gp2x_gfx_depth) {
++      case 8:
++         dstctrl = MESG_DSTBPP_8 | ((x1 & 3) << 3);
++	 dest = 0x03101000 + ((int)bmp->line[y1] - (int)gp2x_vidmem.data) + x1;
++	 stride = gp2x_gfx_vw;
++	 break;
++      case 15:
++      case 16:
++         dstctrl = MESG_DSTBPP_16 | ((x1 & 1) << 4);
++	 dest = 0x03101000 + ((int)bmp->line[y1] - (int)gp2x_vidmem.data) + x1*2;
++	 stride = gp2x_gfx_vw*2;
++	 break;
++      default:
++	 TRACE("gp2x_gfx_rectfill_worker: unsupported color depth\n");
++	 return;
++   }
++
++   mmsp2_waitidle();
++   mmsp2_blit_putl(MESGDSTCTRL, dstctrl);
++   mmsp2_blit_putl(MESGDSTADDR, dest & 0xfffffffc);
++   mmsp2_blit_putl(MESGDSTSTRIDE, stride);
++   mmsp2_blit_putl(MESGPATCTRL, MESG_PATENB | MESG_PATBPP_1);
++   mmsp2_blit_putl(MESGFORCOLOR, color);
++   mmsp2_blit_putl(MESGBACKCOLOR, color);
++   mmsp2_blit_putl(MESGSIZE, ((y2-y1+1) << MESG_HEIGHT) | (x2-x1+1));
++   mmsp2_blit_putl(MESGCTRL, (MESG_XDIR_POS) | (MESG_YDIR_POS) | 0xf0);
++
++   // Wait for blitter to be free, then start it.
++   mmsp2_waitidle();
++   mmsp2_blit_putl(MESGSTATUS, 0x01);
++
++   // Wait for it to finish
++   mmsp2_waitidle();
++   dummy_blit();
++}
++
++/* accelerated horizontal line drawing */
++static void gp2x_gfx_hline(BITMAP *bmp, int x1, int y, int x2, int color)
++{
++   if (x2 < x1) {
++      int tmp = x1;
++      x1 = x2;
++      x2 = tmp;
++   }
++
++   if (bmp->clip) {
++      if ((y < bmp->ct) || (y >= bmp->cb))
++	 return;
++
++      if (x1 < bmp->cl)
++	 x1 = bmp->cl;
++
++      if (x2 >= bmp->cr)
++	 x2 = bmp->cr-1;
++
++      if (x2 < x1)
++	 return;
++   }
++
++   gp2x_gfx_rectfill_worker(bmp, x1, y, x2, y, color);
++}
++
++
++
++/* accelerated vertical line drawing */
++static void gp2x_gfx_vline(BITMAP *bmp, int x, int y1, int y2, int color)
++{
++   if (y2 < y1) {
++      int tmp = y1;
++      y1 = y2;
++      y2 = tmp;
++   }
++
++   if (bmp->clip) {
++      if ((x < bmp->cl) || (x >= bmp->cr))
++	 return;
++
++      if (y1 < bmp->ct)
++	 y1 = bmp->ct;
++
++      if (y2 >= bmp->cb)
++	 y2 = bmp->cb-1;
++
++      if (y2 < y1)
++	 return;
++   }
++
++   gp2x_gfx_rectfill_worker(bmp, x, y1, x, y2, color);
++}
++
++
++
++/* accelerated rectangle filling */
++static void gp2x_gfx_rectfill(BITMAP *bmp, int x1, int y1, int x2, int y2, int color)
++{
++   if (x2 < x1) {
++      int tmp = x1;
++      x1 = x2;
++      x2 = tmp;
++   }
++
++   if (y2 < y1) {
++      int tmp = y1;
++      y1 = y2;
++      y2 = tmp;
++   }
++
++   if (bmp->clip) {
++      if (x1 < bmp->cl)
++	 x1 = bmp->cl;
++
++      if (x2 >= bmp->cr)
++	 x2 = bmp->cr-1;
++
++      if (x2 < x1)
++	 return;
++
++      if (y1 < bmp->ct)
++	 y1 = bmp->ct;
++
++      if (y2 >= bmp->cb)
++	 y2 = bmp->cb-1;
++
++      if (y2 < y1)
++	 return;
++   }
++
++   gp2x_gfx_rectfill_worker(bmp, x1, y1, x2, y2, color);
++}
++
++
++
++/* worker for masked/unmasked blit-to-self routines */
++static void gp2x_gfx_blit_to_self_worker(BITMAP *source, BITMAP *dest, int source_x, int source_y, int dest_x, int dest_y, int width, int height, int masked)
++{
++   int control = 0;
++   int srcctrl,dstctrl;
++
++   int bytes_per_pixel = BYTES_PER_PIXEL(gp2x_gfx_depth);
++   
++   int src_stride = (int)source->line[1] - (int)source->line[0];
++   int dest_stride = (int)dest->line[1] - (int)dest->line[0];
++   
++   int src_addr = 0x03101000 + ((int)source->line[source_y] - (int)gp2x_vidmem.data) + bytes_per_pixel * source_x;
++   int dest_addr = 0x03101000 + ((int)dest->line[dest_y] - (int)gp2x_vidmem.data) + bytes_per_pixel * dest_x;
++
++   // set ROP
++   control |= 0xcc;
++
++   // set colorkey
++   if (masked) {
++      control |= MESG_TRANSPEN | (source->vtable->mask_color << MESG_TRANSPCOLOR);
++   }
++
++   // clear FIFO
++   control |= MESG_FFCLR;
++
++   // set direction
++   if (src_addr > dest_addr) {
++      control |= MESG_XDIR_POS | MESG_YDIR_POS;
++   } else {
++      source_x += width-1;
++      dest_x += width-1;
++      src_addr += (width-1) * bytes_per_pixel + (height-1) * src_stride;
++      dest_addr += (width-1) * bytes_per_pixel + (height-1) * dest_stride;
++      src_stride = -src_stride;
++      dest_stride = -dest_stride;
++   }
++
++   if (gp2x_gfx_depth == 8) {
++      srcctrl = MESG_SRCBPP_8 | ((src_addr & 3) << 3);
++      dstctrl = MESG_DSTBPP_8 | ((dest_addr & 3) << 3);
++   } else {
++      srcctrl = MESG_SRCBPP_16 | ((src_addr & 3) << 3);
++      dstctrl = MESG_DSTBPP_16 | ((dest_addr & 3) << 3);
++   }
++
++   // go
++   mmsp2_waitidle();
++   mmsp2_blit_putl(MESGDSTCTRL, dstctrl);
++   mmsp2_blit_putl(MESGDSTADDR, dest_addr & 0xfffffffc);
++   mmsp2_blit_putl(MESGDSTSTRIDE, dest_stride);
++   mmsp2_blit_putl(MESGSRCCTRL, MESG_SRCENB | MESG_INVIDEO | srcctrl);
++   mmsp2_blit_putl(MESGSRCADDR, src_addr & 0xfffffffc);
++   mmsp2_blit_putl(MESGSRCSTRIDE, src_stride);
++   mmsp2_blit_putl(MESGPATCTRL, 0);
++   mmsp2_blit_putl(MESGSIZE, (height << MESG_HEIGHT) | width);
++   mmsp2_blit_putl(MESGCTRL, control);
++
++   // Wait for blitter to be free, then start it.
++   mmsp2_waitidle();
++   mmsp2_blit_putl(MESGSTATUS, 0x01);
++
++   // Wait for it to finish
++   mmsp2_waitidle();
++   dummy_blit();
++}
++
++
++
++/* blit-to-self */
++static void gp2x_gfx_blit_to_self(BITMAP *source, BITMAP *dest, int source_x, int source_y, int dest_x, int dest_y, int width, int height)
++{
++   gp2x_gfx_blit_to_self_worker(source, dest, source_x, source_y, dest_x, dest_y, width, height, 0);
++}
++
++
++
++/* masked blit */
++static void gp2x_gfx_masked_blit(BITMAP *source, BITMAP *dest, int source_x, int source_y, int dest_x, int dest_y, int width, int height)
++{
++   if (source->vtable == &_screen_vtable) {
++      gp2x_gfx_blit_to_self_worker(source, dest, source_x, source_y, dest_x, dest_y, width, height, 1);
++   } else {
++      orig_masked_blit(source, dest, source_x, source_y, dest_x, dest_y, width, height);
++   }
++}
++
++
++
++/* draw sprite */
++static void gp2x_gfx_draw_sprite(BITMAP *bmp, BITMAP *sprite, int x, int y)
++{
++   if (sprite->vtable == &_screen_vtable) {
++
++      /* this sprite can be drawn in hardware */
++      int sx = 0;
++      int sy = 0;
++      int w = sprite->w;
++      int h = sprite->h;
++
++      if (bmp->clip) {
++	 if (x < bmp->cl) {
++	    sx += bmp->cl-x;
++	    w -= bmp->cl-x;
++	    x = bmp->cl;
++	 }
++
++	 if (x+w > bmp->cr)
++	    w = bmp->cr-x;
++
++	 if (w <= 0)
++	    return;
++
++	 if (y < bmp->ct) {
++	    sy += bmp->ct-y;
++	    h -= bmp->ct-y;
++	    y = bmp->ct;
++	 }
++
++	 if (y+h > bmp->cb)
++	    h = bmp->cb-y;
++
++	 if (h <= 0)
++	    return;
++      }
++      
++      gp2x_gfx_blit_to_self_worker(sprite, bmp, sx, sy, x, y, w, h, 1);
++   }
++   else {
++      /* have to use the original software version */
++      orig_draw_sprite(bmp, sprite, x, y);
++   }
++}
++
++
++
++static void gp2x_gfx_clear_to_color(BITMAP *bitmap, int color)
++{
++   gp2x_gfx_rectfill_worker(bitmap, 0, 0, bitmap->w-1, bitmap->h-1, color);
++}
++
++
++
++/* open and mmap a framebuffer device */
++int gp2x_gfx_openfb (int fbid)
++{
++   static char path[] = "/dev/fb0";
++   path[7] = '0' + fbid;
++	
++   fbfd[fbid] = open(path, O_RDWR);
++   if (fbfd[fbid] == -1) {
++      usprintf (allegro_error, "GP2X gfx driver failed to open %s", path);
++      TRACE("%s\n", allegro_error);
++      return -1;
++   }
++	
++   if (ioctl(fbfd[fbid], FBIOGET_FSCREENINFO, &fbfixinfo[fbid]) != 0) {
++      close(fbfd[fbid]);
++      usprintf (allegro_error, "GP2X gfx driver failed to get fixed screen info on %s", path);
++      TRACE("%s\n", allegro_error);
++      return -1;
++   }
++
++   fbaddr[fbid] = mmap (0, fbfixinfo[fbid].smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd[fbid], 0);
++   if (fbaddr[fbid] == MAP_FAILED) {
++      close(fbfd[fbid]);
++      usprintf (allegro_error, "GP2X gfx driver failed to mmap %s", path);
++      TRACE("%s\n", allegro_error);
++      return -1;
++   }
++   return 0;
++}
++
++/* munmap and close a framebuffer device */
++void gp2x_gfx_closefb (int fbid)
++{
++   munmap(fbaddr[fbid], fbfixinfo[fbid].smem_len);
++   close(fbfd[fbid]);
++}
++
++
++/* gp2x_gfx_vsync:
++ *  Waits for a retrace.
++ */
++static void gp2x_gfx_vsync(void)
++{
++   while (!(gp2x_gpio_gets(0x1182) & 0x10));
++   while (gp2x_gpio_gets(0x1182) & 0x10);
++}
++
++
++
++/* gp2x_gfx_set_palette:
++ *  Sets the palette.
++ */
++static void gp2x_gfx_set_palette(AL_CONST RGB *p, int from, int to, int vsync)
++{
++   int i;
++
++   memcpy (palette+from, p+from, (to-from+1) * sizeof(RGB));
++
++   if (vsync) gp2x_gfx_vsync();
++	
++   gp2x_gpio_puts (0x2958, 0);
++#define UPSCALE(val) ((val)<<2 | (val)>>4)	
++   for (i = 0; i < 256; ++i) {
++      long color = (UPSCALE(palette[i].r) << 16) | (UPSCALE(palette[i].g) << 8) | (UPSCALE(palette[i].b));
++      gp2x_gpio_putl (0x295a, color);
++   }
++#undef UPSCALE
++}
++
++
++
++/* gp2x_gfx_scroll:
++ *  Scrolls the screen.
++ */
++static int gp2x_gfx_scroll(int x, int y)
++{
++   int addr;
++
++   if (x > gp2x_gfx_vw - gp2x_gfx_w) x = gp2x_gfx_vw - gp2x_gfx_w;
++   if (y > gp2x_gfx_vh - gp2x_gfx_h) y = gp2x_gfx_vh - gp2x_gfx_h;
++	
++   addr = 0x03101000 + (y * gp2x_gfx_vw + x) * BYTES_PER_PIXEL(gp2x_gfx_depth); 
++   addr &= ~3; // round down to nearest 32-bit aligned value
++
++   if (_wait_for_vsync) gp2x_gfx_vsync();
++
++   gp2x_gpio_puts (0x290e,addr & 0xffff);
++   gp2x_gpio_puts (0x2910,addr >> 16);
++   gp2x_gpio_puts (0x2912,addr & 0xffff);
++   gp2x_gpio_puts (0x2914,addr >> 16);
++
++   return 0;
++}
++
++
++
++/* gp2x_gfx_init:
++ *  Sets a graphics mode.
++ */
++static BITMAP *gp2x_gfx_init(int w, int h, int v_w, int v_h, int color_depth)
++{
++   /* C's scoping rules suck sometimes */
++   BITMAP *b;
++   int stride;
++
++   allegro_error[0] = '\0';
++
++   TRACE("gp2x_gfx_init(%d,%d, %d,%d, %d)\n", w, h, v_w, v_h, color_depth);
++	
++   if (_safe_gfx_mode_change) {
++      if (color_depth != 8 && color_depth != 16) {
++	 color_depth = 8;
++	 set_color_depth (color_depth);
++      }
++      if (w != 320) w = 320;
++      if (h != 240) h = 240;
++      if (v_w > 320) v_w = 320;
++      if (v_h > 240) v_h = 240;
++   }
++
++   if (color_depth != 8 && color_depth != 16) {
++      ustrcpy(allegro_error, "GP2X only supports 8bpp or 16bpp");
++      TRACE("%s\n", allegro_error);
++      return NULL;
++   }
++
++   if (w != 320 || h != 240) {
++      ustrcpy(allegro_error, "GP2X only supports 320x240");
++      TRACE("%s\n", allegro_error);
++      return NULL;
++   }
++
++   if (v_w * v_h * BYTES_PER_PIXEL(color_depth) > 0x500000) {
++      ustrcpy(allegro_error, "Insufficient video memory");
++      TRACE("%s\n", allegro_error);
++      return NULL;
++   }
++
++   if (v_w < w) v_w = w;
++   if (v_h < h) v_h = h;
++
++
++   if (gp2x_gfx_openfb(0)) return NULL;
++   if (gp2x_gfx_openfb(1)) {
++      gp2x_gfx_closefb(0);
++      return NULL;
++   }
++
++   /* Actually we're going to forget all that stuff, and just map a 5Mb region
++    * from 0x03101000, which is the base address for fb0.  paeryn suggested 
++    * this based on what he did in SDL. */
++   gp2x_vidmem.base = 0x03101000;
++   gp2x_vidmem.size = 0x00500000;
++   gp2x_vidmem.perms = PROT_READ|PROT_WRITE;
++   if (__al_linux_map_memory (&gp2x_vidmem)) {
++      TRACE("gp2x_gfx.c: failed to map video memory\n");
++      ustrcpy(allegro_error, "gp2x.c: failed to map video memory");
++      gp2x_gfx_closefb(0);
++      gp2x_gfx_closefb(1);
++      return NULL;
++   }
++
++   /* store info */
++   gp2x_gfx_w = w;
++   gp2x_gfx_h = h;
++   gp2x_gfx_vw = v_w;
++   gp2x_gfx_vh = v_h;
++   gp2x_gfx_depth = color_depth;
++
++   /* set driver parameters */
++   gfx_gp2x.w = w;
++   gfx_gp2x.h = h;
++   gfx_gp2x.vid_mem = 0x500000;
++	
++   /* derived data */
++   stride = v_w * BYTES_PER_PIXEL(color_depth);
++	
++   /* create the screen bitmap */
++   b = _make_bitmap(v_w, v_h, (unsigned long)gp2x_vidmem.data, &gfx_gp2x, color_depth, stride);
++   if (!b) {
++      gp2x_gfx_closefb(0);
++      gp2x_gfx_closefb(1);
++      TRACE("gp2x-gfx: Couldn't make bitmap `b', sorry.\n");
++      if (!allegro_error[0])
++	 ustrcpy(allegro_error, "Unable to create screen bitmap\n");
++      return NULL;
++   }
++	
++   /* set a black palette and clear the framebuffer */
++   gp2x_gfx_set_palette(black_palette, 0, 255, 0);
++   bzero (gp2x_vidmem.data, gp2x_vidmem.size);
++	
++   /* set the mode */
++   gp2x_gpio_puts(0x28DA, (BYTES_PER_PIXEL(color_depth)<<9) | 0xAB);
++   gp2x_gpio_puts(0x290C, stride);
++
++   /* set the default palette - though I think Allegro does this anyway */
++   gp2x_gfx_set_palette(default_palette, 0, 255, 0);
++
++   b->vtable->acquire = __al_linux_acquire_bitmap;
++   b->vtable->release = __al_linux_release_bitmap;
++
++   /* Set up unicode description string */
++   ustrcpy(gp2x_gfx_desc, "GP2X/MMSP2 graphics");
++   gfx_gp2x.desc = gp2x_gfx_desc;
++
++   /* set up the truecolor pixel format */
++   switch (color_depth) {
++
++         #ifdef ALLEGRO_COLOR16
++
++	 case 15:
++	    _rgb_r_shift_15 = 11; 
++	    _rgb_g_shift_15 = 6;
++	    _rgb_b_shift_15 = 0;
++	    break;
++
++	 case 16:
++	    _rgb_r_shift_16 = 11; 
++	    _rgb_g_shift_16 = 5;
++	    _rgb_b_shift_16 = 0;
++	    break;
++
++         #endif
++   }
++
++   /* save original drawing routines */
++   orig_vline = _screen_vtable.vline;
++   orig_hline = _screen_vtable.hline;
++   orig_line = _screen_vtable.line;
++   orig_rectfill = _screen_vtable.rectfill;
++   orig_draw_glyph = _screen_vtable.draw_glyph;
++   orig_draw_sprite = _screen_vtable.draw_sprite;
++   orig_masked_blit = _screen_vtable.masked_blit;
++   
++   /* set up accelerated routines */
++   _screen_vtable.hline = gp2x_gfx_hline;
++   _screen_vtable.vline = gp2x_gfx_vline;
++   _screen_vtable.rectfill = gp2x_gfx_rectfill;
++   _screen_vtable.blit_to_self = gp2x_gfx_blit_to_self;
++   _screen_vtable.blit_to_self_forward = gp2x_gfx_blit_to_self;
++   _screen_vtable.blit_to_self_backward = gp2x_gfx_blit_to_self;
++   _screen_vtable.masked_blit = gp2x_gfx_masked_blit;
++   _screen_vtable.draw_sprite = gp2x_gfx_draw_sprite;
++
++   if (_screen_vtable.draw_256_sprite == orig_draw_sprite)
++      _screen_vtable.draw_256_sprite = gp2x_gfx_draw_sprite;
++
++   _screen_vtable.clear_to_color = gp2x_gfx_clear_to_color;
++
++   gfx_capabilities |= GFX_HW_HLINE | GFX_HW_FILL | GFX_HW_VRAM_BLIT | GFX_HW_VRAM_BLIT_MASKED;
++
++   gp2x_gpio_puts(SYSCLKENREG, gp2x_gpio_gets(SYSCLKENREG) | FASTIOCLK);
++   gp2x_gpio_puts(VCLKENREG, 0xffff);
++	
++   return b;
++}
++
++
++
++
++/* gp2x_gfx_exit:
++ *  Unsets the video mode.
++ */
++static void gp2x_gfx_exit(BITMAP *b)
++{
++   // make everything black to avoid switching artifacts
++   gp2x_gfx_set_palette(black_palette, 0, 255, 0);
++   bzero (gp2x_vidmem.data, gp2x_vidmem.size);
++	
++   __al_linux_unmap_memory(&gp2x_vidmem);
++	
++   gp2x_gfx_closefb(0);
++   gp2x_gfx_closefb(1);
++	
++   /* reset video mode */
++   gp2x_gpio_puts(0x28DA, 0x4AB);
++   gp2x_gpio_puts(0x290C, 640);
++	
++   gp2x_gpio_puts(SYSCLKENREG, gp2x_gpio_gets(SYSCLKENREG) & ~FASTIOCLK);
++}
++
++
++
++/* get list of supported modes */
++static GFX_MODE_LIST *gp2x_gfx_fetch_mode_list(void)
++{
++   GFX_MODE_LIST *gfx_mode_list;
++
++   gfx_mode_list = malloc(sizeof(GFX_MODE_LIST));
++   if (!gfx_mode_list) {
++      return NULL;
++   }
++   gfx_mode_list->num_modes = 2;
++   gfx_mode_list->mode = malloc(3*sizeof(GFX_MODE));
++   if (!gfx_mode_list->mode) {
++      free(gfx_mode_list);
++      return NULL;
++   }
++
++   gfx_mode_list->mode[0].width = 320;
++   gfx_mode_list->mode[0].height = 240;
++   gfx_mode_list->mode[0].bpp = 8;
++
++   gfx_mode_list->mode[1].width = 320;
++   gfx_mode_list->mode[1].height = 240;
++   gfx_mode_list->mode[1].bpp = 16;
++   
++   gfx_mode_list->mode[2].width = 0;
++   gfx_mode_list->mode[2].height = 0;
++   gfx_mode_list->mode[2].bpp = 0;
++   
++   return gfx_mode_list;
++}
++
++
++
++GFX_DRIVER gfx_gp2x = 
++{
++   GFX_GP2X,
++   empty_string,
++   empty_string,
++   "GP2X", 
++   gp2x_gfx_init,
++   gp2x_gfx_exit,
++   gp2x_gfx_scroll,
++   gp2x_gfx_vsync,
++   gp2x_gfx_set_palette,
++   NULL, NULL, NULL,             /* no triple buffering */
++   NULL, NULL, NULL, NULL,       /* no video bitmaps */
++   NULL, NULL,                   /* no system bitmaps */
++   NULL, NULL, NULL, NULL,       /* no hardware cursor */
++   NULL,                         /* no drawing mode hook */
++   NULL, //gp2x_gfx_save,
++   NULL, //gp2x_gfx_restore,
++   NULL,    // AL_METHOD(void, set_blender_mode, (int mode, int r, int g, int b, int a));
++   gp2x_gfx_fetch_mode_list,
++   0, 0,
++   TRUE,
++   0, 0, 0, 0, FALSE
++};
++
++
++_DRIVER_INFO __allegro_linux_gp2x_graphics_driver_list[] =
++{
++   {  GFX_GP2X,     &gfx_gp2x,     TRUE  },
++   {  0,            NULL,          0     }
++};
++
++#endif
++
+diff -urN orig/allegro-4.2.0/src/gp2x/gp2x.h allegro-4.2.0/src/gp2x/gp2x.h
+--- orig/allegro-4.2.0/src/gp2x/gp2x.h	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/src/gp2x/gp2x.h	2005-12-28 18:30:42.000000000 +0000
+@@ -0,0 +1,28 @@
++#ifndef __ALLEGRO_GP2X_H__
++#define __ALLEGRO_GP2X_H__
++
++int __allegro_linux_gp2x_init();
++int __allegro_linux_gp2x_exit();
++unsigned short *__allegro_linux_gp2x_gpio_16(int offset);
++
++extern _DRIVER_INFO __allegro_linux_gp2x_joystick_driver_list[];
++extern _DRIVER_INFO __allegro_linux_gp2x_graphics_driver_list[];
++
++
++extern int __allegro_linux_gpio_base;
++
++#define gp2x_gpio_gets(addr) (*(unsigned short volatile *)(__allegro_linux_gpio_base+(addr)))
++#define gp2x_gpio_getl(addr) (*(unsigned long volatile *)(__allegro_linux_gpio_base+(addr)))
++
++#define gp2x_gpio_puts(addr,value) (*(unsigned short volatile *)(__allegro_linux_gpio_base+(addr)) = (value))
++#define gp2x_gpio_putl(addr,value) (*(unsigned long volatile *)(__allegro_linux_gpio_base+(addr)) = (value))
++
++
++extern int __allegro_linux_mmsp2_blit_base;
++
++#define mmsp2_blit_getl(addr) (*(unsigned long volatile *)(__allegro_linux_mmsp2_blit_base+(addr)))
++#define mmsp2_blit_putl(addr,value) (*(unsigned long volatile *)(__allegro_linux_mmsp2_blit_base+(addr)) = (value))
++
++
++#endif
++
+diff -urN orig/allegro-4.2.0/src/gp2x/gp2x_joy.c allegro-4.2.0/src/gp2x/gp2x_joy.c
+--- orig/allegro-4.2.0/src/gp2x/gp2x_joy.c	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/src/gp2x/gp2x_joy.c	2005-12-20 21:56:57.000000000 +0000
+@@ -0,0 +1,129 @@
++#include <allegro.h>
++#include "gp2x.h"
++
++
++struct gp2x_joystick_button
++{
++	char gpio_port;
++	int bit;
++	char *name;
++};
++
++static struct gp2x_joystick_button gp2x_joystick_buttons[] = {
++	{	'C',	13,		"B"		},
++	{	'C',	14,		"X"		},
++	{	'C',	15,		"Y"		},
++	{	'C',	12,		"A"		},
++	{	'C',	11,		"R"		},
++	{	'C',	10,		"L"		},
++	{	'D',	11,		"Click"	},
++	{	0,		0,		NULL	}
++};
++
++
++
++static int joy_init(void)
++{
++	int i;
++	
++	num_joysticks = 1;
++	
++	joy[0].flags = JOYFLAG_DIGITAL;
++	
++	joy[0].num_sticks = 1;
++	joy[0].stick[0].flags = JOYFLAG_DIGITAL;
++	joy[0].stick[0].num_axis = 2;
++	joy[0].stick[0].name = "Thumbstick";
++	joy[0].stick[0].axis[0].name = "Thumbstick X-axis";
++	joy[0].stick[0].axis[1].name = "Thumbstick Y-axis";
++	
++	for (i = 0; gp2x_joystick_buttons[i].name; ++i) {
++		joy[0].button[i].name = gp2x_joystick_buttons[i].name;
++	}
++	joy[0].num_buttons = i;
++
++	return 0;
++}
++
++
++static void joy_exit(void)
++{
++}
++
++
++static int joy_poll(void)
++{
++	int i;
++	unsigned short *baseptr = __allegro_linux_gp2x_gpio_16 (0x1180);
++
++	unsigned short gpio_m = baseptr[12];
++		
++	joy[0].stick[0].axis[0].d1 = (gpio_m & 0x0E) != 0x0E;
++	joy[0].stick[0].axis[0].d2 = (gpio_m & 0xE0) != 0xE0;
++	joy[0].stick[0].axis[0].pos = 0;
++	
++	joy[0].stick[0].axis[1].d1 = (gpio_m & 0x83) != 0x83;
++	joy[0].stick[0].axis[1].d2 = (gpio_m & 0x38) != 0x38;
++	joy[0].stick[0].axis[1].pos = 0;
++
++	for (i = 0; i < joy[0].num_buttons; ++i) {
++		int port = gp2x_joystick_buttons[i].gpio_port - 'A';
++		unsigned short value = baseptr[port];
++		int pressed = !(value & (1 << gp2x_joystick_buttons[i].bit));
++		joy[0].button[i].b = pressed;
++	}
++	
++	return 0;
++}
++
++
++
++static int joy_save(void)
++{
++   return 0;
++}
++
++
++
++static int joy_load(void)
++{
++   return 0;
++}
++
++
++
++static AL_CONST char *joy_calib_name(int n)
++{
++   return NULL;
++}
++
++
++
++static int joy_calib(int n)
++{
++   return -1;
++}
++
++
++static JOYSTICK_DRIVER joystick_gp2x = {
++	JOY_TYPE_GP2X,
++	empty_string,
++	empty_string,
++	"GP2X joystick",
++	joy_init,
++	joy_exit,
++	joy_poll,
++	joy_save,
++	joy_load,
++	joy_calib_name,
++	joy_calib
++};
++
++
++/* list the available drivers */
++_DRIVER_INFO __allegro_linux_gp2x_joystick_driver_list[] = {
++	{    JOY_TYPE_GP2X,            &joystick_gp2x,            TRUE   },
++	{    JOY_TYPE_NONE,            &joystick_none,            TRUE   },
++	{    0,                        0,                         0      }
++};
++
+diff -urN orig/allegro-4.2.0/src/gp2x/mmsp2_regs.h allegro-4.2.0/src/gp2x/mmsp2_regs.h
+--- orig/allegro-4.2.0/src/gp2x/mmsp2_regs.h	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/src/gp2x/mmsp2_regs.h	2005-12-28 18:30:10.000000000 +0000
+@@ -0,0 +1,105 @@
++/*
++ * MMSP2 (MP2520F) Registers
++ *  Only listed needed regs for HW blit stuff
++ *
++ * 2005-12-20 Paeryn
++ */
++  
++
++#ifndef _MMSP2_REG_H_
++#define _MMSP2_REG_H_
++
++/*
++ * Blitter registers
++ */
++
++#define MESGDSTCTRL      0x0000
++#define MESG_DSTENB    (1<<6)
++#define MESG_BSTBPP    0x60
++#define MESG_DSTBPP_8  (0<<5)
++#define MESG_DSTBPP_16 (1<<5)
++
++#define MESGDSTADDR      0x0004
++
++#define MESGDSTSTRIDE    0x0008
++
++#define MESGSRCCTRL      0x000c
++#define MESG_INVIDEO   (1<<8)
++#define MESG_SRCENB    (1<<7)
++#define MESG_SRCBPP    0x60
++#define MESG_SRCBPP_8  (0<<5)
++#define MESG_SRCBPP_16 (1<<5)
++#define MESG_SRCBPP_1  (1<<6)
++
++#define MESGSRCADDR      0x0010
++
++#define MESGSRCSTRIDE    0x0014
++
++#define MESGSRCFORCOLOR  0x0018
++
++#define MESGSRCBACKCOLOR 0x001c
++
++#define MESGPATCTRL      0x0020
++#define MESG_PATMONO   (1<<6)
++#define MESG_PATENB    (1<<5)
++#define MESG_PATBPP    0x18
++#define MESG_PATBPP_8  (0<<3)
++#define MESG_PATBPP_16 (1<<3)
++#define MESG_PATBPP_1  (1<<4)
++#define MESG_YOFFSET   0x07
++
++#define MESGFORCOLOR     0x0024
++
++#define MESGBACKCOLOR    0x0028
++
++#define MESGSIZE         0x002c
++#define MESG_HEIGHT 16
++#define MESG_WIDTH  0
++
++#define MESGCTRL         0x0030
++#define MESG_TRANSPCOLOR 16
++#define MESG_TRANSPEN    (1<<11)
++#define MESG_FFCLR       (1<<10)
++#define MESG_YDIR        (1<<9)
++#define MESG_YDIR_NEG    (0<<9)
++#define MESG_YDIR_POS    (1<<9)
++#define MESG_XDIR        (1<<8)
++#define MESG_XDIR_NEG    (0<<8)
++#define MESG_XDIR_POS    (1<<8)
++#define MESG_ROP         0xff
++
++#define MESGSTATUS       0x0034
++#define MESG_BUSY (1<<0)
++
++#define MESGFIFOSTATUS   0x0038
++#define MESG_FULL    (1<<31)
++#define MESG_REMAIN  0x1f
++
++#define MESGFIFO         0x003c
++#define MESGPAT          0x0080
++
++/*
++ * Basic ROPs
++ */
++#define MMSP2_ROP_COPY 0xcc
++
++
++/*
++ * Control registers
++ */
++#define SYSCLKENREG   0x0904
++#define FASTIOCLK (1<<10)
++
++#define VCLKENREG     0x090a
++#define GRPCLK (1<<2)
++
++#define MLC_STL_OADRL 0x290e
++#define MLC_STL_OADRH 0x2910
++#define MLC_STL_EADRL 0x2912
++#define MLC_STL_EADRH 0x2914
++
++// GPIOB[4] is vsync
++#define GPIOB_PINLVL 0x1182
++#define GPIOB_VSYNC (1<<4)
++
++#endif
+diff -urN orig/allegro-4.2.0/src/gui.c allegro-4.2.0/src/gui.c
+--- orig/allegro-4.2.0/src/gui.c	2005-10-27 22:23:39.000000000 +0100
++++ allegro-4.2.0/src/gui.c	2005-12-29 17:50:56.000000000 +0000
+@@ -1220,14 +1220,26 @@
+    if (player->joy_on) {
+       if ((!joy[0].stick[0].axis[0].d1) && (!joy[0].stick[0].axis[0].d2) &&
+ 	  (!joy[0].stick[0].axis[1].d1) && (!joy[0].stick[0].axis[1].d2) &&
+-	  (!joy[0].button[0].b) && (!joy[0].button[1].b)) {
++	  (!joy[0].button[0].b) && (!joy[0].button[1].b) && 
++	  (!joy[0].button[2].b) && (!joy[0].button[5].b) &&
++	  (!joy[0].button[6].b)) {
+ 	 player->joy_on = FALSE;
+ 	 rest(20);
+       }
+       cascii = cscan = 0;
+    }
+    else {
+-      if (joy[0].stick[0].axis[0].d1) {
++      if (joy[0].button[2].b) {
++	 cascii = 9;
++	 cscan = KEY_TAB;
++	 player->joy_on = TRUE;
++      }
++      else if (joy[0].button[5].b) {
++	 cascii = 0;
++	 cscan = KEY_F10;
++	 player->joy_on = TRUE;
++      }
++      else if (joy[0].stick[0].axis[0].d1) {
+ 	 cascii = 0;
+ 	 cscan = KEY_LEFT;
+ 	 player->joy_on = TRUE;
+@@ -1247,7 +1259,7 @@
+ 	 cscan = KEY_DOWN;
+ 	 player->joy_on = TRUE;
+       }
+-      else if ((joy[0].button[0].b) || (joy[0].button[1].b)) {
++      else if ((joy[0].button[0].b) || (joy[0].button[1].b) || (joy[0].button[6].b)) {
+ 	 cascii = ' ';
+ 	 cscan = KEY_SPACE;
+ 	 player->joy_on = TRUE;
+@@ -1710,6 +1722,19 @@
+ 
+    k >>= 8;
+ 
++   // F10 maps to first menu
++   if (k == KEY_F10) {
++	   char *ch = m[0].text;
++	   while (*ch) {
++		   if (*ch == '&') {
++			   ++ch;
++			   if (*ch != '&')
++				   return *ch;
++		   }
++		   ++ch;
++	   }
++   }
++
+    c = scancode_to_ascii(k);
+    if (c) {
+       k = c;
+@@ -1863,6 +1888,25 @@
+ 
+    c = menu_mouse_object(player);
+ 
++   /* simulate keyboard events based on joystick movements */
++   {
++	   int old_joy = 0;
++	   if (joy[0].stick[0].axis[0].d1) old_joy |= 1;
++	   if (joy[0].stick[0].axis[0].d2) old_joy |= 2;
++	   if (joy[0].stick[0].axis[1].d1) old_joy |= 4;
++	   if (joy[0].stick[0].axis[1].d2) old_joy |= 8;
++	   if (joy[0].button[0].b || joy[0].button[6].b) old_joy |= 16;
++	   if (joy[0].button[1].b) old_joy |= 32;
++
++	   poll_joystick();
++	   if (joy[0].stick[0].axis[0].d1 && !(old_joy&1)) simulate_keypress(KEY_LEFT<<8);
++	   if (joy[0].stick[0].axis[0].d2 && !(old_joy&2)) simulate_keypress(KEY_RIGHT<<8);
++	   if (joy[0].stick[0].axis[1].d1 && !(old_joy&4)) simulate_keypress(KEY_UP<<8);
++	   if (joy[0].stick[0].axis[1].d2 && !(old_joy&8)) simulate_keypress(KEY_DOWN<<8);
++	   if ((joy[0].button[0].b || joy[0].button[6].b) && !(old_joy&16)) simulate_keypress((KEY_ENTER<<8) | 13);
++	   if (joy[0].button[1].b && !(old_joy&32)) simulate_keypress((KEY_ESC<<8) | 27);
++   }
++   
+    if ((gui_mouse_b()) || (c != player->mouse_sel)) {
+       player->sel = player->mouse_sel = c;
+       player->auto_open = TRUE;
+diff -urN orig/allegro-4.2.0/src/linux/lconsole.c allegro-4.2.0/src/linux/lconsole.c
+--- orig/allegro-4.2.0/src/linux/lconsole.c	2003-02-07 12:38:34.000000000 +0000
++++ allegro-4.2.0/src/linux/lconsole.c	2005-12-20 18:27:10.000000000 +0000
+@@ -270,6 +270,7 @@
+ int __al_linux_console_graphics (void)
+ {
+    if (graphics_mode) return 0;  /* shouldn't happen */
++   if (__al_linux_console_fd < 0) return 0;
+    ioctl(__al_linux_console_fd, KDSETMODE, KD_GRAPHICS);
+    __al_linux_wait_for_display();
+    graphics_mode = 1;
+@@ -286,6 +287,8 @@
+    if (!graphics_mode)
+       return 0;  /* shouldn't happen */
+ 
++   if (__al_linux_console_fd < 0) return 0;
++
+    ioctl(__al_linux_console_fd, KDSETMODE, KD_TEXT);
+ 
+    do {
+diff -urN orig/allegro-4.2.0/src/linux/lsystem.c allegro-4.2.0/src/linux/lsystem.c
+--- orig/allegro-4.2.0/src/linux/lsystem.c	2005-09-04 17:00:16.000000000 +0100
++++ allegro-4.2.0/src/linux/lsystem.c	2005-12-22 22:27:13.000000000 +0000
+@@ -28,6 +28,10 @@
+ #include "allegro/platform/aintunix.h"
+ #include "allegro/platform/aintlnx.h"
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++#include "../gp2x/gp2x.h"
++#endif
++
+ #ifdef ALLEGRO_LINUX_VGA
+ #ifdef HAVE_SYS_IO_H
+ /* iopl() exists in here instead of unistd.h in glibc */
+@@ -154,6 +158,23 @@
+ }
+ 
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++
++#ifdef ALLEGRO_LINUX_VGA
++#error ALLEGRO_LINUX_GP2X is not compatible with ALLEGRO_LINUX_VGA -- please configure with --disable-vga
++#endif
++
++#define __al_linux_init_console() 0
++#define __al_linux_done_console() 0
++#define __al_linux_init_vtswitch() 0
++#define __al_linux_done_vtswitch() 0
++
++static _DRIVER_INFO *get_gp2x_joystick_driver_list(void) { return __allegro_linux_gp2x_joystick_driver_list; }
++static _DRIVER_INFO *get_gp2x_graphics_driver_list(void) { return __allegro_linux_gp2x_graphics_driver_list; }
++
++#endif
++
++
+ 
+ /* sys_linux_init:
+  *  Top level system driver wakeup call.
+@@ -164,6 +185,13 @@
+ 	_unix_read_os_type();
+ 	if (os_type != OSTYPE_LINUX) return -1; /* FWIW */
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++	system_linux.set_display_switch_mode = NULL;
++	system_linux.display_switch_lock = NULL;
++	system_linux.joystick_drivers = get_gp2x_joystick_driver_list;
++	system_linux.gfx_drivers = get_gp2x_graphics_driver_list;
++#endif
++
+ 	/* This is the only bit that needs root privileges.  First
+ 	 * we attempt to set our euid to 0, in case this is the
+ 	 * second time we've been called. */
+@@ -176,6 +204,10 @@
+ 	/* At this stage we can drop the root privileges. */
+ 	seteuid (getuid());
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++	if (__allegro_linux_gp2x_init()) return -1;
++#endif
++
+ 	/* Initialise dynamic driver lists */
+ 	_unix_driver_lists_init();
+ 	if (_unix_gfx_driver_list)
+@@ -277,6 +309,28 @@
+    tmp = malloc(ALLEGRO_MESSAGE_SIZE);
+    msg = uconvert(msg, U_CURRENT, tmp, U_ASCII, ALLEGRO_MESSAGE_SIZE);
+ 
++#ifdef ALLEGRO_LINUX_GP2X
++   
++    TRACE("---vvv--- allegro_message output ---vvv---\n");
++
++	// al_trace can't deal with messages bigger than 512 characters...
++	if (strlen(msg) < 500) {
++		al_trace(msg);
++	} else {
++		char msg2[512];
++		int len = strlen(msg);
++		int i;
++		for (i = 0; i < (len+499)/500; ++i) {
++			strncpy(msg2,msg+i*500,500);
++			msg2[500] = '\0';
++			al_trace(msg2);
++		}
++	}
++
++    TRACE("\n---^^^--- allegro_message output ---^^^---\n");
++	
++#else
++	
+    do {
+       ret = write(STDERR_FILENO, msg, strlen(msg));
+       if ((ret < 0) && (errno != EINTR))
+@@ -286,6 +340,8 @@
+    __al_linux_got_text_message = TRUE;
+ 
+    free(tmp);
++   
++#endif
+ }
+ 
+ 
+diff -urN orig/allegro-4.2.0/src/unix/uoss.c allegro-4.2.0/src/unix/uoss.c
+--- orig/allegro-4.2.0/src/unix/uoss.c	2005-03-12 07:54:27.000000000 +0000
++++ allegro-4.2.0/src/unix/uoss.c	2005-12-27 12:47:46.000000000 +0000
+@@ -321,6 +321,8 @@
+    _sound_stereo = stereo;
+    _sound_freq = freq;
+ 
++   TRACE("uoss.c: initialised OSS sound driver, %d bits, %d Hz, %s, %d frags, %d fragsize\n", bits, freq, stereo?"stereo":"mono", _oss_numfrags, _oss_fragsize);
++
+    return 0;
+ }
+ 
+diff -urN orig/allegro-4.2.0/tests/test.c allegro-4.2.0/tests/test.c
+--- orig/allegro-4.2.0/tests/test.c	2005-11-05 16:18:52.000000000 +0000
++++ allegro-4.2.0/tests/test.c	2005-12-28 22:30:20.000000000 +0000
+@@ -26,8 +26,8 @@
+ 
+ 
+ int gfx_card = GFX_AUTODETECT;
+-int gfx_w = 640;
+-int gfx_h = 480;
++int gfx_w = 320;
++int gfx_h = 240;
+ int gfx_bpp = 8;
+ int gfx_rate = 0;
+ 
+@@ -76,6 +76,42 @@
+ 
+ 
+ 
++void joy_to_key(void)
++{
++   /* simulate keyboard events based on joystick movements */
++   int old_joy = 0;
++   if (joy[0].stick[0].axis[0].d1) old_joy |= 1;
++   if (joy[0].stick[0].axis[0].d2) old_joy |= 2;
++   if (joy[0].stick[0].axis[1].d1) old_joy |= 4;
++   if (joy[0].stick[0].axis[1].d2) old_joy |= 8;
++   if (joy[0].button[0].b) old_joy |= 16;
++   if (joy[0].button[1].b) old_joy |= 32;
++
++   poll_joystick();
++   if (joy[0].stick[0].axis[0].d1 && !(old_joy&1)) simulate_keypress(KEY_LEFT<<8);
++   if (joy[0].stick[0].axis[0].d2 && !(old_joy&2)) simulate_keypress(KEY_RIGHT<<8);
++   if (joy[0].stick[0].axis[1].d1 && !(old_joy&4)) simulate_keypress(KEY_UP<<8);
++   if (joy[0].stick[0].axis[1].d2 && !(old_joy&8)) simulate_keypress(KEY_DOWN<<8);
++   if (joy[0].button[0].b && !(old_joy&16)) simulate_keypress((KEY_ENTER<<8) | 13);
++   if (joy[0].button[1].b && !(old_joy&32)) simulate_keypress((KEY_ESC<<8) | 27);
++}
++
++
++void joy_to_key_repeat(void)
++{
++   /* simulate keyboard events based on joystick movements */
++   int old_joy = 0;
++
++   poll_joystick();
++   if (joy[0].stick[0].axis[0].d1 && !(old_joy&1)) simulate_keypress(KEY_LEFT<<8);
++   if (joy[0].stick[0].axis[0].d2 && !(old_joy&2)) simulate_keypress(KEY_RIGHT<<8);
++   if (joy[0].stick[0].axis[1].d1 && !(old_joy&4)) simulate_keypress(KEY_UP<<8);
++   if (joy[0].stick[0].axis[1].d2 && !(old_joy&8)) simulate_keypress(KEY_DOWN<<8);
++   if (joy[0].button[0].b && !(old_joy&16)) simulate_keypress((KEY_ENTER<<8) | 13);
++   if (joy[0].button[1].b && !(old_joy&32)) simulate_keypress((KEY_ESC<<8) | 27);
++}
++
++
+ void tm_tick(void)
+ {
+    if (++_tm >= 100) {
+@@ -121,6 +157,8 @@
+ 
+ int next(void)
+ {
++   joy_to_key();
++
+    if (keypressed()) {
+       clear_keybuf();
+       return TRUE;
+@@ -1756,11 +1794,11 @@
+    acquire_screen();
+ 
+    clear_to_color(screen, palette_color[0]);
+-   textout_ex(screen,font,"Hardware accelerated features", xoff+44, 6, palette_color[15], palette_color[0]);
++   textout_ex(screen,font,"Hardware accelerated features", xoff+44, 0, palette_color[15], palette_color[0]);
+ 
+    for (c=3; s[c]; c++) {
+-      textout_ex(screen, font, s[c], SCREEN_W/2+64-text_length(font, s[c]), SCREEN_H/2-184+c*16, palette_color[15], palette_color[0]);
+-      textout_ex(screen, font, (gfx_capabilities & (1<<c)) ? "yes" : "no", SCREEN_W/2+80, SCREEN_H/2-184+c*16, palette_color[15], palette_color[0]);
++      textout_ex(screen, font, s[c], SCREEN_W/2+64-text_length(font, s[c]), 10+c*9, palette_color[15], palette_color[0]);
++      textout_ex(screen, font, (gfx_capabilities & (1<<c)) ? "yes" : "no", SCREEN_W/2+80, 10+c*9, palette_color[15], palette_color[0]);
+    }
+ 
+    textout_ex(screen, font, "Press a key or mouse button", xoff+52, SCREEN_H-10, palette_color[15], palette_color[0]);
+@@ -1814,6 +1852,9 @@
+       else
+          strcat(buf,"     ");
+       textout_centre_ex(screen, font, buf, SCREEN_W/2, SCREEN_H/2 + 30, palette_color[15], palette_color[0]);
++
++      joy_to_key();
++
+    } while (!keypressed());
+ 
+    clear_keybuf();
+@@ -1833,6 +1874,11 @@
+    textout_centre_ex(screen, font, "Press a mouse button", SCREEN_W/2, SCREEN_H-10, palette_color[15], palette_color[0]);
+ 
+    do {
++      poll_mouse();
++      poll_joystick();
++   } while (mouse_b || joy[0].button[0].b);
++
++   do {
+       if (keypressed()) {
+ 	 blit(screen, screen, xoff+0, yoff+48, xoff+0, yoff+40, 320, 112);
+ 	 k = readkey();
+@@ -1841,11 +1887,13 @@
+ 	 textout_centre_ex(screen, font, buf, SCREEN_W/2, yoff+152, palette_color[15], palette_color[0]);
+       }
+       poll_mouse();
+-   } while (!mouse_b);
++      poll_joystick();
++   } while (!mouse_b && !joy[0].button[0].b);
+ 
+    do {
+       poll_mouse();
+-   } while (mouse_b);
++      poll_joystick();
++   } while (mouse_b || joy[0].button[0].b);
+ 
+    show_mouse(screen);
+    return D_REDRAW;
+@@ -2091,6 +2139,8 @@
+ 	 position_mouse(32, 32);
+       }
+ 
++      joy_to_key_repeat();
++
+       if (keypressed()) {
+ 	 switch (readkey() >> 8) {
+ 	    case KEY_LEFT:  x--;          break;
+@@ -2166,6 +2216,8 @@
+ 	    break;
+ 	 }
+ 
++	 joy_to_key();
++
+ 	 if (keypressed())
+ 	    c = readkey();
+ 
+@@ -2283,6 +2335,8 @@
+       else 
+ 	 ox = oy = -1;
+ 
++      joy_to_key();
++      
+       if (keypressed()) {
+ 	 c = readkey() & 0xff;
+ 	 if ((c >= '0') && (c <= '9')) {
+@@ -2388,6 +2442,8 @@
+       else
+ 	 sel = -1;
+ 
++      joy_to_key();
++
+       if (keypressed()) {
+ 	 c = readkey();
+ 	 if ((c&0xFF) == 27)
+@@ -2470,6 +2526,8 @@
+ 	 } while (mouse_b);
+       }
+ 
++      joy_to_key();
++
+       if (keypressed())
+ 	 k = readkey() & 0xff;
+ 
+@@ -3047,6 +3105,8 @@
+ 	   (SCREEN_W-BUFFER_SIZE)/2, 
+ 	   (SCREEN_H-BUFFER_SIZE)/2, BUFFER_SIZE, BUFFER_SIZE);
+ 
++      joy_to_key();
++
+       /* handle user input */
+       if (keypressed()) {
+ 	 key = readkey();
+@@ -4513,6 +4573,8 @@
+ 
+    mypal[255].r = mypal[255].g = mypal[255].b = 0;
+ 
++   install_joystick(JOY_TYPE_AUTODETECT);
++
+    buttons = install_mouse();
+    enable_hardware_cursor();
+    sprintf(mouse_specs, "Mouse has %d buttons", buttons);
+diff -urN orig/allegro-4.2.0/tests/test.gpe allegro-4.2.0/tests/test.gpe
+--- orig/allegro-4.2.0/tests/test.gpe	1970-01-01 01:00:00.000000000 +0100
++++ allegro-4.2.0/tests/test.gpe	2005-12-27 23:04:58.000000000 +0000
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++rm -f test.txt
++
++./test
++
++mv allegro.log test.txt
++
++# return to the menu screen
++cd /usr/gp2x
++exec /usr/gp2x/gp2xmenu
++
