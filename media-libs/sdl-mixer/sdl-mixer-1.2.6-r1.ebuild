@@ -18,10 +18,9 @@ IUSE="mp3 mikmod timidity vorbis"
 DEPEND=">=media-libs/libsdl-1.2.5
 	timidity? ( media-sound/timidity++ )
 	mp3? ( media-libs/libmad )
+	vorbis? ( media-libs/tremor media-libs/libogg )
 	mikmod? ( >=media-libs/libmikmod-3.1.10 )"
 
-	#TODO: add tremor ebuild!
-	#vorbis? ( >=media-libs/libvorbis-1.0_beta4 media-libs/libogg )
 S=${WORKDIR}/${MY_P}
 
 src_unpack() {

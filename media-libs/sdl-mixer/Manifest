@@ -7,10 +7,10 @@ MD5 85c429a982fe437337599502a8fa6c1d files/sdl-mixer-1.2.6-mikmod-music-init.pat
 RMD160 7d53b04ec50bd48c4b85b4381640b741aba25c36 files/sdl-mixer-1.2.6-mikmod-music-init.patch 260
 SHA256 743e1c76daf96eb1f2497ba4159677103ebb8a786902b91a01800b7bb9d91a5f files/sdl-mixer-1.2.6-mikmod-music-init.patch 260
 DIST SDL_mixer-1.2.6.tar.gz 1147838 RMD160 f20e3b7db266d9a0da75f2319dcc403d869907e6 SHA1 d8e09d87a750c4bd989f0a3e4f1b6baff601b8f1 SHA256 89f94840b1b42ddfe53a8aee415331516f1bbdd942b42d25e74906a332cdf22a
-EBUILD sdl-mixer-1.2.6-r1.ebuild 1598 RMD160 02fce67062fc4a40e869de8919e6cc33d5e82648 SHA1 1e9c2c26362a7f1813cf072d21617a471a6028fe SHA256 6dbd2e86f03bffe0922b478a1719debc59e93ee664792f47d2b9ac5fc21ebf7f
-MD5 fa2311326356be02c2f5e0e6fe0ab911 sdl-mixer-1.2.6-r1.ebuild 1598
-RMD160 02fce67062fc4a40e869de8919e6cc33d5e82648 sdl-mixer-1.2.6-r1.ebuild 1598
-SHA256 6dbd2e86f03bffe0922b478a1719debc59e93ee664792f47d2b9ac5fc21ebf7f sdl-mixer-1.2.6-r1.ebuild 1598
+EBUILD sdl-mixer-1.2.6-r1.ebuild 1555 RMD160 f97dce6437a690e9e8cee14710cff8c1b342ebc3 SHA1 eeaf393f05cd6455b92eb6aaa1e7bb907ea9d476 SHA256 8a63502d2b41dad9c1f6fc4032ffcd7b36c626c6d647dbadf3909f8a22933d5e
+MD5 56c0ef571be4f3d951b944f3e62b2572 sdl-mixer-1.2.6-r1.ebuild 1555
+RMD160 f97dce6437a690e9e8cee14710cff8c1b342ebc3 sdl-mixer-1.2.6-r1.ebuild 1555
+SHA256 8a63502d2b41dad9c1f6fc4032ffcd7b36c626c6d647dbadf3909f8a22933d5e sdl-mixer-1.2.6-r1.ebuild 1555
 MD5 1807ead1243bb46cdac4b046d170ea67 files/digest-sdl-mixer-1.2.6-r1 250
 RMD160 c86401d1375317a78d19d15ae0d47e8c476ad183 files/digest-sdl-mixer-1.2.6-r1 250
 SHA256 447d23b557caac8fbc320df2e9502ec7f8f4665aa4242546b033b2e58ce07485 files/digest-sdl-mixer-1.2.6-r1 250
