@@ -4,9 +4,9 @@
 
 inherit flag-o-matic
 
-IUSE="gtk guionly batch gd doc"
+IUSE="batch doc fasttrack gd gnutella gtk guionly magic"
 
-DESCRIPTION="mldonkey is a new client to access the eDonkey network. It is written in Objective-Caml, and comes with its own GTK GUI, an HTTP interface and a telnet interface."
+DESCRIPTION="MLDonkey is a multi-network P2P application written in Ocaml, coming with its own Gtk GUI, web and telnet interface."
 HOMEPAGE="http://www.nongnu.org/mldonkey/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
@@ -20,7 +20,8 @@ RDEPEND="dev-lang/perl
 			>=dev-ml/lablgtk-2.6 )
 	gtk? ( >=gnome-base/librsvg-2.4.0
 			>=dev-ml/lablgtk-2.6 )
-	gd? ( >=media-libs/gd-2.0.28 )"
+	gd? ( >=media-libs/gd-2.0.28 )
+	magic? ( sys-apps/file )"
 
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.58
@@ -32,12 +33,12 @@ MLUSER="p2p"
 pkg_setup() {
 	if use gtk; then
 		echo ""
-		einfo "If the compile with gui fails, and you have updated ocaml"
+		einfo "If the compile with gui fails, and you have updated Ocaml"
 		einfo "recently, you may have forgotten that you need to run"
 		einfo "/usr/portage/dev-lang/ocaml/files/ocaml-rebuild.sh"
 		einfo "to learn which ebuilds you need to recompile"
-		einfo "each time you update ocaml to a different version"
-		einfo "see the ocaml ebuild for details"
+		einfo "each time you update Ocaml to a different version"
+		einfo "see the Ocaml ebuild for details"
 		echo ""
 	fi
 
@@ -48,7 +49,7 @@ pkg_setup() {
 
 	if use gd && !(built_with_use media-libs/gd truetype); then
 		eerror "media-libs/gd must be built with 'truetype' to compile"
-		eerror "mldonkey with gd support"
+		eerror "MLDonkey with gd support"
 		die "Recompile media-libs/gd with enabled truetype USE flag"
 	fi
 }
@@ -87,8 +88,12 @@ src_compile() {
 		--sharedstatedir=/var/mldonkey \
 		--localstatedir=/var/mldonkey \
 		--enable-checks \
-		`use_enable batch` \
-		`use_enable gd` \
+		$(use_enable fasttrack) \
+		$(use_enable gnutella) \
+		$(use_enable gnutella gnutella2) \
+		$(use_enable batch) \
+		$(use_enable gd) \
+		$(use_enable magic) \
 		${myconf} || die "Configure Failed!"
 
 	export OCAMLRUNPARAM="l=256M"
@@ -145,9 +150,9 @@ pkg_postinst() {
 	if ! use guionly; then
 		echo
 		einfo "Running \`mldonkey' will start the server inside ~/.mldonkey/"
-		einfo "If you want to start mldonkey in a particular working directory,"
+		einfo "If you want to start MLDonkey in a particular working directory,"
 		einfo "use the \`mlnet' command."
-		einfo "If you want to start mldonkey as a system service, use"
+		einfo "If you want to start MLDonkey as a system service, use"
 		einfo "the /etc/init.d/mldonkey script. To control bandwidth, use"
 		einfo "the 'slow' and 'fast' arguments. Be sure to have a look at"
 		einfo "/etc/conf.d/mldonkey also."
@@ -160,7 +165,7 @@ pkg_postinst() {
 		echo
 	else
 		echo
-		einfo "Simply run mlgui to start the chosen modonkey gui."
+		einfo "Simply run mlgui to start the chosen MLDonkey gui."
 		einfo "It puts its config files into ~/.mldonkey"
 	fi
 }
