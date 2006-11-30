@@ -112,7 +112,7 @@ HP_OPTS="$HP_OPTS -pgs"
 
 #uncomment to specify the log directory (in Homeplayer directory by default)
 LOG_DIR="$HOME"/.homeplayer
-if [ -d "$LOG_DIR ]; then
+if [ -d "$LOG_DIR" ]; then
    echo "Repertoire deja cree" 1>/dev/null
 else
    mkdir $LOG_DIR
