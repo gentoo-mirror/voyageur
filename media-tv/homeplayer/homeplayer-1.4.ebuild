@@ -11,11 +11,11 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_PN}-${PV}.zip"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="-*"
-#KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-RDEPEND=">=media-video/vlc-0.8.5"
+RDEPEND=">=media-video/vlc-0.8.5
+		 amd64? (app-emulation/emul-linux-x86-java)"
 
 pkg_setup() {
 	#
@@ -32,7 +32,16 @@ src_install() {
 	# Install HomePlayer in /opt/homeplayer/
 	#
 	dodir /opt/${PN}
-	cp -R ${WORKDIR}/* ${D}/opt/${PN}
+	cp -R ${WORKDIR}/* ${D}opt/${PN}
+	rm -f ${D}opt/${PN}/homeplayer.bat
+	# amd64 fixed launcher script
+	if use amd64; then
+		exeinto /opt/${PN}
+		doexe ${FILESDIR}/homeplayer.sh
+	fi
+	# Permissions
+	chmod 755 ${D}opt/${PN}/${PN}.sh
+	mkdir -m 777 ${D}opt/${PN}/update
 
 	#
 	# Install the homeplayer executable in /usr/bin
@@ -45,11 +54,4 @@ src_install() {
 	#
 	domenu ${FILESDIR}/${PN}.desktop
 	doicon ${FILESDIR}/${PN}.png
-}
-
-pkg_postinst() {
-	# Executable
-	chmod 755 /opt/${PN}/${PN}.sh
-	# Update directory & permissions
-	mkdir -m 777 /opt/${PN}/update
 }
