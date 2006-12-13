@@ -3,6 +3,7 @@ Welcome!
 This overlay has:
 - existing ebuilds keyworded ~amd64
 - ebuilds from bugzilla not yet accepted
+- ebuilds tuned for the GP2X handheld console (~arm keyworded)
 - a few ebuilds from here and there (freenet6, emiclock)
 - hacked ebuilds that suit myself better ;)
 
