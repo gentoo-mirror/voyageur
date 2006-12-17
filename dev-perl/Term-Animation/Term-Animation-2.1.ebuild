@@ -13,4 +13,4 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="ncurses"
 
-RDEPEND="ncurses? dev-perl/Curses"
+RDEPEND="ncurses? (dev-perl/Curses)"
