@@ -14,7 +14,7 @@ KEYWORDS="~amd64 ~ppc x86"
 IUSE="gtk"
 
 RDEPEND="=x11-libs/gtk+-2*
-	>=x11-libs/gtkglext-1.0*
+	x11-libs/gtkglext
 	virtual/opengl
 	virtual/glut
 	media-libs/libsdl
