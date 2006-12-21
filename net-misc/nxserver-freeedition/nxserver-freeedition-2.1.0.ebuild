@@ -71,6 +71,12 @@ pkg_postinst ()
 {
 	usermod -d /usr/NX/home/nx nx || die
 
+	# Fonts link on modular X
+	if has_version '>=x11-base/xorg-x11-7.0' && ! [ -e /usr/lib/X11/fonts ];
+	then
+		ln -s /usr/share/fonts /usr/lib/X11/fonts
+	fi
+
 	einfo "Running NoMachine's setup script"
 	${ROOT}/usr/NX/scripts/setup/nxserver --install
 
