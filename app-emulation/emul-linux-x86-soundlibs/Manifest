@@ -1,8 +1,0 @@
-DIST emul-linux-x86-soundlibs-2.4-r1.tar.bz2 852948 RMD160 c938c42de4856318073e5ef63124221b6ebd0789 SHA1 3f43e406957172fec998ab99f7af9108fa5cb5c0 SHA256 1c3fb8650dfdb1333bf63e53c4c35a35475c7486e0ecb58db43f35244ec275e7
-EBUILD emul-linux-x86-soundlibs-2.4-r1.ebuild 646 RMD160 51a44de302e5541aae3f278501522f0619946528 SHA1 c3a116aba8639591575e679723ede13809dab2f7 SHA256 153bbd6cbdf964aa140dea0f0564ccd62e53af808f85f037ea9c0b72e635f01c
-MD5 ac3a9362c7ff8ab76ab1312e69e1d329 emul-linux-x86-soundlibs-2.4-r1.ebuild 646
-RMD160 51a44de302e5541aae3f278501522f0619946528 emul-linux-x86-soundlibs-2.4-r1.ebuild 646
-SHA256 153bbd6cbdf964aa140dea0f0564ccd62e53af808f85f037ea9c0b72e635f01c emul-linux-x86-soundlibs-2.4-r1.ebuild 646
-MD5 b69883303f3e3013fec09c467b00afa8 files/digest-emul-linux-x86-soundlibs-2.4-r1 298
-RMD160 9e8b95fe04ded63193ee918131a37da86911b94d files/digest-emul-linux-x86-soundlibs-2.4-r1 298
-SHA256 c399389efe564c8c374f40105d52900285d2e236cb02d103d208353e632b2eac files/digest-emul-linux-x86-soundlibs-2.4-r1 298
