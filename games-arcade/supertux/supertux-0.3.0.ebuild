@@ -29,6 +29,13 @@ pkg_setup() {
 	games_pkg_setup
 }
 
+src_unpack() {
+	unpack ${A}
+	cd ${S}
+
+	epatch "${FILESDIR}"/${P}-jaminstall.patch
+}
+
 src_compile() {
 	egamesconf \
 		--disable-debug \
@@ -39,6 +46,9 @@ src_compile() {
 src_install() {
 	DESTDIR=${D} jam \
 		install || die "jam install failed"
-	dodoc README 
+
+	# Doc
+	gzip ${D}/usr/share/doc/${PF}/*
+	
 	prepgamesdirs
 }
