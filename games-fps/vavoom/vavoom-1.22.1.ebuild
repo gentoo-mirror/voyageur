@@ -11,7 +11,7 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="allegro debug dedicated external-glbsp flac graphics mad mikmod models \
+IUSE="allegro debug dedicated external-glbsp flac mad mikmod models \
 music openal opengl sdl textures tools vorbis"
 
 QA_EXECSTACK="${GAMES_BINDIR:1}/${PN}"
@@ -40,8 +40,7 @@ RDEPEND="media-libs/libpng
 	vorbis? ( media-libs/libvorbis )"
 DEPEND="${RDEPEND}
 	x11-proto/xf86dgaproto"
-PDEPEND="graphics? ( games-fps/vavoom-graphics )
-	models? ( games-fps/vavoom-models )
+PDEPEND="models? ( games-fps/vavoom-models )
 	music? ( games-fps/vavoom-music )
 	textures? ( games-fps/vavoom-textures )"
 
@@ -134,6 +133,9 @@ src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 	rm -f "${D}/${GAMES_BINDIR}"/*
 
+	# Remove unneeded icon
+	rm -f "${D}/${GAMES_DATADIR}/${PN}/${PN}.png"
+
 	doicon source/${PN}.png || die "doicon failed"
 
 	if build_client ; then
@@ -166,7 +168,7 @@ pkg_postinst() {
 	elog "ln -sn ${GAMES_DATADIR}/doom-data/doom.wad ${GAMES_DATADIR}/${PN}/"
 	elog
 	elog "Example command-line:"
-	elog "   vavoom -doom -opengl -window"
+	elog "   vavoom -doom -opengl"
 	elog
 	elog "See documentation for further details."
 
