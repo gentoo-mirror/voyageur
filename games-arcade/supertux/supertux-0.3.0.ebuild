@@ -29,13 +29,6 @@ pkg_setup() {
 	games_pkg_setup
 }
 
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-
-	epatch "${FILESDIR}"/${P}-jaminstall.patch
-}
-
 src_compile() {
 	egamesconf \
 		--disable-debug \
@@ -44,10 +37,12 @@ src_compile() {
 }
 
 src_install() {
-	DESTDIR=${D} jam \
-		install || die "jam install failed"
+	jam -sDESTDIR=${D} -sappdocdir=/usr/share/doc/${PF} \
+		-sapplicationsdir=/usr/share/applications \
+		-spixmapsdir=/usr/share/pixmaps install \
+		|| die "jam install failed"
 
-	# Doc
+	# Documentation gzip
 	gzip ${D}/usr/share/doc/${PF}/*
 	
 	prepgamesdirs
