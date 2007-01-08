@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-strategy/wormux/wormux-0.7.4.ebuild,v 1.1 2006/10/04 14:29:16 nyhm Exp $
 
-inherit eutils debug games versionator
+inherit eutils games versionator
 
 MY_PV=$(replace_version_separator 2 '')
 
