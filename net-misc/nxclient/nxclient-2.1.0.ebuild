@@ -14,25 +14,26 @@ RESTRICT="nostrip"
 
 DEPEND=""
 RDEPEND="
-	dev-libs/expat
-	dev-libs/openssl
-	media-libs/audiofile
-	media-libs/jpeg
-	media-libs/libpng
-	media-libs/freetype
-	media-libs/fontconfig
-	net-analyzer/gnu-netcat
-	net-print/cups
-	x11-libs/libXft
-	x11-libs/libX11
-	x11-libs/libXdmcp
-	x11-libs/libXrender
-	x11-libs/libXau
-	x11-libs/libXext
-	=x11-libs/qt-3*
-	x86? (sys-libs/lib-compat)
-	amd64? (app-emulation/emul-linux-x86-compat)
-	sys-libs/zlib
+	x86? ( dev-libs/expat
+		dev-libs/openssl
+		media-libs/audiofile
+		media-libs/jpeg
+		media-libs/libpng
+		media-libs/freetype
+		media-libs/fontconfig
+		net-print/cups
+		x11-libs/libXft
+		x11-libs/libX11
+		x11-libs/libXdmcp
+		x11-libs/libXrender
+		x11-libs/libXau
+		x11-libs/libXext
+		=x11-libs/qt-3*
+		sys-libs/lib-compat
+		sys-libs/zlib )
+	amd64? ( app-emulation/emul-linux-x86-compat
+		app-emulation/emul-linux-x86-soundlibs
+		app-emulation/emul-linux-x86-xlibs )
 "
 
 S=${WORKDIR}/NX

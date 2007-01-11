@@ -6,7 +6,7 @@ inherit eutils
 
 DESCRIPTION=""
 HOMEPAGE="http://www.nomachine.com/"
-SRC_URI="http://64.34.161.181/download/2.1.0/Linux/FE/nxserver-2.1.0-13.i386.tar.gz"
+SRC_URI="http://64.34.161.181/download/2.1.0/Linux/FE/nxserver-2.1.0-17.i386.tar.gz"
 
 LICENSE=""
 SLOT="0"
@@ -53,7 +53,11 @@ src_install()
 	doins etc/users.db.sample || die
 
 	newins etc/server-debian.cfg.sample server-gentoo.cfg.sample || die
-	newins etc/server.lic.sample server.lic || die
+
+	# Only install license file if none is found
+	if [ ! -f /usr/NX/etc/server.lic ]; then
+		newins etc/server.lic.sample server.lic || die
+	fi
 
 	cp -R etc/keys ${D}/usr/NX/etc || die
 
@@ -71,14 +75,14 @@ pkg_postinst ()
 {
 	usermod -d /usr/NX/home/nx nx || die
 
-	# Fonts link on modular X
-	if has_version '>=x11-base/xorg-x11-7.0' && ! [ -e /usr/lib/X11/fonts ];
-	then
-		ln -s /usr/share/fonts /usr/lib/X11/fonts
+	# only run install when no configuration file is found
+	if [ -f /usr/NX/etc/server.cfg ]; then
+		einfo "Running NoMachine's update script"
+		${ROOT}/usr/NX/scripts/setup/nxserver --update
+	else
+		einfo "Running NoMachine's setup script"
+		${ROOT}/usr/NX/scripts/setup/nxserver --install
 	fi
-
-	einfo "Running NoMachine's setup script"
-	${ROOT}/usr/NX/scripts/setup/nxserver --install
 
 	elog "Remember to add nxserver to your default runlevel"
 }

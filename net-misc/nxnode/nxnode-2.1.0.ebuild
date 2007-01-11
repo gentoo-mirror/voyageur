@@ -6,7 +6,7 @@ inherit eutils
 
 DESCRIPTION="nxnode provides the components that are shared between the different editions of NoMachine's NX Server"
 HOMEPAGE="http://www.nomachine.com/"
-SRC_URI="http://64.34.161.181/download/2.1.0/Linux/nxnode-2.1.0-12.i386.tar.gz"
+SRC_URI="http://64.34.161.181/download/2.1.0/Linux/nxnode-2.1.0-15.i386.tar.gz"
 
 LICENSE=""
 SLOT="0"
@@ -26,21 +26,13 @@ DEPEND="
 
 RDEPEND="
 	=net-misc/nxclient-2*
-	dev-libs/openssl
-	media-libs/jpeg
-	media-libs/libpng
-	sys-libs/zlib
-	x11-libs/libICE
-	x11-libs/libXmu
-	x11-libs/libX11
-	x11-libs/libXdmcp
-	x11-libs/libSM
-	x11-libs/libXt
-	x11-libs/libXrender
-	x11-libs/libXau
-	x11-libs/libXaw
-	x11-libs/libXpm
-	x11-libs/libXext
+	x86? ( x11-libs/libICE
+		x11-libs/libXmu
+		x11-libs/libSM
+		x11-libs/libXt
+		x11-libs/libXaw
+		x11-libs/libXpm )
+	amd64? ( app-emulation/emul-linux-x86-xlibs )
 "
 
 S=${WORKDIR}/NX
@@ -67,10 +59,13 @@ src_install()
 	dodir /usr/NX/etc
 	cp etc/node-debian.cfg.sample ${D}/usr/NX/etc/node-gentoo.cfg.sample || die
 	sed -e 's|COMMAND_FUSER = .*|COMMAND_FUSER = "/usr/bin/fuser"|;' -i ${D}/usr/NX/etc/node-gentoo.cfg.sample || die
-
-	cp etc/node.lic.sample ${D}/usr/NX/etc/node.lic || die
-	chmod 0400 ${D}/usr/NX/etc/node.lic
-	chown nx:root ${D}/usr/NX/etc/node.lic
+	
+	# Only install license file if none is found
+	if [ ! -f /usr/NX/etc/node.lic ]; then
+		cp etc/node.lic.sample ${D}/usr/NX/etc/node.lic || die
+		chmod 0400 ${D}/usr/NX/etc/node.lic
+		chown nx:root ${D}/usr/NX/etc/node.lic
+	fi
 
 	dodir /usr/NX/lib
 	cp -R lib ${D}/usr/NX || die
@@ -91,8 +86,14 @@ src_install()
 
 pkg_postinst()
 {
-	einfo "Running NoMachine's setup script"
-	${ROOT}/usr/NX/scripts/setup/nxnode --install
+	# only run install on the first time
+	if [ -f /usr/NX/etc/node.cfg ]; then
+		einfo "Running NoMachine's update script"
+		ewarn "/usr/NX/scripts/setup/nxnode --update"
+	else
+		einfo "Running NoMachine's setup script"
+		${ROOT}/usr/NX/scripts/setup/nxnode --install
+	fi
 
 	elog "If you want server statistics, please add nxsensor to your default runlevel"
 	elog
