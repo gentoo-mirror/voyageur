@@ -26,7 +26,8 @@ DEPEND="
 
 RDEPEND="
 	=net-misc/nxclient-2*
-	x86? ( x11-libs/libICE
+	x86? ( =dev-libs/glib-1.2*
+		x11-libs/libICE
 		x11-libs/libXmu
 		x11-libs/libSM
 		x11-libs/libXt
