@@ -28,7 +28,6 @@ RDEPEND="
 		x11-libs/libXrender
 		x11-libs/libXau
 		x11-libs/libXext
-		=x11-libs/qt-3*
 		sys-libs/lib-compat
 		sys-libs/zlib )
 	amd64? ( app-emulation/emul-linux-x86-compat
