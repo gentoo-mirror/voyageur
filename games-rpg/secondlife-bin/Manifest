@@ -1,8 +1,8 @@
-DIST SecondLife_i686_1_13_2_5_ADITI.tar.bz2 40095308 RMD160 1e3b7c289190f6640a681a2ad02b5142cedf6e7e SHA1 149dc112ee462bc499f4bcaee6fd37489bcd32fa SHA256 91b6f2bf2baef1db4e9727ff9e4bb0615f7dacb8300bcd9b6c84684461220eae
-EBUILD secondlife-bin-1.13.2.5.ebuild 2009 RMD160 5b1a66c6a27f6800921604c0eccb76d6f522b40b SHA1 83de2fc3d87e8386c03f1eced8d833efef027da0 SHA256 8f6acb9bf60201ffad2fbccaaeb75fc033aa9308a43e462353ede7dbd032d57e
-MD5 1b6cef6eadd94ff1e95c393f6ce38975 secondlife-bin-1.13.2.5.ebuild 2009
-RMD160 5b1a66c6a27f6800921604c0eccb76d6f522b40b secondlife-bin-1.13.2.5.ebuild 2009
-SHA256 8f6acb9bf60201ffad2fbccaaeb75fc033aa9308a43e462353ede7dbd032d57e secondlife-bin-1.13.2.5.ebuild 2009
-MD5 cb190f4abd5db1cb95224e25669e59d4 files/digest-secondlife-bin-1.13.2.5 301
-RMD160 4e8ad4f4d80a9fcf4dc1de87bfaf07901f840488 files/digest-secondlife-bin-1.13.2.5 301
-SHA256 5cd54bf5ec6e02a0f543f2e66496985dec110ea1cf2797bf30cf9e767c141d79 files/digest-secondlife-bin-1.13.2.5 301
+DIST SecondLife_i686_1_13_1_6.tar.bz2 40097930 RMD160 ad93a6132cec0b6faa4fadfff686de1259290633 SHA1 627d6b17ec3ba9748e523abfc2750da889f5d229 SHA256 a9d08191de3bc3ae3d418e40cf3e5cd2d185c5a77baed8584191d40cf2963c96
+EBUILD secondlife-bin-1.13.1.6.ebuild 2023 RMD160 17a62e6e7e477b26381603046b4c50f76892224c SHA1 8f8f84eb3a46b95f35b262f8d0669e738d389af1 SHA256 5a4be413c4ff89c599be2e4aff1504c1fd191927b5b2b0651eacbb74b23891fb
+MD5 a6bc44c4fc3c0a4427e1a581ae9eca61 secondlife-bin-1.13.1.6.ebuild 2023
+RMD160 17a62e6e7e477b26381603046b4c50f76892224c secondlife-bin-1.13.1.6.ebuild 2023
+SHA256 5a4be413c4ff89c599be2e4aff1504c1fd191927b5b2b0651eacbb74b23891fb secondlife-bin-1.13.1.6.ebuild 2023
+MD5 933edc241f2fa1bf1d88d3c6df98fd4b files/digest-secondlife-bin-1.13.1.6 283
+RMD160 9adfddb461dbf4cf94467cb2869851d97424146a files/digest-secondlife-bin-1.13.1.6 283
+SHA256 edff7e93aad08dc92cf90660fba1603c2a144d071650fc71069db670a1d66fad files/digest-secondlife-bin-1.13.1.6 283

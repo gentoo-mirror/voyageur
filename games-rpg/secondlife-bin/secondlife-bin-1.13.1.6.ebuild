@@ -4,16 +4,14 @@
 
 inherit games
 
-MY_P="SecondLife_i686_${PV//./_}_ADITI"
+MY_P="SecondLife_i686_${PV//./_}"
 
 DESCRIPTION="A 3D MMORPG virtual world entirely built and owned by its residents"
 HOMEPAGE="http://secondlife.com/"
-SRC_URI="http://secondlife.com/preview/${MY_P}.tar.bz2"
-# SRC_URI="http://secondlife.com/downloads/viewer/${MY_P}.tar.bz2"
+SRC_URI="http://secondlife.com/downloads/viewer/${MY_P}.tar.bz2"
 
 LICENSE="as-is"
 SLOT="0"
-
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 RESTRICT="mirror strip"
@@ -31,27 +29,30 @@ QA_TEXTRELS="${dir:1}/lib/libfreetype.so.6
 	${dir:1}/lib/libfmod-3.75.so
 	${dir:1}/lib/libelfio.so"
 
-RDEPEND="dev-libs/libgcrypt
-	dev-libs/libgpg-error
-	dev-libs/openssl
-	media-libs/freetype
-	media-libs/libogg
-	media-libs/libsdl
-	media-libs/libvorbis
-	net-libs/gnutls
-	net-misc/curl
-	sys-libs/glibc
-	sys-libs/zlib
+RDEPEND="sys-libs/glibc
 	media-fonts/kochi-substitute
-	virtual/glu
-	virtual/opengl
-	|| (
-		(
-			x11-libs/libX11
-			x11-libs/libXau
-			x11-libs/libXdmcp
-			x11-libs/libXext )
-		virtual/x11 )"
+	x86? ( 
+		x11-libs/libX11
+		x11-libs/libXau
+		x11-libs/libXdmcp
+		x11-libs/libXext
+		dev-libs/libgcrypt
+		dev-libs/libgpg-error
+		dev-libs/openssl
+		media-libs/freetype
+		media-libs/libogg
+		media-libs/libsdl
+		media-libs/libvorbis
+		net-libs/gnutls
+		net-misc/curl
+		sys-libs/zlib
+		virtual/glu
+		virtual/opengl
+	)
+	amd64? (
+		app-emulation/emul-linux-x86-sdl
+		app-emulation/emul-linux-x86-gtklibs
+	)"
 
 S=${WORKDIR}/${MY_P}
 
