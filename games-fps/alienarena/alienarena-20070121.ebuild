@@ -1,14 +1,20 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 inherit eutils toolchain-funcs games
 
-DATE=${PV:4:2}${PV:6:2}${PV:0:4}
+#UPDATE="aa2k7-update${PV}-x86.zip"
 
 DESCRIPTION="The ultimate freeware deathmatch fragfest!"
 HOMEPAGE="http://red.planetarena.org/"
-SRC_URI="http://cor.planetquake.gamespy.com/codered/files/alienarena2007-linux${DATE}-x86.zip"
+# Also downloadable from:
+# http://files.filefront.com/alienarena2007+linux20070121+x86/;6593113;;/fileinfo.html
+SRC_URI="http://cor.planetquake.gamespy.com/codered/files/alienarena2007-linux${PV}-x86.zip"
+# ftp://ftp.planetmirror.com/pub/extreme-players/Games/alienarena/alienarena2007-linux.zip
+#	ftp://ftp.planetmirror.com/pub/worthplaying/alienarena/${UPDATE}
+#	ftp://ftp.planetmirror.com/pub/gamershell/demo/${PN}2007-linux${PV}-x86.zip
+#	http://cor.planetquake.gamespy.com/codered/files/${UPDATE}
 
 LICENSE="free-noncomm"
 SLOT="0"
@@ -44,8 +50,8 @@ libdir=${GAMES_LIBDIR}/${PN}
 
 src_unpack() {
 	unpack ${A}
-
 	cd "${basedir}"
+	#unpack "${UPDATE}"
 
 	# Startup scripts
 	sed -i \
@@ -64,8 +70,10 @@ src_unpack() {
 		-e "s:FS_AddHomeAsGameDirectory(BASEDIRNAME):FS_AddHomeAsGameDirectory(BASEDIRNAME);\tFS_AddGameDirectory (\"${libdir}\"):" \
 		../qcommon/files.c || die "sed files.c failed"
 
-	# Directory for executables
+	# Directory for executables.
+	# -O0 stops crackling audio, as in some quake1 ebuilds - gcc bug?
 	sed -i \
+		-e "s:-O2:-O0:" \
 		-e "s:debug\$(ARCH):release:" \
 		-e "s:release\$(ARCH):release:" \
 		Makefile{,.org} || die "sed Makefile release failed"
@@ -130,7 +138,6 @@ src_install() {
 
 	# Install
 	insinto "${dir}"
-	exeinto "${dir}"
 	doins -r "${basedir}"/{arena,botinfo,data1} || die "doins -r failed"
 
 	dodoc "${basedir}"/README.txt || die

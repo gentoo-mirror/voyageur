@@ -1,23 +1,22 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 inherit eutils games
 
 MY_PN="alienarena"
-DATE=${PV:4:2}${PV:6:2}${PV:0:4}
 
 DESCRIPTION="The ultimate freeware deathmatch fragfest!"
 HOMEPAGE="http://red.planetarena.org/"
-SRC_URI="http://cor.planetquake.gamespy.com/codered/files/alienarena2007-linux${DATE}-x86.zip"
+SRC_URI="http://cor.planetquake.gamespy.com/codered/files/alienarena2007-linux${PV}-x86.zip"
 
 LICENSE="free-noncomm"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug opengl sdl"
+IUSE="opengl sdl"
 
-QA_EXECSTACK="${GAMES_PREFIX_OPT:1}/${PN}/crx
-	${GAMES_PREFIX_OPT:1}/${PN}/crx.sdl"
+QA_EXECSTACK="${GAMES_PREFIX_OPT:1}/${MY_PN}/crx
+	${GAMES_PREFIX_OPT:1}/${MY_PN}/crx.sdl"
 
 UIRDEPEND="media-libs/jpeg
 	virtual/glu
@@ -46,7 +45,6 @@ QA_EXECSTACK="${dir:1}/crded
 
 src_unpack() {
 	unpack ${A}
-
 	cd "${basedir}"
 
 	# Startup scripts
