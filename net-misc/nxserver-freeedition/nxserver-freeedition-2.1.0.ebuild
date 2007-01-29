@@ -73,7 +73,8 @@ src_install()
 
 pkg_postinst ()
 {
-	usermod -d /usr/NX/home/nx nx || die
+	usermod -s /usr/NX/bin/nxserver nx || die "Unable to set login shell of nx user!!"
+	usermod -d /usr/NX/home/nx nx || die "Unable to set home directory of nx user!!"
 
 	# only run install when no configuration file is found
 	if [ -f /usr/NX/etc/server.cfg ]; then
