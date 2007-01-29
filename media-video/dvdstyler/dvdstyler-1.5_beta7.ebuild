@@ -28,7 +28,7 @@ RDEPEND="app-cdr/dvd+rw-tools
 	sys-libs/zlib
 	x11-libs/gtk+
 	=x11-libs/wxGTK-2.6*
-	>=media-libs/wxSVG-1.0_beta7
+	>=media-libs/wxsvg-1.0_beta7
 	virtual/cdrtools
 	virtual/libc
 	gnome? ( >=gnome-base/libgnomeui-2.0 )"

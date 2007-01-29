@@ -19,9 +19,7 @@ DEPEND="virtual/ssh
 	net-analyzer/gnu-netcat
 	x86? ( nxclient? ( net-misc/nxclient )
 	      !nxclient? ( !net-misc/nxclient ) )
-	amd64? ( nxclient? ( net-misc/nxclient )
-	        !nxclient? ( !net-misc/nxclient ) )
-	!x86? ( !amd64? ( !net-misc/nxclient ) )
+	!x86? ( !net-misc/nxclient )
 	net-misc/nx
 	arts? ( kde-base/arts )
 	cups? ( net-print/cups )
@@ -83,8 +81,8 @@ src_install() {
 	dobin nxkeygen
 	dobin nxloadconfig
 	dobin nxsetup
-	( ( use x86 || use amd64 ) && use nxclient ) || dobin nxprint
-	( ( use x86 || use amd64 ) && use nxclient ) || dobin nxclient
+	( use x86 && use nxclient ) || dobin nxprint
+	( use x86 && use nxclient ) || dobin nxclient
 
 	dodir ${NX_ETC_DIR}
 	for x in passwords passwords.orig ; do
