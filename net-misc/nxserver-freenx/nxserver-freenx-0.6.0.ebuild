@@ -19,7 +19,7 @@ DEPEND="virtual/ssh
 	net-analyzer/gnu-netcat
 	x86? ( nxclient? ( net-misc/nxclient )
 	      !nxclient? ( !net-misc/nxclient ) )
-	amd64? ( nxclient? ( =net-misc/nxclient )
+	amd64? ( nxclient? ( net-misc/nxclient )
 	        !nxclient? ( !net-misc/nxclient ) )
 	!x86? ( !amd64? ( !net-misc/nxclient ) )
 	net-misc/nx
