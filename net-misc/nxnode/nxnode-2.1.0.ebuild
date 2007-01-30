@@ -60,14 +60,8 @@ src_install()
 	dodir /usr/NX/etc
 	cp etc/node-debian.cfg.sample ${D}/usr/NX/etc/node-gentoo.cfg.sample || die
 	sed -e 's|COMMAND_FUSER = .*|COMMAND_FUSER = "/usr/bin/fuser"|;' -i ${D}/usr/NX/etc/node-gentoo.cfg.sample || die
+	cp etc/node.lic.sample ${D}/usr/NX/etc/node.lic.sample || die
 	
-	# Only install license file if none is found
-	if [ ! -f /usr/NX/etc/node.lic ]; then
-		cp etc/node.lic.sample ${D}/usr/NX/etc/node.lic || die
-		chmod 0400 ${D}/usr/NX/etc/node.lic
-		chown nx:root ${D}/usr/NX/etc/node.lic
-	fi
-
 	dodir /usr/NX/lib
 	cp -R lib ${D}/usr/NX || die
 
@@ -87,10 +81,17 @@ src_install()
 
 pkg_postinst()
 {
+	# Only install license file if none is found
+	if [ ! -f /usr/NX/etc/node.lic ]; then
+		cp ${ROOT}/usr/NX/etc/node.lic.sample ${ROOT}/usr/NX/etc/node.lic || die
+		chmod 0400 ${ROOT}/usr/NX/etc/node.lic
+		chown nx:root ${ROOT}/usr/NX/etc/node.lic
+	fi
+
 	# only run install on the first time
 	if [ -f /usr/NX/etc/node.cfg ]; then
 		einfo "Running NoMachine's update script"
-		ewarn "/usr/NX/scripts/setup/nxnode --update"
+		${ROOT}/usr/NX/scripts/setup/nxnode --update
 	else
 		einfo "Running NoMachine's setup script"
 		${ROOT}/usr/NX/scripts/setup/nxnode --install

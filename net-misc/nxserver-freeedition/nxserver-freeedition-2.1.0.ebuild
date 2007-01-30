@@ -51,13 +51,9 @@ src_install()
 	doins etc/passwords.db.sample || die
 	doins etc/profiles.db.sample || die
 	doins etc/users.db.sample || die
+	doins etc/server.lic.sample || die
 
 	newins etc/server-debian.cfg.sample server-gentoo.cfg.sample || die
-
-	# Only install license file if none is found
-	if [ ! -f /usr/NX/etc/server.lic ]; then
-		newins etc/server.lic.sample server.lic || die
-	fi
 
 	cp -R etc/keys ${D}/usr/NX/etc || die
 
