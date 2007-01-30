@@ -6,7 +6,7 @@ inherit eutils
 
 DESCRIPTION=""
 HOMEPAGE="http://www.nomachine.com/"
-SRC_URI="http://64.34.161.181/download/2.1.0/Linux/FE/nxserver-2.1.0-17.i386.tar.gz"
+SRC_URI="http://64.34.161.181/download/2.1.0/Linux/FE/nxserver-2.1.0-18.i386.tar.gz"
 
 LICENSE=""
 SLOT="0"
