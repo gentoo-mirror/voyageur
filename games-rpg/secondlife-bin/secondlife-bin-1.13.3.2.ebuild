@@ -4,7 +4,8 @@
 
 inherit games
 
-MY_P="SecondLife_i686_${PV//./_}_FIRSTLOOK"
+#MY_P="SecondLife_i686_${PV//./_}_FIRSTLOOK"
+MY_P="SecondLife_i686_${PV//./_}"
 
 DESCRIPTION="A 3D MMORPG virtual world entirely built and owned by its residents"
 HOMEPAGE="http://secondlife.com/"
