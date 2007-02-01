@@ -6,7 +6,7 @@ inherit flag-o-matic toolchain-funcs eutils libtool
 
 DESCRIPTION="Simple Direct Media Layer, with Hardware Acceleration for GP2X"
 HOMEPAGE="http://www.libsdl.org/"
-SRC_URI="http://cafarelli.fr/gp2x/SDL-${PV}-paeryn-081206.tar.gz"
+SRC_URI="http://cafarelli.fr/gp2x/SDL-${PV}-paeryn-060131.tar.gz"
 
 LICENSE="LGPL-2"
 SLOT="0"
