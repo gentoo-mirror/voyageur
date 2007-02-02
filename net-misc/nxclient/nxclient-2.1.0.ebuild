@@ -50,7 +50,7 @@ src_install()
 		into /usr/NX
 		dobin bin/$x || die
 		into /usr
-		newbin ${FILESDIR}/nxwrapper $x || die
+		make_wrapper $x ./$x /usr/NX/bin /usr/NX/lib || die
 	done
 
 	dodir /usr/NX/lib

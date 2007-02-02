@@ -115,15 +115,15 @@ src_compile() {
 }
 
 src_install() {
-	newbin ${FILESDIR}/nxwrapper nxagent || die
-	newbin ${FILESDIR}/nxwrapper nxauth  || die
-	newbin ${FILESDIR}/nxwrapper nxproxy || die
+	for x in nxagent nxauth nxproxy; do
+		make_wrapper $x ./$x /usr/lib/NX/bin /usr/lib/NX/lib ||die
+	done
 	if use vnc ; then
-		newbin ${FILESDIR}/nxwrapper nxviewer || die
-		newbin ${FILESDIR}/nxwrapper nxpasswd || die
+		make_wrapper nxviewer ./nxviewer /usr/lib/NX/bin /usr/lib/NX/lib ||die
+		make_wrapper nxpasswd ./nxpasswd /usr/lib/NX/bin /usr/lib/NX/lib ||die
 	fi
 	if use rdesktop ; then
-		newbin ${FILESDIR}/nxwrapper nxdesktop || die
+		make_wrapper nxdesktop ./nxdesktop /usr/lib/NX/bin /usr/lib/NX/lib ||die
 	fi
 
 	into /usr/lib/NX
