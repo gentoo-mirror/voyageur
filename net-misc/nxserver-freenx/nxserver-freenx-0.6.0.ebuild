@@ -45,6 +45,8 @@ src_unpack() {
 
 	# fix fullscreen support; see bug 150200
 	epatch ${FILESDIR}/${P}-fullscreen.patch
+	# fix rdesktop/vnc proxying
+	epatch ${FILESDIR}/${P}-rdesktop.patch
 
 	mv node.conf.sample node.conf || die
 
