@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-misc/nxclient/nxclient-2.1.0.ebuild,v 1.1 2006/11/08 20:38:22 stuart Exp $
 
+inherit eutils
+
 DESCRIPTION="NXClient is a X11/VNC/NXServer client especially tuned for using
 remote desktops over low-bandwidth links such as the Internet"
 HOMEPAGE="http://www.nomachine.com/"
@@ -57,4 +59,10 @@ src_install()
 
 	dodir /usr/NX/share
 	cp -R share ${D}/usr/NX
+
+	# Add icons/desktop entries (missing in the tarball)
+	doicon share/icons/*.png
+	make_desktop_entry "nxclient" "NX Client" nx-desktop.png
+	make_desktop_entry "nxclient -admin" "NX Session Administrator" nxclient-admin.png
+	make_desktop_entry "nxclient -wizard" "NX Connection Wizard" nxclient-wizard.png
 }
