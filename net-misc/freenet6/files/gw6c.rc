@@ -1,0 +1,17 @@
+#!/sbin/runscript
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting Freenet6 IPv6 Client"
+	gw6c -f /etc/freenet6/gw6c.conf
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Freenet6 IPv6 Client"
+	kill `pidof gw6c`
+	eend $?
+}

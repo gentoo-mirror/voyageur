@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils
+inherit eutils multilib
 
 DESCRIPTION="NX compression technology core libraries"
 HOMEPAGE="http://www.nomachine.com/developers.php"
@@ -24,31 +24,19 @@ SRC_URI="$URI_BASE/$SRC_NX_X11 $URI_BASE/$SRC_NXAGENT $URI_BASE/$SRC_NXPROXY
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="rdesktop vnc"
 
-RDEPEND="|| ( ( x11-libs/libX11
-				x11-libs/libFS
-				x11-libs/libXvMC
-				x11-libs/libICE
-				x11-libs/libXmu
-				x11-libs/libXdmcp
-				x11-libs/libSM
-				x11-libs/libXt
-				x11-libs/libXau
-				x11-libs/libXaw
-				x11-libs/libXp
-				x11-libs/libXpm
-				x11-libs/libXext
-				dev-libs/openssl
-				media-libs/mesa
-			)
-			virtual/x11
-		)
-		>=media-libs/jpeg-6b-r4
-		>=media-libs/libpng-1.2.8
-		>=sys-libs/zlib-1.2.3
-		virtual/libc"
+RDEPEND="x86? ( || ( ( x11-libs/libXau
+		   			 x11-libs/libXdmcp
+				     x11-libs/libXpm
+			       )
+			       virtual/x11
+				)
+				>=media-libs/jpeg-6b-r4
+				>=media-libs/libpng-1.2.8
+				>=sys-libs/zlib-1.2.3 )
+		 amd64? (app-emulation/emul-linux-x86-xlibs)"
 
 DEPEND="${RDEPEND}
 		|| ( ( x11-proto/xproto
@@ -86,19 +74,22 @@ src_unpack() {
 }
 
 src_compile() {
+	# nx-X11 will only compile in 32-bit
+	use amd64 && multilib_toolchain_setup x86
+
 	cd ${WORKDIR}/nxcomp || die
-	./configure || die
+	econf || die
 	emake || die
 
 	cd ${WORKDIR}/nxproxy || die
-	./configure || die
+	econf || die
 	emake || die
 
 	cd ${WORKDIR}/nx-X11 || die
 	emake World || die
 
 	cd ${WORKDIR}/nxcompext || die
-	./configure || die
+	econf || die
 	emake || die
 
 	if use vnc ; then
@@ -109,21 +100,21 @@ src_compile() {
 
 	if use rdesktop ; then
 		cd ${WORKDIR}/nxdesktop || die
-		./configure || die
+		econf || die
 		emake || die
 	fi
 }
 
 src_install() {
 	for x in nxagent nxauth nxproxy; do
-		make_wrapper $x ./$x /usr/lib/NX/bin /usr/lib/NX/lib ||die
+		make_wrapper $x ./$x /usr/lib/NX/bin /usr/lib/NX/$(get_libdir) ||die
 	done
 	if use vnc ; then
-		make_wrapper nxviewer ./nxviewer /usr/lib/NX/bin /usr/lib/NX/lib ||die
-		make_wrapper nxpasswd ./nxpasswd /usr/lib/NX/bin /usr/lib/NX/lib ||die
+		make_wrapper nxviewer ./nxviewer /usr/lib/NX/bin /usr/lib/NX/$(get_libdir) ||die
+		make_wrapper nxpasswd ./nxpasswd /usr/lib/NX/bin /usr/lib/NX/$(get_libdir) ||die
 	fi
 	if use rdesktop ; then
-		make_wrapper nxdesktop ./nxdesktop /usr/lib/NX/bin /usr/lib/NX/lib ||die
+		make_wrapper nxdesktop ./nxdesktop /usr/lib/NX/bin /usr/lib/NX/$(get_libdir) ||die
 	fi
 
 	into /usr/lib/NX

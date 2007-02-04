@@ -10,16 +10,15 @@ HOMEPAGE="http://freenx.berlios.de/"
 SRC_URI="http://download.berlios.de/${MY_PN}/${MY_PN}-${PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 RESTRICT="strip"
 IUSE="arts cups esd nxclient"
 DEPEND="virtual/ssh
 	dev-tcltk/expect
 	sys-apps/gawk
 	net-analyzer/gnu-netcat
-	x86? ( nxclient? ( net-misc/nxclient )
-	      !nxclient? ( !net-misc/nxclient ) )
-	!x86? ( !net-misc/nxclient )
+	nxclient? ( net-misc/nxclient )
+	!nxclient? ( !net-misc/nxclient )
 	net-misc/nx
 	arts? ( kde-base/arts )
 	cups? ( net-print/cups )
@@ -51,6 +50,9 @@ src_unpack() {
 	mv node.conf.sample node.conf || die
 
 	epatch ${FILESDIR}/${P}-nxloadconfig.patch
+	# on amd64, get the correct path to NX 32bit libs
+	has_multilib_profile && \
+		sed -i "/PATH_LIB=/s/NX\/lib/NX\/$(get_abi_LIBDIR x86)/" nxloadconfig
 	# Change the defaults in nxloadconfig to meet the users needs.
 	if use arts ; then
 		einfo "Enabling arts support."
@@ -83,8 +85,8 @@ src_install() {
 	dobin nxkeygen
 	dobin nxloadconfig
 	dobin nxsetup
-	( use x86 && use nxclient ) || dobin nxprint
-	( use x86 && use nxclient ) || dobin nxclient
+	use nxclient || dobin nxprint
+	use nxclient || dobin nxclient
 
 	dodir ${NX_ETC_DIR}
 	for x in passwords passwords.orig ; do
