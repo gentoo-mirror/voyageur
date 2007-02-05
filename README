@@ -4,10 +4,11 @@ This overlay has:
 - existing ebuilds keyworded ~amd64
 - ebuilds from bugzilla not yet accepted
 - ebuilds tuned for the GP2X handheld console (~arm keyworded)
-- ebuilds for the great NX technology (updated servers mostly)
 - a few ebuilds from here and there (freenet6, emiclock)
 - hacked ebuilds that suit myself better ;)
 
 They may damage your computer, set your house on fire or help you, you have been warned!
 
 Voyageur
+
+Note: NX ebuilds are now in the Gentoo NX overlay ("layman -a nx")
