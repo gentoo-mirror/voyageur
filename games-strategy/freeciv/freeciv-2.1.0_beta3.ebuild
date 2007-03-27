@@ -144,7 +144,7 @@ src_install() {
 		# Install sounds if at least one sound plugin was built
 		if use alsa || use esd || use sdl ; then
 			insinto "${GAMES_DATADIR}"/${PN}
-			doins -r ../data/stdsounds* || die "doins sounds failed"
+			doins -r data/stdsounds* || die "doins sounds failed"
 		fi
 		# Create and install the html manual. It can't be done for dedicated
 		# servers, because the 'civmanual' tool is then not built. Also
