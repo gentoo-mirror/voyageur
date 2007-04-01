@@ -1,6 +1,6 @@
-# Copyright 1999-2003 Gentoo Technologies, Inc.
+# Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $
+# $Header: $
 
 DESCRIPTION="Client to configure an IPv6 tunnel to freenet6"
 HOMEPAGE="http://www.freenet6.net/"
@@ -25,7 +25,7 @@ src_install() {
 	doins ${FILESDIR}/gw6c.conf
 	exeinto /etc/freenet6/template
 	doexe template/{linux,checktunnel}.sh
-	
+
 	doman man/{man5/gw6c.conf.5,man8/gw6c.8}
 
 	exeinto /etc/init.d
@@ -33,20 +33,13 @@ src_install() {
 }
 
 pkg_postinst() {
+	if has_version '=net-misc/freenet6-1*' ; then
+		ewarn "Warning: you are upgrading from an older version"
+		ewarn "The configuration file has been renamed to gw6c.conf"
+	fi
 	einfo "The freenet6 ebuild installs an init script named 'gw6c'"
 	einfo "to coincide with the name of the client binary installed"
 	einfo "To add support for a freenet6 connection at startup, do"
 	einfo ""
 	einfo "# rc-update add gw6c default"
-	einfo ""
-	einfo "Also the /etc/freenet6/gw6c.conf file is configured to use"
-	einfo "anonymous login, if you had a username/password edit this"
-	einfo "and set your username, password and change"
-	einfo "server=anon.freenet6.net"
-	einfo "to"
-	einfo "server=broker.freenet6.net"
-	einfo ""
-	einfo "if you are upgrading from 1.0.0 please take a carefull"
-	einfo "look at tspc.conf, there are major changes, you probally"
-	einfo "will only want to safe username/password"
 }
