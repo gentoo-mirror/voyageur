@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+inherit eutils
+
 DESCRIPTION="Client to configure an IPv6 tunnel to freenet6"
 HOMEPAGE="http://www.freenet6.net/"
 SRC_URI="http://simionato.org/gw6c4_2_2src.tar.gz"
@@ -12,6 +14,12 @@ KEYWORDS="~x86 ~amd64"
 DEPEND=""
 DEPEND="${DEPEND}"
 S="${WORKDIR}/tspc-advanced"
+
+src_unpack() {
+	unpack ${A}
+	cd ${S}
+	epatch ${FILESDIR}/${P}-noretry.patch
+}
 
 src_compile() {
 	emake all target=linux || die "Build Failed"

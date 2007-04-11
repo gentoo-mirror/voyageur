@@ -2,11 +2,12 @@
 
 depend() {
 	need net
+	use dns logger
 }
 
 start() {
 	ebegin "Starting Freenet6 IPv6 Client"
-	gw6c -f /etc/freenet6/gw6c.conf
+	/usr/sbin/gw6c -f /etc/freenet6/gw6c.conf
 	eend $?
 }
 
