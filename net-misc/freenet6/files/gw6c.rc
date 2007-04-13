@@ -1,5 +1,7 @@
 #!/sbin/runscript
 
+FREENET6_CLIENT="/usr/sbin/gw6c"
+
 depend() {
 	need net
 	use dns logger
@@ -7,12 +9,13 @@ depend() {
 
 start() {
 	ebegin "Starting Freenet6 IPv6 Client"
-	/usr/sbin/gw6c -f /etc/freenet6/gw6c.conf
+	start-stop-daemon --start --quiet \
+		--exec $FREENET6_CLIENT -- -f /etc/freenet6/gw6c.conf
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping Freenet6 IPv6 Client"
-	kill `pidof gw6c`
+	start-stop-daemon --stop --quiet --exec $FREENET6_CLIENT
 	eend $?
 }
