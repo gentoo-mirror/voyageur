@@ -2,11 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils
+inherit eutils versionator
 
+MY_PV=$(replace_all_version_separators "_")
 DESCRIPTION="Client to configure an IPv6 tunnel to freenet6"
 HOMEPAGE="http://www.freenet6.net/"
-SRC_URI="http://simionato.org/gw6c4_2_2src.tar.gz"
+SRC_URI="mirror://gentoo/gw6c${MY_PV}src.tar.gz"
 
 LICENSE="VPL-1.0"
 SLOT="0"
@@ -45,12 +46,12 @@ pkg_postinst() {
 		ewarn "Warning: you are upgrading from an older version"
 		ewarn "The configuration file has been renamed to gw6c.conf"
 		ewarn "Remember to port your personal settings from tspc.conf to it"
-		ewarn "The init script is now called 'gw6c',"
+		ewarn "The init script has been renamed to 'gw6c',"
 	else
-		einfo "The freenet6 ebuild installs an init script named 'gw6c',"
+		elog "The freenet6 ebuild installs an init script named 'gw6c'"
 	fi
-	einfo "to coincide with the name of the client binary installed"
-	einfo "To add support for a freenet6 connection at startup, do"
-	einfo ""
-	einfo "# rc-update add gw6c default"
+	elog "to coincide with the name of the client binary installed"
+	elog "To add support for a freenet6 connection at startup, do"
+	elog ""
+	elog "# rc-update add gw6c default"
 }
