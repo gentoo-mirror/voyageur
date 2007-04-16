@@ -11,8 +11,8 @@ SRC_URI="http://simionato.org/gw6c4_2_2src.tar.gz"
 LICENSE="VPL-1.0"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-DEPEND=""
-DEPEND="${DEPEND}"
+DEPEND="dev-libs/openssl"
+RDEPEND="${DEPEND}"
 S="${WORKDIR}/tspc-advanced"
 
 src_unpack() {
@@ -44,8 +44,11 @@ pkg_postinst() {
 	if has_version '=net-misc/freenet6-1*' ; then
 		ewarn "Warning: you are upgrading from an older version"
 		ewarn "The configuration file has been renamed to gw6c.conf"
+		ewarn "Remember to port your personal settings from tspc.conf to it"
+		ewarn "The init script is now called 'gw6c',"
+	else
+		einfo "The freenet6 ebuild installs an init script named 'gw6c',"
 	fi
-	einfo "The freenet6 ebuild installs an init script named 'gw6c'"
 	einfo "to coincide with the name of the client binary installed"
 	einfo "To add support for a freenet6 connection at startup, do"
 	einfo ""
