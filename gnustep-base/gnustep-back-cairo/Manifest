@@ -1,0 +1,12 @@
+AUX config-gnustep-back-cairo.sh 421 RMD160 a23f7584bb60e8321e13dcd38d4b14a9b3942885 SHA1 a23cbd1168f5311effe3d861476f035d1a01979d SHA256 bcd7dc4973c88ea7ebb35a5776c7cf8bb029e2333d74b739eeb87e92f10c9ac7
+MD5 fd3979a7e06fb6afc940d5389097a65c files/config-gnustep-back-cairo.sh 421
+RMD160 a23f7584bb60e8321e13dcd38d4b14a9b3942885 files/config-gnustep-back-cairo.sh 421
+SHA256 bcd7dc4973c88ea7ebb35a5776c7cf8bb029e2333d74b739eeb87e92f10c9ac7 files/config-gnustep-back-cairo.sh 421
+DIST gnustep-back-0.12.0.tar.gz 853996 RMD160 ad19420127bb0e2e5f7dc9c3cf9974ea06255565 SHA1 859aef314eb9ef5cbedad9dc53a818542baa17ec SHA256 59b000aa069e2a50398b31296ce5d663f98fc8d131bfd8f3d10e29b0a5379a45
+EBUILD gnustep-back-cairo-0.12.0.ebuild 1861 RMD160 910008949f56a1e45227f18b4ac2abc2b7255d59 SHA1 05d4743fa2278a67e21b5a6c4d534f3dcbcea22d SHA256 cb632f04c0ee51901f043738ddacffeb1da382b34e4e41a71ae6bbf009dd741d
+MD5 a6b70323cc4135114c94b26b50841afe gnustep-back-cairo-0.12.0.ebuild 1861
+RMD160 910008949f56a1e45227f18b4ac2abc2b7255d59 gnustep-back-cairo-0.12.0.ebuild 1861
+SHA256 cb632f04c0ee51901f043738ddacffeb1da382b34e4e41a71ae6bbf009dd741d gnustep-back-cairo-0.12.0.ebuild 1861
+MD5 cf80cac778c3848cc8dd1f617389e908 files/digest-gnustep-back-cairo-0.12.0 259
+RMD160 5a00fb2b38bc26cd0ab6207d8a6cc54131df701a files/digest-gnustep-back-cairo-0.12.0 259
+SHA256 64c8143d4971be1d442aa49dab5625fe4f97d01494debd86d539ab2c69cf76a8 files/digest-gnustep-back-cairo-0.12.0 259
