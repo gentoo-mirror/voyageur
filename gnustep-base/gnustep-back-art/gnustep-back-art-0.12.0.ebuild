@@ -24,45 +24,27 @@ IUSE="${IUSE} opengl xim doc"
 DEPEND="${GNUSTEP_CORE_DEPEND}
 	>=gnustep-base/gnustep-gui-0.12
 	opengl? ( virtual/opengl virtual/glu )
-	|| (
-		(
-			x11-libs/libICE
-			x11-libs/libSM
-			x11-libs/libX11
-			x11-libs/libXext
-			x11-libs/libXi
-			x11-libs/libXmu
-			x11-libs/libXt
-			x11-libs/libXft
-			x11-libs/libXrender
-		)
-		(
-			virtual/xft
-			virtual/x11
-		)
-	)
+	x11-libs/libICE
+	x11-libs/libSM
+	x11-libs/libX11
+	x11-libs/libXext
+	x11-libs/libXi
+	x11-libs/libXmu
+	x11-libs/libXt
+	x11-libs/libXft
+	x11-libs/libXrender
 	dev-libs/expat
 	media-libs/fontconfig
 	>=media-libs/freetype-2.1.9
 	>=media-libs/libart_lgpl-2.3
+	gnustep-base/mknfonts
+	media-fonts/dejavu
 	!virtual/gnustep-back"
 RDEPEND="${DEPEND}
 	${DEBUG_DEPEND}
-	${DOC_RDEPEND}
-	media-fonts/dejavu"
+	${DOC_RDEPEND}"
 
 egnustep_install_domain "System"
-
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-
-	# DejaVu font is successor of Bitstream Vera
-	sed -i -e "s:BitstreamVeraSans-Roman:DejaVuSans:g" \
-		-e "s:BitstreamVeraSansMono-Roman:DejaVuSansMono:g" \
-		-e "s:BitstreamVeraSans-Bold:DejaVuSans-Bold:g" \
-		"${S}/Source/art/ftfont.m"
-}
 
 src_compile() {
 	egnustep_env
@@ -74,6 +56,14 @@ src_compile() {
 	econf $myconf || die "configure failed"
 
 	egnustep_make
+
+	# Create font lists for DejaVu
+	einfo "Installing DejaVu fonts in GNUstep"
+	cd Fonts
+	mknfonts /usr/share/fonts/dejavu/*.ttf
+	for fdir in DejaVu*; do
+		echo mv -v $fdir `echo $fdir | tr -d [:space:]`
+	done
 }
 
 src_install() {
@@ -82,7 +72,8 @@ src_install() {
 	gnustep_src_install
 	cd ${S}
 	mkdir -p "${D}/$(egnustep_system_root)/Library/Fonts"
-	cp -pPR Fonts/Helvetica.nfont "${D}/$(egnustep_system_root)/Library/Fonts"
+	cp -pPR Fonts/*.nfont "${D}/$(egnustep_system_root)/Library/Fonts"
+
 	rm -rf "${D}/$(egnustep_system_root)/var"
 
 	dosym \
