@@ -62,7 +62,7 @@ src_compile() {
 	cd Fonts
 	mknfonts /usr/share/fonts/dejavu/*.ttf
 	for fdir in DejaVu*; do
-		echo mv -v $fdir `echo $fdir | tr -d [:space:]`
+		mv -v $fdir `echo $fdir | tr -d [:space:]`
 	done
 }
 
