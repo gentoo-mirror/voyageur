@@ -31,16 +31,6 @@ RDEPEND="${DEPEND}
 
 egnustep_install_domain "System"
 
-pkg_setup() {
-	if use gcc-libffi; then
-		export OBJC_INCLUDE_PATH="OBJC_INCLUDE_PATH:$(gcc-config -L | sed 's/:.*//')/include/libffi"
-		if [ "$(ffi_available)" == "no" ]; then
-			ffi_not_available_info
-			die "libffi is not available"
-		fi
-	fi
-}
-
 src_unpack() {
 	egnustep_env
 	unpack ${A}
@@ -60,10 +50,7 @@ src_unpack() {
 
 src_compile() {
 	egnustep_env
-	# why libffi over ffcall?
-	# - libffi is known to work with 32 and 64 bit platforms
-	# - libffi does not use trampolines
-	# but upstream seems to prefer ffcall
+	
 	local myconf
 	if use gcc-libffi;
 	then

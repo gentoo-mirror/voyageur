@@ -23,8 +23,8 @@ egnustep_install_domain "System"
 pkg_setup() {
 	gnustep_pkg_setup
 
-	if [ "$(objc_available)" == "no" ]; then
-		objc_not_available_info
+	if ! built_with_use sys-devel/gcc objc; then
+		ewarn "gcc must be compiled with Objective-C support! See the objc USE flag."
 		die "ObjC support not available"
 	fi
 
