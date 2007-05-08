@@ -12,7 +12,7 @@ KEYWORDS="~alpha ~amd64 ~ppc ~ppc64 ~sparc ~x86"
 SLOT="0"
 LICENSE="GPL-2"
 
-IUSE="${IUSE} doc non-flattened layout-osx-like layout-from-conf-file"
+IUSE="${IUSE} doc non-flattened layout-from-conf-file"
 DEPEND="${GNUSTEP_CORE_DEPEND}
 	>=sys-devel/make-3.75"
 RDEPEND="${DEPEND}
@@ -28,86 +28,18 @@ pkg_setup() {
 		die "ObjC support not available"
 	fi
 
-	if use layout-from-conf-file && use layout-osx-like ; then
-		eerror "layout-from-conf-file and layout-osx-like are mutually exclusive use flags."
-		die "USE flag misconfiguration -- please correct"
-	fi
-
-	if use layout-from-conf-file || use layout-osx-like ; then
-		ewarn "USE layout-from-conf-file || layout-osx-like"
-		ewarn "Utilizing these USE flags allows one to install files in non standard"
-		ewarn "  locations vis a vis the Linux FHS -- please fully comprehend what you"
-		ewarn "  are doing when setting this USE flag."
-	fi
-
-	if use layout-from-conf-file; then
-		if [ ! -f /etc/conf.d/gnustep.env ]; then
-			eerror "There is no /etc/conf.d/gnustep.env file!"
-			eerror "Did you read the USE flag description?"
-			die "USE flag misconfiguration -- please correct"
-		else
-			unset GNUSTEP_SYSTEM_ROOT
-			unset GNUSTEP_LOCAL_ROOT
-			unset GNUSTEP_NETWORK_ROOT
-			unset GNUSTEP_USER_ROOT
-			. /etc/conf.d/gnustep.env
-			if [ -z "${GNUSTEP_SYSTEM_ROOT}" ] || [ "/" != "${GNUSTEP_SYSTEM_ROOT:0:1}" ]; then
-				eerror "GNUSTEP_SYSTEM_ROOT is missing or misconfigured in /etc/conf.d/gnustep.env"
-				eerror "GNUSTEP_SYSTEM_ROOT=${GNUSTEP_SYSTEM_ROOT}"
-				die "USE flag misconfiguration -- please correct"
-			fi
-			if [ "/System" != ${GNUSTEP_SYSTEM_ROOT:$((${#GNUSTEP_SYSTEM_ROOT}-7)):7} ]; then
-				eerror "GNUSTEP_SYSTEM_ROOT must end with \"System\" -- read the USE flag directions!!!"
-				die "USE flag misconfiguration -- please correct"
-			fi
-			if [ "${GNUSTEP_LOCAL_ROOT}" ] && [ "/" != "${GNUSTEP_LOCAL_ROOT:0:1}" ]; then
-				eerror "GNUSTEP_LOCAL_ROOT is misconfigured in /etc/conf.d/gnustep.env"
-				eerror "GNUSTEP_LOCAL_ROOT=${GNUSTEP_LOCAL_ROOT}"
-				die "USE flag misconfiguration -- please correct"
-			elif [ -z "${GNUSTEP_LOCAL_ROOT}" ]; then
-				GNUSTEP_LOCAL_ROOT="$(dirname ${GNUSTEP_SYSTEM_ROOT})/Local"
-			fi
-			if [ "${GNUSTEP_NETWORK_ROOT}" ] && [ "/" != "${GNUSTEP_NETWORK_ROOT:0:1}" ]; then
-				eerror "GNUSTEP_NETWORK_ROOT is misconfigured in /etc/conf.d/gnustep.env"
-				eerror "GNUSTEP_NETWORK_ROOT=${GNUSTEP_NETWORK_ROOT}"
-				die "USE flag misconfiguration -- please correct"
-			elif [ -z "${GNUSTEP_NETWORK_ROOT}" ]; then
-				GNUSTEP_NETWORK_ROOT="$(dirname ${GNUSTEP_SYSTEM_ROOT})/Network"
-			fi
-			if [ "${GNUSTEP_USER_ROOT}" ] && [ '~' != "${GNUSTEP_USER_ROOT:0:1}" ]; then
-				eerror "GNUSTEP_USER_ROOT is misconfigured in /etc/conf.d/gnustep.env"
-				eerror "GNUSTEP_USER_ROOT=${GNUSTEP_USER_ROOT}"
-				die "USE flag misconfiguration -- please correct"
-			elif [ -z "${GNUSTEP_USER_ROOT}" ]; then
-				GNUSTEP_USER_ROOT='~/GNUstep'
-			fi
-
-			egnustep_prefix "$(dirname ${GNUSTEP_SYSTEM_ROOT})"
-			egnustep_system_root "${GNUSTEP_SYSTEM_ROOT}"
-			egnustep_local_root "${GNUSTEP_LOCAL_ROOT}"
-			egnustep_network_root "${GNUSTEP_NETWORK_ROOT}"
-			egnustep_user_root "${GNUSTEP_USER_ROOT}"
-		fi
-	elif use layout-osx-like; then
-		egnustep_prefix "/"
-		egnustep_system_root "/System"
-		egnustep_local_root "/"
-		egnustep_network_root "/Network"
-		egnustep_user_root '~'
-	else
-		# setup defaults here
-		egnustep_prefix "/usr/GNUstep"
-		egnustep_system_root "/usr/GNUstep/System"
-		egnustep_local_root "/usr/GNUstep/Local"
-		egnustep_network_root "/usr/GNUstep/Network"
-		egnustep_user_root '~/GNUstep'
-	fi
+	# setup defaults here
+	egnustep_prefix "/usr/GNUstep"
+	egnustep_system_root "/usr/GNUstep/System"
+	egnustep_local_root "/usr/GNUstep/Local"
+	egnustep_network_root "/usr/GNUstep/Network"
+	egnustep_user_dir 'GNUstep'
 
 	elog "GNUstep installation will be laid out as follows:"
 	elog "\tGNUSTEP_SYSTEM_ROOT=`egnustep_system_root`"
 	elog "\tGNUSTEP_LOCAL_ROOT=`egnustep_local_root`"
 	elog "\tGNUSTEP_NETWORK_ROOT=`egnustep_network_root`"
-	elog "\tGNUSTEP_USER_ROOT=`egnustep_user_root`"
+	elog "\tGNUSTEP_USER_DIR=`egnustep_user_dir`"
 }
 
 src_compile() {
@@ -163,7 +95,7 @@ src_install() {
 	echo "GNUSTEP_SYSTEM_ROOT=$(egnustep_system_root)" > ${D}/etc/conf.d/gnustep.env
 	echo "GNUSTEP_LOCAL_ROOT=$(egnustep_local_root)" >> ${D}/etc/conf.d/gnustep.env
 	echo "GNUSTEP_NETWORK_ROOT=$(egnustep_network_root)" >> ${D}/etc/conf.d/gnustep.env
-	echo "GNUSTEP_USER_ROOT='$(egnustep_user_root)'" >> ${D}/etc/conf.d/gnustep.env
+	echo "GNUSTEP_USER_DIR='$(egnustep_user_dir)'" >> ${D}/etc/conf.d/gnustep.env
 
 	insinto /etc/GNUstep
 	doins ${S}/GNUstep.conf
