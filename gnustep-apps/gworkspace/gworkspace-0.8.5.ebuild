@@ -30,14 +30,6 @@ RDEPEND="${GS_RDEPEND}
 
 egnustep_install_domain "System"
 
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-
-	epatch ${FILESDIR}/${P}-rpath.patch
-
-}
-
 src_compile() {
 	egnustep_env
 
