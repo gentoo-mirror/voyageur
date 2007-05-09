@@ -12,7 +12,7 @@ KEYWORDS="~alpha ~amd64 ~ppc ~ppc64 ~sparc ~x86"
 SLOT="0"
 LICENSE="GPL-2"
 
-IUSE="${IUSE} doc non-flattened layout-from-conf-file"
+IUSE="${IUSE} doc non-flattened"
 DEPEND="${GNUSTEP_CORE_DEPEND}
 	>=sys-devel/make-3.75"
 RDEPEND="${DEPEND}
