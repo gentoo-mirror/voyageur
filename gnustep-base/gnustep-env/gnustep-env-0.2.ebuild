@@ -32,7 +32,7 @@ src_compile() {
 src_install() {
 	egnustep_env
 	newenvd ${FILESDIR}/gnustep.env-${PV} 99gnustep
-	dosed "s:XXX_GNUSTEP_USER_ROOT_XXX:~$(egnustep_user_dir):g" /etc/env.d/99gnustep
+	dosed "s:XXX_GNUSTEP_USER_ROOT_XXX:~/$(egnustep_user_dir):g" /etc/env.d/99gnustep
 	dosed "s:XXX_GNUSTEP_LOCAL_ROOT_XXX:$(egnustep_local_root):g" /etc/env.d/99gnustep
 	dosed "s:XXX_GNUSTEP_NETWORK_ROOT_XXX:$(egnustep_network_root):g" /etc/env.d/99gnustep
 	dosed "s:XXX_GNUSTEP_SYSTEM_ROOT_XXX:$(egnustep_system_root):g" /etc/env.d/99gnustep
