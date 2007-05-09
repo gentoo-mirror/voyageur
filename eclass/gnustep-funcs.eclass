@@ -93,12 +93,9 @@ egnustep_env() {
 			HOME=\"\${T}\" \
 			GNUSTEP_USER_DIR=\"\${T}\" \
 			GNUSTEP_USER_DEFAULTS_DIR=\"\${T}\"/Defaults \
-			INSTALL_ROOT_DIR=\"\${D}\" \
+			DESTDIR=\"\${D}\" \
 			GNUSTEP_INSTALLATION_DOMAIN=\"$(egnustep_install_domain)\" \
 			GNUSTEP_MAKEFILES=\"\${GNUSTEP_SYSTEM_ROOT}\"/Library/Makefiles \
-			GNUSTEP_NETWORK_ROOT=\"\${GNUSTEP_NETWORK_ROOT}\" \
-			GNUSTEP_LOCAL_ROOT=\"\${GNUSTEP_LOCAL_ROOT}\" \
-			GNUSTEP_SYSTEM_ROOT=\"\${GNUSTEP_SYSTEM_ROOT}\" \
 			TAR_OPTIONS=\"\${TAR_OPTIONS} --no-same-owner\" \
 			-j1" # this is dirty!
 	else

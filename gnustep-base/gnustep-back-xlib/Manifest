@@ -1,0 +1,12 @@
+AUX config-gnustep-back-xlib.sh 181 RMD160 86c68bda088d52313c3a8f5af166edb7ba84298a SHA1 263efdd48e258a5f435fa2601804d8c62a3228cd SHA256 67ff4a0404740dbc2ffc455f8c93b9f930e48ce83856e1f26e3cdcd3901fef85
+MD5 14c86d6ff5e83af36ad3d54266af5c99 files/config-gnustep-back-xlib.sh 181
+RMD160 86c68bda088d52313c3a8f5af166edb7ba84298a files/config-gnustep-back-xlib.sh 181
+SHA256 67ff4a0404740dbc2ffc455f8c93b9f930e48ce83856e1f26e3cdcd3901fef85 files/config-gnustep-back-xlib.sh 181
+DIST gnustep-back-0.12.0.tar.gz 853996 RMD160 ad19420127bb0e2e5f7dc9c3cf9974ea06255565 SHA1 859aef314eb9ef5cbedad9dc53a818542baa17ec SHA256 59b000aa069e2a50398b31296ce5d663f98fc8d131bfd8f3d10e29b0a5379a45
+EBUILD gnustep-back-xlib-0.12.0.ebuild 1491 RMD160 cd84d6420de9fe0ab80860741a4fe290da1e844b SHA1 877e6e5d7603a4212ff3e0f87dd522c1f881c397 SHA256 516fc9ffc82b40b5acf03a633a28e84b7168e290e46bbb526decf4af5623f0ad
+MD5 554f60d7114547cd31f6d9e30295c028 gnustep-back-xlib-0.12.0.ebuild 1491
+RMD160 cd84d6420de9fe0ab80860741a4fe290da1e844b gnustep-back-xlib-0.12.0.ebuild 1491
+SHA256 516fc9ffc82b40b5acf03a633a28e84b7168e290e46bbb526decf4af5623f0ad gnustep-back-xlib-0.12.0.ebuild 1491
+MD5 cf80cac778c3848cc8dd1f617389e908 files/digest-gnustep-back-xlib-0.12.0 259
+RMD160 5a00fb2b38bc26cd0ab6207d8a6cc54131df701a files/digest-gnustep-back-xlib-0.12.0 259
+SHA256 64c8143d4971be1d442aa49dab5625fe4f97d01494debd86d539ab2c69cf76a8 files/digest-gnustep-back-xlib-0.12.0 259

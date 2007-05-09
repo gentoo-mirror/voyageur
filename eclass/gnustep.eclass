@@ -6,7 +6,6 @@ inherit gnustep-funcs eutils flag-o-matic
 
 DESCRIPTION="EClass designed to facilitate building GNUstep Apps, Frameworks, and Bundles on Gentoo."
 
-###########################################################################
 # IUSE variables across all GNUstep packages
 # ##### All GNUstep applications / libs get these
 # "debug"	- enable code for debugging; also nostrip
@@ -16,24 +15,9 @@ IUSE="debug profile doc"
 if use debug || use profile; then
 	RESTRICT="nostrip"
 fi
-###########################################################################
 
-###########################################################################
-# Internal variables
-#__GS_INSTALL_DOMAIN="GNUSTEP_SYSTEM_ROOT"
-#__GS_MAKE_EVAL=""
-#__GS_PREFIX="/usr/GNUstep"
-#__GS_SYSTEM_ROOT="/usr/GNUstep/System"
-#__GS_LOCAL_ROOT="/usr/GNUstep/Local"
-#__GS_NETWORK_ROOT="/usr/GNUstep/Network"
-#__GS_USER_DIR="~/GNUstep"
-#__GS_USER_DEFAULTS_DIR="~/GNUstep/Defaults"
-###########################################################################
-
-###########################################################################
-# Variables
+# Dependencies
 # ---------
-# ~ legend
 # (a) - append more data if needed
 # (n) - do not override without a good reason
 # (y) - override as appropriate per ebuild
@@ -47,36 +31,25 @@ fi
 #   + (n) GNUSTEP_CORE_DEPEND - packages needed to build any gnustep package
 #   + (n) DEBUG_DEPEND - packages needed to utilize .debug apps
 #   + (n) DOC_RDEPEND - packages needed to view docs
-###########################################################################
 DOC_DEPEND="doc? ( virtual/tetex
 	=dev-tex/latex2html-2002*
 	>=app-text/texi2html-1.64 )"
 GNUSTEP_CORE_DEPEND="virtual/libc
 	>=sys-devel/gcc-3.3.5
 	${DOC_DEPEND}"
-GS_DEPEND="gnustep-base/gnustep-env"
+GS_DEPEND=">=gnustep-base/gnustep-env-0.2"
 DEBUG_DEPEND="debug? ( >=sys-devel/gdb-6.0 )"
 DOC_RDEPEND="doc? ( virtual/man
 	>=sys-apps/texinfo-4.6 )"
 GS_RDEPEND="${GS_DEPEND}
 	${DEBUG_DEPEND}
 	${DOC_RDEPEND}"
-###########################################################################
 
-###########################################################################
 # Ebuild function overrides
 # -------------------------
 gnustep_pkg_setup() {
 	if test_version_info 3.3
 	then
-		#einfo "Using gcc 3.3*"
-		# gcc 3.3 doesn't support certain 3.4.1 options,
-		#  as well as having less specific -march options
-		replace-flags -march=pentium-m -march=pentium3
-		filter-flags -march=k8
-		filter-flags -march=athlon64
-		filter-flags -march=opteron
-
 		strip-unsupported-flags
 	elif test_version_info 3.4
 	then
@@ -106,6 +79,5 @@ gnustep_src_install() {
 gnustep_pkg_postinst() {
 	egnustep_package_config_info
 }
-###########################################################################
 
 EXPORT_FUNCTIONS pkg_setup src_compile src_install pkg_postinst
