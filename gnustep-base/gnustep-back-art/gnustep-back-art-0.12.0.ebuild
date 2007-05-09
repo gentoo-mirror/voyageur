@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-base/gnustep-back-art/gnustep-back-art-0.11.0.ebuild,v 1.1 2006/09/03 21:17:12 grobian Exp $
 
-inherit gnustep
+inherit gnustep2
 
 S=${WORKDIR}/gnustep-back-${PV}
 
@@ -69,7 +69,7 @@ src_compile() {
 src_install() {
 	egnustep_env
 
-	gnustep_src_install
+	gnustep2_src_install
 	cd ${S}
 	mkdir -p "${D}/$(egnustep_system_root)/Library/Fonts"
 	cp -pPR Fonts/*.nfont "${D}/$(egnustep_system_root)/Library/Fonts"

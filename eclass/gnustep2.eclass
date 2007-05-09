@@ -40,7 +40,7 @@ GS_RDEPEND="${GS_DEPEND}
 	${DOC_RDEPEND}"
 
 # Ebuild function overrides
-gnustep_pkg_setup() {
+gnustep2_pkg_setup() {
 	if test_version_info 3.3
 	then
 		strip-unsupported-flags
@@ -54,12 +54,12 @@ gnustep_pkg_setup() {
 	filter-flags -fomit-frame-pointer
 }
 
-gnustep_src_compile() {
+gnustep2_src_compile() {
 	egnustep_env
 	egnustep_make || die
 }
 
-gnustep_src_install() {
+gnustep2_src_install() {
 	egnustep_env
 	egnustep_install || die
 	if use doc ; then
@@ -74,7 +74,7 @@ gnustep_src_install() {
 	fi
 }
 
-gnustep_pkg_postinst() {
+gnustep2_pkg_postinst() {
 	# Informs user about existence of "convenience script"	
 	if [ -f ${FILESDIR}/config-${PN}.sh ]; then
 		einfo "Make sure to set happy defaults for this package by executing:"
@@ -85,7 +85,7 @@ gnustep_pkg_postinst() {
 
 
 ######################################################################################
-#TODO merge
+#TODO finish merge
 ######################################################################################
 
 # Prints out the dirname of GNUSTEP_SYSTEM_ROOT, i.e., "System" is installed
@@ -210,13 +210,13 @@ egnustep_user_dir() {
 egnustep_make() {
 	if [ -f ./[mM]akefile -o -f ./GNUmakefile ] ; then
 		local gs_make_opts="${1} messages=yes"
-		if use debug ; then
-			gs_make_opts="${gs_make_opts} debug=yes"
+		if ! use debug ; then
+			gs_make_opts="${gs_make_opts} debug=no"
 		fi
 		if use profile; then
 			gs_make_opts="${gs_make_opts} profile=yes"
 		fi
-		emake ${__GS_MAKE_EVAL} ${gs_make_opts} all || die "package make failed"
+		eval emake ${__GS_MAKE_EVAL} ${gs_make_opts} all || die "package make failed"
 	else
 		die "no Makefile found"
 	fi
@@ -227,13 +227,13 @@ egnustep_make() {
 egnustep_install() {
 	if [ -f ./[mM]akefile -o -f ./GNUmakefile ] ; then
 		local gs_make_opts="${1} messages=yes"
-		if use debug ; then
-			gs_make_opts="${gs_make_opts} debug=yes"
+		if ! use debug ; then
+			gs_make_opts="${gs_make_opts} debug=no"
 		fi
 		if use profile; then
 			gs_make_opts="${gs_make_opts} profile=yes"
 		fi
-		emake ${__GS_MAKE_EVAL} ${gs_make_opts} install || die "package install failed"
+		eval emake ${__GS_MAKE_EVAL} ${gs_make_opts} install || die "package install failed"
 	else
 		die "no Makefile found"
 	fi
@@ -247,14 +247,14 @@ egnustep_doc() {
 	cd ${S}/Documentation
 	if [ -f ./[mM]akefile -o -f ./GNUmakefile ] ; then
 		local gs_make_opts="${1} messages=yes"
-		if use debug ; then
-			gs_make_opts="${gs_make_opts} debug=yes"
+		if ! use debug ; then
+			gs_make_opts="${gs_make_opts} debug=no"
 		fi
 		if use profile; then
 			gs_make_opts="${gs_make_opts} profile=yes"
 		fi
-		emake ${__GS_MAKE_EVAL} ${gs_make_opts} all || die "doc make failed"
-		emake ${__GS_MAKE_EVAL} ${gs_make_opts} install || die "doc install failed"
+		eval emake ${__GS_MAKE_EVAL} ${gs_make_opts} all || die "doc make failed"
+		eval emake ${__GS_MAKE_EVAL} ${gs_make_opts} install || die "doc install failed"
 	fi
 	cd ..
 	return 0

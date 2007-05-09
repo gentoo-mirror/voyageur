@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-base/gnustep-base/gnustep-base-1.13.0-r1.ebuild,v 1.2 2007/03/15 17:33:32 grobian Exp $
 
-inherit gnustep autotools
+inherit gnustep2 autotools
 
 DESCRIPTION="The GNUstep Base Library is a library of general-purpose, non-graphical Objective C objects."
 
@@ -102,8 +102,6 @@ src_install() {
 			|| die "doc install has failed"
 		cd ..
 	fi
-
-	newinitd "${FILESDIR}"/gnustep.initd-1.13.0 gnustep
 
 	dodir /etc/revdep-rebuild
 	sed -e 's|$GNUSTEP_SEARCH_DIRS|'"$GNUSTEP_PATHLIST"'|' \

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-base/gnustep-back-xlib/gnustep-back-xlib-0.11.0.ebuild,v 1.1 2007/03/26 18:44:07 grobian Exp $
 
-inherit gnustep
+inherit gnustep2
 
 S=${WORKDIR}/gnustep-back-${PV}
 
@@ -54,7 +54,7 @@ src_compile() {
 src_install() {
 	egnustep_env
 
-	gnustep_src_install
+	gnustep2_src_install
 
 	dosym \
 		"$(egnustep_system_root)/Library/Bundles/libgnustep-xlib-012.bundle" \

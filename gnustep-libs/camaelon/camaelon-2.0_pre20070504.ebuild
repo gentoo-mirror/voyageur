@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-libs/camaelon/camaelon-2.0_pre20060324.ebuild,v 1.1 2006/03/26 10:49:57 grobian Exp $
 
-inherit gnustep
+inherit gnustep2
 
 S=${WORKDIR}/${PN/c/C}
 
@@ -23,7 +23,7 @@ RDEPEND="${GS_RDEPEND}"
 egnustep_install_domain "System"
 
 src_install() {
-	gnustep_src_install || die "install failed"
+	gnustep2_src_install || die "install failed"
 
 	# install themes
 	mkdir -p "${D}$(egnustep_system_root)/Library/Themes"

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-base/mknfonts/mknfonts-0.5.ebuild,v 1.13 2005/08/25 18:46:23 swegener Exp $
 
-inherit eutils gnustep
+inherit eutils gnustep2
 
 DESCRIPTION="Provides the tool to create .nfont packages suitable for use with gnustep-back-art."
 

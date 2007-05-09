@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnustep-base/gnustep-make/gnustep-make-1.13.0.ebuild,v 1.3 2007/03/18 01:33:13 genone Exp $
 
-inherit gnustep
+inherit gnustep2
 
 DESCRIPTION="GNUstep Makefile Package"
 
@@ -21,7 +21,7 @@ RDEPEND="${DEPEND}
 egnustep_install_domain "System"
 
 pkg_setup() {
-	gnustep_pkg_setup
+	gnustep2_pkg_setup
 
 	if ! built_with_use sys-devel/gcc objc; then
 		ewarn "gcc must be compiled with Objective-C support! See the objc USE flag."
@@ -52,9 +52,7 @@ src_compile() {
 	myconf="--prefix=`egnustep_prefix`"
 	use non-flattened && myconf="$myconf --disable-flattened --enable-multi-platform"
 	myconf="$myconf --with-tar=/bin/tar"
-	myconf="$myconf --with-local-root=`egnustep_local_root`"
-	myconf="$myconf --with-network-root=`egnustep_network_root`"
-	myconf="$myconf --with-user-root=`egnustep_user_root`"
+	myconf="$myconf --with-layout=gnustep"
 	econf $myconf || die "configure failed"
 
 	egnustep_make
