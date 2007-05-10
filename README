@@ -1,7 +1,6 @@
 Welcome!
 
 This overlay has:
-- WIP on GNUstep ebuilds (version bumps, cairo backend, ...)
 - existing ebuilds keyworded ~amd64
 - ebuilds from bugzilla not yet accepted
 - ebuilds tuned for the GP2X handheld console (~arm keyworded)
