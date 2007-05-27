@@ -21,12 +21,14 @@ QA_EXECSTACK="${GAMES_BINDIR:1}/${PN}"
 # So, if not selected through proper USEs, the default is SDL,
 # without opengl (vavoom can run in software-mode only).
 # To enable it, enable proper USE.
-# OpenGL is the normally-desired hardware renderer, selected on command-line.
+# OpenGL is the normally-desired hardware renderer, selected on command-line
+# (through "-opengl" switch). This switch is also added to the desktop entry,
+# if "opengl" USE flag is enabled
 
 SDLDEPEND=">=media-libs/libsdl-1.2
 	media-libs/sdl-mixer"
 ALLEGDEPEND=">=media-libs/allegro-4.0"
-OPENGLDEPEND="opengl? virtual/opengl
+OPENGLDEPEND="opengl? ( virtual/opengl )
 	sdl? ( ${SDLDEPEND} )
 	allegro? ( media-libs/allegrogl )
 	!sdl? ( !allegro? ( ${SDLDEPEND} ) )"
@@ -42,8 +44,9 @@ DEPEND="media-libs/libpng
 	mikmod? ( media-libs/libmikmod )
 	openal? ( media-libs/openal )
 	external-glbsp? ( games-util/glbsp )"
-RDEPEND="allegro? media-sound/timidity++"
-PDEPEND="models? ( games-fps/vavoom-models )
+RDEPEND="${DEPEND}
+	allegro? ( media-sound/timidity++ )"
+PDEPEND="models? ( >=games-fps/vavoom-models-1.4 )
 	music? ( games-fps/vavoom-music )
 	textures? ( games-fps/vavoom-textures )"
 
@@ -156,7 +159,7 @@ pkg_setup() {
 		ewarn "'opengl' USE flag disabled. OpenGL is recommended, for best graphics."
 	fi
 
-	# User wants external music? Vorbis support is needed
+	# Does user want external music? Vorbis support is needed
 	if use music && ! use vorbis ; then
 		echo
 		eerror "Ogg/Vorbis support is required for external music playing"
@@ -177,8 +180,16 @@ build_client() {
 }
 
 src_unpack() {
-	unpack ${A}
+	unpack ${A} || die "unpack failed"
 	cd "${S}"
+
+	# Fix small issue with gcc-4.1.2
+	epatch ${FILESDIR}/${P}_gcc-4.1.2_fix.diff
+	
+	# Small fix for AMD64 platform, taken from upstream SVN
+	if use amd64; then
+		epatch ${FILESDIR}/${P}_amd64_fix.diff || die "epatch failed"
+	fi
 
 	# Set shared directory
 	sed -i \
@@ -227,6 +238,7 @@ src_compile() {
 		$(use_enable debug) \
 		$(use_enable debug zone-debug) \
 		--with-iwaddir="${dir}" \
+		--disable-dependency-tracking \
 		|| die "egamesconf failed"
 
 	# Parallel compiling doesn't work for now :(
@@ -234,6 +246,8 @@ src_compile() {
 }
 
 src_install() {
+	local de_cmd="${PN}"
+
 	emake DESTDIR="${D}" install || die "emake install failed"
 	rm -f "${D}/${GAMES_BINDIR}"/*
 
@@ -243,8 +257,10 @@ src_install() {
 	doicon source/${PN}.png || die "doicon failed"
 
 	if build_client ; then
+		# Enable OpenGL in desktop entry, if relevant USE flag is enabled
+		use opengl && de_cmd="${PN} -opengl"
 		dogamesbin ${PN} || die "dogamesbin ${PN} failed"
-		make_desktop_entry ${PN} "Vavoom"
+		make_desktop_entry "${de_cmd}" "Vavoom"
 	fi
 
 	if use dedicated ; then

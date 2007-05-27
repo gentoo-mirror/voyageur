@@ -1,0 +1,16 @@
+--- source/d_part.cpp	2007-01-10 22:16:05.000000000 +0100
++++ source/d_part.cpp	2007-05-24 00:08:06.000000000 +0200
+@@ -45,11 +45,11 @@
+ 
+ // PUBLIC DATA DEFINITIONS -------------------------------------------------
+ 
+-extern "C" {
+-
+ float			xscaleshrink;
+ float			yscaleshrink;
+ 
++extern "C" {
++
+ int				d_particle_right;
+ int				d_particle_top;
+ 

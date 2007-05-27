@@ -1,0 +1,99 @@
+--- source/vclass.h	2007/04/17 21:35:04	2156
++++ source/vclass.h	2007/05/07 16:48:35	2237
+@@ -375,6 +375,7 @@
+ 	VClass*			ParentClass;
+ 
+ 	vint32			ClassSize;
++	vint32			ClassUnalignedSize;
+ 	vuint32			ClassFlags;
+ 	VMethod**		ClassVTable;
+ 	void			(*ClassConstructor)();
+--- source/vclass.cpp	2007/04/27 18:01:49	2191
++++ source/vclass.cpp	2007/05/18 16:27:42	2241
+@@ -27,6 +27,20 @@
+ #include "progdefs.h"
+ #include "network.h"
+ 
++class DummyClass1 : public VVirtualObjectBase
++{
++public:
++	void*		Pointer;
++	vuint8		Byte1;
++	virtual void Dummy() = 0;
++};
++
++class DummyClass2 : public DummyClass1
++{
++public:
++	vuint8		Byte2;
++};
++
+ bool					VMemberBase::GObjInitialised;
+ VClass*					VMemberBase::GClasses;
+ TArray<VMemberBase*>	VMemberBase::GMembers;
+@@ -2353,6 +2367,7 @@
+ , LinkNext(0)
+ , ParentClass(0)
+ , ClassSize(0)
++, ClassUnalignedSize(0)
+ , ClassFlags(0)
+ , ClassVTable(0)
+ , ClassConstructor(0)
+@@ -2388,6 +2403,7 @@
+ , LinkNext(0)
+ , ParentClass(AParent)
+ , ClassSize(ASize)
++, ClassUnalignedSize(ASize)
+ , ClassFlags(AClassFlags)
+ , ClassVTable(0)
+ , ClassConstructor(ACtor)
+@@ -2477,6 +2493,8 @@
+ 		delete[] Defaults;
+ 		Defaults = NULL;
+ 	}
++	StatesLookup.Clear();
++	RepInfos.Clear();
+ 	unguard;
+ }
+ 
+@@ -2849,10 +2867,7 @@
+ 		return;
+ 	}
+ 
+-	int PrevSize = ClassSize;
+-	int size = ParentClass ? ParentClass->ClassSize : 0;
+ 	int numMethods = ParentClass ? ParentClass->ClassNumMethods : 0;
+-	VField* PrevField = NULL;
+ 	for (int i = 0; i < GMembers.Num(); i++)
+ 	{
+ 		if (GMembers[i]->MemberType != MEMBER_Method ||
+@@ -2877,6 +2892,21 @@
+ 		}
+ 		M->VTableIndex = MOfs;
+ 	}
++
++	VField* PrevField = NULL;
++	int PrevSize = ClassSize;
++	int size = 0;
++	if (ParentClass)
++	{
++		//	GCC has a strange behavior of starting to add fields in subclasses
++		// in a class that has virtual methods on unaligned parent size offset.
++		// In other cases and in other compilers it starts on aligned parent
++		// class size offset.
++		if (sizeof(DummyClass1) == sizeof(DummyClass2))
++			size = ParentClass->ClassUnalignedSize;
++		else
++			size = ParentClass->ClassSize;
++	}
+ 	for (VField* fi = Fields; fi; fi = fi->Next)
+ 	{
+ 		if (fi->Type.Type == ev_bool && PrevField &&
+@@ -2904,6 +2934,7 @@
+ 		}
+ 		PrevField = fi;
+ 	}
++	ClassUnalignedSize = size;
+ 	size = (size + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
+ 	ClassSize = size;
+ 	ClassNumMethods = numMethods;
