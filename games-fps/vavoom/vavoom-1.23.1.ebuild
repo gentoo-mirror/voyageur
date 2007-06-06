@@ -1,4 +1,4 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -11,8 +11,8 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="allegro debug dedicated external-glbsp flac mad mikmod models \
-music openal opengl sdl textures tools vorbis"
+IUSE="allegro debug dedicated external-glbsp flac mad mikmod models music
+openal opengl sdl textures tools vorbis"
 
 QA_EXECSTACK="${GAMES_BINDIR:1}/${PN}"
 
@@ -52,41 +52,12 @@ PDEPEND="models? ( >=games-fps/vavoom-models-1.4 )
 
 dir=${GAMES_DATADIR}/${PN}
 
-graphic_ok() {
-	! use sdl && use allegro && built_with_use media-libs/allegro X && return 0
-	built_with_use media-libs/libsdl X && return 0
-	return 1
-}
-
-sound_ok() {
-	! use sdl && use allegro && built_with_use media-libs/allegro alsa && return 0
-	built_with_use media-libs/libsdl alsa && return 0
-	return 1
-}
-
-music_ok() {
-	use allegro && return 0
-	built_with_use media-libs/sdl-mixer timidity && return 0
-	return 1
-}
-
-opengl_ok() {
-	built_with_use media-libs/libsdl opengl && return 0
-	return 1
-}
-
 pkg_setup() {
+	local backend="media-libs/libsdl"
 
-	local \
-		graphic="(SDL)"
-		sound="(SDL + ALSA)"
-		music="(SDL-mixer + Timidity)"
-		opengl="(SDL + sys. OpenGL impl.)"
-
-	! use sdl && use allegro && graphic="(Allegro)"
-	! use sdl && use allegro && sound="(Allegro + ALSA)"
-	! use sdl && use allegro && music="(Allegro + Timidity)"
-	! use sdl && use allegro && opengl="(AllegroGL)"
+	if ! use sdl && use allegro ; then
+		backend="media-libs/allegro"
+	fi
 
 	games_pkg_setup
 
@@ -96,9 +67,7 @@ pkg_setup() {
 		echo
 		ewarn "Both 'allegro' and 'sdl' USE flags enabled"
 		ewarn "Set default to SDL"
-	fi
-
-	if ! use sdl && ! use allegro ; then
+	elif ! use sdl && ! use allegro ; then
 		ewarn "Both 'sdl' and 'allegro' USE flags disabled"
 		ewarn "Set default to SDL"
 	fi
@@ -108,54 +77,40 @@ pkg_setup() {
 	echo
 	einfo "Doing some sanity check..."
 
-	if graphic_ok ; then
-		einfo "Graphic support is OK...${graphic}"
-	else
+	# Graphic check
+	if ! built_with_use ${backend} X ; then
 		echo
-		eerror "Graphic support is not configured properly!"
-		if use allegro ; then
-			eerror "Please rebuild allegro with 'X' USE flag enabled"
-		else
-			eerror "Please rebuild libsdl with 'X' USE flag enabled"
-		fi
+		eerror "Software Graphic support is not configured properly!"
+		eerror "Please rebuild ${backend} with 'X' USE flag enabled"
 		die "graphic support error"
 	fi
 
-	if sound_ok ; then
-		einfo "Sound support is OK...${sound}"
-	else
+	# Sound check
+	if ! built_with_use ${backend} alsa ; then
 		echo
 		eerror "Sound support is not configured properly!"
-		if use allegro ; then
-			eerror "Please rebuild allegro with 'alsa' USE flag enabled"
-		else
-			eerror "Please rebuild libsdl with 'alsa' USE flag enabled"
-		fi
+		eerror "Please rebuild ${backend} with 'alsa' USE flag enabled"
 		die "sound support error"
 	fi
 
-	if music_ok ; then
-		einfo "Music support is OK...${music}"
-	else
+	# Music check
+	if ! use allegro && ! built_with_use media-libs/sdl-mixer timidity ; then
 		echo
-		eerror "Music support is not configured properly!"
+		eerror "MIDI Music support is not configured properly!"
 		eerror "Please rebuild sdl-mixer with USE 'timidity' enabled!"
 		die "music support error"
 	fi
 
-	# OpenGL support is ok? (  check only against SDL, Allegro is always OK
-	# because pull in AllegroGL
-
+	# OpenGL check
 	if use opengl ; then
-		if ( ! use sdl && use allegro ) || opengl_ok ; then
-			einfo "OpenGL support is OK...${opengl}"
-		else
-		echo
+		if [ "${backend}" == "media-libs/libsdl" ] && ! built_with_use ${backend} opengl ; then
+			echo
 			eerror "OpenGL support is not configured properly!"
-			eerror "Please rebuild libsdl with 'opengl' USE flag enabled"
+			eerror "Please rebuild ${backend} with 'opengl' USE flag enabled"
 			die "opengl support error"
 		fi
 	else
+		echo
 		ewarn "'opengl' USE flag disabled. OpenGL is recommended, for best graphics."
 	fi
 
@@ -167,29 +122,13 @@ pkg_setup() {
 		die "external music support error"
 	fi
 
-	einfo "Ok, let's build!"
 	echo
-}
-
-build_client() {
-	if use allegro || use opengl || use sdl || ! use dedicated ; then
-		# Build default client
-		return 0
-	fi
-	return 1
+	einfo "All is OK, let's build!"
 }
 
 src_unpack() {
-	unpack ${A} || die "unpack failed"
+	unpack ${A}
 	cd "${S}"
-
-	# Fix small issue with gcc-4.1.2
-	epatch ${FILESDIR}/${P}_gcc-4.1.2_fix.diff
-	
-	# Small fix for AMD64 platform, taken from upstream SVN
-	if use amd64; then
-		epatch ${FILESDIR}/${P}_amd64_fix.diff || die "epatch failed"
-	fi
 
 	# Set shared directory
 	sed -i \
@@ -199,7 +138,6 @@ src_unpack() {
 	eautoreconf
 
 	# Set executable filenames
-	local m
 	for m in $(find . -type f -name Makefile.in) ; do
 		sed -i \
 			-e "s:MAIN_EXE = @MAIN_EXE@:MAIN_EXE=${PN}:" \
@@ -210,24 +148,23 @@ src_unpack() {
 
 src_compile() {
 	local \
-		client="--disable-client"
-		allegro="--without-allegro"
+		allegro="--without-allegro" \
 		sdl="--without-sdl"
-		opengl="--without-opengl"
-	if build_client ; then
-		client="--enable-client"
-		use sdl && sdl="--with-sdl"
-		! use sdl && use allegro && allegro="--with-allegro"
-		use opengl && opengl="--with-opengl"
+
+	# Sdl is the default, unless sdl=off & allegro=on
+	if ! use sdl && use allegro ; then
+		allegro="--with-allegro"
+	else
+		sdl="--with-sdl"
 	fi
 
 	use debug && append-flags -g2
 
 	egamesconf \
-		${client} \
+		--enable-client \
 		${sdl} \
 		${allegro} \
-		${opengl} \
+		$(use_with opengl) \
 		$(use_with openal) \
 		$(use_with external-glbsp) \
 		$(use_with vorbis) \
@@ -256,23 +193,21 @@ src_install() {
 
 	doicon source/${PN}.png || die "doicon failed"
 
-	if build_client ; then
-		# Enable OpenGL in desktop entry, if relevant USE flag is enabled
-		use opengl && de_cmd="${PN} -opengl"
-		dogamesbin ${PN} || die "dogamesbin ${PN} failed"
-		make_desktop_entry "${de_cmd}" "Vavoom"
-	fi
+	# Enable OpenGL in desktop entry, if relevant USE flag is enabled
+	use opengl && de_cmd="${PN} -opengl"
+	dogamesbin ${PN} || die "dogamesbin ${PN} failed"
+	make_desktop_entry "${de_cmd}" "Vavoom"
 
 	if use dedicated ; then
 		dogamesbin ${PN}-ded || die "dogamesbin ${PN}-ded failed"
 	fi
 
-	dodoc docs/${PN}.txt || die
+	dodoc docs/${PN}.txt || die "dodoc vavoom.txt failed"
 
 	if use tools; then
 		# The tools are always built
 		dobin utils/bin/{acc,fixmd2,vcc,vlumpy} || die "dobin utils failed"
-		dodoc utils/vcc/vcc.txt || die
+		dodoc utils/vcc/vcc.txt || die "dodoc vcc.txt failed"
 	fi
 
 	prepgamesdirs
