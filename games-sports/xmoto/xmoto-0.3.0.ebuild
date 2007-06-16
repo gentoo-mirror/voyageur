@@ -21,6 +21,7 @@ RDEPEND="media-libs/jpeg
 	media-libs/libpng
 	media-libs/libsdl
 	media-libs/sdl-mixer
+	media-libs/sdl-ttf
 	net-misc/curl
 	>=dev-db/sqlite-3
 	dev-lang/lua
