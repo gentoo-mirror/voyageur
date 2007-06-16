@@ -11,13 +11,13 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE="nls"
 
 RDEPEND="virtual/opengl
 	virtual/glu
 	media-libs/libsdl
-	>=dev-scheme/guile-1.6
+	>=dev-scheme/guile-1.8
 	media-libs/sdl-mixer
 	media-libs/sdl-image
 	media-libs/sdl-ttf
