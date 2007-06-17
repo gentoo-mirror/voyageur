@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils
+inherit perl-module
 
 DESCRIPTION="A TV program schedule viewer and a Personal Video Recorder GUI"
 HOMEPAGE="http://gshowtv.sourceforge.net"
@@ -19,18 +19,7 @@ RDEPEND="dev-lang/perl
 	dev-perl/glib-perl
 	dev-perl/gtk2-perl
 	dev-perl/gtk2-gladexml
-	dev-perl/Locale-gettext"
+	dev-perl/Locale-gettext
+	dev-perl/libintl-perl"
 
-src_unpack()
-{
-	unpack ${A}
-	cd ${S}
-	sed -i "s:[^#]install -m 777:#install -m 777:" Makefile
-}
-
-src_install()
-{
-	emake PREFIX=${D}/usr install
-	dodir /var/lib/${PN}
-	chmod 777 ${D}/var/lib/${PN}
-}
+S=${WORKDIR}/${PN}
