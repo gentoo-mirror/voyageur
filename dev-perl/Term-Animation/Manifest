@@ -1,8 +1,2 @@
 DIST Term-Animation-2.1.tar.gz 17369 RMD160 2fb8063a0fd2ad58a166d1db89e1d08d83460218 SHA1 ca75b8a28c30f4193a63f9ece70ac077fa3f3015 SHA256 7ab2cfe2dee77f6b2e569f0540ebbbb430691b97ccc3a1424e46f9e17d571829
 EBUILD Term-Animation-2.1.ebuild 429 RMD160 3868480c0f17b2cfb799eaccc6cb8bd80083844f SHA1 0b7d53bbe81eb49594380d3f5d772a72f373bf58 SHA256 93aadb582af21b06ac96ff9027e1e94500905eac6ffa36a7855b8b1d3346fdf7
-MD5 bcaffabd449ba6e1314c5049e6cf6f10 Term-Animation-2.1.ebuild 429
-RMD160 3868480c0f17b2cfb799eaccc6cb8bd80083844f Term-Animation-2.1.ebuild 429
-SHA256 93aadb582af21b06ac96ff9027e1e94500905eac6ffa36a7855b8b1d3346fdf7 Term-Animation-2.1.ebuild 429
-MD5 393e0f3be19bfb0cb108c2a0e3bc56c7 files/digest-Term-Animation-2.1 253
-RMD160 324ed21d415538f51c550601cf6a5d12a54e8fb6 files/digest-Term-Animation-2.1 253
-SHA256 d5eed9d0dc9d7ecde06e11f8db646becf63876f04ec98e1683e0e95e7495417d files/digest-Term-Animation-2.1 253

@@ -1,8 +1,2 @@
 DIST greycstoration-0.2.0.tar.bz2 193064 RMD160 c4e1916f937f515696b5b67d635f60651290e855 SHA1 510459449c86deb90bd0705900f08ca28fc8551e SHA256 aa2a2f5b81134a02caf056085db22526bb3962d4deccb1885fa96395e37933a9
 EBUILD gimp-greycstoration-0.2.0.ebuild 684 RMD160 ea9c397d83aede94a8c867354bfd6223f5cafb77 SHA1 a4266d085eda1a1c823d7112856a2a07a1b2ceef SHA256 66f5947b9ebb2a7b3ef349116510b3a58f1ad60b83bdcc6b10981d61e912e31f
-MD5 21c9294f44cd0a5a5ac725c5f48f1536 gimp-greycstoration-0.2.0.ebuild 684
-RMD160 ea9c397d83aede94a8c867354bfd6223f5cafb77 gimp-greycstoration-0.2.0.ebuild 684
-SHA256 66f5947b9ebb2a7b3ef349116510b3a58f1ad60b83bdcc6b10981d61e912e31f gimp-greycstoration-0.2.0.ebuild 684
-MD5 6b18be3bc12b88637142e002324e9733 files/digest-gimp-greycstoration-0.2.0 265
-RMD160 9d6d3396e0757dcad7f5a29b574335ed597e49f7 files/digest-gimp-greycstoration-0.2.0 265
-SHA256 d95504dc26f98381fc6bfc30adf4be9dc384f06430a8f5692cfb6658b15e3c7c files/digest-gimp-greycstoration-0.2.0 265

@@ -1,3 +1,2 @@
-MD5 f1214fec18f4eba31c8e305835d3958b fortune-mod-french-0.02-r1.ebuild 987
-MD5 39e6465befc9978db2d55f8092499ba2 files/digest-fortune-mod-french-0.02-r1 68
-MD5 07c2a2d56853bb02d8b48f31a0c6bf6e files/fortunes-fr-0.02.tar.gz 239163
+DIST fortunes-fr-0.02.tar.gz 239163 RMD160 badcc2c8f9f9b382a83e862b689b57ef698d68f3 SHA1 5816867a4200053a6a3dafe9b76d444fae74c6eb SHA256 8fbcd4da893f0bc9308e44fd1fa19700036cfdb26e4745c8d0e0202e9725a9e6
+EBUILD fortune-mod-french-0.02-r1.ebuild 987 RMD160 617942c69cbd5ace6274ab6d9556b8071e69aeba SHA1 02e95e04ba8a25ccd7f15cdb7cf77de0a1ba8a7b SHA256 c12ea5ec23fb32becf7f03ab394aa3a75ee7ea1f0cc702de07b0dba8f712910c
