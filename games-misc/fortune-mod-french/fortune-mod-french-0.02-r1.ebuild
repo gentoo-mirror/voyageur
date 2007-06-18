@@ -7,7 +7,7 @@ inherit eutils
 
 MY_P="fortunes-fr-${PV}"
 DESCRIPTION="set of fortunes in french"
-DESCRIPTION_FR="Des fortunes (citations) en français"
+DESCRIPTION_FR="Des fortunes (citations) en francais"
 
 HOMEPAGE="http://www.fortunes-fr.org/"
 SRC_URI="http://zugaina.free.fr/distfiles/${MY_P}.tar.gz"

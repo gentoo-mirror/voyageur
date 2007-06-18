@@ -22,8 +22,8 @@ ECVS_MODULE="renouveau"
 IUSE=""
 
 DEPEND="x11-drivers/nvidia-drivers
-        x11-libs/libXvMC
-        media-libs/libsdl"
+	x11-libs/libXvMC
+	media-libs/libsdl"
 
 RESTRICT="strip"
 

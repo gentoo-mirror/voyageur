@@ -41,7 +41,7 @@ src_install() {
 	#Don't know how to change this before
 	sed -i 's/\$(LIBDIR)\/EmiClock/$(DESTDIR)$(LIBDIR)\/EmiClock/' Makefile
 	make DESTDIR="${D}" install || die "install failed"
-	
+
 	mv ${D}/usr/bin/emiclock ${D}/usr/bin/emiclock-bin
 	dobin ${FILESDIR}/emiclock
 

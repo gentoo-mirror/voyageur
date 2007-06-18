@@ -8,9 +8,9 @@ DESCRIPTION="Animated ASCII Art support for Perl"
 HOMEPAGE="http://search.cpan.org/~kbaucom/Term-Animation/"
 SRC_URI="http://search.cpan.org/CPAN/authors/id/K/KB/KBAUCOM/${P}.tar.gz"
 
-LICENSE="Unknown"
+LICENSE="Artistic"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="ncurses"
 
-RDEPEND="ncurses? (dev-perl/Curses)"
+RDEPEND="ncurses? ( dev-perl/Curses )"

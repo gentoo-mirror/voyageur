@@ -21,12 +21,12 @@ RDEPEND=">=dev-libs/glib-1.2
 	=sys-libs/zlib-1*
 	net-misc/wget
 	x11-misc/imake
-	!amd64? (games-emulation/psemu-peopsspu
-	|| (
-		opengl? ( games-emulation/psemu-gpupetemesagl )
-		games-emulation/psemu-peopssoftgpu
-	))
-	amd64? (app-emulation/emul-linux-x86-gtklibs)"
+	!amd64? ( games-emulation/psemu-peopsspu
+		|| (
+			opengl? ( games-emulation/psemu-gpupetemesagl )
+			games-emulation/psemu-peopssoftgpu
+		) )
+	amd64? ( app-emulation/emul-linux-x86-gtklibs )"
 
 S=${WORKDIR}
 
