@@ -5,7 +5,7 @@
 inherit autotools eutils flag-o-matic games
 
 DESCRIPTION="Advanced source port for Doom/Heretic/Hexen/Strife"
-HOMEPAGE="http://www.vavoom-engine.com"
+HOMEPAGE="http://www.vavoom-engine.com/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -127,7 +127,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	unpack ${A}
+	unpack "${A}"
 	cd "${S}"
 
 	# Set shared directory
@@ -178,15 +178,18 @@ src_compile() {
 		--disable-dependency-tracking \
 		|| die "egamesconf failed"
 
-	# Parallel compiling doesn't work for now :(
-	emake -j1 || die "emake failed"
+	# Parallel compiling seems to work (tested on 1.24)
+	# I hope it would be true :P (in case i'll re-enable it later)
+	emake || die "emake failed"
 }
 
 src_install() {
 	local de_cmd="${PN}"
 
 	emake DESTDIR="${D}" install || die "emake install failed"
-	rm -f "${D}/${GAMES_BINDIR}"/*
+
+	# Remove unwanted wrapper scripts
+	rm -f "${D}/${GAMES_BINDIR}/${PN}*"
 
 	# Remove unneeded icon
 	rm -f "${D}/${dir}/${PN}.png"
@@ -195,10 +198,12 @@ src_install() {
 
 	# Enable OpenGL in desktop entry, if relevant USE flag is enabled
 	use opengl && de_cmd="${PN} -opengl"
+	# Install properly main game binary exe
 	dogamesbin ${PN} || die "dogamesbin ${PN} failed"
 	make_desktop_entry "${de_cmd}" "Vavoom"
 
 	if use dedicated ; then
+		# Install properly dedicated server binary exe
 		dogamesbin ${PN}-ded || die "dogamesbin ${PN}-ded failed"
 	fi
 
