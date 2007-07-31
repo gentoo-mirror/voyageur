@@ -163,13 +163,6 @@ pkg_setup() {
 
 }
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	epatch "${FILESDIR}/${PN}-2.0.0-cchar_t-undeclared.patch"
-}
-
 src_compile() {
 	# Stabilize things, for your own good
 	strip-flags
