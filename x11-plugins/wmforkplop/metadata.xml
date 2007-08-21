@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>desktop-dock</herd>
+	<longdescription>
+		wmtop is a blend of wmhdplop and wmtop. It monitors the forking activity of the kernel and displays a list of the most cpu-consuming processes. 
+	</longdescription>
+</pkgmetadata>
