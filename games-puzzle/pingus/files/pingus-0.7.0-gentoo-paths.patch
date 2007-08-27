@@ -1,0 +1,11 @@
+--- src/pingus_main.cpp	2007-08-25 18:52:25.000000000 +0200
++++ src/pingus_main.cpp	2007-08-25 18:51:11.000000000 +0200
+@@ -622,7 +622,7 @@
+     }
+   
+   std::string data_path = br_find_prefix("data");
+-  data_path += "/share/pingus/data/";
++  data_path = "/usr/share/games/pingus/data";
+   //std::cout << "DataPath: " << data_path << std::endl;
+   path_manager.add_path(data_path);
+   path_manager.add_path("data");

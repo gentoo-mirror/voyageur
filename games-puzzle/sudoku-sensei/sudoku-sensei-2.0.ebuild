@@ -28,6 +28,8 @@ src_compile() {
 
 src_install() {
 	games_make_wrapper SudokuSensei ./SudokuSensei "${GAMES_DATADIR}"/${PN}
+	#ugly... but games group needs write access on some files
+	insopts -m664
 	insinto "${GAMES_DATADIR}"/${PN}
 	doins -r license.txt doc images language saves system|| die "doins failed"
 	exeinto "${GAMES_DATADIR}"/${PN}
