@@ -17,6 +17,14 @@ DEPEND="$(qt4_min_version 4.2)"
 
 S=${WORKDIR}/SudokuSenseiSources
 
+src_unpack() {
+	unpack ${A}
+	cd ${S}
+	
+	sed -i 's/"SAVE"/"save"/g' SudokuView.cpp
+}
+
+
 src_compile() {
 	qmake -project SudokuSensei.pro || die "qmake project failed"
 	qmake SudokuSensei.pro || die "qmake failed"
