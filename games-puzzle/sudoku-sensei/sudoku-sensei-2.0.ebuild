@@ -17,14 +17,6 @@ DEPEND="$(qt4_min_version 4.2)"
 
 S=${WORKDIR}/SudokuSenseiSources
 
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-	
-	sed -i 's/"SAVE"/"save"/g' SudokuView.cpp
-}
-
-
 src_compile() {
 	qmake -project SudokuSensei.pro || die "qmake project failed"
 	qmake SudokuSensei.pro || die "qmake failed"
@@ -36,11 +28,14 @@ src_compile() {
 
 src_install() {
 	games_make_wrapper SudokuSensei ./SudokuSensei "${GAMES_DATADIR}"/${PN}
-	#ugly... but games group needs write access on some files
-	insopts -m664
 	insinto "${GAMES_DATADIR}"/${PN}
 	doins -r license.txt doc images language saves system|| die "doins failed"
 	exeinto "${GAMES_DATADIR}"/${PN}
 	doexe SudokuSensei || die "doexe failed"
 	prepgamesdirs
+}
+
+pkg_postinst() {
+	#ugly... but games group needs write access on some files
+	chmod -R g+w "${GAMES_DATADIR}"/${PN}/
 }
