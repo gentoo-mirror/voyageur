@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils games
+inherit games
 
 DESCRIPTION="free Lemmings clone"
 HOMEPAGE="http://pingus.seul.org/"
@@ -21,20 +21,15 @@ RDEPEND="media-libs/libsdl
 	dev-games/physfs"
 
 DEPEND="${RDEPEND}
-	dev-util/scons"
-
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-	epatch "${FILESDIR}"/pingus-${PV}-gentoo-paths.patch
-}
+	>=dev-util/scons-0.97"
 
 src_compile() {
 	scons ${MAKEOPTS} CXXFLAGS="${CXXFLAGS}" PREFIX=/usr || die "scons failed"
 }
 
 src_install() {
-	dogamesbin ${PN} || die "dogamesbin failed"
+	newgamesbin ${PN} ${PN}-bin|| die "dogamesbin failed"
+	games_make_wrapper ${PN} "${PN}-bin --datadir ${GAMES_DATADIR}/${PN}/data"
 	dodoc AUTHORS NEWS README TODO || die "dodoc failed"
 
 	cd ${WORKDIR}/${P}/data
