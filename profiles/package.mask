@@ -1,0 +1,2 @@
+# SVN live ebuild
+=games-arcade/blobby2-9999
