@@ -1,0 +1,17 @@
+diff --git a/config/dbus.c b/config/dbus.c
+index c6f4af0..7eabcb9 100644
+--- a/config/dbus.c
++++ b/config/dbus.c
+@@ -353,8 +353,10 @@ connect_hook(DBusConnection *connection, void *data)
+ 
+     dbus_error_init(&error);
+ 
+-    if (!dbus_bus_request_name(info->connection, info->busname,
+-                               0, &error)) {
++    dbus_bus_request_name(info->connection, info->busname,
++                               0, &error);
++
++    if (dbus_error_is_set(&error)) {
+         ErrorF("[config/dbus] couldn't take over org.x.config: %s (%s)\n",
+                error.name, error.message);
+         goto err_start;
