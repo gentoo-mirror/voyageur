@@ -1,2 +1,4 @@
 # SVN live ebuild
 =games-arcade/blobby2-9999
+# Newer version has a lower number
+>=games-rpg/egoboo-2.22
