@@ -14,7 +14,7 @@ SRC_URI=""
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86"
 IUSE="gtk qt4"
 
 RDEPEND="|| ( ~x11-wm/compiz-${PV} =x11-wm/compiz-${COMPIZ_RELEASE} )
