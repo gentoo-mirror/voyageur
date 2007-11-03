@@ -283,6 +283,7 @@ PATCHES="
 	${FILESDIR}/${PV}-fix-xprint-link.patch
 	${FILESDIR}/${PV}-fix-kbdleds.patch
 	${FILESDIR}/${PV}-fix-dbus_bus_request.patch
+	${FILESDIR}/${PV}-smart_scheduler_itimer.patch
 	"
 
 pkg_setup() {
