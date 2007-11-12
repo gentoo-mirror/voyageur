@@ -17,8 +17,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="gtk qt4"
 
-RDEPEND="|| ( ~x11-wm/compiz-${PV} =x11-wm/compiz-${COMPIZ_RELEASE} )
-	|| ( ~dev-python/compizconfig-python-${PV} =dev-python/compizconfig-python-${COMPIZCONFIG_PYTHON_RELEASE} )
+RDEPEND=">=x11-wm/compiz-${COMPIZ_RELEASE}
+	>=dev-python/compizconfig-python-${COMPIZCONFIG_PYTHON_RELEASE}
 	gtk? ( >=dev-python/pygtk-2.10 )
 	qt4? ( dev-python/PyQt4 )"
 
