@@ -10,8 +10,17 @@ HOMEPAGE="http://www.gnome.org/projects/vinagre/index.html"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="avahi"
 
-DEPEND="net-libs/gtk-vnc"
+DEPEND="net-libs/gtk-vnc
+	>=gnome-base/gconf-2
+	>=gnome-base/libglade-2
+	>=x11-libs/gtk+-2.11
+	avahi? ( net-dns/avahi )"
 RDEPEND="${DEPEND}"
 
+DOCS="AUTHORS ChangeLog NEWS README"
+
+pkg_setup() {
+	G2CONF="$(use_enable avahi)"
+}
