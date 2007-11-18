@@ -3,10 +3,11 @@ Welcome!
 This overlay has:
 - existing ebuilds keyworded ~amd64
 - ebuilds from bugzilla not yet accepted
-- ebuilds tuned for the GP2X handheld console (~arm keyworded)
 - a few ebuilds from here and there (try emiclock)
 - hacked ebuilds that suit myself better ;)
 
 They may damage your computer, set your house on fire or help you, you have been warned!
 
 Voyageur
+
+ps: flames, praises, comments? voyageur@gentoo.org
