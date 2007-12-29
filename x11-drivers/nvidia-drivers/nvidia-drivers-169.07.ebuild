@@ -43,7 +43,8 @@ QA_TEXTRELS_x86="usr/lib/xorg/libXvMCNVIDIA.so.${PV}
 	usr/lib/opengl/nvidia/no-tls/libnvidia-tls.so.${PV}
 	usr/lib/libXvMCNVIDIA.so.${PV}
 	usr/lib/xorg/modules/drivers/nvidia_drv.so
-	usr/lib/opengl/nvidia/extensions/libglx.so"
+	usr/lib/opengl/nvidia/extensions/libglx.so
+	usr/lib/libcuda.so.${PV}"
 
 QA_TEXTRELS_x86_fbsd="boot/modules/nvidia.ko
 	usr/lib/opengl/nvidia/lib/libGL.so.1
@@ -74,7 +75,8 @@ QA_TEXTRELS_amd64="usr/lib64/xorg/libXvMCNVIDIA.so.${PV}
 	usr/lib32/opengl/nvidia/no-tls/libnvidia-tls.so.${PV}
 	usr/lib32/libXvMCNVIDIA.so.${PV}
 	usr/lib32/xorg/modules/drivers/nvidia_drv.so
-	usr/lib32/opengl/nvidia/extensions/libglx.so"
+	usr/lib32/opengl/nvidia/extensions/libglx.so
+	usr/lib32/libcuda.so.${PV}"
 
 QA_WX_LOAD_amd64="usr/lib64/opengl/nvidia/lib/libGL.so.${PV}
 	usr/lib64/opengl/nvidia/lib/libGLcore.so.${PV}
@@ -397,6 +399,16 @@ src_install-libs() {
 	# Includes
 	insinto ${NV_ROOT}/include
 	doins ${incdir}/*.h
+
+	# CUDA headers
+	dodir /usr/include/cuda
+	insinto /usr/include/cuda
+	doins usr/include/cuda/*.h
+
+	# CUDA libs
+	dolib.so ${usrpkglibdir}/libcuda.so.${PV}
+	dosym libcuda.so.${PV} /usr/$(get_libdir)/libcuda.so.1
+	dosym libcuda.so.1 /usr/$(get_libdir)/libcuda.so
 }
 
 pkg_preinst() {
