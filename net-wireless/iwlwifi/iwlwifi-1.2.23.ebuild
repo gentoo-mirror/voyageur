@@ -60,6 +60,17 @@ pkg_setup() {
 	fi
 }
 
+src_compile() {
+	if [[ ${ARCH} == "amd64" ]] ; then
+		ARCH="x86_64"
+	else
+		ARCH="i386"
+	fi
+
+	make # generate the compatible sources (failure is expected)
+	make || die "compile failed"
+}
+
 src_install() {
 	linux-mod_src_install
 	dodoc CHANGES ISSUES README.iwlwifi
