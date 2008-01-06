@@ -1,2 +1,8 @@
 # SVN live ebuild
 =games-arcade/blobby2-9999
+=dev-libs/xerces-c-2.8*
+
+# Will seriously break my mouses, my french keyboards, and a lot of other things
+=sys-apps/hal-0.5.10
+=x11-drivers/xf86-input-evdev-1.2.0
+>=app-misc/hal-info-20071011
