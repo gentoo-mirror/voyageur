@@ -1,17 +1,17 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-arcade/supertux/supertux-0.3.0.ebuild,v 1.8 2006/12/23 01:19:37 chainsaw Exp $
+# $Header: $
 
 #GAMES_USE_SDL="nojoystick" #bug #100372
 inherit eutils games
 
 DESCRIPTION="A game similar to Super Mario Bros."
 HOMEPAGE="http://super-tux.sourceforge.net"
-SRC_URI=" http://download.berlios.de/supertux/${P}.tar.bz2"
+SRC_URI="http://download2.berlios.de/${PN}/${P}d.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc x86"
+KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86"
 IUSE=""
 
 RDEPEND=">=media-libs/libsdl-1.2.4
