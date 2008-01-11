@@ -12,7 +12,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="avahi"
 
-DEPEND="net-libs/gtk-vnc
+DEPEND=">=net-libs/gtk-vnc-0.3
 	>=gnome-base/gconf-2
 	>=gnome-base/libglade-2
 	>=x11-libs/gtk+-2.11
