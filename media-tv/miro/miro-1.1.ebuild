@@ -20,11 +20,11 @@ DEPEND="dev-lang/python
 	    dev-util/devhelp
 	    dev-python/gnome-python-extras
 		dev-python/dbus-python
-		dev-libs/boost
+		=dev-libs/boost-1.34.1-r1
 		dev-python/pysqlite
 		media-libs/xine-lib
 		media-libs/libfame
-	    dev-python/pyrex
+	    =dev-python/pyrex-0.9.6.4
 	    dev-util/pkgconfig"
 #	    <sys-libs/db-4.5
 #		dev-util/subversion

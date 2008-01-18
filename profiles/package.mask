@@ -1,8 +1,2 @@
 # SVN live ebuild
 =games-arcade/blobby2-9999
-
-# xalan-c needs 2.7
-=dev-libs/xerces-c-2.8*
-
-# New version is only for gnoem
->=x11-misc/bubblemon-2
