@@ -27,6 +27,12 @@ DEPEND="|| ( >=dev-lang/python-2.5
 	doc? ( dev-util/devhelp )"
 
 pkg_setup() {
+	if ! built_with_use dev-python/gnome-python-extras xulrunner; then
+		eerror "Please should reemerge dev-python/gnome-python-extras"
+		eerror "with \"xulrunner\" USE flag set"
+		die "dev-python/gnome-python-extras reemerge needed"
+	fi
+
 	if ! built_with_use dev-lang/python berkdb; then
 		eerror ""
 		eerror "You should reemerge dev-lang/python with \"berkdb\" flag set"
@@ -64,4 +70,3 @@ pkg_postinst() {
 	elog /usr/lib*/python*/site-packages/miro/mozsetup.py
 	elog ""
 }
-
