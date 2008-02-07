@@ -1,0 +1,35 @@
+--- btrfs-progs/Makefile
++++ btrfs-progs/Makefile
+@@ -30,25 +30,25 @@
+ all: $(progs)
+ 
+ btrfsctl: btrfsctl.o
+-	gcc $(CFLAGS) -o btrfsctl btrfsctl.o $(LDFLAGS)
++	$(CC) $(CFLAGS) -o btrfsctl btrfsctl.o $(LDFLAGS)
+ 
+ btrfsck: $(objects) btrfsck.o bit-radix.o
+-	gcc $(CFLAGS) -o btrfsck btrfsck.o $(objects) bit-radix.o $(LDFLAGS)
++	$(CC) $(CFLAGS) -o btrfsck btrfsck.o $(objects) bit-radix.o $(LDFLAGS)
+ 
+ mkfs.btrfs: $(objects) mkfs.o utils.o
+-	gcc $(CFLAGS) -o mkfs.btrfs $(objects) mkfs.o utils.o -luuid $(LDFLAGS)
++	$(CC) $(CFLAGS) -o mkfs.btrfs $(objects) mkfs.o utils.o -luuid $(LDFLAGS)
+ 
+ debug-tree: $(objects) debug-tree.o
+-	gcc $(CFLAGS) -o debug-tree $(objects) debug-tree.o -luuid $(LDFLAGS)
++	$(CC) $(CFLAGS) -o debug-tree $(objects) debug-tree.o -luuid $(LDFLAGS)
+ 
+ dir-test: $(objects) dir-test.o
+-	gcc $(CFLAGS) -o dir-test $(objects) dir-test.o $(LDFLAGS)
++	$(CC) $(CFLAGS) -o dir-test $(objects) dir-test.o $(LDFLAGS)
+ 
+ quick-test: $(objects) quick-test.o
+-	gcc $(CFLAGS) -o quick-test $(objects) quick-test.o $(LDFLAGS)
++	$(CC) $(CFLAGS) -o quick-test $(objects) quick-test.o $(LDFLAGS)
+ 
+ convert: $(objects) convert.o utils.o
+-	gcc $(CFLAGS) -o btrfs-convert $(objects) convert.o utils.o -luuid -lext2fs $(LDFLAGS)
++	$(CC) $(CFLAGS) -o btrfs-convert $(objects) convert.o utils.o -luuid -lext2fs $(LDFLAGS)
+ 
+ clean :
+ 	rm -f $(progs) cscope.out *.o .*.d btrfs-convert
