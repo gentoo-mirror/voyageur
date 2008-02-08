@@ -1,10 +1,10 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817.ebuild,v 1.8 2006/03/05 13:40:16 chainsaw Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.4 2008/01/04 20:59:41 mr_bones_ Exp $
 
 fromcvs=0
 ECVS_MODULE="duke3d"
-if [ ${fromcvs} -eq 1 ] ; then
+if [[ ${fromcvs} -eq 1 ]] ; then
 	ECVS_PASS="anonymous"
 	ECVS_SERVER="icculus.org:/cvs/cvsroot"
 	inherit cvs eutils flag-o-matic games
@@ -12,14 +12,20 @@ else
 	inherit eutils flag-o-matic games
 fi
 
-DESCRIPTION="port of the original DukeNukem 3D"
+DEMO="3dduke13.zip"
+
+DESCRIPTION="Port of the original Duke Nukem 3D"
 HOMEPAGE="http://icculus.org/projects/duke3d/"
-SRC_URI="mirror://gentoo/${P}.tar.bz2"
+SRC_URI="mirror://gentoo/${P}.tar.bz2
+	demo? (
+		ftp://ftp.3drealms.com/share/${DEMO}
+		ftp://ftp.planetmirror.com/pub/gameworld/downloads/${DEMO}
+	)"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 hppa ppc x86"
-IUSE="hardened perl opengl"
+KEYWORDS="~amd64 ~hppa ~ppc ~x86"
+IUSE="demo pic perl opengl"
 
 RDEPEND="media-libs/libsdl
 	media-libs/sdl-mixer
@@ -28,11 +34,12 @@ RDEPEND="media-libs/libsdl
 	perl? ( dev-lang/perl )
 	opengl? ( virtual/opengl )"
 DEPEND="${RDEPEND}
-	!hardened? ( x86? ( dev-lang/nasm ) )"
+	demo? ( app-arch/unzip )
+	!pic? ( x86? ( dev-lang/nasm ) )"
 
-S="${WORKDIR}/${ECVS_MODULE}"
+S="${WORKDIR}/${PN}"
 
-use_tf() { useq ${1} && echo "true" || echo "false"; }
+use_tf() { use ${1} && echo "true" || echo "false"; }
 
 pkg_setup() {
 	if use amd64 ; then
@@ -50,16 +57,25 @@ pkg_setup() {
 			append-ldflags -m32
 		fi
 	fi
+	if built_with_use dev-lang/perl ithreads ; then
+		eerror "${PN} needs perl compiled with ithreads use-flag disabled!"
+		die "perl with ithreads detected"
+	fi
+	games_pkg_setup
 }
 
 src_unpack() {
-	if [ ${fromcvs} -eq 1 ] ; then
+	if [[ ${fromcvs} -eq 1 ]] ; then
 		cvs_src_unpack
 		cd duke3d/source
 		ECVS_MODULE="buildengine"
 		cvs_src_unpack
 	else
 		unpack ${A}
+	fi
+
+	if use demo ; then
+		unzip -qo DN3DSW13.SHR || die "unzip DN3DSW13.SHR failed"
 	fi
 
 	# configure buildengine
@@ -80,14 +96,13 @@ src_unpack() {
 	# need to sync features with build engine
 	epatch "${FILESDIR}/${PV}-duke3d-makefile-opts.patch"
 	epatch "${FILESDIR}/${PV}-gcc34.patch" # compile fixes for GCC 3.4
-	epatch "${FILESDIR}/${PV}-gcc4-r1.patch" # compile fixes for GCC 4.0/4.1 by Mark Loeser
-	epatch "${FILESDIR}/${PV}-gcc4-alias.patch" # compile fixes for GCC 4.0/4.1 
+	epatch "${FILESDIR}"/${P}-gcc4.patch
 	sed -i \
 		-e "/^use_opengl := / s:=.*:= $(use_tf opengl):" \
 		-e "/^use_physfs := / s:=.*:= false:" \
 		Makefile \
 		|| die "sed duke3d Makefile failed"
-	if ! use hardened && use x86 ; then
+	if ! use pic && use x86 ; then
 		sed -i \
 			-e 's:^#USE_ASM:USE_ASM:' buildengine/Makefile \
 			|| die "sed failed"
@@ -98,6 +113,7 @@ src_unpack() {
 
 	# causes crazy redefine errors with gcc-3.[2-4].x
 	replace-flags -O3 -O2
+	strip-flags #203969
 }
 
 src_compile() {
@@ -116,7 +132,11 @@ src_install() {
 	newins defs.con DEFS.CON
 	newins game.con GAME.CON
 	newins user.con USER.CON
-	doins "${FILESDIR}/network.cfg"
+	newins "${FILESDIR}/network.cfg" network.cfg.template
+	if use demo ; then
+		doins "${WORKDIR}/DUKE3D.GRP" || die "doins DUKE3D.GRP failed"
+	fi
+
 	insinto "${GAMES_SYSCONFDIR}"
 	doins "${FILESDIR}/duke3d.cfg"
 	dosym "${GAMES_SYSCONFDIR}/duke3d.cfg" "${GAMES_DATADIR}/${PN}/DUKE3D.CFG"
@@ -126,6 +146,5 @@ src_install() {
 
 pkg_postinst() {
 	games_pkg_postinst
-	einfo "Just put the data files in ${GAMES_DATADIR}/${PN}"
-	einfo "before playing !"
+	use demo || elog "Put the data files in ${GAMES_DATADIR}/${PN} before playing"
 }
