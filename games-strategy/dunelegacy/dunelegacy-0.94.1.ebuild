@@ -1,5 +1,6 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# $Header: $
 
 inherit eutils games
 
@@ -8,18 +9,18 @@ HOMEPAGE="http://dunelegacy.sf.net/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
+SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-DEPEND="
-	dev-libs/zziplib
+DEPEND="dev-libs/zziplib
 	>=media-libs/sdl-ttf-2.0
 	>=media-libs/sdl-mixer-1.2
 	>=media-libs/sdl-net-1.2
 	>=media-libs/sdl-image-1.2
 	>=media-libs/sdl-gfx-1.2
 	dev-libs/boost
-	dev-util/scons
-"
+	dev-util/scons"
+RDEPEND="${DEPEND}"
 
 src_compile() {
 	scons || die
