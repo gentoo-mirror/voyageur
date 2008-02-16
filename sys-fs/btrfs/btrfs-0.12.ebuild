@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit linux-mod eutils
+inherit linux-mod
 
 MODULE_NAMES="btrfs(btrfs)"
 BUILD_TARGETS="all"
@@ -18,13 +18,6 @@ IUSE=""
 
 DEPEND=""
 RDEPEND=""
-
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	epatch "${FILESDIR}"/btrfs-0.10-get_current.patch
-}
 
 src_compile() {
 	BUILD_PARAMS="KERNELDIR=${KV_OUT_DIR}" linux-mod_src_compile
