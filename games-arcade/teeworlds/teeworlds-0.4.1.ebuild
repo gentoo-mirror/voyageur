@@ -2,29 +2,25 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=1
-
 inherit eutils games
 
 DESCRIPTION="Crossover between Quake and Worms."
-HOMEPAGE="http://www.teewars.com"
+HOMEPAGE="http://www.teeworlds.com"
 SRC_URI="http://www.${PN}.com/files/${P}-src.tar.gz
-	http://www.teewars.com/files/bam.zip
-	racemod? ( http://lan-corps.no-ip.org/${PN}/packs/race_mod.rar
-		http://oerngott.ugms.se/${PN}/race_mod.rar )"
+	http://www.${PN}.com/files/bam.zip"
 
 # see license.txt
-LICENSE="as-is"
+LICENSE="ZLIB"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug dedicated +racemod server"
+IUSE="debug dedicated server"
+#IUSE="alsa oss"
 
 RDEPEND="!dedicated? (
 		media-libs/alsa-lib
 		media-libs/mesa
 		x11-libs/libX11
-		)
-	!games-action/teewars-bin"
+		)"
 DEPEND="${RDEPEND}
 	app-arch/zip"
 
@@ -48,38 +44,44 @@ src_unpack() {
 
 	# fix bam default optimisation
 	cd "${SB}"
-	sed -i \
-		-e "s|0 then f = f .. \"-O2 \"|0 then f = f .. \" \"|" \
-		src/base.bam || die "sed base.bam failed"
+#	sed -i \
+#		-e "s|-O2|${CXXFLAGS}|" \
+#		-e "s|s.linker.flags = \"\"|s.linker.flags = \"${LDFLAGS}\"|" \
+#		src/base.bam || die "sed base.bam failed"
 
 	cd "${S}"
+	# the data-dir needs to be patched in some files
+	to_patch=$(grep -Rl '"data\/' *)
 	sed -i \
 		-e "s:data/:${dir}/data/:g" \
-		datasrc/teewars.ds \
-		src/engine/client/ec_gfx.c \
-		src/editor/editor.cpp \
-		src/game/client/gc_skin.cpp \
-		src/engine/e_map.c \
-		src/engine/server/es_server.c \
-		src/engine/client/ec_client.c || die "sed-ing default datadir location failed"
+		$to_patch \
+		|| die "sed-ing default datadir location failed"
 
-	if use racemod; then
-		mv ../"guide to moving.txt" ${S}/guide_to_moving.txt || die "mv guide to moving.txt failed"
-		mv ../"race mod.txt" ${S}/race_mod.txt || die "mv race mod.txt failed"
-		mv ../*.map ${S}/data/maps/ || die "mv racemod maps failed"
-	fi
+#	if use alsa; then
+#		sed -i \
+#			-e "s|oss|alsa|" \
+#			default.bam || die "sed failed"
+#	elif use oss; then
+#		sed -i \
+#			-e "s|alsa|oss|" \
+#			default.bam || die "sed failed"
+#	fi
 }
 
 src_compile() {
 	cd ${SB}
-	./make_unix.sh || die "make_unix.sh failed"
+	./make_unix.sh \
+		${LDFLAGS} \
+		-Wp,${CXXFLAGS} \
+		|| die "make_unix.sh failed"
 
 	cd ${S}
 
 	# set optimisation
 	sed -i \
-		-e "s|flags = \"-Wall\"|flags = \"${CXXFLAGS}\"|" \
+		-e "s|cc.flags = \"-Wall -pedantic-errors\"|cc.flags = \"${CXXFLAGS}\"|" \
 		-e "s|linker.flags = \"\"|linker.flags = \"${LDFLAGS}\"|" \
+		-e "s|-Wall -fstack-protector -fstack-protector-all -fno-exceptions|${CXXFLAGS}|" \
 		default.bam || die "sed failed"
 
 	if use debug && use server; then
@@ -105,18 +107,18 @@ src_install() {
 	if use debug && use server; then
 		dogamesbin ${PN}_srv_d || die "dogamesbin failed"
 		dogamesbin ${PN}_d || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teewars"
+		make_desktop_entry ${PN} "Teeworlds"
 	elif use !debug && use server; then
 		dogamesbin ${PN}_srv || die "dogamesbin failed"
 		dogamesbin ${PN} || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teewars"
+		make_desktop_entry ${PN} "Teeworlds"
 	elif use debug && use dedicated; then
 		dogamesbin ${PN}_srv_d || die "dogamesbin failed"
 	elif use !debug && use dedicated; then
 		dogamesbin ${PN}_srv || die "dogamesbin failed"
 	else
 		dogamesbin ${PN} || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teewars"
+		make_desktop_entry ${PN} "Teeworlds"
 	fi
 
 	dodoc *.txt
@@ -129,10 +131,6 @@ pkg_postinst() {
 
 	if use server || use dedicated; then
 		einfo "For more information about server setup read:"
-		einfo "http://www.teewars.com/?page=docs"
-	fi
-
-	if use racemod && use server; then
-		einfo "Read about server setup for racemod in race_mod.txt"
+		einfo "http://www.teeworlds.com/?page=docs"
 	fi
 }
