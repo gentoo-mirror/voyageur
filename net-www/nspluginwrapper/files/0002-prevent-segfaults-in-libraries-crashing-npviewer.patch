@@ -1,0 +1,104 @@
+--- src/npw-viewer.orig	2008-03-09 18:33:51.000000000 +0000
++++ src/npw-viewer.c	2008-03-09 19:03:27.000000000 +0000
+@@ -28,6 +28,8 @@
+ #include <dlfcn.h>
+ #include <unistd.h>
+ #include <errno.h>
++#include <sys/types.h>
++#include <sys/wait.h>
+ 
+ #include <X11/X.h>
+ #include <X11/Xlib.h>
+@@ -3199,34 +3201,65 @@ int main(int argc, char **argv)
+ 	  --argc;
+   }
+ 
++
+   // Open plug-in and get exported lib functions
+   void *handle = NULL;
++#define EXIT_TRUE  0
++#define EXIT_FALSE 1
++
+   if (plugin_path == NULL)
+ 	cmd = CMD_HELP;
+   else {
++  	pid_t pid;
+ 	const char *error;
+ 	D(bug("  %s\n", plugin_path));
+-	if ((handle = dlopen(plugin_path, RTLD_LAZY)) == NULL) {
+-	  npw_printf("ERROR: %s\n", dlerror());
+-	  return 1;
+-	}
+-	dlerror();
+-	g_plugin_NP_GetMIMEDescription = (NP_GetMIMEDescriptionUPP)dlsym(handle, "NP_GetMIMEDescription");
+-	if ((error = dlerror()) != NULL) {
+-	  npw_printf("ERROR: %s\n", error);
+-	  return 1;
+-	}
+-	g_plugin_NP_Initialize = (NP_InitializeUPP)dlsym(handle, "NP_Initialize");
+-	if ((error = dlerror()) != NULL) {
+-	  npw_printf("ERROR: %s\n", error);
+-	  return 1;
+-	}
+-	g_plugin_NP_Shutdown = (NP_ShutdownUPP)dlsym(handle, "NP_Shutdown");
+-	if ((error = dlerror()) != NULL) {
+-	  npw_printf("ERROR: %s\n", error);
+-	  return 1;
++
++	/* test opening the libary in a child process to prevent a dodgy libary crashing app */
++	if(0 > (pid = fork()))
++		return 1;
++
++	/* IN Child */
++	if(!pid) {
++		/* this line may throw SIGSEGV */
++		if(NULL == (handle = dlopen(plugin_path, RTLD_LAZY)))
++			exit(EXIT_FALSE);
++
++		dlclose(handle);
++		exit(EXIT_TRUE );
++	}
++	else {
++		/* parent */
++		int status;
++		if(0 >(pid = waitpid(pid,&status,0)))
++			return 1;
++
++		if(status != EXIT_TRUE)
++			return 1;
++	
++		/* dlopen() will not seqfault, should be good to go */
++		if ((handle = dlopen(plugin_path, RTLD_LAZY)) == NULL) {
++		  npw_printf("ERROR: %s\n", dlerror());
++		  return 1;
++		}
++		dlerror();
++		g_plugin_NP_GetMIMEDescription = (NP_GetMIMEDescriptionUPP)dlsym(handle, "NP_GetMIMEDescription");
++		if ((error = dlerror()) != NULL) {
++	  		npw_printf("ERROR: %s\n", error);
++	  		return 1;
++		}
++		g_plugin_NP_Initialize = (NP_InitializeUPP)dlsym(handle, "NP_Initialize");
++		if ((error = dlerror()) != NULL) {
++	  		npw_printf("ERROR: %s\n", error);
++	 		 return 1;
++		}
++		g_plugin_NP_Shutdown = (NP_ShutdownUPP)dlsym(handle, "NP_Shutdown");
++		if ((error = dlerror()) != NULL) {
++	  		npw_printf("ERROR: %s\n", error);
++	  		return 1;
++		}
++		g_plugin_NP_GetValue = (NP_GetValueUPP)dlsym(handle, "NP_GetValue");
+ 	}
+-	g_plugin_NP_GetValue = (NP_GetValueUPP)dlsym(handle, "NP_GetValue");
++  
+   }
+ 
+   int ret = 1;
+@@ -3249,3 +3282,6 @@ int main(int argc, char **argv)
+ 	dlclose(handle);
+   return ret;
+ }
++
++
++
