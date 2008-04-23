@@ -39,6 +39,7 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
+	epatch "${FILESDIR}"/${PN}-npapi-plugin-gtk-qt.patch
 	eautoreconf
 }
 

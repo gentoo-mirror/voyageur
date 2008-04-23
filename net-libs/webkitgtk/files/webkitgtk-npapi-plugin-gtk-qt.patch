@@ -1,0 +1,3407 @@
+diff -Naur WebKit-r32416.orig/GNUmakefile.am WebKit-r32416/GNUmakefile.am
+--- WebKit-r32416.orig/GNUmakefile.am	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/GNUmakefile.am	2008-04-23 15:39:41.000000000 +0200
+@@ -243,6 +243,7 @@
+ 
+ if TARGET_X11
+ global_cppflags += -DXP_UNIX
++webcore_libadd += -lXt
+ endif
+ 
+ if !ENABLE_DEBUG
+diff -Naur WebKit-r32416.orig/JavaScriptCore/wtf/Platform.h WebKit-r32416/JavaScriptCore/wtf/Platform.h
+--- WebKit-r32416.orig/JavaScriptCore/wtf/Platform.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/JavaScriptCore/wtf/Platform.h	2008-04-23 15:39:41.000000000 +0200
+@@ -225,6 +225,8 @@
+ #define ENABLE_NETSCAPE_PLUGIN_API 0
+ #elif PLATFORM(GTK) || PLATFORM(MAC) || PLATFORM(SYMBIAN) || PLATFORM(WIN)
+ #define ENABLE_NETSCAPE_PLUGIN_API 1
++#elif PLATFORM(QT) && PLATFORM(UNIX)
++#define ENABLE_NETSCAPE_PLUGIN_API 1
+ #endif
+ 
+ #if PLATFORM(WIN)
+diff -Naur WebKit-r32416.orig/WebCore/bridge/npruntime_internal.h WebKit-r32416/WebCore/bridge/npruntime_internal.h
+--- WebKit-r32416.orig/WebCore/bridge/npruntime_internal.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/bridge/npruntime_internal.h	2008-04-23 15:39:41.000000000 +0200
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2007 Collabora, Ltd.  All rights reserved.
++ * Copyright (C) 2007-2008 Collabora Ltd.  All rights reserved.
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+@@ -38,4 +38,13 @@
+     #undef Auto
+     #undef Complex
+     #undef Status
++    #undef CursorShape
++    #undef FocusIn
++    #undef FocusOut
++    #undef KeyPress
++    #undef KeyRelease
++    #undef Unsorted
++    #undef Bool
++    #undef FontChange
++    #undef GrayScale
+ #endif
+diff -Naur WebKit-r32416.orig/WebCore/GNUmakefile.am WebKit-r32416/WebCore/GNUmakefile.am
+--- WebKit-r32416.orig/WebCore/GNUmakefile.am	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/GNUmakefile.am	2008-04-23 15:39:41.000000000 +0200
+@@ -920,7 +920,10 @@
+ 	WebCore/plugins/PluginStream.cpp \
+ 	WebCore/plugins/PluginView.cpp \
+ 	WebCore/plugins/npapi.cpp \
++	WebCore/plugins/gtk/PluginDataGtk.cpp \
+ 	WebCore/plugins/gtk/PluginDatabaseGtk.cpp \
++	WebCore/plugins/gtk/PluginPackageGtk.cpp \
++	WebCore/plugins/gtk/PluginViewGtk.cpp \
+ 	WebCore/rendering/AutoTableLayout.cpp \
+ 	WebCore/rendering/bidi.cpp \
+ 	WebCore/rendering/break_lines.cpp \
+@@ -981,6 +984,10 @@
+ 	WebCore/xml/XMLHttpRequest.cpp \
+ 	WebCore/xml/XMLHttpRequestProgressEvent.cpp \
+ 	WebCore/xml/XMLSerializer.cpp
++if TARGET_X11
++webcore_sources += \
++	WebCore/plugins/gtk/gtk2xtbin.c
++endif
+ 
+ webkitgtk_headers += \
+ 	WebCore/platform/gtk/ClipboardGtk.h \
+diff -Naur WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp WebKit-r32416/WebCore/page/gtk/FrameGtk.cpp
+--- WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/page/gtk/FrameGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -2,6 +2,7 @@
+  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
+  * Copyright (C) 2006 Michael Emmel mike.emmel@gmail.com
+  * Copyright (C) 2007 Holger Hans Peter Freyther
++ * Copyright (C) 2008 Collabora Ltd.  All rights reserved.
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -30,15 +31,17 @@
+ #include "Frame.h"
+ 
+ #include "NotImplemented.h"
++#include "PluginView.h"
++#include "kjs_proxy.h"
++#include "runtime_root.h"
+ #include "runtime.h"
+ 
+ 
+ namespace WebCore {
+ 
+-PassRefPtr<KJS::Bindings::Instance> Frame::createScriptInstanceForWidget(Widget*)
++PassRefPtr<KJS::Bindings::Instance> Frame::createScriptInstanceForWidget(Widget* widget)
+ {
+-    notImplemented();
+-    return 0;
++    return static_cast<PluginView*>(widget)->bindingInstance();
+ }
+ 
+ void Frame::clearPlatformScriptObjects()
+diff -Naur WebKit-r32416.orig/WebCore/page/qt/FrameQt.cpp WebKit-r32416/WebCore/page/qt/FrameQt.cpp
+--- WebKit-r32416.orig/WebCore/page/qt/FrameQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/page/qt/FrameQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2006 Rob Buis <buis@kde.org>
+  * Copyright (C) 2006 Nikolas Zimmermann <zimmermann@kde.org>
+  * Copyright (C) 2007 Trolltech ASA
++ * Copyright (C) 2008 Collabora Ltd.  All rights reserved.
+  *
+  * All rights reserved.
+  *
+@@ -34,6 +35,8 @@
+ #include "config.h"
+ #include "Frame.h"
+ 
++#include "PluginView.h"
++
+ #include "Element.h"
+ #include "RenderObject.h"
+ #include "RenderWidget.h"
+@@ -99,6 +102,9 @@
+ 
+ PassRefPtr<KJS::Bindings::Instance> Frame::createScriptInstanceForWidget(WebCore::Widget* widget)
+ {
++    if (widget->isNPAPIPlugin()) {
++        return static_cast<PluginView*>(widget)->bindingInstance();
++    }
+     QWidget* nativeWidget = widget->nativeWidget();
+     if (!nativeWidget)
+         return 0;
+diff -Naur WebKit-r32416.orig/WebCore/platform/FileSystem.h WebKit-r32416/WebCore/platform/FileSystem.h
+--- WebKit-r32416.orig/WebCore/platform/FileSystem.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/FileSystem.h	2008-04-23 15:39:41.000000000 +0200
+@@ -33,6 +33,10 @@
+ #if PLATFORM(GTK)
+ #include <gmodule.h>
+ #endif
++#if PLATFORM(QT)
++#include <QFile>
++#include <QLibrary>
++#endif
+ 
+ #include <time.h>
+ 
+@@ -67,6 +71,11 @@
+     }
+ 
+ };
++#elif PLATFORM(QT)
++typedef QFile* PlatformFileHandle;
++typedef QLibrary* PlatformModule;
++const PlatformFileHandle invalidPlatformFileHandle = 0;
++typedef unsigned PlatformModuleVersion;
+ #else
+ typedef int PlatformFileHandle;
+ #if PLATFORM(GTK)
+diff -Naur WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp WebKit-r32416/WebCore/platform/gtk/TemporaryLinkStubs.cpp
+--- WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/gtk/TemporaryLinkStubs.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -33,8 +33,6 @@
+ #include "FTPDirectoryDocument.h"
+ #include "KURL.h"
+ #include "NotImplemented.h"
+-#include "PluginPackage.h"
+-#include "PluginData.h"
+ #include "PluginView.h"
+ #include "SharedBuffer.h"
+ 
+@@ -58,28 +56,7 @@
+ /* Completely empty stubs (mostly to allow DRT to run): */
+ /********************************************************/
+ 
+-int PluginPackage::compare(const PluginPackage&) const { notImplemented(); return 0; }
+-bool PluginPackage::fetchInfo() { notImplemented(); return false; }
+-unsigned PluginPackage::hash() const { notImplemented(); return 0; }
+-bool PluginPackage::equal(const PluginPackage&, const PluginPackage&) { notImplemented(); return false; }
+-bool PluginPackage::load() { notImplemented(); return false; }
+-void PluginView::setNPWindowRect(const IntRect&) { notImplemented(); }
+-const char* PluginView::userAgent() { notImplemented(); return 0; }
+-void PluginView::invalidateRect(NPRect*) { notImplemented(); }
+ void PluginView::invalidateRegion(NPRegion) { notImplemented(); }
+-void PluginView::forceRedraw() { notImplemented(); }
+-void PluginView::setFocus() { Widget::setFocus(); }
+-void PluginView::show() { Widget::show(); }
+-void PluginView::hide() { Widget::hide(); }
+-void PluginView::paint(GraphicsContext*, const IntRect&) { notImplemented(); }
+-void PluginView::setParent(ScrollView* view) { Widget::setParent(view); }
+-void PluginView::attachToWindow() { notImplemented(); }
+-void PluginView::detachFromWindow() { notImplemented(); }
+-NPError PluginView::handlePost(const char*, const char*, uint32, const char*, bool, void*, bool, bool) { notImplemented(); return NPERR_GENERIC_ERROR; }
+-void PluginView::updateWindow() const { notImplemented(); }
+-void PluginView::handleKeyboardEvent(KeyboardEvent*) { notImplemented(); }
+-void PluginView::handleMouseEvent(MouseEvent*) { notImplemented(); }
+-PluginView::~PluginView() {}
+ 
+ Color WebCore::focusRingColor() { return 0xFF0000FF; }
+ void WebCore::setFocusRingColorChangeFunction(void (*)()) { }
+@@ -93,8 +70,5 @@
+ 
+ PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile(const String&) { notImplemented(); return 0; }
+ 
+-void PluginData::initPlugins() { notImplemented(); }
+-void PluginData::refresh() { notImplemented(); }
+-
+ }
+ 
+diff -Naur WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp WebKit-r32416/WebCore/platform/qt/FileSystemQt.cpp
+--- WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/qt/FileSystemQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -38,7 +38,9 @@
+ 
+ #include <QDateTime>
+ #include <QFile>
++#include <QTemporaryFile>
+ #include <QFileInfo>
++#include <QDateTime>
+ #include <QDir>
+ 
+ namespace WebCore {
+@@ -88,10 +90,35 @@
+     return QFileInfo(path).fileName();
+ }
+ 
+-bool unloadModule(PlatformModule)
++CString openTemporaryFile(const char* prefix, PlatformFileHandle& handle)
++{
++    QFile *temp = new QTemporaryFile(QString(prefix));
++    if( temp->open(QIODevice::ReadWrite) ) {
++        handle = temp;
++        return String(temp->fileName()).utf8();
++    }
++    handle = invalidPlatformFileHandle;
++    return 0;
++}
++
++void closeFile(PlatformFileHandle& handle)
++{
++    if(handle) {
++        handle->close();
++        delete handle;
++    }
++}
++
++int writeToFile(PlatformFileHandle handle, const char* data, int length)
++{
++    if(handle && handle->exists() && handle->isWritable()) {
++        handle->write(data, length);
++    }
++}
++
++bool unloadModule(PlatformModule module)
+ {
+-    notImplemented();
+-    return false;
++    return module->unload();
+ }
+ 
+ }
+diff -Naur WebKit-r32416.orig/WebCore/platform/qt/TemporaryLinkStubs.cpp WebKit-r32416/WebCore/platform/qt/TemporaryLinkStubs.cpp
+--- WebKit-r32416.orig/WebCore/platform/qt/TemporaryLinkStubs.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/qt/TemporaryLinkStubs.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -72,41 +72,11 @@
+ 
+ using namespace WebCore;
+ 
+-void PluginDatabase::getPluginPathsInDirectories(HashSet<String>&) const { notImplemented(); }
+-Vector<String> PluginDatabase::defaultPluginDirectories() { notImplemented(); return Vector<String>(); }
+-bool PluginDatabase::isPreferredPluginDirectory(const String&) { notImplemented(); return false; }
+-int PluginPackage::compare(const PluginPackage&) const { notImplemented(); return 0; }
+-bool PluginPackage::fetchInfo() { notImplemented(); return false; }
+-unsigned PluginPackage::hash() const { notImplemented(); return 0; }
+-bool PluginPackage::equal(const PluginPackage&, const PluginPackage&) { notImplemented(); return false; }
+-bool PluginPackage::load() { notImplemented(); return false; }
+-void PluginView::setNPWindowRect(const IntRect&) { notImplemented(); }
+-const char* PluginView::userAgent() { notImplemented(); return 0; }
+-void PluginView::invalidateRect(NPRect*) { notImplemented(); }
+-void PluginView::invalidateRegion(NPRegion) { notImplemented(); }
+-void PluginView::forceRedraw() { notImplemented(); }
+-void PluginView::setFocus() { Widget::setFocus(); }
+-void PluginView::show() { Widget::show(); }
+-void PluginView::hide() { Widget::hide(); }
+-void PluginView::paint(GraphicsContext*, const IntRect&) { notImplemented(); }
+-void PluginView::setParent(ScrollView* view) { Widget::setParent(view); }
+-void PluginView::attachToWindow() { notImplemented(); }
+-void PluginView::detachFromWindow() { notImplemented(); }
+-NPError PluginView::handlePost(const char*, const char*, uint32, const char*, bool, void*, bool, bool) { notImplemented(); return NPERR_GENERIC_ERROR; }
+-void PluginView::updateWindow() const { notImplemented(); }
+-void PluginView::handleKeyboardEvent(KeyboardEvent*) { notImplemented(); }
+-void PluginView::handleMouseEvent(MouseEvent*) { notImplemented(); }
+-PluginView::~PluginView() {}
+-
+ namespace WebCore {
+ 
+ Vector<String> supportedKeySizes() { notImplemented(); return Vector<String>(); }
+ String signedPublicKeyAndChallengeString(unsigned keySizeIndex, const String &challengeString, const KURL &url) { return String(); }
+ 
+-CString openTemporaryFile(const char* prefix, PlatformFileHandle& handle) { notImplemented(); handle = invalidPlatformFileHandle; return 0; }
+-void closeFile(PlatformFileHandle&) { notImplemented(); };
+-int writeToFile(PlatformFileHandle, const char* data, int length) { return -1; };
+-
+ #if !defined(Q_OS_WIN)
+ // defined in win/SystemTimeWin.cpp, which is compiled for the Qt/Windows port
+ float userIdleTime() { notImplemented(); return 0.0; }
+diff -Naur WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp WebKit-r32416/WebCore/platform/qt/WidgetQt.cpp
+--- WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/qt/WidgetQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -59,6 +59,7 @@
+         , enabled(true)
+         , suppressInvalidation(false)
+         , m_widget(0)
++        , isNPAPIPlugin(0)
+         , m_parentScrollView(0) { }
+     ~WidgetPrivate() {}
+ 
+@@ -66,6 +67,7 @@
+ 
+     bool enabled;
+     bool suppressInvalidation;
++    bool isNPAPIPlugin;
+     QRect m_geometry;
+     QWidget *m_widget; //for plugins
+     ScrollView *m_parentScrollView;
+@@ -141,6 +143,16 @@
+     data->m_widget = widget;
+ }
+ 
++bool Widget::isNPAPIPlugin() const
++{
++    return data->isNPAPIPlugin;
++}
++
++void Widget::setIsNPAPIPlugin(bool is)
++{
++    data->isNPAPIPlugin = is;
++}
++
+ void Widget::paint(GraphicsContext *, const IntRect &rect)
+ {
+ }
+diff -Naur WebKit-r32416.orig/WebCore/platform/Widget.h WebKit-r32416/WebCore/platform/Widget.h
+--- WebKit-r32416.orig/WebCore/platform/Widget.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/platform/Widget.h	2008-04-23 15:39:41.000000000 +0200
+@@ -176,6 +176,9 @@
+         void setNativeWidget(QWidget *widget);
+         QWidget* nativeWidget() const;
+ 
++        void setIsNPAPIPlugin(bool);
++        bool isNPAPIPlugin() const;
++
+         virtual void setParent(ScrollView*);
+         ScrollView* parent() const;
+         virtual void geometryChanged() const;
+diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginDatabaseGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginDatabaseGtk.cpp
+--- WebKit-r32416.orig/WebCore/plugins/gtk/PluginDatabaseGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/gtk/PluginDatabaseGtk.cpp	2008-04-23 15:40:31.000000000 +0200
+@@ -29,6 +29,7 @@
+ 
+ #include "CString.h"
+ #include "PluginPackage.h"
++#include <gdkconfig.h>
+ 
+ namespace WebCore {
+ 
+@@ -60,6 +61,8 @@
+     Vector<String> directories;
+     gchar* directory;
+ 
++    directory = 0;
++
+ #if defined(GDK_WINDOWING_X11)
+     directory = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", NULL);
+     directories.append(directory);
+@@ -75,7 +78,7 @@
+         g_strfreev(pluginPaths);
+     }
+ 
+-    directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "lib", "browser", "plugins", NULL);
++    directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "lib", "nsbrowser", "plugins", NULL);
+     directories.append(directory);
+     g_free(directory);
+     directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "local", "lib", "mozilla", "plugins", NULL);
+@@ -95,7 +98,21 @@
+ 
+ bool PluginDatabase::isPreferredPluginDirectory(const String& directory)
+ {
+-    return false;
++    gchar* homePath;
++    bool retval = false;
++
++    homePath = 0;
++
++#if defined(GDK_WINDOWING_X11)
++    homePath = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", 0);
++#elif defined(GDK_WINDOWING_WIN32)
++    homePath = g_build_filename(g_get_home_dir(), "Application Data", "Mozilla", "plugins", 0);
++#endif
++
++    if (homePath)
++	retval = (strcmp(homePath, (directory.utf8()).data()) == 0);
++
++    return retval;
+ }
+ 
+ }
+diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginDataGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginDataGtk.cpp
+--- WebKit-r32416.orig/WebCore/plugins/gtk/PluginDataGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/gtk/PluginDataGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,73 @@
++/*
++    Copyright (C) 2008 Trolltech ASA
++    Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++    Copyright (C) 2008 Collabora Ltd. All rights reserved.
++
++    This library is free software; you can redistribute it and/or
++    modify it under the terms of the GNU Library General Public
++    License as published by the Free Software Foundation; either
++    version 2 of the License, or (at your option) any later version.
++
++    This library is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++    Library General Public License for more details.
++
++    You should have received a copy of the GNU Library General Public License
++    along with this library; see the file COPYING.LIB.  If not, write to
++    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
++    Boston, MA 02110-1301, USA.
++*/
++
++#include "config.h"
++#include "PluginData.h"
++
++#include "PluginDatabase.h"
++#include "PluginPackage.h"
++#include <stdio.h>
++namespace WebCore {
++
++void PluginData::initPlugins()
++{
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    const Vector<PluginPackage*> &plugins = db->plugins();
++
++    for (unsigned int i = 0; i < plugins.size(); ++i) {
++        PluginInfo* info = new PluginInfo;
++        PluginPackage* package = plugins[i];
++
++        info->name = package->name();
++        info->file = package->fileName();
++        info->desc = package->description();
++
++        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
++        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
++        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
++            MimeClassInfo* mime = new MimeClassInfo;
++            info->mimes.append(mime);
++
++            mime->type = it->first;
++            mime->desc = it->second;
++            mime->plugin = info;
++
++            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
++
++            for (unsigned i = 0; i < extensions.size(); i++) {
++                if (i > 0)
++                    mime->suffixes += ",";
++
++                mime->suffixes += extensions[i];
++            }
++        }
++
++        m_plugins.append(info);
++    }
++}
++
++void PluginData::refresh()
++{
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    db->refresh();
++}
++
++};
+diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginPackageGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginPackageGtk.cpp
+--- WebKit-r32416.orig/WebCore/plugins/gtk/PluginPackageGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/gtk/PluginPackageGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,202 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginPackage.h"
++
++#include "CString.h"
++#include "MIMETypeRegistry.h"
++#include "NotImplemented.h"
++#include "npruntime_impl.h"
++#include "PluginDebug.h"
++
++namespace WebCore {
++
++int PluginPackage::compareFileVersion(const PlatformModuleVersion&) const
++{
++    notImplemented();
++    return 0;
++}
++
++void PluginPackage::determineQuirks(const String& mimeType)
++{
++    if (MIMETypeRegistry::isJavaAppletMIMEType(mimeType)) {
++        // Because a single process cannot create multiple VMs, and we cannot reliably unload a
++        // Java VM, we cannot unload the Java plugin, or we'll lose reference to our only VM
++        m_quirks.add(PluginQuirkDontUnloadPlugin);
++
++        // Setting the window region to an empty region causes bad scrolling repaint problems
++        // with the Java plug-in.
++        m_quirks.add(PluginQuirkDontClipToZeroRectWhenScrolling);
++    }
++}
++
++bool PluginPackage::fetchInfo()
++{
++    if (!load())
++        return false;
++
++    NP_GetMIMEDescriptionFuncPtr NP_GetMIMEDescription;
++    NPP_GetValueProcPtr NPP_GetValue;
++
++    g_module_symbol(m_module, "NP_GetMIMEDescription", (void**)&NP_GetMIMEDescription);
++    g_module_symbol(m_module, "NP_GetValue", (void**)&NPP_GetValue);
++
++    const gchar* types = NP_GetMIMEDescription();
++    gchar** mimeDescs = g_strsplit(types, ";", -1);
++    for (int i = 0; mimeDescs[i] && mimeDescs[i][0]; i++) {
++        gchar** mimeData = g_strsplit(mimeDescs[i], ":", 3);
++
++        String description = String::fromUTF8(mimeData[2]);
++        gchar** extensions = g_strsplit(mimeData[1], ",", -1);
++
++        Vector<String> extVector;
++        for (int j = 0; extensions[j]; j++)
++            extVector.append(String::fromUTF8(extensions[j]));
++
++        m_mimeToExtensions.add(mimeData[0], extVector);
++        m_mimeToDescriptions.add(mimeData[0], description);
++
++        g_strfreev(extensions);
++        g_strfreev(mimeData);
++    }
++    g_strfreev(mimeDescs);
++
++    char* buffer = 0;
++    NPError err = NPP_GetValue(0, NPPVpluginNameString, &buffer);
++    if (err == NPERR_NO_ERROR)
++        m_name = buffer;
++
++    buffer = 0;
++    err = NPP_GetValue(0, NPPVpluginDescriptionString, &buffer);
++    if (err == NPERR_NO_ERROR)
++        m_description = buffer;
++
++    return true;
++}
++
++bool PluginPackage::load()
++{
++    if (m_isLoaded) {
++        m_loadCount++;
++        return true;
++    }
++
++    m_module = g_module_open((m_path.utf8()).data(), G_MODULE_BIND_LOCAL);
++
++    if (!m_module) {
++	    LOG(Plugin,"Module Load Failed :%s, Error:%s\n", (m_path.utf8()).data(), g_module_error());
++        return false;
++	}
++
++    m_isLoaded = true;
++
++    NP_InitializeFuncPtr NP_Initialize;
++    NPError npErr;
++
++    g_module_symbol(m_module, "NP_Initialize", (void**)&NP_Initialize);
++    g_module_symbol(m_module, "NP_Shutdown", (void**)&m_NPP_Shutdown);
++
++    if (!NP_Initialize || !m_NPP_Shutdown)
++        goto abort;
++
++    memset(&m_pluginFuncs, 0, sizeof(m_pluginFuncs));
++    m_pluginFuncs.size = sizeof(m_pluginFuncs);
++
++    m_browserFuncs.size = sizeof (m_browserFuncs);
++    m_browserFuncs.version = NP_VERSION_MINOR;
++    m_browserFuncs.geturl = NPN_GetURL;
++    m_browserFuncs.posturl = NPN_PostURL;
++    m_browserFuncs.requestread = NPN_RequestRead;
++    m_browserFuncs.newstream = NPN_NewStream;
++    m_browserFuncs.write = NPN_Write;
++    m_browserFuncs.destroystream = NPN_DestroyStream;
++    m_browserFuncs.status = NPN_Status;
++    m_browserFuncs.uagent = NPN_UserAgent;
++    m_browserFuncs.memalloc = NPN_MemAlloc;
++    m_browserFuncs.memfree = NPN_MemFree;
++    m_browserFuncs.memflush = NPN_MemFlush;
++    m_browserFuncs.reloadplugins = NPN_ReloadPlugins;
++    m_browserFuncs.geturlnotify = NPN_GetURLNotify;
++    m_browserFuncs.posturlnotify = NPN_PostURLNotify;
++    m_browserFuncs.getvalue = NPN_GetValue;
++    m_browserFuncs.setvalue = NPN_SetValue;
++    m_browserFuncs.invalidaterect = NPN_InvalidateRect;
++    m_browserFuncs.invalidateregion = NPN_InvalidateRegion;
++    m_browserFuncs.forceredraw = NPN_ForceRedraw;
++    m_browserFuncs.getJavaEnv = NPN_GetJavaEnv;
++    m_browserFuncs.getJavaPeer = NPN_GetJavaPeer;
++    m_browserFuncs.pushpopupsenabledstate = NPN_PushPopupsEnabledState;
++    m_browserFuncs.poppopupsenabledstate = NPN_PopPopupsEnabledState;
++
++    m_browserFuncs.releasevariantvalue = _NPN_ReleaseVariantValue;
++    m_browserFuncs.getstringidentifier = _NPN_GetStringIdentifier;
++    m_browserFuncs.getstringidentifiers = _NPN_GetStringIdentifiers;
++    m_browserFuncs.getintidentifier = _NPN_GetIntIdentifier;
++    m_browserFuncs.identifierisstring = _NPN_IdentifierIsString;
++    m_browserFuncs.utf8fromidentifier = _NPN_UTF8FromIdentifier;
++    m_browserFuncs.createobject = _NPN_CreateObject;
++    m_browserFuncs.retainobject = _NPN_RetainObject;
++    m_browserFuncs.releaseobject = _NPN_ReleaseObject;
++    m_browserFuncs.invoke = _NPN_Invoke;
++    m_browserFuncs.invokeDefault = _NPN_InvokeDefault;
++    m_browserFuncs.evaluate = _NPN_Evaluate;
++    m_browserFuncs.getproperty = _NPN_GetProperty;
++    m_browserFuncs.setproperty = _NPN_SetProperty;
++    m_browserFuncs.removeproperty = _NPN_RemoveProperty;
++    m_browserFuncs.hasproperty = _NPN_HasMethod;
++    m_browserFuncs.hasmethod = _NPN_HasProperty;
++    m_browserFuncs.setexception = _NPN_SetException;
++    m_browserFuncs.enumerate = _NPN_Enumerate;
++
++    npErr = NP_Initialize(&m_browserFuncs, &m_pluginFuncs);
++    if (npErr != NPERR_NO_ERROR)
++        goto abort;
++
++    m_loadCount++;
++    return true;
++
++abort:
++    unloadWithoutShutdown();
++    return false;
++}
++
++unsigned PluginPackage::hash() const
++{ 
++    unsigned hashCodes[2] = {
++        m_path.impl()->hash(),
++        m_lastModified
++    };
++
++    return StringImpl::computeHash(reinterpret_cast<UChar*>(hashCodes), 2 * sizeof(unsigned) / sizeof(UChar));
++}
++
++bool PluginPackage::equal(const PluginPackage& a, const PluginPackage& b)
++{
++    return a.m_description == b.m_description;
++}
++
++}
+diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginViewGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginViewGtk.cpp
+--- WebKit-r32416.orig/WebCore/plugins/gtk/PluginViewGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/gtk/PluginViewGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,546 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginView.h"
++
++#include "Document.h"
++#include "DocumentLoader.h"
++#include "Element.h"
++#include "EventNames.h"
++#include "FrameLoader.h"
++#include "FrameLoadRequest.h"
++#include "FrameTree.h"
++#include "Frame.h"
++#include "FrameView.h"
++#include "GraphicsContext.h"
++#include "Image.h"
++#include "HTMLNames.h"
++#include "HTMLPlugInElement.h"
++#include "KeyboardEvent.h"
++#include "MouseEvent.h"
++#include "NotImplemented.h"
++#include "Page.h"
++#include "PlatformMouseEvent.h"
++#include "PluginDebug.h"
++#include "PluginPackage.h"
++#include "RenderLayer.h"
++#include "Settings.h"
++#include "kjs_binding.h"
++#include "kjs_proxy.h"
++#include "npruntime_impl.h"
++#include "runtime.h"
++#include "runtime_root.h"
++#include <kjs/JSLock.h>
++#include <kjs/value.h>
++
++#include <gdkconfig.h>
++
++#if defined(GDK_WINDOWING_X11)
++#include "gtk2xtbin.h"
++#include <gdk/gdkx.h>
++#endif
++#ifdef GDK_WINDOWING_WIN32
++#include <gdk/gdkwin32.h>
++#endif
++
++using KJS::ExecState;
++using KJS::Interpreter;
++using KJS::JSLock;
++using KJS::JSObject;
++using KJS::JSValue;
++using KJS::UString;
++
++using std::min;
++
++using namespace WTF;
++
++namespace WebCore {
++
++using namespace EventNames;
++using namespace HTMLNames;
++
++void PluginView::updateWindow() const
++{
++    if (!parent() || !m_isWindowed)
++        return;
++
++    ASSERT(parent()->isFrameView());
++    FrameView* frameView = static_cast<FrameView*>(parent());
++
++    IntRect oldWindowRect = m_windowRect;
++    IntRect oldClipRect = m_clipRect;
++
++    m_windowRect = IntRect(frameView->contentsToWindow(frameGeometry().location()), frameGeometry().size());
++    m_clipRect = windowClipRect();
++    m_clipRect.move(-m_windowRect.x(), -m_windowRect.y());
++
++    GtkAllocation allocation = { m_windowRect.x(), m_windowRect.y(), m_windowRect.width(), m_windowRect.height() };
++    if (m_window) {
++        gtk_widget_size_allocate(m_window, &allocation);
++#if defined(GDK_WINDOWING_X11)
++        if (!m_needsXEmbed) {
++            gtk_xtbin_set_position(GTK_XTBIN(m_window), m_windowRect.x(), m_windowRect.y());
++            gtk_xtbin_resize(m_window, m_windowRect.width(), m_windowRect.height());
++        }
++#endif
++    }
++}
++
++void PluginView::setFocus()
++{
++    if (m_window)
++	gtk_widget_grab_focus(m_window);
++
++    Widget::setFocus();
++}
++
++void PluginView::show()
++{
++    m_isVisible = true;
++
++    if (m_attachedToWindow && m_window)
++	gtk_widget_show(m_window);
++
++    Widget::show();
++}
++
++void PluginView::hide()
++{
++    m_isVisible = false;
++
++    if (m_attachedToWindow && m_window)
++	gtk_widget_hide(m_window);
++
++    Widget::hide();
++}
++
++void PluginView::paint(GraphicsContext* context, const IntRect& rect)
++{
++    if (!m_isStarted) {
++        // Draw the "missing plugin" image
++        //paintMissingPluginIcon(context, rect);
++        return;
++    }
++
++    if (m_isWindowed || context->paintingDisabled())
++        return;
++
++    NPEvent npEvent;
++    /* Need to synthesize Xevents here */
++
++    m_npWindow.type = NPWindowTypeDrawable;
++
++    ASSERT(parent()->isFrameView());
++
++    if (m_plugin->pluginFuncs()->event) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        m_plugin->pluginFuncs()->event(m_instance, &npEvent);
++    }
++
++    if (m_isWindowed)
++        setNPWindowRect(frameGeometry());
++
++    if (m_plugin->pluginFuncs()->event) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        m_plugin->pluginFuncs()->event(m_instance, &npEvent);
++    }
++}
++
++void PluginView::handleKeyboardEvent(KeyboardEvent* event)
++{
++    NPEvent npEvent;
++    
++    /* FIXME: Synthesize an XEvent to pass through */
++
++    KJS::JSLock::DropAllLocks dropAllLocks;
++    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
++        event->setDefaultHandled();
++}
++
++void PluginView::handleMouseEvent(MouseEvent* event)
++{
++    NPEvent npEvent;
++
++    if (!m_isWindowed)
++      return;
++
++    /* FIXME: Synthesize an XEvent to pass through */
++    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(IntPoint(event->pageX(), event->pageY()));
++
++    KJS::JSLock::DropAllLocks dropAllLocks;
++    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
++        event->setDefaultHandled();
++}
++
++void PluginView::setParent(ScrollView* parent)
++{
++    Widget::setParent(parent);
++
++    if (parent)
++        init();
++    else {
++        if (!m_window)
++            return;
++    }
++}
++
++void PluginView::setNPWindowRect(const IntRect& rect)
++{
++    if (!m_isStarted || !m_isWindowed)
++        return;
++
++    if (!parent())
++        return;
++
++    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(rect.location());
++    m_npWindow.x = p.x();
++    m_npWindow.y = p.y();
++
++    m_npWindow.width = rect.width();
++    m_npWindow.height = rect.height();
++
++    m_npWindow.clipRect.left = 0;
++    m_npWindow.clipRect.top = 0;
++    m_npWindow.clipRect.right = rect.width();
++    m_npWindow.clipRect.bottom = rect.height();
++
++    if (m_plugin->pluginFuncs()->setwindow) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++
++        if (!m_isWindowed)
++            return;
++
++        ASSERT(m_window);
++    }
++}
++
++void PluginView::attachToWindow()
++{
++    if (m_attachedToWindow)
++	return;
++
++    m_attachedToWindow = true;
++    if (m_isVisible && m_window)
++	gtk_widget_show(m_window);
++}
++
++void PluginView::detachFromWindow()
++{
++    if (!m_attachedToWindow)
++	return;
++
++    if (m_isVisible && m_window)
++	gtk_widget_hide(m_window);
++    m_attachedToWindow = false;
++}
++
++void PluginView::stop()
++{
++    if (!m_isStarted)
++        return;
++
++    HashSet<RefPtr<PluginStream> > streams = m_streams;
++    HashSet<RefPtr<PluginStream> >::iterator end = streams.end();
++    for (HashSet<RefPtr<PluginStream> >::iterator it = streams.begin(); it != end; ++it) {
++        (*it)->stop();
++        disconnectStream((*it).get());
++    }
++
++    ASSERT(m_streams.isEmpty());
++
++    m_isStarted = false;
++    KJS::JSLock::DropAllLocks dropAllLocks;
++
++    // Clear the window
++    m_npWindow.window = 0;
++    if (m_plugin->pluginFuncs()->setwindow && !m_plugin->quirks().contains(PluginQuirkDontSetNullWindowHandleOnDestroy)) {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++    }
++
++    // Destroy the plugin
++    {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->destroy(m_instance, 0);
++        setCallingPlugin(false);
++    }
++
++    m_instance->pdata = 0;
++}
++
++static const char* MozillaUserAgent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0";
++
++const char* PluginView::userAgent()
++{
++    if (m_plugin->quirks().contains(PluginQuirkWantsMozillaUserAgent))
++        return MozillaUserAgent;
++
++    if (m_userAgent.isNull())
++        m_userAgent = m_parentFrame->loader()->userAgent(m_url).utf8();
++
++    return m_userAgent.data();
++}
++
++NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
++{
++    String filename(buf, len);
++
++    if (filename.startsWith("file:///"))
++        filename = filename.substring(8);
++
++    // Get file info
++    if (!g_file_test ((filename.utf8()).data(), (GFileTest)(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)))
++        return NPERR_FILE_NOT_FOUND;
++
++    //FIXME - read the file data into buffer
++    FILE* fileHandle = fopen((filename.utf8()).data(), "r");
++    
++    if (fileHandle == 0)
++        return NPERR_FILE_NOT_FOUND;
++
++    //buffer.resize();
++
++    int bytesRead = fread(buffer.data(), 1, 0, fileHandle);
++
++    fclose(fileHandle);
++
++    if (bytesRead <= 0)
++        return NPERR_FILE_NOT_FOUND;
++
++	return NPERR_NO_ERROR;
++}
++
++NPError PluginView::getValue(NPNVariable variable, void* value)
++{
++    switch (variable) {
++#if defined(GDK_WINDOWING_X11)
++        case NPNVxtAppContext: {
++            if (!m_needsXEmbed) {
++                *(void **)value = XtDisplayToApplicationContext (GTK_XTBIN(m_window)->xtclient.xtdisplay);
++
++                return NPERR_NO_ERROR;
++            } else
++                return NPERR_GENERIC_ERROR;
++        }
++#endif
++
++        case NPNVToolkit: {
++#if PLATFORM(GTK)
++            *((uint32 *)value) = 2;
++#else
++            *((uint32 *)value) = 0;
++#endif
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVSupportsXEmbedBool: {
++#if defined(GDK_WINDOWING_X11)
++            *((uint32 *)value) = true;
++#else
++            *((uint32 *)value) = false;
++#endif
++            return NPERR_NO_ERROR;
++        }
++
++#if ENABLE(NETSCAPE_PLUGIN_API)
++        case NPNVWindowNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (windowScriptObject)
++                _NPN_RetainObject(windowScriptObject);
++
++            void** v = (void**)value;
++            *v = windowScriptObject;
++            
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVPluginElementNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* pluginScriptObject = 0;
++
++            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
++                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (pluginScriptObject)
++                _NPN_RetainObject(pluginScriptObject);
++
++            void** v = (void**)value;
++            *v = pluginScriptObject;
++
++            return NPERR_NO_ERROR;
++        }
++#endif
++
++        case NPNVnetscapeWindow: {
++            void* w = reinterpret_cast<void*>(value);
++
++#ifdef GDK_WINDOWING_X11
++            *((XID *)w) = GDK_WINDOW_XWINDOW(containingWindow()->window);
++#endif
++#ifdef GDK_WINDOWING_WIN32
++            *((HWND *)w) = GDK_WINDOWING_HWND(containingWindow()->window);
++#endif
++            return NPERR_NO_ERROR;
++        }
++        default:
++            return NPERR_GENERIC_ERROR;
++    }
++}
++
++void PluginView::invalidateRect(NPRect* rect)
++{
++    if (!rect) {
++        invalidate();
++        return;
++    }
++
++    IntRect r(rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top);
++    Widget::invalidateRect(r);
++}
++
++void PluginView::forceRedraw()
++{
++    if (m_isWindowed)
++        gtk_widget_queue_draw(m_window);
++    else
++        gtk_widget_queue_draw(containingWindow());
++}
++
++PluginView::~PluginView()
++{
++    stop();
++
++    deleteAllValues(m_requests);
++
++    freeStringArray(m_paramNames, m_paramCount);
++    freeStringArray(m_paramValues, m_paramCount);
++
++    m_parentFrame->cleanupScriptObjectsForPlugin(this);
++
++    if (m_plugin && !(m_plugin->quirks().contains(PluginQuirkDontUnloadPlugin)))
++        m_plugin->unload();
++}
++
++void PluginView::init()
++{
++    if (m_haveInitialized)
++        return;
++    m_haveInitialized = true;
++
++    if (!m_plugin) {
++        ASSERT(m_status == PluginStatusCanNotFindPlugin);
++        return;
++    }
++
++    if (!m_plugin->load()) {
++        m_plugin = 0;
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    if (!start()) {
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    if (m_plugin->pluginFuncs()->getvalue)
++        m_plugin->pluginFuncs()->getvalue(m_instance, NPPVpluginNeedsXEmbed, &m_needsXEmbed);
++
++#if defined(GDK_WINDOWING_X11)
++    if (m_needsXEmbed) {
++        m_window = gtk_socket_new();
++        gtk_container_add(GTK_CONTAINER(m_parentFrame->view()->containingWindow()), m_window);
++        setGtkWidget(m_window);
++    } else if (m_isWindowed) {
++        m_window = gtk_xtbin_new(m_parentFrame->view()->containingWindow()->window, 0);
++	setGtkWidget(m_window);
++    }
++#else
++    m_window = gtk_socket_new();
++    gtk_container_add(GTK_CONTAINER(m_parentFrame->view()->containingWindow()), m_window);
++    setGtkWidget(m_window);
++#endif
++    show ();
++
++    if (m_isWindowed) {
++#if defined(GDK_WINDOWING_X11)
++	NPSetWindowCallbackStruct ws;
++
++	ws.type = 0;
++
++	if (m_needsXEmbed) {
++	    ws.display = GDK_WINDOW_XDISPLAY(m_window->window);
++	    ws.visual = GDK_VISUAL_XVISUAL(gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window)));
++	    ws.depth = gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window))->depth;
++	    ws.colormap = GDK_COLORMAP_XCOLORMAP(gdk_drawable_get_colormap(GDK_DRAWABLE(m_window->window)));
++	} else {
++	    ws.display = GTK_XTBIN(m_window)->xtdisplay;
++	    ws.visual = GTK_XTBIN(m_window)->xtclient.xtvisual;
++	    ws.depth = GTK_XTBIN(m_window)->xtclient.xtdepth;
++	    ws.colormap = GTK_XTBIN(m_window)->xtclient.xtcolormap;
++
++	    XFlush (ws.display);
++	}
++
++	m_npWindow.ws_info = &ws;
++#endif
++    }
++
++    if (m_isWindowed) {
++        m_npWindow.type = NPWindowTypeWindow;
++#if defined(GDK_WINDOWING_X11)
++	if (m_needsXEmbed)
++	    m_npWindow.window = (void*)GDK_WINDOW_XWINDOW(m_window->window);
++	else
++	    m_npWindow.window = (void*)GTK_XTBIN(m_window)->xtwindow;
++#elif defined(GDK_WINDOWING_WIN32)
++        m_npWindow.window = (void*)GDK_WINDOW_HWND(m_window->window);
++#endif
++    } else {
++        m_npWindow.type = NPWindowTypeDrawable;
++        m_npWindow.window = 0;
++    }
++
++    if (!(m_plugin->quirks().contains(PluginQuirkDeferFirstSetWindowCall)))
++        setNPWindowRect(frameGeometry());
++
++    m_status = PluginStatusLoadedSuccessfully;
++}
++
++} // namespace WebCore
+diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/xembed.h WebKit-r32416/WebCore/plugins/gtk/xembed.h
+--- WebKit-r32416.orig/WebCore/plugins/gtk/xembed.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/gtk/xembed.h	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,64 @@
++/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
++ * vim:expandtab:shiftwidth=2:tabstop=2: */
++ 
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is the XEMBED Declaration.
++ *
++ * The Initial Developer of the Original Code is
++ * Sun Microsystems, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2002
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either the GNU General Public License Version 2 or later (the "GPL"), or
++ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++/* XEMBED messages */
++#define XEMBED_EMBEDDED_NOTIFY          0
++#define XEMBED_WINDOW_ACTIVATE          1
++#define XEMBED_WINDOW_DEACTIVATE        2
++#define XEMBED_REQUEST_FOCUS            3
++#define XEMBED_FOCUS_IN                 4
++#define XEMBED_FOCUS_OUT                5
++#define XEMBED_FOCUS_NEXT               6
++#define XEMBED_FOCUS_PREV               7
++#define XEMBED_GRAB_KEY                 8
++#define XEMBED_UNGRAB_KEY               9
++#define XEMBED_MODALITY_ON              10
++#define XEMBED_MODALITY_OFF             11
++
++/* Non standard messages*/
++#define XEMBED_GTK_GRAB_KEY             108 
++#define XEMBED_GTK_UNGRAB_KEY           109
++
++/* Details for  XEMBED_FOCUS_IN: */
++#define XEMBED_FOCUS_CURRENT            0
++#define XEMBED_FOCUS_FIRST              1
++#define XEMBED_FOCUS_LAST               2
++
++/* Flags for _XEMBED_INFO */
++#define XEMBED_MAPPED                   (1 << 0)
+diff -Naur WebKit-r32416.orig/WebCore/plugins/npapi.cpp WebKit-r32416/WebCore/plugins/npapi.cpp
+--- WebKit-r32416.orig/WebCore/plugins/npapi.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/npapi.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -137,6 +137,11 @@
+ 
+ NPError NPN_GetValue(NPP instance, NPNVariable variable, void* value)
+ {
++    // FIXME: Acrobat reader plugin calls NPN_GetValue before a PluginView
++    // has been created
++    if (!instance)
++        return NPERR_GENERIC_ERROR;
++
+     return pluginViewForInstance(instance)->getValue(variable, value);
+ }
+ 
+diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp WebKit-r32416/WebCore/plugins/PluginPackage.cpp
+--- WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/PluginPackage.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
+- * Copyright (C) 2008 Collabora, Ltd.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd.  All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -27,16 +27,30 @@
+ #include "config.h"
+ #include "PluginPackage.h"
+ 
++#include "CString.h"
+ #include "MIMETypeRegistry.h"
++#include "PluginDatabase.h"
+ #include "PluginDebug.h"
+ #include "Timer.h"
+ #include "npruntime_impl.h"
++#include <string.h>
+ #include <wtf/OwnArrayPtr.h>
+ 
+ namespace WebCore {
+ 
+ PluginPackage::~PluginPackage()
+ {
++    // This destructor gets called during refresh() if PluginDatabase's
++    // PluginSet hash is already populated, as it removes items from
++    // the hash table. Calling the destructor on a loaded plug-in of
++    // course would cause a crash, so we check to call unload before we
++    // ASSERT.
++    // FIXME: There is probably a better way to fix this.
++    if (m_loadCount == 0)
++	    unloadWithoutShutdown();
++    else
++	    unload();
++
+     ASSERT(!m_isLoaded);
+ }
+ 
+@@ -58,6 +72,31 @@
+     m_module = 0;
+ }
+ 
++
++int PluginPackage::compare(const PluginPackage& compareTo) const
++{
++    // Sort plug-ins that allow multiple instances first.
++    bool AallowsMultipleInstances = !quirks().contains(PluginQuirkDontAllowMultipleInstances);
++    bool BallowsMultipleInstances = !compareTo.quirks().contains(PluginQuirkDontAllowMultipleInstances);
++    if (AallowsMultipleInstances != BallowsMultipleInstances)
++        return AallowsMultipleInstances ? -1 : 1;
++
++    // Sort plug-ins in a preferred path first.
++    bool AisInPreferredDirectory = PluginDatabase::isPreferredPluginDirectory(parentDirectory());
++    bool BisInPreferredDirectory = PluginDatabase::isPreferredPluginDirectory(compareTo.parentDirectory());
++    if (AisInPreferredDirectory != BisInPreferredDirectory)
++        return AisInPreferredDirectory ? -1 : 1;
++
++    int diff = strcmp(name().utf8().data(), compareTo.name().utf8().data());
++    if (diff)
++        return diff;
++
++    if (diff = compareFileVersion(compareTo.version()))
++        return diff;
++
++    return strcmp(parentDirectory().utf8().data(), compareTo.parentDirectory().utf8().data());
++}
++
+ PluginPackage::PluginPackage(const String& path, const time_t& lastModified)
+     : m_path(path)
+     , m_moduleVersion(0)
+diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.cpp WebKit-r32416/WebCore/plugins/PluginView.cpp
+--- WebKit-r32416.orig/WebCore/plugins/PluginView.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/PluginView.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -393,55 +393,6 @@
+         page->chrome()->setStatusbarText(m_parentFrame, String(message));
+ }
+ 
+-NPError PluginView::getValue(NPNVariable variable, void* value)
+-{
+-    if (m_isJavaScriptPaused)
+-        return NPERR_GENERIC_ERROR;
+-
+-    switch (variable) {
+-#if ENABLE(NETSCAPE_PLUGIN_API)
+-        case NPNVWindowNPObject: {
+-            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
+-
+-            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
+-            if (windowScriptObject)
+-                _NPN_RetainObject(windowScriptObject);
+-
+-            void** v = (void**)value;
+-            *v = windowScriptObject;
+-            
+-            return NPERR_NO_ERROR;
+-        }
+-
+-        case NPNVPluginElementNPObject: {
+-            NPObject* pluginScriptObject = 0;
+-
+-            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
+-                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
+-
+-            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
+-            if (pluginScriptObject)
+-                _NPN_RetainObject(pluginScriptObject);
+-
+-            void** v = (void**)value;
+-            *v = pluginScriptObject;
+-
+-            return NPERR_NO_ERROR;
+-        }
+-#endif
+-
+-        case NPNVnetscapeWindow: {
+-            PlatformWidget* w = reinterpret_cast<PlatformWidget*>(value);
+-
+-            *w = containingWindow();
+-
+-            return NPERR_NO_ERROR;
+-        }
+-        default:
+-            return NPERR_GENERIC_ERROR;
+-    }
+-}
+-
+ NPError PluginView::setValue(NPPVariable variable, void* value)
+ {
+     switch (variable) {
+@@ -597,6 +548,10 @@
+ 
+     setParameters(paramNames, paramValues);
+ 
++#ifdef XP_UNIX
++    m_npWindow.ws_info = 0;
++#endif
++
+     m_mode = m_loadManually ? NP_FULL : NP_EMBED;
+ 
+     resize(size);
+@@ -671,4 +626,229 @@
+     return new PluginView(parentFrame, size, plugin, element, url, paramNames, paramValues, mimeTypeCopy, loadManually);
+ }
+ 
++void PluginView::freeStringArray(char** stringArray, int length)
++{
++    if (!stringArray)
++        return;
++
++    for (int i = 0; i < length; i++)
++        fastFree(stringArray[i]);
++
++    fastFree(stringArray);
++}
++
++static inline bool startsWithBlankLine(const Vector<char>& buffer)
++{
++    return buffer.size() > 0 && buffer[0] == '\n';
++}
++
++static inline int locationAfterFirstBlankLine(const Vector<char>& buffer)
++{
++    const char* bytes = buffer.data();
++    unsigned length = buffer.size();
++
++    for (unsigned i = 0; i < length - 4; i++) {
++        // Support for Acrobat. It sends "\n\n".
++        if (bytes[i] == '\n' && bytes[i + 1] == '\n')
++            return i + 2;
++        
++        // Returns the position after 2 CRLF's or 1 CRLF if it is the first line.
++        if (bytes[i] == '\r' && bytes[i + 1] == '\n') {
++            i += 2;
++            if (i == 2)
++                return i;
++            else if (bytes[i] == '\n')
++                // Support for Director. It sends "\r\n\n" (3880387).
++                return i + 1;
++            else if (bytes[i] == '\r' && bytes[i + 1] == '\n')
++                // Support for Flash. It sends "\r\n\r\n" (3758113).
++                return i + 2;
++        }
++    }
++
++    return -1;
++}
++
++static inline const char* findEOL(const char* bytes, unsigned length)
++{
++    // According to the HTTP specification EOL is defined as
++    // a CRLF pair. Unfortunately, some servers will use LF
++    // instead. Worse yet, some servers will use a combination
++    // of both (e.g. <header>CRLFLF<body>), so findEOL needs
++    // to be more forgiving. It will now accept CRLF, LF or
++    // CR.
++    //
++    // It returns NULL if EOLF is not found or it will return
++    // a pointer to the first terminating character.
++    for (unsigned i = 0; i < length; i++) {
++        if (bytes[i] == '\n')
++            return bytes + i;
++        if (bytes[i] == '\r') {
++            // Check to see if spanning buffer bounds
++            // (CRLF is across reads). If so, wait for
++            // next read.
++            if (i + 1 == length)
++                break;
++
++            return bytes + i;
++        }
++    }
++
++    return 0;
++}
++
++static inline String capitalizeRFC822HeaderFieldName(const String& name)
++{
++    bool capitalizeCharacter = true;
++    String result;
++
++    for (unsigned i = 0; i < name.length(); i++) {
++        UChar c;
++
++        if (capitalizeCharacter && name[i] >= 'a' && name[i] <= 'z')
++            c = toASCIIUpper(name[i]);
++        else if (!capitalizeCharacter && name[i] >= 'A' && name[i] <= 'Z')
++            c = toASCIILower(name[i]);
++        else
++            c = name[i];
++
++        if (name[i] == '-')
++            capitalizeCharacter = true;
++        else
++            capitalizeCharacter = false;
++
++        result.append(c);
++    }
++
++    return result;
++}
++
++static inline HTTPHeaderMap parseRFC822HeaderFields(const Vector<char>& buffer, unsigned length)
++{
++    const char* bytes = buffer.data();
++    const char* eol;
++    String lastKey;
++    HTTPHeaderMap headerFields;
++
++    // Loop ove rlines until we're past the header, or we can't find any more end-of-lines
++    while ((eol = findEOL(bytes, length))) {
++        const char* line = bytes;
++        int lineLength = eol - bytes;
++        
++        // Move bytes to the character after the terminator as returned by findEOL.
++        bytes = eol + 1;
++        if ((*eol == '\r') && (*bytes == '\n'))
++            bytes++; // Safe since findEOL won't return a spanning CRLF.
++
++        length -= (bytes - line);
++        if (lineLength == 0)
++            // Blank line; we're at the end of the header
++            break;
++        else if (*line == ' ' || *line == '\t') {
++            // Continuation of the previous header
++            if (lastKey.isNull()) {
++                // malformed header; ignore it and continue
++                continue;
++            } else {
++                // Merge the continuation of the previous header
++                String currentValue = headerFields.get(lastKey);
++                String newValue(line, lineLength);
++
++                headerFields.set(lastKey, currentValue + newValue);
++            }
++        } else {
++            // Brand new header
++            const char* colon;
++            for (colon = line; *colon != ':' && colon != eol; colon++) {
++                // empty loop
++            }
++            if (colon == eol) 
++                // malformed header; ignore it and continue
++                continue;
++            else {
++                lastKey = capitalizeRFC822HeaderFieldName(String(line, colon - line));
++                String value;
++
++                for (colon++; colon != eol; colon++) {
++                    if (*colon != ' ' && *colon != '\t')
++                        break;
++                }
++                if (colon == eol)
++                    value = "";
++                else
++                    value = String(colon, eol - colon);
++
++                String oldValue = headerFields.get(lastKey);
++                if (!oldValue.isNull()) {
++                    String tmp = oldValue;
++                    tmp += ", ";
++                    tmp += value;
++                    value = tmp;
++                }
++
++                headerFields.set(lastKey, value);
++            }
++        }
++    }
++
++    return headerFields;
++}
++
++NPError PluginView::handlePost(const char* url, const char* target, uint32 len, const char* buf, bool file, void* notifyData, bool sendNotification, bool allowHeaders)
++{
++    if (!url || !len || !buf)
++        return NPERR_INVALID_PARAM;
++
++    FrameLoadRequest frameLoadRequest;
++
++    HTTPHeaderMap headerFields;
++    Vector<char> buffer;
++    
++    if (file) {
++        NPError readResult = handlePostReadFile(buffer, len, buf);
++        if(readResult != NPERR_NO_ERROR)
++            return readResult;
++    } else {
++        buffer.resize(len);
++        memcpy(buffer.data(), buf, len);
++    }
++
++    const char* postData = buffer.data();
++    int postDataLength = buffer.size();
++
++    if (allowHeaders) {
++        if (startsWithBlankLine(buffer)) {
++            postData++;
++            postDataLength--;
++        } else {
++            int location = locationAfterFirstBlankLine(buffer);
++            if (location != -1) {
++                // If the blank line is somewhere in the middle of the buffer, everything before is the header
++                headerFields = parseRFC822HeaderFields(buffer, location);
++                unsigned dataLength = buffer.size() - location;
++
++                // Sometimes plugins like to set Content-Length themselves when they post,
++                // but WebFoundation does not like that. So we will remove the header
++                // and instead truncate the data to the requested length.
++                String contentLength = headerFields.get("Content-Length");
++
++                if (!contentLength.isNull())
++                    dataLength = min(contentLength.toInt(), (int)dataLength);
++                headerFields.remove("Content-Length");
++
++                postData += location;
++                postDataLength = dataLength;
++            }
++        }
++    }
++
++    frameLoadRequest.resourceRequest().setHTTPMethod("POST");
++    frameLoadRequest.resourceRequest().setURL(makeURL(m_baseURL, url));
++    frameLoadRequest.resourceRequest().addHTTPHeaderFields(headerFields);
++    frameLoadRequest.resourceRequest().setHTTPBody(FormData::create(postData, postDataLength));
++    frameLoadRequest.setFrameName(target);
++
++    return load(frameLoadRequest, sendNotification, notifyData);
++}
++
+ } // namespace WebCore
+diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.h WebKit-r32416/WebCore/plugins/PluginView.h
+--- WebKit-r32416.orig/WebCore/plugins/PluginView.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/PluginView.h	2008-04-23 15:39:41.000000000 +0200
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
+- * Copyright (C) 2008 Collabora, Ltd. All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -171,6 +171,8 @@
+         static void setCurrentPluginView(PluginView*);
+         NPError load(const FrameLoadRequest&, bool sendNotification, void* notifyData);
+         NPError handlePost(const char* url, const char* target, uint32 len, const char* buf, bool file, void* notifyData, bool sendNotification, bool allowHeaders);
++        NPError handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf);
++        static void freeStringArray(char** stringArray, int length);
+         void setCallingPlugin(bool) const;
+         RefPtr<PluginPackage> m_plugin;
+         Element* m_element;
+@@ -221,6 +223,10 @@
+         bool m_attachedToWindow;
+         bool m_haveInitialized;
+ 
++#if PLATFORM(GTK) || defined(Q_WS_X11)
++        bool m_needsXEmbed;
++#endif
++
+ #if PLATFORM(WIN)
+         OwnPtr<PluginMessageThrottlerWin> m_messageThrottler;
+         WNDPROC m_pluginWndProc;
+diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginDatabaseQt.cpp
+--- WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/qt/PluginDatabaseQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,102 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2007 Staikos Computing Services Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginDatabase.h"
++
++#include <QDir>
++#include <QFileInfo>
++#include <QStringList>
++
++#include "CString.h"
++#include "PluginPackage.h"
++
++namespace WebCore {
++
++void PluginDatabase::getPluginPathsInDirectories(HashSet<String>& paths) const
++{
++    // FIXME: This should be a case insensitive set.
++    HashSet<String> uniqueFilenames;
++
++    QStringList nameFilters;
++    nameFilters << "*.so";
++    Vector<String>::const_iterator end = m_pluginDirectories.end();
++    for (Vector<String>::const_iterator it = m_pluginDirectories.begin(); it != end; ++it) {
++        QDir dir = QDir(QString(*it));
++        if (!dir.exists())
++            continue;
++
++        QFileInfoList fl = dir.entryInfoList(nameFilters, QDir::Files);
++        foreach (const QFileInfo fi, fl) {
++            String filename = String(fi.absoluteFilePath());
++            paths.add(filename);
++        }
++    }
++}
++
++static void addQtWebKitPluginDirectories(Vector<String>& paths)
++{
++    QString qtPath(getenv("QTWEBKIT_PLUGIN_PATH"));
++    QStringList qtPaths = qtPath.split(":", QString::SkipEmptyParts);
++    for(int i = 0; i < qtPaths.size(); i++) {
++    	paths.append(qtPaths.at(i));
++    }
++}
++
++static void addMozillaPluginDirectories(Vector<String>& paths)
++{
++    QDir path = QDir::home(); path.cd(".mozilla/plugins"); 
++    paths.append(path.absolutePath());
++    paths.append("/usr/lib/nsbrowser/plugins");
++    paths.append("/usr/local/lib/mozilla/plugins");
++    paths.append("/usr/lib/mozilla/plugins");
++    
++    QString mozPath(getenv("MOZ_PLUGIN_PATH"));
++    QStringList mozPaths = mozPath.split(":", QString::SkipEmptyParts);
++    for(int i = 0; i < mozPaths.size(); i++) {
++    	paths.append(mozPaths.at(i));
++    }
++}
++
++Vector<String> PluginDatabase::defaultPluginDirectories()
++{
++    Vector<String> paths;
++
++    addQtWebKitPluginDirectories(paths);
++    addMozillaPluginDirectories(paths);
++    
++    return paths;
++}
++
++bool PluginDatabase::isPreferredPluginDirectory(const String& path)
++{
++	QDir prefPath = QDir::home();
++	prefPath.cd(".mozilla/plugins");
++    return (path == prefPath.absolutePath());
++}
++
++}
+diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDataQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginDataQt.cpp
+--- WebKit-r32416.orig/WebCore/plugins/qt/PluginDataQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/qt/PluginDataQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -1,5 +1,6 @@
+ /*
+     Copyright (C) 2008 Trolltech ASA
++    Copyright (C) 2008 Collabora Ltd. All rights reserved.
+ 
+     This library is free software; you can redistribute it and/or
+     modify it under the terms of the GNU Library General Public
+@@ -20,10 +21,15 @@
+ #include "config.h"
+ #include "PluginData.h"
+ 
++#include "PluginDatabase.h"
++#include "PluginPackage.h"
++
++#if QT_VERSION >= 0x040400
+ #include "ChromeClientQt.h"
+ #include "Page.h"
+ #include <qwebpage.h>
+ #include <qwebpluginfactory.h>
++#endif
+ 
+ namespace WebCore {
+ 
+@@ -32,36 +38,71 @@
+ #if QT_VERSION >= 0x040400
+     QWebPage* webPage = static_cast<ChromeClientQt*>(m_page->chrome()->client())->m_webPage;
+     QWebPluginFactory* factory = webPage->pluginFactory();
+-    if (!factory)
+-        return;
++    if (factory) {
+ 
+-    QList<QWebPluginFactory::Plugin> plugins = factory->plugins();
+-    for (int i = 0; i < plugins.count(); ++i) {
+-        const QWebPluginFactory::Plugin& plugin = plugins.at(i);
++        QList<QWebPluginFactory::Plugin> qplugins = factory->plugins();
++        for (int i = 0; i < qplugins.count(); ++i) {
++            const QWebPluginFactory::Plugin& qplugin = qplugins.at(i);
+ 
+-        PluginInfo* info = new PluginInfo;
+-        info->name = plugin.name;
+-        info->desc = plugin.description;
++            PluginInfo* info = new PluginInfo;
++            info->name = qplugin.name;
++            info->desc = qplugin.description;
++
++            for (int j = 0; j < qplugin.mimeTypes.count(); ++j) {
++                const QWebPluginFactory::MimeType& mimeType = qplugin.mimeTypes.at(j);
++
++                MimeClassInfo* mimeInfo = new MimeClassInfo;
++                mimeInfo->type = mimeType.name;
++                mimeInfo->desc = mimeType.description;
++                mimeInfo->suffixes = mimeType.fileExtensions.join("; ");
++
++                info->mimes.append(mimeInfo);
++            }
+ 
+-        for (int j = 0; j < plugin.mimeTypes.count(); ++j) {
+-            const QWebPluginFactory::MimeType& mimeType = plugin.mimeTypes.at(j);
++            m_plugins.append(info);
++        }
++    }
++#endif
+ 
+-            MimeClassInfo* mimeInfo = new MimeClassInfo;
+-            mimeInfo->type = mimeType.name;
+-            mimeInfo->desc = mimeType.description;
+-            mimeInfo->suffixes = mimeType.fileExtensions.join("; ");
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    const Vector<PluginPackage*> &plugins = db->plugins();
+ 
+-            info->mimes.append(mimeInfo);
++    for (unsigned int i = 0; i < plugins.size(); ++i) {
++        PluginInfo* info = new PluginInfo;
++        PluginPackage* package = plugins[i];
++
++        info->name = package->name();
++        info->file = package->fileName();
++        info->desc = package->description();
++
++        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
++        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
++        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
++            MimeClassInfo* mime = new MimeClassInfo;
++            info->mimes.append(mime);
++
++            mime->type = it->first;
++            mime->desc = it->second;
++            mime->plugin = info;
++
++            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
++
++            for (unsigned i = 0; i < extensions.size(); i++) {
++                if (i > 0)
++                    mime->suffixes += ",";
++
++                mime->suffixes += extensions[i];
++            }
+         }
+ 
+         m_plugins.append(info);
+     }
+-#endif
+ }
+ 
+ void PluginData::refresh()
+ {
+-    // nothing to do
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    db->refresh();
+ }
+ 
+ };
+diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginPackageQt.cpp
+--- WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/qt/PluginPackageQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,213 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginPackage.h"
++
++#include "CString.h"
++#include "MIMETypeRegistry.h"
++#include "NotImplemented.h"
++#include "npruntime_impl.h"
++#include "PluginDatabase.h"
++#include "PluginDebug.h"
++
++namespace WebCore {
++
++void PluginPackage::determineQuirks(const String& mimeType)
++{
++    if (MIMETypeRegistry::isJavaAppletMIMEType(mimeType)) {
++        // Because a single process cannot create multiple VMs, and we cannot reliably unload a
++        // Java VM, we cannot unload the Java plugin, or we'll lose reference to our only VM
++        m_quirks.add(PluginQuirkDontUnloadPlugin);
++
++        // Setting the window region to an empty region causes bad scrolling repaint problems
++        // with the Java plug-in.
++        m_quirks.add(PluginQuirkDontClipToZeroRectWhenScrolling);
++    }
++    
++    if (mimeType == "application/x-shockwave-flash") {
++        // The flash plugin only requests windowless plugins if we return a mozilla user agent
++        m_quirks.add(PluginQuirkWantsMozillaUserAgent);
++        m_quirks.add(PluginQuirkThrottleInvalidate);
++        m_quirks.add(PluginQuirkThrottleWMUserPlusOneMessages);
++        m_quirks.add(PluginQuirkFlashURLNotifyBug);
++    }
++
++}
++
++bool PluginPackage::fetchInfo()
++{
++    if (!load())
++        return false;
++
++    NPP_GetValueProcPtr gv = (NPP_GetValueProcPtr)m_module->resolve("NP_GetValue");
++    typedef char *(*NPP_GetMIMEDescriptionProcPtr)();
++    NPP_GetMIMEDescriptionProcPtr gm =
++    	(NPP_GetMIMEDescriptionProcPtr)m_module->resolve("NP_GetMIMEDescription");
++    if (!gm || !gv) {
++        return false;
++    }
++    char *buf = 0;
++    NPError err = gv(0, NPPVpluginNameString, (void *)&buf);
++    if (err != NPERR_NO_ERROR) {
++        return false;
++    }
++    m_name = buf;
++    err = gv(0, NPPVpluginDescriptionString, (void *)&buf);
++    if (err != NPERR_NO_ERROR) {
++        return false;
++    }
++    m_description = buf;
++
++    String s = gm();
++    Vector<String> types;
++    s.split(UChar(';'), false, types);
++    for (int i = 0; i < types.size(); ++i) {
++        Vector<String> mime;
++        types[i].split(UChar(':'), false, mime); 
++        if (mime.size() > 0) {
++            Vector<String> exts;
++            mime[0].split(UChar(','), false, exts);
++            m_mimeToExtensions.add(mime[0], exts);
++            if (mime.size() > 1) {
++                m_mimeToDescriptions.add(mime[0], mime[2]);
++            }
++        }
++    }
++
++    return true;
++}
++
++bool PluginPackage::load()
++{
++    if (m_isLoaded) {
++        m_loadCount++;
++        return true;
++    }
++
++    m_module = new QLibrary((QString)m_path);
++    if (!m_module->load()) {
++    	LOG(Plugin, "%s not loaded", m_path.utf8().data());
++        return false;
++    }
++
++    m_isLoaded = true;
++
++    NP_InitializeFuncPtr NP_Initialize;
++    NPError npErr;
++
++    NP_Initialize = (NP_InitializeFuncPtr)m_module->resolve("NP_Initialize");
++    m_NPP_Shutdown = (NPP_ShutdownProcPtr)m_module->resolve("NP_Shutdown");
++
++    if (!NP_Initialize || !m_NPP_Shutdown)
++        goto abort;
++
++    memset(&m_pluginFuncs, 0, sizeof(m_pluginFuncs));
++    m_pluginFuncs.size = sizeof(m_pluginFuncs);
++
++    m_browserFuncs.size = sizeof (m_browserFuncs);
++    m_browserFuncs.version = NP_VERSION_MINOR;
++    m_browserFuncs.geturl = NPN_GetURL;
++    m_browserFuncs.posturl = NPN_PostURL;
++    m_browserFuncs.requestread = NPN_RequestRead;
++    m_browserFuncs.newstream = NPN_NewStream;
++    m_browserFuncs.write = NPN_Write;
++    m_browserFuncs.destroystream = NPN_DestroyStream;
++    m_browserFuncs.status = NPN_Status;
++    m_browserFuncs.uagent = NPN_UserAgent;
++    m_browserFuncs.memalloc = NPN_MemAlloc;
++    m_browserFuncs.memfree = NPN_MemFree;
++    m_browserFuncs.memflush = NPN_MemFlush;
++    m_browserFuncs.reloadplugins = NPN_ReloadPlugins;
++    m_browserFuncs.geturlnotify = NPN_GetURLNotify;
++    m_browserFuncs.posturlnotify = NPN_PostURLNotify;
++    m_browserFuncs.getvalue = NPN_GetValue;
++    m_browserFuncs.setvalue = NPN_SetValue;
++    m_browserFuncs.invalidaterect = NPN_InvalidateRect;
++    m_browserFuncs.invalidateregion = NPN_InvalidateRegion;
++    m_browserFuncs.forceredraw = NPN_ForceRedraw;
++    m_browserFuncs.getJavaEnv = NPN_GetJavaEnv;
++    m_browserFuncs.getJavaPeer = NPN_GetJavaPeer;
++    m_browserFuncs.pushpopupsenabledstate = NPN_PushPopupsEnabledState;
++    m_browserFuncs.poppopupsenabledstate = NPN_PopPopupsEnabledState;
++
++    m_browserFuncs.releasevariantvalue = _NPN_ReleaseVariantValue;
++    m_browserFuncs.getstringidentifier = _NPN_GetStringIdentifier;
++    m_browserFuncs.getstringidentifiers = _NPN_GetStringIdentifiers;
++    m_browserFuncs.getintidentifier = _NPN_GetIntIdentifier;
++    m_browserFuncs.identifierisstring = _NPN_IdentifierIsString;
++    m_browserFuncs.utf8fromidentifier = _NPN_UTF8FromIdentifier;
++    m_browserFuncs.createobject = _NPN_CreateObject;
++    m_browserFuncs.retainobject = _NPN_RetainObject;
++    m_browserFuncs.releaseobject = _NPN_ReleaseObject;
++    m_browserFuncs.invoke = _NPN_Invoke;
++    m_browserFuncs.invokeDefault = _NPN_InvokeDefault;
++    m_browserFuncs.evaluate = _NPN_Evaluate;
++    m_browserFuncs.getproperty = _NPN_GetProperty;
++    m_browserFuncs.setproperty = _NPN_SetProperty;
++    m_browserFuncs.removeproperty = _NPN_RemoveProperty;
++    m_browserFuncs.hasproperty = _NPN_HasMethod;
++    m_browserFuncs.hasmethod = _NPN_HasProperty;
++    m_browserFuncs.setexception = _NPN_SetException;
++    m_browserFuncs.enumerate = _NPN_Enumerate;
++
++    npErr = NP_Initialize(&m_browserFuncs, &m_pluginFuncs);
++    if (npErr != NPERR_NO_ERROR)
++        goto abort;
++
++    m_loadCount++;
++    return true;
++
++abort:
++    unloadWithoutShutdown();
++    return false;
++}
++
++unsigned PluginPackage::hash() const
++{ 
++    unsigned hashCodes[2] = {
++        m_path.impl()->hash(),
++        m_lastModified
++    };
++
++    return StringImpl::computeHash(reinterpret_cast<UChar*>(hashCodes), 2 * sizeof(unsigned) / sizeof(UChar));
++}
++
++bool PluginPackage::equal(const PluginPackage& a, const PluginPackage& b)
++{
++    return a.m_description == b.m_description;
++}
++
++int PluginPackage::compareFileVersion(const PlatformModuleVersion& compareVersion) const
++{
++    // return -1, 0, or 1 if plug-in version is less than, equal to, or greater than
++    // the passed version
++    if (m_moduleVersion != compareVersion)
++        return m_moduleVersion > compareVersion ? 1 : -1;
++    return 0;
++}
++
++}
+diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginViewQt.cpp
+--- WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/qt/PluginViewQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -0,0 +1,462 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginView.h"
++
++#include <QWidget>
++#include <QX11EmbedContainer>
++#include <QX11Info>
++
++#include "NotImplemented.h"
++#include "PluginDebug.h"
++#include "PluginPackage.h"
++#include "npruntime_impl.h"
++#include "runtime.h"
++#include "runtime_root.h"
++#include <kjs/JSLock.h>
++#include <kjs/value.h>
++#include "kjs_binding.h"
++#include "kjs_proxy.h"
++
++#include "Document.h"
++#include "DocumentLoader.h"
++#include "Element.h"
++#include "EventNames.h"
++#include "FrameLoader.h"
++#include "FrameLoadRequest.h"
++#include "FrameTree.h"
++#include "Frame.h"
++#include "FrameView.h"
++#include "GraphicsContext.h"
++#include "Image.h"
++#include "HTMLNames.h"
++#include "HTMLPlugInElement.h"
++#include "KeyboardEvent.h"
++#include "MouseEvent.h"
++#include "Page.h"
++#include "PlatformMouseEvent.h"
++#include "RenderLayer.h"
++#include "Settings.h"
++
++using KJS::ExecState;
++using KJS::Interpreter;
++using KJS::JSLock;
++using KJS::JSObject;
++using KJS::JSValue;
++using KJS::UString;
++
++using std::min;
++
++using namespace WTF;
++
++namespace WebCore {
++
++using namespace EventNames;
++using namespace HTMLNames;
++
++void PluginView::updateWindow() const
++{
++    if (!parent() || !m_isWindowed)
++        return;
++
++    ASSERT(parent()->isFrameView());
++    FrameView* frameView = static_cast<FrameView*>(parent());
++
++    IntRect oldWindowRect = m_windowRect;
++    IntRect oldClipRect = m_clipRect;
++
++    m_windowRect = IntRect(frameView->contentsToWindow(frameGeometry().location()), frameGeometry().size());
++    m_clipRect = windowClipRect();
++    m_clipRect.move(-m_windowRect.x(), -m_windowRect.y());
++
++    if(m_window) {
++    	m_window->move(m_windowRect.x(), m_windowRect.y());
++    	m_window->resize(m_windowRect.width(), m_windowRect.height());
++    }
++}
++
++void PluginView::setFocus()
++{
++    if (m_window)
++    	m_window->setFocus(Qt::OtherFocusReason);
++    else
++    	Widget::setFocus();
++}
++
++void PluginView::show()
++{
++    m_isVisible = true;
++
++    if (m_attachedToWindow && m_window)
++    	m_window->setVisible(true);
++
++    Widget::show();
++}
++
++void PluginView::hide()
++{
++    m_isVisible = false;
++
++    if (m_attachedToWindow && m_window)
++    	m_window->setVisible(false);
++
++    Widget::hide();
++}
++
++void PluginView::paint(GraphicsContext* context, const IntRect& rect)
++{
++    if (!m_isStarted) {
++        // Draw the "missing plugin" image
++        //paintMissingPluginIcon(context, rect);
++        return;
++    }
++
++    if (m_isWindowed || context->paintingDisabled())
++        return;
++
++    notImplemented();
++}
++
++void PluginView::handleKeyboardEvent(KeyboardEvent* event)
++{
++    notImplemented();
++}
++
++void PluginView::handleMouseEvent(MouseEvent* event)
++{
++    notImplemented();
++}
++
++void PluginView::setParent(ScrollView* parent)
++{
++    Widget::setParent(parent);
++
++    if (parent)
++        init();
++    else {
++        if (!m_window)
++            return;
++    }
++}
++
++void PluginView::setNPWindowRect(const IntRect& rect)
++{
++    if (!m_isStarted || !m_isWindowed)
++        return;
++
++    if (!parent())
++        return;
++
++    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(rect.location());
++    m_npWindow.x = p.x();
++    m_npWindow.y = p.y();
++
++    m_npWindow.width = rect.width();
++    m_npWindow.height = rect.height();
++
++    m_npWindow.clipRect.left = 0;
++    m_npWindow.clipRect.top = 0;
++    m_npWindow.clipRect.right = rect.width();
++    m_npWindow.clipRect.bottom = rect.height();
++
++    if (m_plugin->pluginFuncs()->setwindow) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++
++        ASSERT(m_window);
++    }
++}
++
++void PluginView::attachToWindow()
++{
++    if (m_attachedToWindow)
++        return;
++
++    m_attachedToWindow = true;
++    if (m_isVisible && m_window)
++    	m_window->setVisible(true);
++}
++
++void PluginView::detachFromWindow()
++{
++    if (!m_attachedToWindow)
++	return;
++
++    if (m_isVisible && m_window)
++    	m_window->setVisible(false);
++    m_attachedToWindow = false;
++}
++
++void PluginView::stop()
++{
++    if (!m_isStarted)
++        return;
++
++    HashSet<RefPtr<PluginStream> > streams = m_streams;
++    HashSet<RefPtr<PluginStream> >::iterator end = streams.end();
++    for (HashSet<RefPtr<PluginStream> >::iterator it = streams.begin(); it != end; ++it) {
++        (*it)->stop();
++        disconnectStream((*it).get());
++    }
++
++    ASSERT(m_streams.isEmpty());
++
++    m_isStarted = false;
++
++    KJS::JSLock::DropAllLocks dropAllLocks;
++
++    // Clear the window
++    m_npWindow.window = 0;
++    if (m_plugin->pluginFuncs()->setwindow && !m_plugin->quirks().contains(PluginQuirkDontSetNullWindowHandleOnDestroy)) {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++    }
++
++    // Destroy the plugin
++    {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->destroy(m_instance, 0);
++        setCallingPlugin(false);
++    }
++
++    m_instance->pdata = 0;
++}
++
++static const char* MozillaUserAgent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0";
++
++const char* PluginView::userAgent()
++{
++    if (m_plugin->quirks().contains(PluginQuirkWantsMozillaUserAgent))
++        return MozillaUserAgent;
++
++    if (m_userAgent.isNull())
++        m_userAgent = m_parentFrame->loader()->userAgent(m_url).utf8();
++
++    return m_userAgent.data();
++}
++
++NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
++{
++    String filename(buf, len);
++
++    if (filename.startsWith("file:///"))
++        filename = filename.substring(8);
++
++    if(!fileExists(filename))
++        return NPERR_FILE_NOT_FOUND;
++
++    //FIXME - read the file data into buffer
++    FILE* fileHandle = fopen((filename.utf8()).data(), "r");
++    
++    if (fileHandle == 0)
++        return NPERR_FILE_NOT_FOUND;
++
++    //buffer.resize();
++
++    int bytesRead = fread(buffer.data(), 1, 0, fileHandle);
++
++    fclose(fileHandle);
++
++    if (bytesRead <= 0)
++        return NPERR_FILE_NOT_FOUND;
++
++	return NPERR_NO_ERROR;
++}
++
++NPError PluginView::getValue(NPNVariable variable, void* value)
++{
++    switch (variable) {
++        case NPNVxDisplay: {
++            if (m_window)
++                *(void **)value = m_window->x11Info().display();
++            else
++                *(void **)value = containingWindow()->x11Info().display();
++            return NPERR_NO_ERROR;                
++        }
++
++        case NPNVxtAppContext: {
++            return NPERR_GENERIC_ERROR;
++        }
++
++        case NPNVToolkit: {
++            *((uint32 *)value) = 0;
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVSupportsXEmbedBool: {
++            *((uint32 *)value) = true;
++            return NPERR_NO_ERROR;
++        }
++
++#if ENABLE(NETSCAPE_PLUGIN_API)
++        case NPNVWindowNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (windowScriptObject)
++                _NPN_RetainObject(windowScriptObject);
++
++            void** v = (void**)value;
++            *v = windowScriptObject;
++            
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVPluginElementNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* pluginScriptObject = 0;
++
++            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
++                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (pluginScriptObject)
++                _NPN_RetainObject(pluginScriptObject);
++
++            void** v = (void**)value;
++            *v = pluginScriptObject;
++
++            return NPERR_NO_ERROR;
++        }
++#endif
++
++        case NPNVnetscapeWindow: {
++            void* w = reinterpret_cast<void*>(value);
++            *((XID *)w) = containingWindow()->winId();
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVjavascriptEnabledBool: {
++            *((uint32 *)value) = true;
++            return NPERR_NO_ERROR;
++        }
++
++        default:
++            return NPERR_GENERIC_ERROR;
++    }
++}
++
++void PluginView::invalidateRect(NPRect* rect)
++{
++    notImplemented();
++}
++
++void PluginView::invalidateRegion(NPRegion region)
++{
++	notImplemented();
++}
++
++void PluginView::forceRedraw()
++{
++	notImplemented();
++}
++
++PluginView::~PluginView()
++{
++    stop();
++
++    deleteAllValues(m_requests);
++
++    freeStringArray(m_paramNames, m_paramCount);
++    freeStringArray(m_paramValues, m_paramCount);
++
++    m_parentFrame->cleanupScriptObjectsForPlugin(this);
++
++    if (m_plugin && !(m_plugin->quirks().contains(PluginQuirkDontUnloadPlugin)))
++        m_plugin->unload();
++    
++    if (m_window)
++        delete m_window;
++    if (m_npWindow.ws_info)
++        delete (NPSetWindowCallbackStruct *)m_npWindow.ws_info;
++}
++
++void PluginView::init()
++{
++    if (m_haveInitialized)
++        return;
++    m_haveInitialized = true;
++
++    if (!m_plugin) {
++        ASSERT(m_status == PluginStatusCanNotFindPlugin);
++        return;
++    }
++
++    if (!m_plugin->load()) {
++        m_plugin = 0;
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    if (!start()) {
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    m_needsXEmbed = false;
++    if (m_plugin->pluginFuncs()->getvalue)
++        m_plugin->pluginFuncs()->getvalue(m_instance, NPPVpluginNeedsXEmbed, &m_needsXEmbed);
++
++    if (m_needsXEmbed) {
++        m_window = new QX11EmbedContainer(containingWindow());
++        setNativeWidget(m_window);
++        setIsNPAPIPlugin(true);
++    } else {
++        notImplemented();
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++    show ();
++
++    NPSetWindowCallbackStruct *wsi = new NPSetWindowCallbackStruct();
++
++    wsi->type = 0;
++
++    wsi->display = m_window->x11Info().display();
++    wsi->visual = (Visual*)m_window->x11Info().visual();
++    wsi->depth = m_window->x11Info().depth();
++    wsi->colormap = m_window->x11Info().colormap();
++    m_npWindow.ws_info = wsi;
++
++	m_npWindow.type = NPWindowTypeWindow;
++    m_npWindow.window = (void*)m_window->winId();
++
++    if (!(m_plugin->quirks().contains(PluginQuirkDeferFirstSetWindowCall)))
++        setNPWindowRect(frameGeometry());
++
++    m_status = PluginStatusLoadedSuccessfully;
++}
++
++} // namespace WebCore
+diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginPackageWin.cpp WebKit-r32416/WebCore/plugins/win/PluginPackageWin.cpp
+--- WebKit-r32416.orig/WebCore/plugins/win/PluginPackageWin.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/win/PluginPackageWin.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -66,30 +66,6 @@
+     return 0;
+ }
+ 
+-int PluginPackage::compare(const PluginPackage& compareTo) const
+-{
+-    // Sort plug-ins that allow multiple instances first.
+-    bool AallowsMultipleInstances = !quirks().contains(PluginQuirkDontAllowMultipleInstances);
+-    bool BallowsMultipleInstances = !compareTo.quirks().contains(PluginQuirkDontAllowMultipleInstances);
+-    if (AallowsMultipleInstances != BallowsMultipleInstances)
+-        return AallowsMultipleInstances ? -1 : 1;
+-
+-    // Sort plug-ins in a preferred path first.
+-    bool AisInPreferredPath = PluginDatabase::isPreferredPluginDirectory(parentDirectory());
+-    bool BisInPreferredPath = PluginDatabase::isPreferredPluginDirectory(compareTo.parentDirectory());
+-    if (AisInPreferredPath != BisInPreferredPath)
+-        return AisInPreferredPath ? -1 : 1;
+-
+-    int diff = strcmp(name().utf8().data(), compareTo.name().utf8().data());
+-    if (diff)
+-        return diff;
+-
+-    if (diff = compareFileVersion(compareTo.version()))
+-        return diff;
+-
+-    return strcmp(parentDirectory().utf8().data(), compareTo.parentDirectory().utf8().data());
+-}
+-
+ bool PluginPackage::isPluginBlacklisted()
+ {
+     static const PlatformModuleVersion slPluginMinRequired(0x51BE0000, 0x00010000);
+diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r32416/WebCore/plugins/win/PluginViewWin.cpp
+--- WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/plugins/win/PluginViewWin.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
+- * Copyright (C) 2008 Collabora, Ltd. All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -562,7 +562,7 @@
+             SetWindowLongPtr(m_window, GWLP_WNDPROC, (LONG)m_pluginWndProc);
+     }
+ 
+-    KJS::JSLock::DropAllLocks;
++    KJS::JSLock::DropAllLocks dropAllLocks;
+ 
+     // Clear the window
+     m_npWindow.window = 0;
+@@ -588,32 +588,6 @@
+     m_instance->pdata = 0;
+ }
+ 
+-static void freeStringArray(char** stringArray, int length)
+-{
+-    if (!stringArray)
+-        return;
+-
+-    for (int i = 0; i < length; i++)
+-        fastFree(stringArray[i]);
+-
+-    fastFree(stringArray);
+-}
+-
+-static KURL makeURL(const KURL& baseURL, const char* relativeURLString)
+-{
+-    String urlString = relativeURLString;
+-
+-    // Strip return characters.
+-    urlString.replace('\n', "");
+-    urlString.replace('\r', "");
+-
+-    return KURL(baseURL, urlString);
+-}
+-
+-static inline bool startsWithBlankLine(const Vector<char>& buffer)
+-{
+-    return buffer.size() > 0 && buffer[0] == '\n';
+-}
+ 
+ const char* PluginView::userAgent()
+ {
+@@ -625,237 +599,89 @@
+     return m_userAgent.data();
+ }
+ 
+-static inline int locationAfterFirstBlankLine(const Vector<char>& buffer)
+-{
+-    const char* bytes = buffer.data();
+-    unsigned length = buffer.size();
+-
+-    for (unsigned i = 0; i < length - 4; i++) {
+-        // Support for Acrobat. It sends "\n\n".
+-        if (bytes[i] == '\n' && bytes[i + 1] == '\n')
+-            return i + 2;
+-        
+-        // Returns the position after 2 CRLF's or 1 CRLF if it is the first line.
+-        if (bytes[i] == '\r' && bytes[i + 1] == '\n') {
+-            i += 2;
+-            if (i == 2)
+-                return i;
+-            else if (bytes[i] == '\n')
+-                // Support for Director. It sends "\r\n\n" (3880387).
+-                return i + 1;
+-            else if (bytes[i] == '\r' && bytes[i + 1] == '\n')
+-                // Support for Flash. It sends "\r\n\r\n" (3758113).
+-                return i + 2;
+-        }
+-    }
+-
+-    return -1;
+ }
+ 
+-static inline const char* findEOL(const char* bytes, unsigned length)
++NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
+ {
+-    // According to the HTTP specification EOL is defined as
+-    // a CRLF pair. Unfortunately, some servers will use LF
+-    // instead. Worse yet, some servers will use a combination
+-    // of both (e.g. <header>CRLFLF<body>), so findEOL needs
+-    // to be more forgiving. It will now accept CRLF, LF or
+-    // CR.
+-    //
+-    // It returns NULL if EOLF is not found or it will return
+-    // a pointer to the first terminating character.
+-    for (unsigned i = 0; i < length; i++) {
+-        if (bytes[i] == '\n')
+-            return bytes + i;
+-        if (bytes[i] == '\r') {
+-            // Check to see if spanning buffer bounds
+-            // (CRLF is across reads). If so, wait for
+-            // next read.
+-            if (i + 1 == length)
+-                break;
+-
+-            return bytes + i;
+-        }
+-    }
++    String filename(buf, len);
+ 
+-    return 0;
+-}
+-
+-static inline String capitalizeRFC822HeaderFieldName(const String& name)
+-{
+-    bool capitalizeCharacter = true;
+-    String result;
++    if (filename.startsWith("file:///"))
++        filename = filename.substring(8);
+ 
+-    for (unsigned i = 0; i < name.length(); i++) {
+-        UChar c;
++    // Get file info
++    WIN32_FILE_ATTRIBUTE_DATA attrs;
++    if (GetFileAttributesExW(filename.charactersWithNullTermination(), GetFileExInfoStandard, &attrs) == 0)
++        return NPERR_FILE_NOT_FOUND;
+ 
+-        if (capitalizeCharacter && name[i] >= 'a' && name[i] <= 'z')
+-            c = toASCIIUpper(name[i]);
+-        else if (!capitalizeCharacter && name[i] >= 'A' && name[i] <= 'Z')
+-            c = toASCIILower(name[i]);
+-        else
+-            c = name[i];
++    if (attrs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
++        return NPERR_FILE_NOT_FOUND;
+ 
+-        if (name[i] == '-')
+-            capitalizeCharacter = true;
+-        else
+-            capitalizeCharacter = false;
++    HANDLE fileHandle = CreateFileW(filename.charactersWithNullTermination(), FILE_READ_DATA, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
++    
++    if (fileHandle == INVALID_HANDLE_VALUE)
++        return NPERR_FILE_NOT_FOUND;
+ 
+-        result.append(c);
+-    }
++    buffer.resize(attrs.nFileSizeLow);
+ 
+-    return result;
+-}
+-
+-static inline HTTPHeaderMap parseRFC822HeaderFields(const Vector<char>& buffer, unsigned length)
+-{
+-    const char* bytes = buffer.data();
+-    const char* eol;
+-    String lastKey;
+-    HTTPHeaderMap headerFields;
+-
+-    // Loop ove rlines until we're past the header, or we can't find any more end-of-lines
+-    while ((eol = findEOL(bytes, length))) {
+-        const char* line = bytes;
+-        int lineLength = eol - bytes;
+-        
+-        // Move bytes to the character after the terminator as returned by findEOL.
+-        bytes = eol + 1;
+-        if ((*eol == '\r') && (*bytes == '\n'))
+-            bytes++; // Safe since findEOL won't return a spanning CRLF.
+-
+-        length -= (bytes - line);
+-        if (lineLength == 0)
+-            // Blank line; we're at the end of the header
+-            break;
+-        else if (*line == ' ' || *line == '\t') {
+-            // Continuation of the previous header
+-            if (lastKey.isNull()) {
+-                // malformed header; ignore it and continue
+-                continue;
+-            } else {
+-                // Merge the continuation of the previous header
+-                String currentValue = headerFields.get(lastKey);
+-                String newValue(line, lineLength);
++    DWORD bytesRead;
++    int retval = ReadFile(fileHandle, buffer.data(), attrs.nFileSizeLow, &bytesRead, 0);
+ 
+-                headerFields.set(lastKey, currentValue + newValue);
+-            }
+-        } else {
+-            // Brand new header
+-            const char* colon;
+-            for (colon = line; *colon != ':' && colon != eol; colon++) {
+-                // empty loop
+-            }
+-            if (colon == eol) 
+-                // malformed header; ignore it and continue
+-                continue;
+-            else {
+-                lastKey = capitalizeRFC822HeaderFieldName(String(line, colon - line));
+-                String value;
+-
+-                for (colon++; colon != eol; colon++) {
+-                    if (*colon != ' ' && *colon != '\t')
+-                        break;
+-                }
+-                if (colon == eol)
+-                    value = "";
+-                else
+-                    value = String(colon, eol - colon);
+-
+-                String oldValue = headerFields.get(lastKey);
+-                if (!oldValue.isNull()) {
+-                    String tmp = oldValue;
+-                    tmp += ", ";
+-                    tmp += value;
+-                    value = tmp;
+-                }
++    CloseHandle(fileHandle);
+ 
+-                headerFields.set(lastKey, value);
+-            }
+-        }
+-    }
+-
+-    return headerFields;
++    if (retval == 0 || bytesRead != attrs.nFileSizeLow)
++        return NPERR_FILE_NOT_FOUND;
+ }
+ 
+-NPError PluginView::handlePost(const char* url, const char* target, uint32 len, const char* buf, bool file, void* notifyData, bool sendNotification, bool allowHeaders)
++NPError PluginView::getValue(NPNVariable variable, void* value)
+ {
+-    if (!url || !len || !buf)
+-        return NPERR_INVALID_PARAM;
++    switch (variable) {
++#if ENABLE(NETSCAPE_PLUGIN_API)
++        case NPNVWindowNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
+ 
+-    FrameLoadRequest frameLoadRequest;
++            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
+ 
+-    HTTPHeaderMap headerFields;
+-    Vector<char> buffer;
+-    
+-    if (file) {
+-        String filename(buf, len);
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (windowScriptObject)
++                _NPN_RetainObject(windowScriptObject);
+ 
+-        if (filename.startsWith("file:///"))
+-            filename = filename.substring(8);
++            void** v = (void**)value;
++            *v = windowScriptObject;
++            
++            return NPERR_NO_ERROR;
++        }
+ 
+-        // Get file info
+-        WIN32_FILE_ATTRIBUTE_DATA attrs;
+-        if (GetFileAttributesExW(filename.charactersWithNullTermination(), GetFileExInfoStandard, &attrs) == 0)
+-            return NPERR_FILE_NOT_FOUND;
++        case NPNVPluginElementNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
+ 
+-        if (attrs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+-            return NPERR_FILE_NOT_FOUND;
++            NPObject* pluginScriptObject = 0;
+ 
+-        HANDLE fileHandle = CreateFileW(filename.charactersWithNullTermination(), FILE_READ_DATA, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+-        
+-        if (fileHandle == INVALID_HANDLE_VALUE)
+-            return NPERR_FILE_NOT_FOUND;
++            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
++                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
+ 
+-        buffer.resize(attrs.nFileSizeLow);
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (pluginScriptObject)
++                _NPN_RetainObject(pluginScriptObject);
+ 
+-        DWORD bytesRead;
+-        int retval = ReadFile(fileHandle, buffer.data(), attrs.nFileSizeLow, &bytesRead, 0);
++            void** v = (void**)value;
++            *v = pluginScriptObject;
+ 
+-        CloseHandle(fileHandle);
++            return NPERR_NO_ERROR;
++        }
++#endif
+ 
+-        if (retval == 0 || bytesRead != attrs.nFileSizeLow)
+-            return NPERR_FILE_NOT_FOUND;
+-    } else {
+-        buffer.resize(len);
+-        memcpy(buffer.data(), buf, len);
+-    }
++        case NPNVnetscapeWindow: {
++            PlatformWidget* w = reinterpret_cast<PlatformWidget*>(value);
+ 
+-    const char* postData = buffer.data();
+-    int postDataLength = buffer.size();
+-    
+-    if (allowHeaders) {
+-        if (startsWithBlankLine(buffer)) {
+-            postData++;
+-            postDataLength--;
+-        } else {
+-            int location = locationAfterFirstBlankLine(buffer);
+-            if (location != -1) {
+-                // If the blank line is somewhere in the middle of the buffer, everything before is the header
+-                headerFields = parseRFC822HeaderFields(buffer, location);
+-                unsigned dataLength = buffer.size() - location;
+-
+-                // Sometimes plugins like to set Content-Length themselves when they post,
+-                // but WebFoundation does not like that. So we will remove the header
+-                // and instead truncate the data to the requested length.
+-                String contentLength = headerFields.get("Content-Length");
+-
+-                if (!contentLength.isNull())
+-                    dataLength = min(contentLength.toInt(), (int)dataLength);
+-                headerFields.remove("Content-Length");
++            *w = containingWindow();
+ 
+-                postData += location;
+-                postDataLength = dataLength;
+-            }
++            return NPERR_NO_ERROR;
+         }
++        default:
++            return NPERR_GENERIC_ERROR;
+     }
+-
+-    frameLoadRequest.resourceRequest().setHTTPMethod("POST");
+-    frameLoadRequest.resourceRequest().setURL(makeURL(m_baseURL, url));
+-    frameLoadRequest.resourceRequest().addHTTPHeaderFields(headerFields);
+-    frameLoadRequest.resourceRequest().setHTTPBody(FormData::create(postData, postDataLength));
+-    frameLoadRequest.setFrameName(target);
+-
+-    return load(frameLoadRequest, sendNotification, notifyData);
+ }
+ 
+ void PluginView::invalidateRect(NPRect* rect)
+diff -Naur WebKit-r32416.orig/WebCore/WebCore.pro WebKit-r32416/WebCore/WebCore.pro
+--- WebKit-r32416.orig/WebCore/WebCore.pro	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebCore/WebCore.pro	2008-04-23 15:39:41.000000000 +0200
+@@ -120,6 +120,10 @@
+ #LIBS += -L$$OUTPUT_DIR/lib -lJavaScriptCore
+ 
+ qt-port {
++    unix {
++        DEFINES += XP_UNIX
++    }
++
+ RESOURCES += \
+             $$PWD/../WebCore/page/inspector/WebKit.qrc \
+             $$PWD/../WebCore/Resources/WebKitResources.qrc
+@@ -1043,7 +1047,12 @@
+     ../WebKit/qt/Api/qwebhistoryinterface.cpp \
+     ../WebKit/qt/Api/qwebpluginfactory.cpp
+ 
+-    unix: SOURCES += platform/qt/SystemTimeQt.cpp
++    unix: {
++        SOURCES += platform/qt/SystemTimeQt.cpp \
++                   plugins/qt/PluginDatabaseQt.cpp \
++                   plugins/qt/PluginPackageQt.cpp \
++                   plugins/qt/PluginViewQt.cpp
++    }
+     else: SOURCES += platform/win/SystemTimeWin.cpp
+ 
+     # Files belonging to the Qt 4.3 build
+diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
+--- WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -2,6 +2,7 @@
+  *  Copyright (C) 2007 Alp Toker <alp@atoker.com>
+  *  Copyright (C) 2007, 2008 Holger Hans Peter Freyther
+  *  Copyright (C) 2007 Christian Dywan <christian@twotoasts.de>
++ *  Copyright (C) 2008 Collabora Ltd.  All rights reserved.
+  *
+  *  This library is free software; you can redistribute it and/or
+  *  modify it under the terms of the GNU Lesser General Public
+@@ -57,6 +58,7 @@
+ 
+ FrameLoaderClient::FrameLoaderClient(WebKitWebFrame* frame)
+     : m_frame(frame)
++    , m_pluginView(0)
+     , m_userAgent("")
+ {
+     ASSERT(m_frame);
+@@ -162,9 +164,30 @@
+ 
+ void FrameLoaderClient::committedLoad(DocumentLoader* loader, const char* data, int length)
+ {
+-    FrameLoader *fl = loader->frameLoader();
+-    fl->setEncoding(m_response.textEncodingName(), false);
+-    fl->addData(data, length);
++    const String& textEncoding = loader->response().textEncodingName();
++
++    if (!m_pluginView) {
++        ASSERT(loader->frame());
++        // Setting the encoding on the frame loader is our way to get work done that is normally done
++        // when the first bit of data is received, even for the case of a document with no data (like about:blank).
++        String encoding = loader->overrideEncoding();
++        bool userChosen = !encoding.isNull();
++        if (!userChosen)
++            encoding = loader->response().textEncodingName();
++
++        FrameLoader* frameLoader = loader->frameLoader();
++        frameLoader->setEncoding(encoding, userChosen);
++        if (data)
++            frameLoader->addData(data, length);
++    }
++
++    if (m_pluginView) {
++        if (!m_hasSentResponseToPlugin) {
++            m_pluginView->didReceiveResponse(loader->response());
++            m_hasSentResponseToPlugin = true;
++        }
++        m_pluginView->didReceiveData(data, length);
++    }
+ }
+ 
+ void FrameLoaderClient::dispatchDidReceiveAuthenticationChallenge(DocumentLoader*, unsigned long  identifier, const AuthenticationChallenge&)
+@@ -260,9 +283,13 @@
+     (core(m_frame)->loader()->*policyFunction)(PolicyUse);
+ }
+ 
+-Widget* FrameLoaderClient::createPlugin(const IntSize&, Element*, const KURL&, const Vector<String>&, const Vector<String>&, const String&, bool)
++Widget* FrameLoaderClient::createPlugin(const IntSize& pluginSize, Element* element, const KURL& url, const Vector<String>& paramNames, const Vector<String>& paramValues, const String& mimeType, bool loadManually)
+ {
+-    notImplemented();
++    PluginView* pluginView = PluginView::create(core(m_frame), pluginSize, element, url, paramNames, paramValues, mimeType, loadManually);
++
++    if (pluginView->status() == PluginStatusLoadedSuccessfully)
++        return pluginView;
++
+     return 0;
+ }
+ 
+@@ -290,8 +317,7 @@
+ 
+ void FrameLoaderClient::redirectDataToPlugin(Widget* pluginWidget)
+ {
+-    notImplemented();
+-    return;
++    m_pluginView = static_cast<PluginView*>(pluginWidget);
+ }
+ 
+ Widget* FrameLoaderClient::createJavaAppletWidget(const IntSize&, Element*, const KURL& baseURL,
+@@ -587,14 +613,13 @@
+ 
+ void FrameLoaderClient::finishedLoading(DocumentLoader* documentLoader)
+ {
+-    ASSERT(documentLoader->frame());
+-    // Setting the encoding on the frame loader is our way to get work done that is normally done
+-    // when the first bit of data is received, even for the case of a document with no data (like about:blank).
+-    String encoding = documentLoader->overrideEncoding();
+-    bool userChosen = !encoding.isNull();
+-    if (encoding.isNull())
+-        encoding = documentLoader->response().textEncodingName();
+-    documentLoader->frameLoader()->setEncoding(encoding, userChosen);
++    if (!m_pluginView)
++        committedLoad(documentLoader, 0, 0);
++    else {
++        m_pluginView->didFinishLoading();
++        m_pluginView = 0;
++        m_hasSentResponseToPlugin = false;
++    }
+ }
+ 
+ 
+@@ -710,9 +735,13 @@
+     notImplemented();
+ }
+ 
+-void FrameLoaderClient::setMainDocumentError(DocumentLoader*, const ResourceError&)
++void FrameLoaderClient::setMainDocumentError(DocumentLoader*, const ResourceError& error)
+ {
+-    notImplemented();
++    if (m_pluginView) {
++        m_pluginView->didFail(error);
++        m_pluginView = 0;
++        m_hasSentResponseToPlugin = false;
++    }
+ }
+ 
+ void FrameLoaderClient::startDownload(const ResourceRequest&)
+diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h
+--- WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	2008-04-23 15:39:41.000000000 +0200
+@@ -1,6 +1,7 @@
+ /*
+  * Copyright (C) 2006 Zack Rusin <zack@kde.org>
+  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * All rights reserved.
+  *
+@@ -31,6 +32,7 @@
+ 
+ #include "FrameLoaderClient.h"
+ #include "ResourceResponse.h"
++#include "PluginView.h"
+ 
+ typedef struct _WebKitWebFrame WebKitWebFrame;
+ 
+@@ -170,6 +172,10 @@
+         WebKitWebFrame* m_frame;
+         WebCore::ResourceResponse m_response;
+         WebCore::String m_userAgent;
++
++        // Plugin view to redirect data to
++        WebCore::PluginView* m_pluginView;
++        bool m_hasSentResponseToPlugin;
+     };
+ 
+ }
+diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
+--- WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	2008-04-23 15:39:41.000000000 +0200
+@@ -2,6 +2,7 @@
+  * Copyright (C) 2006 Zack Rusin <zack@kde.org>
+  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
+  * Copyright (C) 2007-2008 Trolltech ASA
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * All rights reserved.
+  *
+@@ -38,6 +39,7 @@
+ #include "ResourceResponse.h"
+ #include "Page.h"
+ #include "PluginData.h"
++#include "PluginDatabase.h"
+ #include "ProgressTracker.h"
+ #include "RenderPart.h"
+ #include "ResourceRequest.h"
+@@ -103,6 +105,7 @@
+ FrameLoaderClientQt::FrameLoaderClientQt()
+     : m_frame(0)
+     , m_webFrame(0)
++    , m_pluginView(0)
+     , m_firstData(false)
+     , m_policyFunction(0)
+ {
+@@ -457,10 +460,17 @@
+ 
+ void FrameLoaderClientQt::finishedLoading(DocumentLoader* loader)
+ {
+-    if (m_firstData) {
+-        FrameLoader *fl = loader->frameLoader();
+-        fl->setEncoding(m_response.textEncodingName(), false);
+-        m_firstData = false;
++    if (!m_pluginView) {
++        if(m_firstData) {
++            FrameLoader *fl = loader->frameLoader();
++            fl->setEncoding(m_response.textEncodingName(), false);
++            m_firstData = false; 
++        }
++    }
++    else {
++        m_pluginView->didFinishLoading();
++        m_pluginView = 0;
++        m_hasSentResponseToPlugin = false;
+     }
+ }
+ 
+@@ -603,22 +613,36 @@
+ 
+ void FrameLoaderClientQt::setMainDocumentError(WebCore::DocumentLoader* loader, const WebCore::ResourceError& error)
+ {
+-    if (m_firstData) {
+-        loader->frameLoader()->setEncoding(m_response.textEncodingName(), false);
+-        m_firstData = false;
++    if (!m_pluginView) {
++        if (m_firstData) {
++            loader->frameLoader()->setEncoding(m_response.textEncodingName(), false);
++            m_firstData = false;
++        }
++    } else {
++        m_pluginView->didFail(error);
++        m_pluginView = 0;
++        m_hasSentResponseToPlugin = false;
+     }
+ }
+ 
+ void FrameLoaderClientQt::committedLoad(WebCore::DocumentLoader* loader, const char* data, int length)
+ {
+-    if (!m_frame)
+-        return;
+-    FrameLoader *fl = loader->frameLoader();
+-    if (m_firstData) {
+-        fl->setEncoding(m_response.textEncodingName(), false);
+-        m_firstData = false;
++    if (!m_pluginView) {
++        if (!m_frame)
++            return;
++        FrameLoader *fl = loader->frameLoader();
++        if (m_firstData) {
++            fl->setEncoding(m_response.textEncodingName(), false);
++            m_firstData = false;
++        }
++        fl->addData(data, length);
++    } else {
++        if (!m_hasSentResponseToPlugin) {
++            m_pluginView->didReceiveResponse(loader->response());
++            m_hasSentResponseToPlugin = true;
++        }
++        m_pluginView->didReceiveData(data, length);
+     }
+-    fl->addData(data, length);
+ }
+ 
+ WebCore::ResourceError FrameLoaderClientQt::cancelledError(const WebCore::ResourceRequest& request)
+@@ -877,7 +901,7 @@
+     if (_mimeType == "application/x-qt-plugin" || _mimeType == "application/x-qt-styled-widget")
+         return ObjectContentOtherPlugin;
+ 
+-    if (url.isEmpty())
++    if (url.isEmpty() && !_mimeType.length())
+         return ObjectContentNone;
+ 
+     String mimeType = _mimeType;
+@@ -892,6 +916,9 @@
+     if (MIMETypeRegistry::isSupportedImageMIMEType(mimeType))
+         return ObjectContentImage;
+ 
++    if (PluginDatabase::installedPlugins()->isMIMETypeRegistered(mimeType))
++        return ObjectContentNetscapePlugin;
++
+     if (m_frame->page() && m_frame->page()->pluginData()->supportsMimeType(mimeType))
+         return ObjectContentOtherPlugin;
+ 
+@@ -914,7 +941,7 @@
+ 
+ const unsigned numqStyleSheetProperties = sizeof(qstyleSheetProperties) / sizeof(qstyleSheetProperties[0]);
+ 
+-Widget* FrameLoaderClientQt::createPlugin(const IntSize&, Element* element, const KURL& url, const Vector<String>& paramNames,
++Widget* FrameLoaderClientQt::createPlugin(const IntSize& pluginSize, Element* element, const KURL& url, const Vector<String>& paramNames,
+                                           const Vector<String>& paramValues, const String& mimeType, bool loadManually)
+ {
+ //     qDebug()<<"------ Creating plugin in FrameLoaderClientQt::createPlugin for "<<url.prettyURL() << mimeType;
+@@ -956,27 +983,31 @@
+ 
+             widget->setStyleSheet(styleSheet);
+         }
+-    }
+ 
+ #if QT_VERSION >= 0x040400
+-    if (!object) {
+-        QWebPluginFactory* factory = m_webFrame->page()->pluginFactory();
+-        if (factory)
+-            object = factory->create(mimeType, qurl, params, values);
+-    }
++        if (!object) {
++            QWebPluginFactory* factory = m_webFrame->page()->pluginFactory();
++            if (factory)
++                object = factory->create(mimeType, qurl, params, values);
++        }
+ #endif
+ 
+-    if (object) {
+-        QWidget *widget = qobject_cast<QWidget *>(object);
+-        QWidget *view = m_webFrame->page()->view();
+-        if (widget && view) {
+-            widget->setParent(view);
+-            Widget* w= new Widget();
+-            w->setNativeWidget(widget);
+-            return w;
++        if (object) {
++            QWidget *widget = qobject_cast<QWidget *>(object);
++            QWidget *view = m_webFrame->page()->view();
++            if (widget && view) {
++                widget->setParent(view);
++                Widget* w= new Widget();
++                w->setNativeWidget(widget);
++                return w;
++            }
++            // FIXME: make things work for widgetless plugins as well
++            delete object;
+         }
+-        // FIXME: make things work for widgetless plugins as well
+-        delete object;
++    } else { // NPAPI Plugins
++        PluginView* pluginView = PluginView::create(m_frame, pluginSize, element, url,
++            paramNames, paramValues, mimeType, loadManually);
++        return pluginView;
+     }
+ 
+     return 0;
+@@ -984,8 +1015,7 @@
+ 
+ void FrameLoaderClientQt::redirectDataToPlugin(Widget* pluginWidget)
+ {
+-    notImplemented();
+-    return;
++    m_pluginView = static_cast<PluginView*>(pluginWidget);
+ }
+ 
+ Widget* FrameLoaderClientQt::createJavaAppletWidget(const IntSize&, Element*, const KURL& baseURL,
+@@ -1005,7 +1035,6 @@
+     return webFrame()->page()->chooseFile(webFrame(), oldFile);
+ }
+ 
+-
+ }
+ 
+ #include "moc_FrameLoaderClientQt.cpp"
+diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h
+--- WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	2008-04-23 15:39:34.000000000 +0200
++++ WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	2008-04-23 15:39:41.000000000 +0200
+@@ -2,6 +2,7 @@
+  * Copyright (C) 2006 Zack Rusin <zack@kde.org>
+  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
+  * Copyright (C) 2007-2008 Trolltech ASA
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * All rights reserved.
+  *
+@@ -38,6 +39,7 @@
+ #include "FrameLoader.h"
+ #include "RefCounted.h"
+ #include "ResourceResponse.h"
++#include "PluginView.h"
+ class QWebFrame;
+ 
+ namespace WebCore {
+@@ -204,6 +206,9 @@
+         ResourceResponse m_response;
+         bool m_firstData;
+         FramePolicyFunction m_policyFunction;
++        // Plugin view to redirect data to
++        WebCore::PluginView* m_pluginView;
++        bool m_hasSentResponseToPlugin;
+     };
+ 
+ }
