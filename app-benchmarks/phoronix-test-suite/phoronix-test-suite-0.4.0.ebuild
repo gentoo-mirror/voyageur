@@ -16,18 +16,26 @@ IUSE=""
 RDEPEND="sys-process/time"
 need_php_cli
 
-S=${WORKDIR}/${PN}
+S="${WORKDIR}/${PN}"
 
 pkg_setup() {
 	has_php
 	require_php_with_use bcmath cli posix
 }
 
-src_install() {
-	insinto /usr/share
-	doins -r "${S}" || die "Install data failed!"
-	fperms 755 /usr/share/${PN}/${PN}
-	fperms 755 /usr/share/${PN}/pts/launch-browser.sh
 
-	make_wrapper ${PN} ./${PN} /usr/share/${PN} || die
+src_unpack() {
+	unpack ${A}
+	cd ${S}
+	sed -i -e "s,export PTS_DIR=\`pwd\`,export PTS_DIR=\"/usr/share/${PN}\"," ${PN}
+}
+
+src_install() {
+	dodir /usr/share/${PN}
+	insinto /usr/share/${PN}
+	doins -r ${S}/pts{,-core} || die "Install failed!"
+	fperms 755 /usr/share/${PN}/pts/launch-browser.sh
+	exeinto /usr/bin
+	doexe phoronix-test-suite || die "Installing the executable failed!"
+	dodoc CHANGE-LOG README TODO
 }
