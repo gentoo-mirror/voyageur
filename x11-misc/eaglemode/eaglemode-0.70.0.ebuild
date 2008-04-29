@@ -9,7 +9,7 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="jpeg png tiff xine"
+IUSE="dvi html jpeg netpbm png povray rar svg tiff xine wmf zip"
 
 DEPEND="dev-lang/perl
 	x11-libs/libX11
