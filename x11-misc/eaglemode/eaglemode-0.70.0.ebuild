@@ -9,15 +9,26 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="jpeg png tiff xine"
 
-# TODO make some of these conditionals, and add others from
-# http://eaglemode.sourceforge.net/SystemRequirements.html
 DEPEND="dev-lang/perl
 	x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXxf86vm
-	virtual/ghostscript"
+	virtual/ghostscript
+	jpeg? ( media-libs/jpeg )
+	png? ( media-libs/libpng )
+	tiff? ( media-libs/tiff )
+	xine? ( media-libs/xine-lib )
+	zip? ( app-arch/unzip )
+	rar? ( app-arch/unrar )
+	app-office/abiword
+	dvi? ( virtual/tetex )
+	netpbm? ( media-libs/netpbm )
+	html? ( app-text/htmldoc )
+	povray? ( media-gfx/povray )
+	svg? ( gnome-base/librsvg )
+	wmf? ( media-libs/libwmf )"
 RDEPEND="${DEPEND}"
 
 src_compile() {
@@ -27,5 +38,5 @@ src_compile() {
 
 src_install() {
 	perl make.pl install dir=${D}/usr/share/${PN} || die "Installation failed"
-	dosym /usr/share/{PN}/${PN}.sh /usr/bin/${PN}
+	dosym /usr/share/${PN}/${PN}.sh /usr/bin/${PN}
 }
