@@ -9,7 +9,7 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="dvi html jpeg netpbm png povray rar svg tiff xine wmf zip"
+IUSE="abiword dvi html jpeg netpbm png povray rar svg tiff xine wmf zip"
 
 DEPEND="dev-lang/perl
 	x11-libs/libX11
@@ -22,7 +22,7 @@ DEPEND="dev-lang/perl
 	xine? ( media-libs/xine-lib )
 	zip? ( app-arch/unzip )
 	rar? ( app-arch/unrar )
-	app-office/abiword
+	abiword? ( app-office/abiword )
 	dvi? ( virtual/tetex )
 	netpbm? ( media-libs/netpbm )
 	html? ( app-text/htmldoc )
@@ -37,6 +37,6 @@ src_compile() {
 }
 
 src_install() {
-	perl make.pl install dir=${D}/usr/share/${PN} || die "Installation failed"
+	perl make.pl install dir="${D}"/usr/share/${PN} || die "Installation failed"
 	dosym /usr/share/${PN}/${PN}.sh /usr/bin/${PN}
 }
