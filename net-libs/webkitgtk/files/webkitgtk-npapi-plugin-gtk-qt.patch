@@ -1,7 +1,8 @@
-diff -Naur WebKit-r32416.orig/GNUmakefile.am WebKit-r32416/GNUmakefile.am
---- WebKit-r32416.orig/GNUmakefile.am	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/GNUmakefile.am	2008-04-23 15:39:41.000000000 +0200
-@@ -243,6 +243,7 @@
+Index: GNUmakefile.am
+===================================================================
+--- GNUmakefile.am	(revision 32726)
++++ GNUmakefile.am	(working copy)
+@@ -246,6 +246,7 @@ endif
  
  if TARGET_X11
  global_cppflags += -DXP_UNIX
@@ -9,21 +10,73 @@ diff -Naur WebKit-r32416.orig/GNUmakefile.am WebKit-r32416/GNUmakefile.am
  endif
  
  if !ENABLE_DEBUG
-diff -Naur WebKit-r32416.orig/JavaScriptCore/wtf/Platform.h WebKit-r32416/JavaScriptCore/wtf/Platform.h
---- WebKit-r32416.orig/JavaScriptCore/wtf/Platform.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/JavaScriptCore/wtf/Platform.h	2008-04-23 15:39:41.000000000 +0200
-@@ -225,6 +225,8 @@
- #define ENABLE_NETSCAPE_PLUGIN_API 0
- #elif PLATFORM(GTK) || PLATFORM(MAC) || PLATFORM(SYMBIAN) || PLATFORM(WIN)
- #define ENABLE_NETSCAPE_PLUGIN_API 1
-+#elif PLATFORM(QT) && PLATFORM(UNIX)
-+#define ENABLE_NETSCAPE_PLUGIN_API 1
- #endif
+Index: WebCore/GNUmakefile.am
+===================================================================
+--- WebCore/GNUmakefile.am	(revision 32726)
++++ WebCore/GNUmakefile.am	(working copy)
+@@ -924,7 +924,10 @@ webcore_sources += \
+ 	WebCore/plugins/PluginStream.cpp \
+ 	WebCore/plugins/PluginView.cpp \
+ 	WebCore/plugins/npapi.cpp \
++	WebCore/plugins/gtk/PluginDataGtk.cpp \
+ 	WebCore/plugins/gtk/PluginDatabaseGtk.cpp \
++	WebCore/plugins/gtk/PluginPackageGtk.cpp \
++	WebCore/plugins/gtk/PluginViewGtk.cpp \
+ 	WebCore/rendering/AutoTableLayout.cpp \
+ 	WebCore/rendering/bidi.cpp \
+ 	WebCore/rendering/break_lines.cpp \
+@@ -986,6 +989,10 @@ webcore_sources += \
+ 	WebCore/xml/XMLHttpRequest.cpp \
+ 	WebCore/xml/XMLHttpRequestProgressEvent.cpp \
+ 	WebCore/xml/XMLSerializer.cpp
++if TARGET_X11
++webcore_sources += \
++	WebCore/plugins/gtk/gtk2xtbin.c
++endif
  
- #if PLATFORM(WIN)
-diff -Naur WebKit-r32416.orig/WebCore/bridge/npruntime_internal.h WebKit-r32416/WebCore/bridge/npruntime_internal.h
---- WebKit-r32416.orig/WebCore/bridge/npruntime_internal.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/bridge/npruntime_internal.h	2008-04-23 15:39:41.000000000 +0200
+ webkitgtk_headers += \
+ 	WebCore/platform/gtk/ClipboardGtk.h \
+Index: WebCore/WebCore.pro
+===================================================================
+--- WebCore/WebCore.pro	(revision 32726)
++++ WebCore/WebCore.pro	(working copy)
+@@ -121,6 +121,10 @@ include($$PWD/../JavaScriptCore/JavaScri
+ #LIBS += -L$$OUTPUT_DIR/lib -lJavaScriptCore
+ 
+ qt-port {
++    unix {
++        DEFINES += XP_UNIX ENABLE_NETSCAPE_PLUGIN_API=1
++    }
++
+ RESOURCES += \
+             $$PWD/../WebCore/page/inspector/WebKit.qrc \
+             $$PWD/../WebCore/Resources/WebKitResources.qrc
+@@ -1049,7 +1053,12 @@ qt-port {
+     ../WebKit/qt/Api/qwebhistoryinterface.cpp \
+     ../WebKit/qt/Api/qwebpluginfactory.cpp
+ 
+-    unix: SOURCES += platform/qt/SystemTimeQt.cpp
++    unix: {
++        SOURCES += platform/qt/SystemTimeQt.cpp \
++                   plugins/qt/PluginDatabaseQt.cpp \
++                   plugins/qt/PluginPackageQt.cpp \
++                   plugins/qt/PluginViewQt.cpp
++    }
+     else: SOURCES += platform/win/SystemTimeWin.cpp
+ 
+     # Files belonging to the Qt 4.3 build
+@@ -1068,6 +1077,7 @@ qt-port {
+ }
+ 
+ gtk-port {
++    INCLUDEPATH += ../WebCore/plugins/gtk
+     HEADERS += \
+         ../WebCore/platform/gtk/ClipboardGtk.h \
+         ../WebCore/platform/gtk/PasteboardHelper.h \
+Index: WebCore/bridge/npruntime_internal.h
+===================================================================
+--- WebCore/bridge/npruntime_internal.h	(revision 32726)
++++ WebCore/bridge/npruntime_internal.h	(working copy)
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (C) 2007 Collabora, Ltd.  All rights reserved.
@@ -45,34 +98,10 @@ diff -Naur WebKit-r32416.orig/WebCore/bridge/npruntime_internal.h WebKit-r32416/
 +    #undef FontChange
 +    #undef GrayScale
  #endif
-diff -Naur WebKit-r32416.orig/WebCore/GNUmakefile.am WebKit-r32416/WebCore/GNUmakefile.am
---- WebKit-r32416.orig/WebCore/GNUmakefile.am	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/GNUmakefile.am	2008-04-23 15:39:41.000000000 +0200
-@@ -920,7 +920,10 @@
- 	WebCore/plugins/PluginStream.cpp \
- 	WebCore/plugins/PluginView.cpp \
- 	WebCore/plugins/npapi.cpp \
-+	WebCore/plugins/gtk/PluginDataGtk.cpp \
- 	WebCore/plugins/gtk/PluginDatabaseGtk.cpp \
-+	WebCore/plugins/gtk/PluginPackageGtk.cpp \
-+	WebCore/plugins/gtk/PluginViewGtk.cpp \
- 	WebCore/rendering/AutoTableLayout.cpp \
- 	WebCore/rendering/bidi.cpp \
- 	WebCore/rendering/break_lines.cpp \
-@@ -981,6 +984,10 @@
- 	WebCore/xml/XMLHttpRequest.cpp \
- 	WebCore/xml/XMLHttpRequestProgressEvent.cpp \
- 	WebCore/xml/XMLSerializer.cpp
-+if TARGET_X11
-+webcore_sources += \
-+	WebCore/plugins/gtk/gtk2xtbin.c
-+endif
- 
- webkitgtk_headers += \
- 	WebCore/platform/gtk/ClipboardGtk.h \
-diff -Naur WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp WebKit-r32416/WebCore/page/gtk/FrameGtk.cpp
---- WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/page/gtk/FrameGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/page/gtk/FrameGtk.cpp
+===================================================================
+--- WebCore/page/gtk/FrameGtk.cpp	(revision 32726)
++++ WebCore/page/gtk/FrameGtk.cpp	(working copy)
 @@ -2,6 +2,7 @@
   * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
   * Copyright (C) 2006 Michael Emmel mike.emmel@gmail.com
@@ -81,7 +110,7 @@ diff -Naur WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp WebKit-r32416/WebCor
   * All rights reserved.
   *
   * Redistribution and use in source and binary forms, with or without
-@@ -30,15 +31,17 @@
+@@ -30,15 +31,21 @@
  #include "Frame.h"
  
  #include "NotImplemented.h"
@@ -98,13 +127,18 @@ diff -Naur WebKit-r32416.orig/WebCore/page/gtk/FrameGtk.cpp WebKit-r32416/WebCor
  {
 -    notImplemented();
 -    return 0;
++    // FIXME: Ideally we'd have an isPluginView() here but we can't add that to the open source tree right now.
++    if (widget->isFrameView())
++        return 0;
++
 +    return static_cast<PluginView*>(widget)->bindingInstance();
  }
  
  void Frame::clearPlatformScriptObjects()
-diff -Naur WebKit-r32416.orig/WebCore/page/qt/FrameQt.cpp WebKit-r32416/WebCore/page/qt/FrameQt.cpp
---- WebKit-r32416.orig/WebCore/page/qt/FrameQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/page/qt/FrameQt.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/page/qt/FrameQt.cpp
+===================================================================
+--- WebCore/page/qt/FrameQt.cpp	(revision 32726)
++++ WebCore/page/qt/FrameQt.cpp	(working copy)
 @@ -6,6 +6,7 @@
   * Copyright (C) 2006 Rob Buis <buis@kde.org>
   * Copyright (C) 2006 Nikolas Zimmermann <zimmermann@kde.org>
@@ -122,19 +156,35 @@ diff -Naur WebKit-r32416.orig/WebCore/page/qt/FrameQt.cpp WebKit-r32416/WebCore/
  #include "Element.h"
  #include "RenderObject.h"
  #include "RenderWidget.h"
-@@ -99,6 +102,9 @@
+@@ -99,6 +102,11 @@ static void doScroll(const RenderObject*
  
  PassRefPtr<KJS::Bindings::Instance> Frame::createScriptInstanceForWidget(WebCore::Widget* widget)
  {
-+    if (widget->isNPAPIPlugin()) {
++    if (widget->isFrameView())
++        return 0;
++    if (widget->isNPAPIPlugin())
 +        return static_cast<PluginView*>(widget)->bindingInstance();
-+    }
++
      QWidget* nativeWidget = widget->nativeWidget();
      if (!nativeWidget)
          return 0;
-diff -Naur WebKit-r32416.orig/WebCore/platform/FileSystem.h WebKit-r32416/WebCore/platform/FileSystem.h
---- WebKit-r32416.orig/WebCore/platform/FileSystem.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/FileSystem.h	2008-04-23 15:39:41.000000000 +0200
+@@ -107,10 +115,12 @@ PassRefPtr<KJS::Bindings::Instance> Fram
+ 
+ void Frame::clearPlatformScriptObjects()
+ {
++    notImplemented();
+ }
+ 
+ void Frame::disconnectPlatformScriptObjects()
+ {
++    notImplemented();
+ }
+ 
+ DragImageRef Frame::dragImageForSelection() 
+Index: WebCore/platform/FileSystem.h
+===================================================================
+--- WebCore/platform/FileSystem.h	(revision 32726)
++++ WebCore/platform/FileSystem.h	(working copy)
 @@ -33,6 +33,10 @@
  #if PLATFORM(GTK)
  #include <gmodule.h>
@@ -146,7 +196,7 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/FileSystem.h WebKit-r32416/WebCor
  
  #include <time.h>
  
-@@ -67,6 +71,11 @@
+@@ -67,6 +71,11 @@ struct PlatformModuleVersion {
      }
  
  };
@@ -158,9 +208,42 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/FileSystem.h WebKit-r32416/WebCor
  #else
  typedef int PlatformFileHandle;
  #if PLATFORM(GTK)
-diff -Naur WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp WebKit-r32416/WebCore/platform/gtk/TemporaryLinkStubs.cpp
---- WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/gtk/TemporaryLinkStubs.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/platform/Widget.h
+===================================================================
+--- WebCore/platform/Widget.h	(revision 32726)
++++ WebCore/platform/Widget.h	(working copy)
+@@ -176,6 +176,9 @@ protected:
+         void setNativeWidget(QWidget *widget);
+         QWidget* nativeWidget() const;
+ 
++        void setIsNPAPIPlugin(bool);
++        bool isNPAPIPlugin() const;
++
+         virtual void setParent(ScrollView*);
+         ScrollView* parent() const;
+         virtual void geometryChanged() const;
+Index: WebCore/platform/gtk/ScrollViewGtk.cpp
+===================================================================
+--- WebCore/platform/gtk/ScrollViewGtk.cpp	(revision 32726)
++++ WebCore/platform/gtk/ScrollViewGtk.cpp	(working copy)
+@@ -469,11 +469,11 @@ void ScrollView::setFrameGeometry(const 
+ 
+ void ScrollView::addChild(Widget* child)
+ {
+-    child->setParent(this);
+     child->setContainingWindow(containingWindow());
++    child->setParent(this);
+     m_data->children.add(child);
+ 
+-    if (child->gtkWidget())
++    if (child->gtkWidget() && !GTK_IS_SOCKET(child->gtkWidget()))
+         gtk_container_add(GTK_CONTAINER(containingWindow()), child->gtkWidget());
+ }
+ 
+Index: WebCore/platform/gtk/TemporaryLinkStubs.cpp
+===================================================================
+--- WebCore/platform/gtk/TemporaryLinkStubs.cpp	(revision 32726)
++++ WebCore/platform/gtk/TemporaryLinkStubs.cpp	(working copy)
 @@ -33,8 +33,6 @@
  #include "FTPDirectoryDocument.h"
  #include "KURL.h"
@@ -170,7 +253,7 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp WebKit
  #include "PluginView.h"
  #include "SharedBuffer.h"
  
-@@ -58,28 +56,7 @@
+@@ -58,28 +56,7 @@ Vector<char> loadResourceIntoArray(const
  /* Completely empty stubs (mostly to allow DRT to run): */
  /********************************************************/
  
@@ -199,7 +282,7 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp WebKit
  
  Color WebCore::focusRingColor() { return 0xFF0000FF; }
  void WebCore::setFocusRingColorChangeFunction(void (*)()) { }
-@@ -93,8 +70,5 @@
+@@ -93,8 +70,5 @@ String KURL::fileSystemPath() const { no
  
  PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile(const String&) { notImplemented(); return 0; }
  
@@ -208,9 +291,10 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/gtk/TemporaryLinkStubs.cpp WebKit
 -
  }
  
-diff -Naur WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp WebKit-r32416/WebCore/platform/qt/FileSystemQt.cpp
---- WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/qt/FileSystemQt.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/platform/qt/FileSystemQt.cpp
+===================================================================
+--- WebCore/platform/qt/FileSystemQt.cpp	(revision 32726)
++++ WebCore/platform/qt/FileSystemQt.cpp	(working copy)
 @@ -38,7 +38,9 @@
  
  #include <QDateTime>
@@ -221,11 +305,15 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp WebKit-r32416
  #include <QDir>
  
  namespace WebCore {
-@@ -88,10 +90,35 @@
-     return QFileInfo(path).fileName();
- }
+@@ -90,14 +92,39 @@ String pathGetFileName(const String& pat
  
--bool unloadModule(PlatformModule)
+ String directoryName(const String& path)
+ {
+-    notImplemented();
+-    return String();
++    return String(QFileInfo(path).baseName());
++}
++
 +CString openTemporaryFile(const char* prefix, PlatformFileHandle& handle)
 +{
 +    QFile *temp = new QTemporaryFile(QString(prefix));
@@ -250,19 +338,22 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/qt/FileSystemQt.cpp WebKit-r32416
 +    if(handle && handle->exists() && handle->isWritable()) {
 +        handle->write(data, length);
 +    }
-+}
-+
+ }
+ 
+-bool unloadModule(PlatformModule)
 +bool unloadModule(PlatformModule module)
  {
 -    notImplemented();
 -    return false;
-+    return module->unload();
++    if (module->unload())
++        delete module;
  }
  
  }
-diff -Naur WebKit-r32416.orig/WebCore/platform/qt/TemporaryLinkStubs.cpp WebKit-r32416/WebCore/platform/qt/TemporaryLinkStubs.cpp
---- WebKit-r32416.orig/WebCore/platform/qt/TemporaryLinkStubs.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/qt/TemporaryLinkStubs.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/platform/qt/TemporaryLinkStubs.cpp
+===================================================================
+--- WebCore/platform/qt/TemporaryLinkStubs.cpp	(revision 32726)
++++ WebCore/platform/qt/TemporaryLinkStubs.cpp	(working copy)
 @@ -72,41 +72,11 @@
  
  using namespace WebCore;
@@ -305,10 +396,11 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/qt/TemporaryLinkStubs.cpp WebKit-
  #if !defined(Q_OS_WIN)
  // defined in win/SystemTimeWin.cpp, which is compiled for the Qt/Windows port
  float userIdleTime() { notImplemented(); return 0.0; }
-diff -Naur WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp WebKit-r32416/WebCore/platform/qt/WidgetQt.cpp
---- WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/qt/WidgetQt.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -59,6 +59,7 @@
+Index: WebCore/platform/qt/WidgetQt.cpp
+===================================================================
+--- WebCore/platform/qt/WidgetQt.cpp	(revision 32726)
++++ WebCore/platform/qt/WidgetQt.cpp	(working copy)
+@@ -62,6 +62,7 @@ struct WidgetPrivate
          , enabled(true)
          , suppressInvalidation(false)
          , m_widget(0)
@@ -316,15 +408,15 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp WebKit-r32416/Web
          , m_parentScrollView(0) { }
      ~WidgetPrivate() {}
  
-@@ -66,6 +67,7 @@
+@@ -69,6 +70,7 @@ struct WidgetPrivate
  
      bool enabled;
      bool suppressInvalidation;
 +    bool isNPAPIPlugin;
-     QRect m_geometry;
+     IntRect m_geometry;
      QWidget *m_widget; //for plugins
      ScrollView *m_parentScrollView;
-@@ -141,6 +143,16 @@
+@@ -142,6 +144,16 @@ void Widget::setNativeWidget(QWidget *wi
      data->m_widget = widget;
  }
  
@@ -341,990 +433,10 @@ diff -Naur WebKit-r32416.orig/WebCore/platform/qt/WidgetQt.cpp WebKit-r32416/Web
  void Widget::paint(GraphicsContext *, const IntRect &rect)
  {
  }
-diff -Naur WebKit-r32416.orig/WebCore/platform/Widget.h WebKit-r32416/WebCore/platform/Widget.h
---- WebKit-r32416.orig/WebCore/platform/Widget.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/platform/Widget.h	2008-04-23 15:39:41.000000000 +0200
-@@ -176,6 +176,9 @@
-         void setNativeWidget(QWidget *widget);
-         QWidget* nativeWidget() const;
- 
-+        void setIsNPAPIPlugin(bool);
-+        bool isNPAPIPlugin() const;
-+
-         virtual void setParent(ScrollView*);
-         ScrollView* parent() const;
-         virtual void geometryChanged() const;
-diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginDatabaseGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginDatabaseGtk.cpp
---- WebKit-r32416.orig/WebCore/plugins/gtk/PluginDatabaseGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/gtk/PluginDatabaseGtk.cpp	2008-04-23 15:40:31.000000000 +0200
-@@ -29,6 +29,7 @@
- 
- #include "CString.h"
- #include "PluginPackage.h"
-+#include <gdkconfig.h>
- 
- namespace WebCore {
- 
-@@ -60,6 +61,8 @@
-     Vector<String> directories;
-     gchar* directory;
- 
-+    directory = 0;
-+
- #if defined(GDK_WINDOWING_X11)
-     directory = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", NULL);
-     directories.append(directory);
-@@ -75,7 +78,7 @@
-         g_strfreev(pluginPaths);
-     }
- 
--    directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "lib", "browser", "plugins", NULL);
-+    directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "lib", "nsbrowser", "plugins", NULL);
-     directories.append(directory);
-     g_free(directory);
-     directory = g_build_filename(G_DIR_SEPARATOR_S "usr", "local", "lib", "mozilla", "plugins", NULL);
-@@ -95,7 +98,21 @@
- 
- bool PluginDatabase::isPreferredPluginDirectory(const String& directory)
- {
--    return false;
-+    gchar* homePath;
-+    bool retval = false;
-+
-+    homePath = 0;
-+
-+#if defined(GDK_WINDOWING_X11)
-+    homePath = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", 0);
-+#elif defined(GDK_WINDOWING_WIN32)
-+    homePath = g_build_filename(g_get_home_dir(), "Application Data", "Mozilla", "plugins", 0);
-+#endif
-+
-+    if (homePath)
-+	retval = (strcmp(homePath, (directory.utf8()).data()) == 0);
-+
-+    return retval;
- }
- 
- }
-diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginDataGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginDataGtk.cpp
---- WebKit-r32416.orig/WebCore/plugins/gtk/PluginDataGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/gtk/PluginDataGtk.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -0,0 +1,73 @@
-+/*
-+    Copyright (C) 2008 Trolltech ASA
-+    Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
-+    Copyright (C) 2008 Collabora Ltd. All rights reserved.
-+
-+    This library is free software; you can redistribute it and/or
-+    modify it under the terms of the GNU Library General Public
-+    License as published by the Free Software Foundation; either
-+    version 2 of the License, or (at your option) any later version.
-+
-+    This library is distributed in the hope that it will be useful,
-+    but WITHOUT ANY WARRANTY; without even the implied warranty of
-+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+    Library General Public License for more details.
-+
-+    You should have received a copy of the GNU Library General Public License
-+    along with this library; see the file COPYING.LIB.  If not, write to
-+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-+    Boston, MA 02110-1301, USA.
-+*/
-+
-+#include "config.h"
-+#include "PluginData.h"
-+
-+#include "PluginDatabase.h"
-+#include "PluginPackage.h"
-+#include <stdio.h>
-+namespace WebCore {
-+
-+void PluginData::initPlugins()
-+{
-+    PluginDatabase *db = PluginDatabase::installedPlugins();
-+    const Vector<PluginPackage*> &plugins = db->plugins();
-+
-+    for (unsigned int i = 0; i < plugins.size(); ++i) {
-+        PluginInfo* info = new PluginInfo;
-+        PluginPackage* package = plugins[i];
-+
-+        info->name = package->name();
-+        info->file = package->fileName();
-+        info->desc = package->description();
-+
-+        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
-+        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
-+        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
-+            MimeClassInfo* mime = new MimeClassInfo;
-+            info->mimes.append(mime);
-+
-+            mime->type = it->first;
-+            mime->desc = it->second;
-+            mime->plugin = info;
-+
-+            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
-+
-+            for (unsigned i = 0; i < extensions.size(); i++) {
-+                if (i > 0)
-+                    mime->suffixes += ",";
-+
-+                mime->suffixes += extensions[i];
-+            }
-+        }
-+
-+        m_plugins.append(info);
-+    }
-+}
-+
-+void PluginData::refresh()
-+{
-+    PluginDatabase *db = PluginDatabase::installedPlugins();
-+    db->refresh();
-+}
-+
-+};
-diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginPackageGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginPackageGtk.cpp
---- WebKit-r32416.orig/WebCore/plugins/gtk/PluginPackageGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/gtk/PluginPackageGtk.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -0,0 +1,202 @@
-+/*
-+ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
-+ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in the
-+ *    documentation and/or other materials provided with the distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
-+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
-+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
-+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
-+ */
-+
-+#include "config.h"
-+#include "PluginPackage.h"
-+
-+#include "CString.h"
-+#include "MIMETypeRegistry.h"
-+#include "NotImplemented.h"
-+#include "npruntime_impl.h"
-+#include "PluginDebug.h"
-+
-+namespace WebCore {
-+
-+int PluginPackage::compareFileVersion(const PlatformModuleVersion&) const
-+{
-+    notImplemented();
-+    return 0;
-+}
-+
-+void PluginPackage::determineQuirks(const String& mimeType)
-+{
-+    if (MIMETypeRegistry::isJavaAppletMIMEType(mimeType)) {
-+        // Because a single process cannot create multiple VMs, and we cannot reliably unload a
-+        // Java VM, we cannot unload the Java plugin, or we'll lose reference to our only VM
-+        m_quirks.add(PluginQuirkDontUnloadPlugin);
-+
-+        // Setting the window region to an empty region causes bad scrolling repaint problems
-+        // with the Java plug-in.
-+        m_quirks.add(PluginQuirkDontClipToZeroRectWhenScrolling);
-+    }
-+}
-+
-+bool PluginPackage::fetchInfo()
-+{
-+    if (!load())
-+        return false;
-+
-+    NP_GetMIMEDescriptionFuncPtr NP_GetMIMEDescription;
-+    NPP_GetValueProcPtr NPP_GetValue;
-+
-+    g_module_symbol(m_module, "NP_GetMIMEDescription", (void**)&NP_GetMIMEDescription);
-+    g_module_symbol(m_module, "NP_GetValue", (void**)&NPP_GetValue);
-+
-+    const gchar* types = NP_GetMIMEDescription();
-+    gchar** mimeDescs = g_strsplit(types, ";", -1);
-+    for (int i = 0; mimeDescs[i] && mimeDescs[i][0]; i++) {
-+        gchar** mimeData = g_strsplit(mimeDescs[i], ":", 3);
-+
-+        String description = String::fromUTF8(mimeData[2]);
-+        gchar** extensions = g_strsplit(mimeData[1], ",", -1);
-+
-+        Vector<String> extVector;
-+        for (int j = 0; extensions[j]; j++)
-+            extVector.append(String::fromUTF8(extensions[j]));
-+
-+        m_mimeToExtensions.add(mimeData[0], extVector);
-+        m_mimeToDescriptions.add(mimeData[0], description);
-+
-+        g_strfreev(extensions);
-+        g_strfreev(mimeData);
-+    }
-+    g_strfreev(mimeDescs);
-+
-+    char* buffer = 0;
-+    NPError err = NPP_GetValue(0, NPPVpluginNameString, &buffer);
-+    if (err == NPERR_NO_ERROR)
-+        m_name = buffer;
-+
-+    buffer = 0;
-+    err = NPP_GetValue(0, NPPVpluginDescriptionString, &buffer);
-+    if (err == NPERR_NO_ERROR)
-+        m_description = buffer;
-+
-+    return true;
-+}
-+
-+bool PluginPackage::load()
-+{
-+    if (m_isLoaded) {
-+        m_loadCount++;
-+        return true;
-+    }
-+
-+    m_module = g_module_open((m_path.utf8()).data(), G_MODULE_BIND_LOCAL);
-+
-+    if (!m_module) {
-+	    LOG(Plugin,"Module Load Failed :%s, Error:%s\n", (m_path.utf8()).data(), g_module_error());
-+        return false;
-+	}
-+
-+    m_isLoaded = true;
-+
-+    NP_InitializeFuncPtr NP_Initialize;
-+    NPError npErr;
-+
-+    g_module_symbol(m_module, "NP_Initialize", (void**)&NP_Initialize);
-+    g_module_symbol(m_module, "NP_Shutdown", (void**)&m_NPP_Shutdown);
-+
-+    if (!NP_Initialize || !m_NPP_Shutdown)
-+        goto abort;
-+
-+    memset(&m_pluginFuncs, 0, sizeof(m_pluginFuncs));
-+    m_pluginFuncs.size = sizeof(m_pluginFuncs);
-+
-+    m_browserFuncs.size = sizeof (m_browserFuncs);
-+    m_browserFuncs.version = NP_VERSION_MINOR;
-+    m_browserFuncs.geturl = NPN_GetURL;
-+    m_browserFuncs.posturl = NPN_PostURL;
-+    m_browserFuncs.requestread = NPN_RequestRead;
-+    m_browserFuncs.newstream = NPN_NewStream;
-+    m_browserFuncs.write = NPN_Write;
-+    m_browserFuncs.destroystream = NPN_DestroyStream;
-+    m_browserFuncs.status = NPN_Status;
-+    m_browserFuncs.uagent = NPN_UserAgent;
-+    m_browserFuncs.memalloc = NPN_MemAlloc;
-+    m_browserFuncs.memfree = NPN_MemFree;
-+    m_browserFuncs.memflush = NPN_MemFlush;
-+    m_browserFuncs.reloadplugins = NPN_ReloadPlugins;
-+    m_browserFuncs.geturlnotify = NPN_GetURLNotify;
-+    m_browserFuncs.posturlnotify = NPN_PostURLNotify;
-+    m_browserFuncs.getvalue = NPN_GetValue;
-+    m_browserFuncs.setvalue = NPN_SetValue;
-+    m_browserFuncs.invalidaterect = NPN_InvalidateRect;
-+    m_browserFuncs.invalidateregion = NPN_InvalidateRegion;
-+    m_browserFuncs.forceredraw = NPN_ForceRedraw;
-+    m_browserFuncs.getJavaEnv = NPN_GetJavaEnv;
-+    m_browserFuncs.getJavaPeer = NPN_GetJavaPeer;
-+    m_browserFuncs.pushpopupsenabledstate = NPN_PushPopupsEnabledState;
-+    m_browserFuncs.poppopupsenabledstate = NPN_PopPopupsEnabledState;
-+
-+    m_browserFuncs.releasevariantvalue = _NPN_ReleaseVariantValue;
-+    m_browserFuncs.getstringidentifier = _NPN_GetStringIdentifier;
-+    m_browserFuncs.getstringidentifiers = _NPN_GetStringIdentifiers;
-+    m_browserFuncs.getintidentifier = _NPN_GetIntIdentifier;
-+    m_browserFuncs.identifierisstring = _NPN_IdentifierIsString;
-+    m_browserFuncs.utf8fromidentifier = _NPN_UTF8FromIdentifier;
-+    m_browserFuncs.createobject = _NPN_CreateObject;
-+    m_browserFuncs.retainobject = _NPN_RetainObject;
-+    m_browserFuncs.releaseobject = _NPN_ReleaseObject;
-+    m_browserFuncs.invoke = _NPN_Invoke;
-+    m_browserFuncs.invokeDefault = _NPN_InvokeDefault;
-+    m_browserFuncs.evaluate = _NPN_Evaluate;
-+    m_browserFuncs.getproperty = _NPN_GetProperty;
-+    m_browserFuncs.setproperty = _NPN_SetProperty;
-+    m_browserFuncs.removeproperty = _NPN_RemoveProperty;
-+    m_browserFuncs.hasproperty = _NPN_HasMethod;
-+    m_browserFuncs.hasmethod = _NPN_HasProperty;
-+    m_browserFuncs.setexception = _NPN_SetException;
-+    m_browserFuncs.enumerate = _NPN_Enumerate;
-+
-+    npErr = NP_Initialize(&m_browserFuncs, &m_pluginFuncs);
-+    if (npErr != NPERR_NO_ERROR)
-+        goto abort;
-+
-+    m_loadCount++;
-+    return true;
-+
-+abort:
-+    unloadWithoutShutdown();
-+    return false;
-+}
-+
-+unsigned PluginPackage::hash() const
-+{ 
-+    unsigned hashCodes[2] = {
-+        m_path.impl()->hash(),
-+        m_lastModified
-+    };
-+
-+    return StringImpl::computeHash(reinterpret_cast<UChar*>(hashCodes), 2 * sizeof(unsigned) / sizeof(UChar));
-+}
-+
-+bool PluginPackage::equal(const PluginPackage& a, const PluginPackage& b)
-+{
-+    return a.m_description == b.m_description;
-+}
-+
-+}
-diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/PluginViewGtk.cpp WebKit-r32416/WebCore/plugins/gtk/PluginViewGtk.cpp
---- WebKit-r32416.orig/WebCore/plugins/gtk/PluginViewGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/gtk/PluginViewGtk.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -0,0 +1,546 @@
-+/*
-+ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
-+ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in the
-+ *    documentation and/or other materials provided with the distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
-+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
-+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
-+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
-+ */
-+
-+#include "config.h"
-+#include "PluginView.h"
-+
-+#include "Document.h"
-+#include "DocumentLoader.h"
-+#include "Element.h"
-+#include "EventNames.h"
-+#include "FrameLoader.h"
-+#include "FrameLoadRequest.h"
-+#include "FrameTree.h"
-+#include "Frame.h"
-+#include "FrameView.h"
-+#include "GraphicsContext.h"
-+#include "Image.h"
-+#include "HTMLNames.h"
-+#include "HTMLPlugInElement.h"
-+#include "KeyboardEvent.h"
-+#include "MouseEvent.h"
-+#include "NotImplemented.h"
-+#include "Page.h"
-+#include "PlatformMouseEvent.h"
-+#include "PluginDebug.h"
-+#include "PluginPackage.h"
-+#include "RenderLayer.h"
-+#include "Settings.h"
-+#include "kjs_binding.h"
-+#include "kjs_proxy.h"
-+#include "npruntime_impl.h"
-+#include "runtime.h"
-+#include "runtime_root.h"
-+#include <kjs/JSLock.h>
-+#include <kjs/value.h>
-+
-+#include <gdkconfig.h>
-+
-+#if defined(GDK_WINDOWING_X11)
-+#include "gtk2xtbin.h"
-+#include <gdk/gdkx.h>
-+#endif
-+#ifdef GDK_WINDOWING_WIN32
-+#include <gdk/gdkwin32.h>
-+#endif
-+
-+using KJS::ExecState;
-+using KJS::Interpreter;
-+using KJS::JSLock;
-+using KJS::JSObject;
-+using KJS::JSValue;
-+using KJS::UString;
-+
-+using std::min;
-+
-+using namespace WTF;
-+
-+namespace WebCore {
-+
-+using namespace EventNames;
-+using namespace HTMLNames;
-+
-+void PluginView::updateWindow() const
-+{
-+    if (!parent() || !m_isWindowed)
-+        return;
-+
-+    ASSERT(parent()->isFrameView());
-+    FrameView* frameView = static_cast<FrameView*>(parent());
-+
-+    IntRect oldWindowRect = m_windowRect;
-+    IntRect oldClipRect = m_clipRect;
-+
-+    m_windowRect = IntRect(frameView->contentsToWindow(frameGeometry().location()), frameGeometry().size());
-+    m_clipRect = windowClipRect();
-+    m_clipRect.move(-m_windowRect.x(), -m_windowRect.y());
-+
-+    GtkAllocation allocation = { m_windowRect.x(), m_windowRect.y(), m_windowRect.width(), m_windowRect.height() };
-+    if (m_window) {
-+        gtk_widget_size_allocate(m_window, &allocation);
-+#if defined(GDK_WINDOWING_X11)
-+        if (!m_needsXEmbed) {
-+            gtk_xtbin_set_position(GTK_XTBIN(m_window), m_windowRect.x(), m_windowRect.y());
-+            gtk_xtbin_resize(m_window, m_windowRect.width(), m_windowRect.height());
-+        }
-+#endif
-+    }
-+}
-+
-+void PluginView::setFocus()
-+{
-+    if (m_window)
-+	gtk_widget_grab_focus(m_window);
-+
-+    Widget::setFocus();
-+}
-+
-+void PluginView::show()
-+{
-+    m_isVisible = true;
-+
-+    if (m_attachedToWindow && m_window)
-+	gtk_widget_show(m_window);
-+
-+    Widget::show();
-+}
-+
-+void PluginView::hide()
-+{
-+    m_isVisible = false;
-+
-+    if (m_attachedToWindow && m_window)
-+	gtk_widget_hide(m_window);
-+
-+    Widget::hide();
-+}
-+
-+void PluginView::paint(GraphicsContext* context, const IntRect& rect)
-+{
-+    if (!m_isStarted) {
-+        // Draw the "missing plugin" image
-+        //paintMissingPluginIcon(context, rect);
-+        return;
-+    }
-+
-+    if (m_isWindowed || context->paintingDisabled())
-+        return;
-+
-+    NPEvent npEvent;
-+    /* Need to synthesize Xevents here */
-+
-+    m_npWindow.type = NPWindowTypeDrawable;
-+
-+    ASSERT(parent()->isFrameView());
-+
-+    if (m_plugin->pluginFuncs()->event) {
-+        KJS::JSLock::DropAllLocks dropAllLocks;
-+        m_plugin->pluginFuncs()->event(m_instance, &npEvent);
-+    }
-+
-+    if (m_isWindowed)
-+        setNPWindowRect(frameGeometry());
-+
-+    if (m_plugin->pluginFuncs()->event) {
-+        KJS::JSLock::DropAllLocks dropAllLocks;
-+        m_plugin->pluginFuncs()->event(m_instance, &npEvent);
-+    }
-+}
-+
-+void PluginView::handleKeyboardEvent(KeyboardEvent* event)
-+{
-+    NPEvent npEvent;
-+    
-+    /* FIXME: Synthesize an XEvent to pass through */
-+
-+    KJS::JSLock::DropAllLocks dropAllLocks;
-+    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
-+        event->setDefaultHandled();
-+}
-+
-+void PluginView::handleMouseEvent(MouseEvent* event)
-+{
-+    NPEvent npEvent;
-+
-+    if (!m_isWindowed)
-+      return;
-+
-+    /* FIXME: Synthesize an XEvent to pass through */
-+    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(IntPoint(event->pageX(), event->pageY()));
-+
-+    KJS::JSLock::DropAllLocks dropAllLocks;
-+    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
-+        event->setDefaultHandled();
-+}
-+
-+void PluginView::setParent(ScrollView* parent)
-+{
-+    Widget::setParent(parent);
-+
-+    if (parent)
-+        init();
-+    else {
-+        if (!m_window)
-+            return;
-+    }
-+}
-+
-+void PluginView::setNPWindowRect(const IntRect& rect)
-+{
-+    if (!m_isStarted || !m_isWindowed)
-+        return;
-+
-+    if (!parent())
-+        return;
-+
-+    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(rect.location());
-+    m_npWindow.x = p.x();
-+    m_npWindow.y = p.y();
-+
-+    m_npWindow.width = rect.width();
-+    m_npWindow.height = rect.height();
-+
-+    m_npWindow.clipRect.left = 0;
-+    m_npWindow.clipRect.top = 0;
-+    m_npWindow.clipRect.right = rect.width();
-+    m_npWindow.clipRect.bottom = rect.height();
-+
-+    if (m_plugin->pluginFuncs()->setwindow) {
-+        KJS::JSLock::DropAllLocks dropAllLocks;
-+        setCallingPlugin(true);
-+        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
-+        setCallingPlugin(false);
-+
-+        if (!m_isWindowed)
-+            return;
-+
-+        ASSERT(m_window);
-+    }
-+}
-+
-+void PluginView::attachToWindow()
-+{
-+    if (m_attachedToWindow)
-+	return;
-+
-+    m_attachedToWindow = true;
-+    if (m_isVisible && m_window)
-+	gtk_widget_show(m_window);
-+}
-+
-+void PluginView::detachFromWindow()
-+{
-+    if (!m_attachedToWindow)
-+	return;
-+
-+    if (m_isVisible && m_window)
-+	gtk_widget_hide(m_window);
-+    m_attachedToWindow = false;
-+}
-+
-+void PluginView::stop()
-+{
-+    if (!m_isStarted)
-+        return;
-+
-+    HashSet<RefPtr<PluginStream> > streams = m_streams;
-+    HashSet<RefPtr<PluginStream> >::iterator end = streams.end();
-+    for (HashSet<RefPtr<PluginStream> >::iterator it = streams.begin(); it != end; ++it) {
-+        (*it)->stop();
-+        disconnectStream((*it).get());
-+    }
-+
-+    ASSERT(m_streams.isEmpty());
-+
-+    m_isStarted = false;
-+    KJS::JSLock::DropAllLocks dropAllLocks;
-+
-+    // Clear the window
-+    m_npWindow.window = 0;
-+    if (m_plugin->pluginFuncs()->setwindow && !m_plugin->quirks().contains(PluginQuirkDontSetNullWindowHandleOnDestroy)) {
-+        setCallingPlugin(true);
-+        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
-+        setCallingPlugin(false);
-+    }
-+
-+    // Destroy the plugin
-+    {
-+        setCallingPlugin(true);
-+        m_plugin->pluginFuncs()->destroy(m_instance, 0);
-+        setCallingPlugin(false);
-+    }
-+
-+    m_instance->pdata = 0;
-+}
-+
-+static const char* MozillaUserAgent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0";
-+
-+const char* PluginView::userAgent()
-+{
-+    if (m_plugin->quirks().contains(PluginQuirkWantsMozillaUserAgent))
-+        return MozillaUserAgent;
-+
-+    if (m_userAgent.isNull())
-+        m_userAgent = m_parentFrame->loader()->userAgent(m_url).utf8();
-+
-+    return m_userAgent.data();
-+}
-+
-+NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
-+{
-+    String filename(buf, len);
-+
-+    if (filename.startsWith("file:///"))
-+        filename = filename.substring(8);
-+
-+    // Get file info
-+    if (!g_file_test ((filename.utf8()).data(), (GFileTest)(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)))
-+        return NPERR_FILE_NOT_FOUND;
-+
-+    //FIXME - read the file data into buffer
-+    FILE* fileHandle = fopen((filename.utf8()).data(), "r");
-+    
-+    if (fileHandle == 0)
-+        return NPERR_FILE_NOT_FOUND;
-+
-+    //buffer.resize();
-+
-+    int bytesRead = fread(buffer.data(), 1, 0, fileHandle);
-+
-+    fclose(fileHandle);
-+
-+    if (bytesRead <= 0)
-+        return NPERR_FILE_NOT_FOUND;
-+
-+	return NPERR_NO_ERROR;
-+}
-+
-+NPError PluginView::getValue(NPNVariable variable, void* value)
-+{
-+    switch (variable) {
-+#if defined(GDK_WINDOWING_X11)
-+        case NPNVxtAppContext: {
-+            if (!m_needsXEmbed) {
-+                *(void **)value = XtDisplayToApplicationContext (GTK_XTBIN(m_window)->xtclient.xtdisplay);
-+
-+                return NPERR_NO_ERROR;
-+            } else
-+                return NPERR_GENERIC_ERROR;
-+        }
-+#endif
-+
-+        case NPNVToolkit: {
-+#if PLATFORM(GTK)
-+            *((uint32 *)value) = 2;
-+#else
-+            *((uint32 *)value) = 0;
-+#endif
-+            return NPERR_NO_ERROR;
-+        }
-+
-+        case NPNVSupportsXEmbedBool: {
-+#if defined(GDK_WINDOWING_X11)
-+            *((uint32 *)value) = true;
-+#else
-+            *((uint32 *)value) = false;
-+#endif
-+            return NPERR_NO_ERROR;
-+        }
-+
-+#if ENABLE(NETSCAPE_PLUGIN_API)
-+        case NPNVWindowNPObject: {
-+	    if (m_isJavaScriptPaused)
-+		return NPERR_GENERIC_ERROR;
-+
-+            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
-+
-+            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
-+            if (windowScriptObject)
-+                _NPN_RetainObject(windowScriptObject);
-+
-+            void** v = (void**)value;
-+            *v = windowScriptObject;
-+            
-+            return NPERR_NO_ERROR;
-+        }
-+
-+        case NPNVPluginElementNPObject: {
-+	    if (m_isJavaScriptPaused)
-+		return NPERR_GENERIC_ERROR;
-+
-+            NPObject* pluginScriptObject = 0;
-+
-+            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
-+                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
-+
-+            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
-+            if (pluginScriptObject)
-+                _NPN_RetainObject(pluginScriptObject);
-+
-+            void** v = (void**)value;
-+            *v = pluginScriptObject;
-+
-+            return NPERR_NO_ERROR;
-+        }
-+#endif
-+
-+        case NPNVnetscapeWindow: {
-+            void* w = reinterpret_cast<void*>(value);
-+
-+#ifdef GDK_WINDOWING_X11
-+            *((XID *)w) = GDK_WINDOW_XWINDOW(containingWindow()->window);
-+#endif
-+#ifdef GDK_WINDOWING_WIN32
-+            *((HWND *)w) = GDK_WINDOWING_HWND(containingWindow()->window);
-+#endif
-+            return NPERR_NO_ERROR;
-+        }
-+        default:
-+            return NPERR_GENERIC_ERROR;
-+    }
-+}
-+
-+void PluginView::invalidateRect(NPRect* rect)
-+{
-+    if (!rect) {
-+        invalidate();
-+        return;
-+    }
-+
-+    IntRect r(rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top);
-+    Widget::invalidateRect(r);
-+}
-+
-+void PluginView::forceRedraw()
-+{
-+    if (m_isWindowed)
-+        gtk_widget_queue_draw(m_window);
-+    else
-+        gtk_widget_queue_draw(containingWindow());
-+}
-+
-+PluginView::~PluginView()
-+{
-+    stop();
-+
-+    deleteAllValues(m_requests);
-+
-+    freeStringArray(m_paramNames, m_paramCount);
-+    freeStringArray(m_paramValues, m_paramCount);
-+
-+    m_parentFrame->cleanupScriptObjectsForPlugin(this);
-+
-+    if (m_plugin && !(m_plugin->quirks().contains(PluginQuirkDontUnloadPlugin)))
-+        m_plugin->unload();
-+}
-+
-+void PluginView::init()
-+{
-+    if (m_haveInitialized)
-+        return;
-+    m_haveInitialized = true;
-+
-+    if (!m_plugin) {
-+        ASSERT(m_status == PluginStatusCanNotFindPlugin);
-+        return;
-+    }
-+
-+    if (!m_plugin->load()) {
-+        m_plugin = 0;
-+        m_status = PluginStatusCanNotLoadPlugin;
-+        return;
-+    }
-+
-+    if (!start()) {
-+        m_status = PluginStatusCanNotLoadPlugin;
-+        return;
-+    }
-+
-+    if (m_plugin->pluginFuncs()->getvalue)
-+        m_plugin->pluginFuncs()->getvalue(m_instance, NPPVpluginNeedsXEmbed, &m_needsXEmbed);
-+
-+#if defined(GDK_WINDOWING_X11)
-+    if (m_needsXEmbed) {
-+        m_window = gtk_socket_new();
-+        gtk_container_add(GTK_CONTAINER(m_parentFrame->view()->containingWindow()), m_window);
-+        setGtkWidget(m_window);
-+    } else if (m_isWindowed) {
-+        m_window = gtk_xtbin_new(m_parentFrame->view()->containingWindow()->window, 0);
-+	setGtkWidget(m_window);
-+    }
-+#else
-+    m_window = gtk_socket_new();
-+    gtk_container_add(GTK_CONTAINER(m_parentFrame->view()->containingWindow()), m_window);
-+    setGtkWidget(m_window);
-+#endif
-+    show ();
-+
-+    if (m_isWindowed) {
-+#if defined(GDK_WINDOWING_X11)
-+	NPSetWindowCallbackStruct ws;
-+
-+	ws.type = 0;
-+
-+	if (m_needsXEmbed) {
-+	    ws.display = GDK_WINDOW_XDISPLAY(m_window->window);
-+	    ws.visual = GDK_VISUAL_XVISUAL(gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window)));
-+	    ws.depth = gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window))->depth;
-+	    ws.colormap = GDK_COLORMAP_XCOLORMAP(gdk_drawable_get_colormap(GDK_DRAWABLE(m_window->window)));
-+	} else {
-+	    ws.display = GTK_XTBIN(m_window)->xtdisplay;
-+	    ws.visual = GTK_XTBIN(m_window)->xtclient.xtvisual;
-+	    ws.depth = GTK_XTBIN(m_window)->xtclient.xtdepth;
-+	    ws.colormap = GTK_XTBIN(m_window)->xtclient.xtcolormap;
-+
-+	    XFlush (ws.display);
-+	}
-+
-+	m_npWindow.ws_info = &ws;
-+#endif
-+    }
-+
-+    if (m_isWindowed) {
-+        m_npWindow.type = NPWindowTypeWindow;
-+#if defined(GDK_WINDOWING_X11)
-+	if (m_needsXEmbed)
-+	    m_npWindow.window = (void*)GDK_WINDOW_XWINDOW(m_window->window);
-+	else
-+	    m_npWindow.window = (void*)GTK_XTBIN(m_window)->xtwindow;
-+#elif defined(GDK_WINDOWING_WIN32)
-+        m_npWindow.window = (void*)GDK_WINDOW_HWND(m_window->window);
-+#endif
-+    } else {
-+        m_npWindow.type = NPWindowTypeDrawable;
-+        m_npWindow.window = 0;
-+    }
-+
-+    if (!(m_plugin->quirks().contains(PluginQuirkDeferFirstSetWindowCall)))
-+        setNPWindowRect(frameGeometry());
-+
-+    m_status = PluginStatusLoadedSuccessfully;
-+}
-+
-+} // namespace WebCore
-diff -Naur WebKit-r32416.orig/WebCore/plugins/gtk/xembed.h WebKit-r32416/WebCore/plugins/gtk/xembed.h
---- WebKit-r32416.orig/WebCore/plugins/gtk/xembed.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/gtk/xembed.h	2008-04-23 15:39:41.000000000 +0200
-@@ -0,0 +1,64 @@
-+/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
-+ * vim:expandtab:shiftwidth=2:tabstop=2: */
-+ 
-+/* ***** BEGIN LICENSE BLOCK *****
-+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
-+ *
-+ * The contents of this file are subject to the Mozilla Public License Version
-+ * 1.1 (the "License"); you may not use this file except in compliance with
-+ * the License. You may obtain a copy of the License at
-+ * http://www.mozilla.org/MPL/
-+ *
-+ * Software distributed under the License is distributed on an "AS IS" basis,
-+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-+ * for the specific language governing rights and limitations under the
-+ * License.
-+ *
-+ * The Original Code is the XEMBED Declaration.
-+ *
-+ * The Initial Developer of the Original Code is
-+ * Sun Microsystems, Inc.
-+ * Portions created by the Initial Developer are Copyright (C) 2002
-+ * the Initial Developer. All Rights Reserved.
-+ *
-+ * Contributor(s):
-+ *
-+ * Alternatively, the contents of this file may be used under the terms of
-+ * either the GNU General Public License Version 2 or later (the "GPL"), or
-+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-+ * in which case the provisions of the GPL or the LGPL are applicable instead
-+ * of those above. If you wish to allow use of your version of this file only
-+ * under the terms of either the GPL or the LGPL, and not to allow others to
-+ * use your version of this file under the terms of the MPL, indicate your
-+ * decision by deleting the provisions above and replace them with the notice
-+ * and other provisions required by the GPL or the LGPL. If you do not delete
-+ * the provisions above, a recipient may use your version of this file under
-+ * the terms of any one of the MPL, the GPL or the LGPL.
-+ *
-+ * ***** END LICENSE BLOCK ***** */
-+
-+/* XEMBED messages */
-+#define XEMBED_EMBEDDED_NOTIFY          0
-+#define XEMBED_WINDOW_ACTIVATE          1
-+#define XEMBED_WINDOW_DEACTIVATE        2
-+#define XEMBED_REQUEST_FOCUS            3
-+#define XEMBED_FOCUS_IN                 4
-+#define XEMBED_FOCUS_OUT                5
-+#define XEMBED_FOCUS_NEXT               6
-+#define XEMBED_FOCUS_PREV               7
-+#define XEMBED_GRAB_KEY                 8
-+#define XEMBED_UNGRAB_KEY               9
-+#define XEMBED_MODALITY_ON              10
-+#define XEMBED_MODALITY_OFF             11
-+
-+/* Non standard messages*/
-+#define XEMBED_GTK_GRAB_KEY             108 
-+#define XEMBED_GTK_UNGRAB_KEY           109
-+
-+/* Details for  XEMBED_FOCUS_IN: */
-+#define XEMBED_FOCUS_CURRENT            0
-+#define XEMBED_FOCUS_FIRST              1
-+#define XEMBED_FOCUS_LAST               2
-+
-+/* Flags for _XEMBED_INFO */
-+#define XEMBED_MAPPED                   (1 << 0)
-diff -Naur WebKit-r32416.orig/WebCore/plugins/npapi.cpp WebKit-r32416/WebCore/plugins/npapi.cpp
---- WebKit-r32416.orig/WebCore/plugins/npapi.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/npapi.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -137,6 +137,11 @@
- 
- NPError NPN_GetValue(NPP instance, NPNVariable variable, void* value)
- {
-+    // FIXME: Acrobat reader plugin calls NPN_GetValue before a PluginView
-+    // has been created
-+    if (!instance)
-+        return NPERR_GENERIC_ERROR;
-+
-     return pluginViewForInstance(instance)->getValue(variable, value);
- }
- 
-diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp WebKit-r32416/WebCore/plugins/PluginPackage.cpp
---- WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/PluginPackage.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/plugins/PluginPackage.cpp
+===================================================================
+--- WebCore/plugins/PluginPackage.cpp	(revision 32726)
++++ WebCore/plugins/PluginPackage.cpp	(working copy)
 @@ -1,6 +1,6 @@
  /*
   * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
@@ -1364,7 +476,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp WebKit-r32416/We
      ASSERT(!m_isLoaded);
  }
  
-@@ -58,6 +72,31 @@
+@@ -58,6 +72,31 @@ void PluginPackage::freeLibraryTimerFire
      m_module = 0;
  }
  
@@ -1396,10 +508,47 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginPackage.cpp WebKit-r32416/We
  PluginPackage::PluginPackage(const String& path, const time_t& lastModified)
      : m_path(path)
      , m_moduleVersion(0)
-diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.cpp WebKit-r32416/WebCore/plugins/PluginView.cpp
---- WebKit-r32416.orig/WebCore/plugins/PluginView.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/PluginView.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -393,55 +393,6 @@
+Index: WebCore/plugins/PluginPackage.h
+===================================================================
+--- WebCore/plugins/PluginPackage.h	(revision 32726)
++++ WebCore/plugins/PluginPackage.h	(working copy)
+@@ -103,10 +103,10 @@ namespace WebCore {
+     };
+ 
+     struct PluginPackageHash {
+-        static unsigned hash(const int key) { return reinterpret_cast<PluginPackage*>(key)->hash(); }
++        static unsigned hash(const uintptr_t key) { return reinterpret_cast<PluginPackage*>(key)->hash(); }
+         static unsigned hash(const RefPtr<PluginPackage>& key) { return key->hash(); }
+ 
+-        static bool equal(const int a, const int b) { return equal(reinterpret_cast<PluginPackage*>(a), reinterpret_cast<PluginPackage*>(b)); }
++        static bool equal(const uintptr_t a, const uintptr_t b) { return equal(reinterpret_cast<PluginPackage*>(a), reinterpret_cast<PluginPackage*>(b)); }
+         static bool equal(const RefPtr<PluginPackage>& a, const RefPtr<PluginPackage>& b) { return PluginPackage::equal(*a.get(), *b.get()); }
+         static const bool safeToCompareToEmptyOrDeleted = false;
+     };
+Index: WebCore/plugins/PluginView.cpp
+===================================================================
+--- WebCore/plugins/PluginView.cpp	(revision 32726)
++++ WebCore/plugins/PluginView.cpp	(working copy)
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
+- * Copyright (C) 2008 Collabora, Ltd. All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -120,7 +120,10 @@ void PluginView::setFrameGeometry(const 
+         Widget::setFrameGeometry(rect);
+ 
+     updateWindow();
++
++#if PLATFORM(WIN)
+     setNPWindowRect(rect);
++#endif
+ }
+ 
+ void PluginView::geometryChanged() const
+@@ -393,55 +396,6 @@ void PluginView::status(const char* mess
          page->chrome()->setStatusbarText(m_parentFrame, String(message));
  }
  
@@ -1455,7 +604,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.cpp WebKit-r32416/WebCo
  NPError PluginView::setValue(NPPVariable variable, void* value)
  {
      switch (variable) {
-@@ -597,6 +548,10 @@
+@@ -597,6 +551,10 @@ PluginView::PluginView(Frame* parentFram
  
      setParameters(paramNames, paramValues);
  
@@ -1466,7 +615,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.cpp WebKit-r32416/WebCo
      m_mode = m_loadManually ? NP_FULL : NP_EMBED;
  
      resize(size);
-@@ -671,4 +626,229 @@
+@@ -671,4 +629,229 @@ PluginView* PluginView::create(Frame* pa
      return new PluginView(parentFrame, size, plugin, element, url, paramNames, paramValues, mimeTypeCopy, loadManually);
  }
  
@@ -1696,9 +845,10 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.cpp WebKit-r32416/WebCo
 +}
 +
  } // namespace WebCore
-diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.h WebKit-r32416/WebCore/plugins/PluginView.h
---- WebKit-r32416.orig/WebCore/plugins/PluginView.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/PluginView.h	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/plugins/PluginView.h
+===================================================================
+--- WebCore/plugins/PluginView.h	(revision 32726)
++++ WebCore/plugins/PluginView.h	(working copy)
 @@ -1,6 +1,6 @@
  /*
   * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -1707,7 +857,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.h WebKit-r32416/WebCore
   *
   * Redistribution and use in source and binary forms, with or without
   * modification, are permitted provided that the following conditions
-@@ -171,6 +171,8 @@
+@@ -171,6 +171,8 @@ namespace WebCore {
          static void setCurrentPluginView(PluginView*);
          NPError load(const FrameLoadRequest&, bool sendNotification, void* notifyData);
          NPError handlePost(const char* url, const char* target, uint32 len, const char* buf, bool file, void* notifyData, bool sendNotification, bool allowHeaders);
@@ -1716,7 +866,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.h WebKit-r32416/WebCore
          void setCallingPlugin(bool) const;
          RefPtr<PluginPackage> m_plugin;
          Element* m_element;
-@@ -221,6 +223,10 @@
+@@ -221,6 +223,10 @@ namespace WebCore {
          bool m_attachedToWindow;
          bool m_haveInitialized;
  
@@ -1727,9 +877,1128 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/PluginView.h WebKit-r32416/WebCore
  #if PLATFORM(WIN)
          OwnPtr<PluginMessageThrottlerWin> m_messageThrottler;
          WNDPROC m_pluginWndProc;
-diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginDatabaseQt.cpp
---- WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/qt/PluginDatabaseQt.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/plugins/npapi.cpp
+===================================================================
+--- WebCore/plugins/npapi.cpp	(revision 32726)
++++ WebCore/plugins/npapi.cpp	(working copy)
+@@ -137,6 +137,11 @@ void NPN_ForceRedraw(NPP instance)
+ 
+ NPError NPN_GetValue(NPP instance, NPNVariable variable, void* value)
+ {
++    // FIXME: Acrobat reader plugin calls NPN_GetValue before a PluginView
++    // has been created
++    if (!instance)
++        return NPERR_GENERIC_ERROR;
++
+     return pluginViewForInstance(instance)->getValue(variable, value);
+ }
+ 
+Index: WebCore/plugins/gtk/PluginDataGtk.cpp
+===================================================================
+--- WebCore/plugins/gtk/PluginDataGtk.cpp	(revision 0)
++++ WebCore/plugins/gtk/PluginDataGtk.cpp	(revision 0)
+@@ -0,0 +1,73 @@
++/*
++    Copyright (C) 2008 Trolltech ASA
++    Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++    Copyright (C) 2008 Collabora Ltd. All rights reserved.
++
++    This library is free software; you can redistribute it and/or
++    modify it under the terms of the GNU Library General Public
++    License as published by the Free Software Foundation; either
++    version 2 of the License, or (at your option) any later version.
++
++    This library is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++    Library General Public License for more details.
++
++    You should have received a copy of the GNU Library General Public License
++    along with this library; see the file COPYING.LIB.  If not, write to
++    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
++    Boston, MA 02110-1301, USA.
++*/
++
++#include "config.h"
++#include "PluginData.h"
++
++#include "PluginDatabase.h"
++#include "PluginPackage.h"
++#include <stdio.h>
++namespace WebCore {
++
++void PluginData::initPlugins()
++{
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    const Vector<PluginPackage*> &plugins = db->plugins();
++
++    for (unsigned int i = 0; i < plugins.size(); ++i) {
++        PluginInfo* info = new PluginInfo;
++        PluginPackage* package = plugins[i];
++
++        info->name = package->name();
++        info->file = package->fileName();
++        info->desc = package->description();
++
++        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
++        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
++        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
++            MimeClassInfo* mime = new MimeClassInfo;
++            info->mimes.append(mime);
++
++            mime->type = it->first;
++            mime->desc = it->second;
++            mime->plugin = info;
++
++            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
++
++            for (unsigned i = 0; i < extensions.size(); i++) {
++                if (i > 0)
++                    mime->suffixes += ",";
++
++                mime->suffixes += extensions[i];
++            }
++        }
++
++        m_plugins.append(info);
++    }
++}
++
++void PluginData::refresh()
++{
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    db->refresh();
++}
++
++};
+
+Property changes on: WebCore/plugins/gtk/PluginDataGtk.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/gtk/PluginDatabaseGtk.cpp
+===================================================================
+--- WebCore/plugins/gtk/PluginDatabaseGtk.cpp	(revision 32726)
++++ WebCore/plugins/gtk/PluginDatabaseGtk.cpp	(working copy)
+@@ -29,6 +29,7 @@
+ 
+ #include "CString.h"
+ #include "PluginPackage.h"
++#include <gdkconfig.h>
+ 
+ namespace WebCore {
+ 
+@@ -60,6 +61,8 @@ Vector<String> PluginDatabase::defaultPl
+     Vector<String> directories;
+     gchar* directory;
+ 
++    directory = 0;
++
+ #if defined(GDK_WINDOWING_X11)
+     directory = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", NULL);
+     directories.append(directory);
+@@ -95,7 +98,21 @@ Vector<String> PluginDatabase::defaultPl
+ 
+ bool PluginDatabase::isPreferredPluginDirectory(const String& directory)
+ {
+-    return false;
++    gchar* homePath;
++    bool retval = false;
++
++    homePath = 0;
++
++#if defined(GDK_WINDOWING_X11)
++    homePath = g_build_filename(g_get_home_dir(), ".mozilla", "plugins", 0);
++#elif defined(GDK_WINDOWING_WIN32)
++    homePath = g_build_filename(g_get_home_dir(), "Application Data", "Mozilla", "plugins", 0);
++#endif
++
++    if (homePath)
++	retval = (strcmp(homePath, (directory.utf8()).data()) == 0);
++
++    return retval;
+ }
+ 
+ }
+Index: WebCore/plugins/gtk/PluginPackageGtk.cpp
+===================================================================
+--- WebCore/plugins/gtk/PluginPackageGtk.cpp	(revision 0)
++++ WebCore/plugins/gtk/PluginPackageGtk.cpp	(revision 0)
+@@ -0,0 +1,215 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginPackage.h"
++
++#include "CString.h"
++#include "MIMETypeRegistry.h"
++#include "NotImplemented.h"
++#include "npruntime_impl.h"
++#include "PluginDebug.h"
++
++namespace WebCore {
++
++void PluginPackage::determineQuirks(const String& mimeType)
++{
++    if (MIMETypeRegistry::isJavaAppletMIMEType(mimeType)) {
++        // Because a single process cannot create multiple VMs, and we cannot reliably unload a
++        // Java VM, we cannot unload the Java plugin, or we'll lose reference to our only VM
++        m_quirks.add(PluginQuirkDontUnloadPlugin);
++
++        // Setting the window region to an empty region causes bad scrolling repaint problems
++        // with the Java plug-in.
++        m_quirks.add(PluginQuirkDontClipToZeroRectWhenScrolling);
++    }
++    
++    if (mimeType == "application/x-shockwave-flash") {
++        // The flash plugin only requests windowless plugins if we return a mozilla user agent
++        m_quirks.add(PluginQuirkWantsMozillaUserAgent);
++        m_quirks.add(PluginQuirkThrottleInvalidate);
++        m_quirks.add(PluginQuirkThrottleWMUserPlusOneMessages);
++        m_quirks.add(PluginQuirkFlashURLNotifyBug);
++    }
++
++}
++
++bool PluginPackage::fetchInfo()
++{
++    if (!load())
++        return false;
++
++    NP_GetMIMEDescriptionFuncPtr NP_GetMIMEDescription;
++    NPP_GetValueProcPtr NPP_GetValue;
++
++    g_module_symbol(m_module, "NP_GetMIMEDescription", (void**)&NP_GetMIMEDescription);
++    g_module_symbol(m_module, "NP_GetValue", (void**)&NPP_GetValue);
++
++    const gchar* types = NP_GetMIMEDescription();
++    gchar** mimeDescs = g_strsplit(types, ";", -1);
++    for (int i = 0; mimeDescs[i] && mimeDescs[i][0]; i++) {
++        gchar** mimeData = g_strsplit(mimeDescs[i], ":", 3);
++
++        String description = String::fromUTF8(mimeData[2]);
++        gchar** extensions = g_strsplit(mimeData[1], ",", -1);
++
++        Vector<String> extVector;
++        for (int j = 0; extensions[j]; j++)
++            extVector.append(String::fromUTF8(extensions[j]));
++
++        determineQuirks(mimeData[0]);
++        m_mimeToExtensions.add(mimeData[0], extVector);
++        m_mimeToDescriptions.add(mimeData[0], description);
++
++        g_strfreev(extensions);
++        g_strfreev(mimeData);
++    }
++    g_strfreev(mimeDescs);
++
++    char* buffer = 0;
++    NPError err = NPP_GetValue(0, NPPVpluginNameString, &buffer);
++    if (err == NPERR_NO_ERROR)
++        m_name = buffer;
++
++    buffer = 0;
++    err = NPP_GetValue(0, NPPVpluginDescriptionString, &buffer);
++    if (err == NPERR_NO_ERROR)
++        m_description = buffer;
++
++    return true;
++}
++
++bool PluginPackage::load()
++{
++    if (m_isLoaded) {
++        m_loadCount++;
++        return true;
++    }
++
++    m_module = g_module_open((m_path.utf8()).data(), G_MODULE_BIND_LOCAL);
++
++    if (!m_module) {
++	    LOG(Plugin,"Module Load Failed :%s, Error:%s\n", (m_path.utf8()).data(), g_module_error());
++        return false;
++	}
++
++    m_isLoaded = true;
++
++    NP_InitializeFuncPtr NP_Initialize;
++    NPError npErr;
++
++    g_module_symbol(m_module, "NP_Initialize", (void**)&NP_Initialize);
++    g_module_symbol(m_module, "NP_Shutdown", (void**)&m_NPP_Shutdown);
++
++    if (!NP_Initialize || !m_NPP_Shutdown)
++        goto abort;
++
++    memset(&m_pluginFuncs, 0, sizeof(m_pluginFuncs));
++    m_pluginFuncs.size = sizeof(m_pluginFuncs);
++
++    m_browserFuncs.size = sizeof (m_browserFuncs);
++    m_browserFuncs.version = NP_VERSION_MINOR;
++    m_browserFuncs.geturl = NPN_GetURL;
++    m_browserFuncs.posturl = NPN_PostURL;
++    m_browserFuncs.requestread = NPN_RequestRead;
++    m_browserFuncs.newstream = NPN_NewStream;
++    m_browserFuncs.write = NPN_Write;
++    m_browserFuncs.destroystream = NPN_DestroyStream;
++    m_browserFuncs.status = NPN_Status;
++    m_browserFuncs.uagent = NPN_UserAgent;
++    m_browserFuncs.memalloc = NPN_MemAlloc;
++    m_browserFuncs.memfree = NPN_MemFree;
++    m_browserFuncs.memflush = NPN_MemFlush;
++    m_browserFuncs.reloadplugins = NPN_ReloadPlugins;
++    m_browserFuncs.geturlnotify = NPN_GetURLNotify;
++    m_browserFuncs.posturlnotify = NPN_PostURLNotify;
++    m_browserFuncs.getvalue = NPN_GetValue;
++    m_browserFuncs.setvalue = NPN_SetValue;
++    m_browserFuncs.invalidaterect = NPN_InvalidateRect;
++    m_browserFuncs.invalidateregion = NPN_InvalidateRegion;
++    m_browserFuncs.forceredraw = NPN_ForceRedraw;
++    m_browserFuncs.getJavaEnv = NPN_GetJavaEnv;
++    m_browserFuncs.getJavaPeer = NPN_GetJavaPeer;
++    m_browserFuncs.pushpopupsenabledstate = NPN_PushPopupsEnabledState;
++    m_browserFuncs.poppopupsenabledstate = NPN_PopPopupsEnabledState;
++
++    m_browserFuncs.releasevariantvalue = _NPN_ReleaseVariantValue;
++    m_browserFuncs.getstringidentifier = _NPN_GetStringIdentifier;
++    m_browserFuncs.getstringidentifiers = _NPN_GetStringIdentifiers;
++    m_browserFuncs.getintidentifier = _NPN_GetIntIdentifier;
++    m_browserFuncs.identifierisstring = _NPN_IdentifierIsString;
++    m_browserFuncs.utf8fromidentifier = _NPN_UTF8FromIdentifier;
++    m_browserFuncs.createobject = _NPN_CreateObject;
++    m_browserFuncs.retainobject = _NPN_RetainObject;
++    m_browserFuncs.releaseobject = _NPN_ReleaseObject;
++    m_browserFuncs.invoke = _NPN_Invoke;
++    m_browserFuncs.invokeDefault = _NPN_InvokeDefault;
++    m_browserFuncs.evaluate = _NPN_Evaluate;
++    m_browserFuncs.getproperty = _NPN_GetProperty;
++    m_browserFuncs.setproperty = _NPN_SetProperty;
++    m_browserFuncs.removeproperty = _NPN_RemoveProperty;
++    m_browserFuncs.hasproperty = _NPN_HasMethod;
++    m_browserFuncs.hasmethod = _NPN_HasProperty;
++    m_browserFuncs.setexception = _NPN_SetException;
++    m_browserFuncs.enumerate = _NPN_Enumerate;
++
++    npErr = NP_Initialize(&m_browserFuncs, &m_pluginFuncs);
++    if (npErr != NPERR_NO_ERROR)
++        goto abort;
++
++    m_loadCount++;
++    return true;
++
++abort:
++    unloadWithoutShutdown();
++    return false;
++}
++
++unsigned PluginPackage::hash() const
++{ 
++    unsigned hashCodes[2] = {
++        m_path.impl()->hash(),
++        m_lastModified
++    };
++
++    return StringImpl::computeHash(reinterpret_cast<UChar*>(hashCodes), 2 * sizeof(unsigned) / sizeof(UChar));
++}
++
++bool PluginPackage::equal(const PluginPackage& a, const PluginPackage& b)
++{
++    return a.m_description == b.m_description;
++}
++
++int PluginPackage::compareFileVersion(const PlatformModuleVersion& compareVersion) const
++{
++    // return -1, 0, or 1 if plug-in version is less than, equal to, or greater than
++    // the passed version
++    if (m_moduleVersion != compareVersion)
++        return m_moduleVersion > compareVersion ? 1 : -1;
++    return 0;
++}
++
++}
+
+Property changes on: WebCore/plugins/gtk/PluginPackageGtk.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/gtk/PluginViewGtk.cpp
+===================================================================
+--- WebCore/plugins/gtk/PluginViewGtk.cpp	(revision 0)
++++ WebCore/plugins/gtk/PluginViewGtk.cpp	(revision 0)
+@@ -0,0 +1,546 @@
++/*
++ * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
++ * Copyright (C) 2008 Collabora Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
++ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
++ */
++
++#include "config.h"
++#include "PluginView.h"
++
++#include "Document.h"
++#include "DocumentLoader.h"
++#include "Element.h"
++#include "EventNames.h"
++#include "FrameLoader.h"
++#include "FrameLoadRequest.h"
++#include "FrameTree.h"
++#include "Frame.h"
++#include "FrameView.h"
++#include "GraphicsContext.h"
++#include "Image.h"
++#include "HTMLNames.h"
++#include "HTMLPlugInElement.h"
++#include "KeyboardEvent.h"
++#include "MouseEvent.h"
++#include "NotImplemented.h"
++#include "Page.h"
++#include "PlatformMouseEvent.h"
++#include "PluginDebug.h"
++#include "PluginPackage.h"
++#include "RenderLayer.h"
++#include "Settings.h"
++#include "kjs_binding.h"
++#include "kjs_proxy.h"
++#include "npruntime_impl.h"
++#include "runtime.h"
++#include "runtime_root.h"
++#include <kjs/JSLock.h>
++#include <kjs/value.h>
++
++#include <gdkconfig.h>
++
++#if defined(GDK_WINDOWING_X11)
++#include "gtk2xtbin.h"
++#include <gdk/gdkx.h>
++#endif
++#ifdef GDK_WINDOWING_WIN32
++#include <gdk/gdkwin32.h>
++#endif
++
++using KJS::ExecState;
++using KJS::Interpreter;
++using KJS::JSLock;
++using KJS::JSObject;
++using KJS::JSValue;
++using KJS::UString;
++
++using std::min;
++
++using namespace WTF;
++
++namespace WebCore {
++
++using namespace EventNames;
++using namespace HTMLNames;
++
++void PluginView::updateWindow() const
++{
++    if (!parent() || !m_isWindowed)
++        return;
++
++    ASSERT(parent()->isFrameView());
++    FrameView* frameView = static_cast<FrameView*>(parent());
++
++    IntRect oldWindowRect = m_windowRect;
++    IntRect oldClipRect = m_clipRect;
++
++    m_windowRect = IntRect(frameView->contentsToWindow(frameGeometry().location()), frameGeometry().size());
++    m_clipRect = windowClipRect();
++    m_clipRect.move(-m_windowRect.x(), -m_windowRect.y());
++
++    GtkAllocation allocation = { m_windowRect.x(), m_windowRect.y(), m_windowRect.width(), m_windowRect.height() };
++    if (m_window) {
++        gtk_widget_size_allocate(m_window, &allocation);
++#if defined(GDK_WINDOWING_X11)
++        if (!m_needsXEmbed) {
++            gtk_xtbin_set_position(GTK_XTBIN(m_window), m_windowRect.x(), m_windowRect.y());
++            gtk_xtbin_resize(m_window, m_windowRect.width(), m_windowRect.height());
++        }
++#endif
++    }
++}
++
++void PluginView::setFocus()
++{
++    if (m_window)
++	gtk_widget_grab_focus(m_window);
++
++    Widget::setFocus();
++}
++
++void PluginView::show()
++{
++    m_isVisible = true;
++
++    if (m_attachedToWindow && m_window)
++	gtk_widget_show(m_window);
++
++    Widget::show();
++}
++
++void PluginView::hide()
++{
++    m_isVisible = false;
++
++    if (m_attachedToWindow && m_window)
++	gtk_widget_hide(m_window);
++
++    Widget::hide();
++}
++
++void PluginView::paint(GraphicsContext* context, const IntRect& rect)
++{
++    if (!m_isStarted) {
++        // Draw the "missing plugin" image
++        //paintMissingPluginIcon(context, rect);
++        return;
++    }
++
++    if (m_isWindowed || context->paintingDisabled())
++        return;
++
++    NPEvent npEvent;
++    /* Need to synthesize Xevents here */
++
++    m_npWindow.type = NPWindowTypeDrawable;
++
++    ASSERT(parent()->isFrameView());
++
++    if (m_plugin->pluginFuncs()->event) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        m_plugin->pluginFuncs()->event(m_instance, &npEvent);
++    }
++
++    setNPWindowRect(frameGeometry());
++}
++
++void PluginView::handleKeyboardEvent(KeyboardEvent* event)
++{
++    NPEvent npEvent;
++    
++    /* FIXME: Synthesize an XEvent to pass through */
++
++    KJS::JSLock::DropAllLocks dropAllLocks;
++    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
++        event->setDefaultHandled();
++}
++
++void PluginView::handleMouseEvent(MouseEvent* event)
++{
++    NPEvent npEvent;
++
++    if (!m_isWindowed)
++      return;
++
++    /* FIXME: Synthesize an XEvent to pass through */
++    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(IntPoint(event->pageX(), event->pageY()));
++
++    KJS::JSLock::DropAllLocks dropAllLocks;
++    if (!m_plugin->pluginFuncs()->event(m_instance, &npEvent))
++        event->setDefaultHandled();
++}
++
++void PluginView::setParent(ScrollView* parent)
++{
++    Widget::setParent(parent);
++
++    if (parent)
++        init();
++    else {
++        if (!m_window)
++            return;
++    }
++}
++
++void PluginView::setNPWindowRect(const IntRect& rect)
++{
++    if (!m_isStarted || !parent())
++        return;
++
++    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(rect.location());
++    m_npWindow.x = p.x();
++    m_npWindow.y = p.y();
++
++    m_npWindow.width = rect.width();
++    m_npWindow.height = rect.height();
++
++    m_npWindow.clipRect.left = 0;
++    m_npWindow.clipRect.top = 0;
++    m_npWindow.clipRect.right = rect.width();
++    m_npWindow.clipRect.bottom = rect.height();
++
++    if (m_npWindow.x < 0 || m_npWindow.y < 0 ||
++        m_npWindow.width <= 0 || m_npWindow.height <= 0)
++        return;
++
++    if (m_plugin->pluginFuncs()->setwindow) {
++        KJS::JSLock::DropAllLocks dropAllLocks;
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++
++        if (!m_isWindowed)
++            return;
++
++        ASSERT(m_window);
++    }
++}
++
++void PluginView::attachToWindow()
++{
++    if (m_attachedToWindow)
++	return;
++
++    m_attachedToWindow = true;
++    if (m_isVisible && m_window)
++	gtk_widget_show(m_window);
++}
++
++void PluginView::detachFromWindow()
++{
++    if (!m_attachedToWindow)
++	return;
++
++    if (m_isVisible && m_window)
++	gtk_widget_hide(m_window);
++    m_attachedToWindow = false;
++}
++
++void PluginView::stop()
++{
++    if (!m_isStarted)
++        return;
++
++    HashSet<RefPtr<PluginStream> > streams = m_streams;
++    HashSet<RefPtr<PluginStream> >::iterator end = streams.end();
++    for (HashSet<RefPtr<PluginStream> >::iterator it = streams.begin(); it != end; ++it) {
++        (*it)->stop();
++        disconnectStream((*it).get());
++    }
++
++    ASSERT(m_streams.isEmpty());
++
++    m_isStarted = false;
++    KJS::JSLock::DropAllLocks dropAllLocks;
++
++    // Clear the window
++    m_npWindow.window = 0;
++#ifdef XP_UNIX
++    if (m_isWindowed && m_npWindow.ws_info) 
++           delete (NPSetWindowCallbackStruct *)m_npWindow.ws_info;
++    m_npWindow.ws_info = 0;
++#endif
++    if (m_plugin->pluginFuncs()->setwindow && !m_plugin->quirks().contains(PluginQuirkDontSetNullWindowHandleOnDestroy)) {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
++        setCallingPlugin(false);
++    }
++
++    // Destroy the plugin
++    {
++        setCallingPlugin(true);
++        m_plugin->pluginFuncs()->destroy(m_instance, 0);
++        setCallingPlugin(false);
++    }
++
++    m_instance->pdata = 0;
++}
++
++static const char* MozillaUserAgent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0";
++
++const char* PluginView::userAgent()
++{
++    if (m_plugin->quirks().contains(PluginQuirkWantsMozillaUserAgent))
++        return MozillaUserAgent;
++
++    if (m_userAgent.isNull())
++        m_userAgent = m_parentFrame->loader()->userAgent(m_url).utf8();
++
++    return m_userAgent.data();
++}
++
++NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
++{
++    String filename(buf, len);
++
++    if (filename.startsWith("file:///"))
++        filename = filename.substring(8);
++
++    // Get file info
++    if (!g_file_test ((filename.utf8()).data(), (GFileTest)(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)))
++        return NPERR_FILE_NOT_FOUND;
++
++    //FIXME - read the file data into buffer
++    FILE* fileHandle = fopen((filename.utf8()).data(), "r");
++    
++    if (fileHandle == 0)
++        return NPERR_FILE_NOT_FOUND;
++
++    //buffer.resize();
++
++    int bytesRead = fread(buffer.data(), 1, 0, fileHandle);
++
++    fclose(fileHandle);
++
++    if (bytesRead <= 0)
++        return NPERR_FILE_NOT_FOUND;
++
++	return NPERR_NO_ERROR;
++}
++
++NPError PluginView::getValue(NPNVariable variable, void* value)
++{
++    switch (variable) {
++#if defined(GDK_WINDOWING_X11)
++        case NPNVxtAppContext: {
++            if (!m_needsXEmbed) {
++                *(void **)value = XtDisplayToApplicationContext (GTK_XTBIN(m_window)->xtclient.xtdisplay);
++
++                return NPERR_NO_ERROR;
++            } else
++                return NPERR_GENERIC_ERROR;
++        }
++#endif
++
++        case NPNVToolkit: {
++#if PLATFORM(GTK)
++            *((uint32 *)value) = 2;
++#else
++            *((uint32 *)value) = 0;
++#endif
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVSupportsXEmbedBool: {
++#if defined(GDK_WINDOWING_X11)
++            *((uint32 *)value) = true;
++#else
++            *((uint32 *)value) = false;
++#endif
++            return NPERR_NO_ERROR;
++        }
++
++#if ENABLE(NETSCAPE_PLUGIN_API)
++        case NPNVWindowNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* windowScriptObject = m_parentFrame->windowScriptNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (windowScriptObject)
++                _NPN_RetainObject(windowScriptObject);
++
++            void** v = (void**)value;
++            *v = windowScriptObject;
++            
++            return NPERR_NO_ERROR;
++        }
++
++        case NPNVPluginElementNPObject: {
++	    if (m_isJavaScriptPaused)
++		return NPERR_GENERIC_ERROR;
++
++            NPObject* pluginScriptObject = 0;
++
++            if (m_element->hasTagName(appletTag) || m_element->hasTagName(embedTag) || m_element->hasTagName(objectTag))
++                pluginScriptObject = static_cast<HTMLPlugInElement*>(m_element)->getNPObject();
++
++            // Return value is expected to be retained, as described here: <http://www.mozilla.org/projects/plugin/npruntime.html>
++            if (pluginScriptObject)
++                _NPN_RetainObject(pluginScriptObject);
++
++            void** v = (void**)value;
++            *v = pluginScriptObject;
++
++            return NPERR_NO_ERROR;
++        }
++#endif
++
++        case NPNVnetscapeWindow: {
++            void* w = reinterpret_cast<void*>(value);
++
++#ifdef GDK_WINDOWING_X11
++            *((XID *)w) = GDK_WINDOW_XWINDOW(containingWindow()->window);
++#endif
++#ifdef GDK_WINDOWING_WIN32
++            *((HWND *)w) = GDK_WINDOWING_HWND(containingWindow()->window);
++#endif
++            return NPERR_NO_ERROR;
++        }
++        default:
++            return NPERR_GENERIC_ERROR;
++    }
++}
++
++void PluginView::invalidateRect(NPRect* rect)
++{
++    if (!rect) {
++        invalidate();
++        return;
++    }
++
++    IntRect r(rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top);
++    Widget::invalidateRect(r);
++}
++
++void PluginView::forceRedraw()
++{
++    if (m_isWindowed)
++        gtk_widget_queue_draw(m_window);
++    else
++        gtk_widget_queue_draw(containingWindow());
++}
++
++PluginView::~PluginView()
++{
++    stop();
++
++    deleteAllValues(m_requests);
++
++    freeStringArray(m_paramNames, m_paramCount);
++    freeStringArray(m_paramValues, m_paramCount);
++
++    m_parentFrame->cleanupScriptObjectsForPlugin(this);
++
++    if (m_plugin && !(m_plugin->quirks().contains(PluginQuirkDontUnloadPlugin)))
++        m_plugin->unload();
++}
++
++static gboolean
++plug_removed_cb(GtkSocket *socket, gpointer)
++{
++    return TRUE;
++}
++
++void PluginView::init()
++{
++    if (m_haveInitialized)
++        return;
++    m_haveInitialized = true;
++
++    if (!m_plugin) {
++        ASSERT(m_status == PluginStatusCanNotFindPlugin);
++        return;
++    }
++
++    if (!m_plugin->load()) {
++        m_plugin = 0;
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    if (!start()) {
++        m_status = PluginStatusCanNotLoadPlugin;
++        return;
++    }
++
++    if (m_plugin->pluginFuncs()->getvalue)
++        m_plugin->pluginFuncs()->getvalue(m_instance, NPPVpluginNeedsXEmbed, &m_needsXEmbed);
++
++#if defined(GDK_WINDOWING_X11)
++    if (m_needsXEmbed) {
++        m_window = gtk_socket_new();
++        gtk_container_add(GTK_CONTAINER(containingWindow()), m_window);
++        g_signal_connect(m_window, "plug_removed", G_CALLBACK(plug_removed_cb), NULL);
++        setGtkWidget(m_window);
++    } else if (m_isWindowed) {
++        m_window = gtk_xtbin_new(m_parentFrame->view()->containingWindow()->window, 0);
++	    setGtkWidget(m_window);
++    }
++#else
++    m_window = gtk_socket_new();
++    gtk_container_add(GTK_CONTAINER(m_parentFrame->view()->containingWindow()), m_window);
++    setGtkWidget(m_window);
++#endif
++    show ();
++
++    if (m_isWindowed) {
++        m_npWindow.type = NPWindowTypeWindow;
++#if defined(GDK_WINDOWING_X11)
++	    NPSetWindowCallbackStruct *ws = new NPSetWindowCallbackStruct();
++
++	    ws->type = 0;
++
++	    if (m_needsXEmbed) {
++	        gtk_widget_realize(m_window);
++    	    m_npWindow.window = (void*)gtk_socket_get_id(GTK_SOCKET(m_window));
++	        ws->display = GDK_WINDOW_XDISPLAY(m_window->window);
++	        ws->visual = GDK_VISUAL_XVISUAL(gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window)));
++	        ws->depth = gdk_drawable_get_visual(GDK_DRAWABLE(m_window->window))->depth;
++	        ws->colormap = GDK_COLORMAP_XCOLORMAP(gdk_drawable_get_colormap(GDK_DRAWABLE(m_window->window)));
++	    } else {
++    	    m_npWindow.window = (void*)GTK_XTBIN(m_window)->xtwindow;
++	        ws->display = GTK_XTBIN(m_window)->xtdisplay;
++	        ws->visual = GTK_XTBIN(m_window)->xtclient.xtvisual;
++	        ws->depth = GTK_XTBIN(m_window)->xtclient.xtdepth;
++	        ws->colormap = GTK_XTBIN(m_window)->xtclient.xtcolormap;
++	    }
++        XFlush (ws->display);
++
++	    m_npWindow.ws_info = ws;
++#elif defined(GDK_WINDOWING_WIN32)
++        m_npWindow.window = (void*)GDK_WINDOW_HWND(m_window->window);
++#endif
++    } else {
++        m_npWindow.type = NPWindowTypeDrawable;
++        m_npWindow.window = 0;
++    }
++
++    if (!(m_plugin->quirks().contains(PluginQuirkDeferFirstSetWindowCall)))
++        setNPWindowRect(frameGeometry());
++
++    m_status = PluginStatusLoadedSuccessfully;
++}
++
++} // namespace WebCore
+
+Property changes on: WebCore/plugins/gtk/PluginViewGtk.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/gtk/xembed.h
+===================================================================
+--- WebCore/plugins/gtk/xembed.h	(revision 0)
++++ WebCore/plugins/gtk/xembed.h	(revision 0)
+@@ -0,0 +1,64 @@
++/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
++ * vim:expandtab:shiftwidth=2:tabstop=2: */
++ 
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is the XEMBED Declaration.
++ *
++ * The Initial Developer of the Original Code is
++ * Sun Microsystems, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2002
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either the GNU General Public License Version 2 or later (the "GPL"), or
++ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++/* XEMBED messages */
++#define XEMBED_EMBEDDED_NOTIFY          0
++#define XEMBED_WINDOW_ACTIVATE          1
++#define XEMBED_WINDOW_DEACTIVATE        2
++#define XEMBED_REQUEST_FOCUS            3
++#define XEMBED_FOCUS_IN                 4
++#define XEMBED_FOCUS_OUT                5
++#define XEMBED_FOCUS_NEXT               6
++#define XEMBED_FOCUS_PREV               7
++#define XEMBED_GRAB_KEY                 8
++#define XEMBED_UNGRAB_KEY               9
++#define XEMBED_MODALITY_ON              10
++#define XEMBED_MODALITY_OFF             11
++
++/* Non standard messages*/
++#define XEMBED_GTK_GRAB_KEY             108 
++#define XEMBED_GTK_UNGRAB_KEY           109
++
++/* Details for  XEMBED_FOCUS_IN: */
++#define XEMBED_FOCUS_CURRENT            0
++#define XEMBED_FOCUS_FIRST              1
++#define XEMBED_FOCUS_LAST               2
++
++/* Flags for _XEMBED_INFO */
++#define XEMBED_MAPPED                   (1 << 0)
+
+Property changes on: WebCore/plugins/gtk/xembed.h
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/qt/PluginDataQt.cpp
+===================================================================
+--- WebCore/plugins/qt/PluginDataQt.cpp	(revision 32726)
++++ WebCore/plugins/qt/PluginDataQt.cpp	(working copy)
+@@ -1,5 +1,6 @@
+ /*
+     Copyright (C) 2008 Trolltech ASA
++    Copyright (C) 2008 Collabora Ltd. All rights reserved.
+ 
+     This library is free software; you can redistribute it and/or
+     modify it under the terms of the GNU Library General Public
+@@ -20,10 +21,15 @@
+ #include "config.h"
+ #include "PluginData.h"
+ 
++#include "PluginDatabase.h"
++#include "PluginPackage.h"
++
++#if QT_VERSION >= 0x040400
+ #include "ChromeClientQt.h"
+ #include "Page.h"
+ #include <qwebpage.h>
+ #include <qwebpluginfactory.h>
++#endif
+ 
+ namespace WebCore {
+ 
+@@ -32,36 +38,71 @@ void PluginData::initPlugins()
+ #if QT_VERSION >= 0x040400
+     QWebPage* webPage = static_cast<ChromeClientQt*>(m_page->chrome()->client())->m_webPage;
+     QWebPluginFactory* factory = webPage->pluginFactory();
+-    if (!factory)
+-        return;
++    if (factory) {
+ 
+-    QList<QWebPluginFactory::Plugin> plugins = factory->plugins();
+-    for (int i = 0; i < plugins.count(); ++i) {
+-        const QWebPluginFactory::Plugin& plugin = plugins.at(i);
++        QList<QWebPluginFactory::Plugin> qplugins = factory->plugins();
++        for (int i = 0; i < qplugins.count(); ++i) {
++            const QWebPluginFactory::Plugin& qplugin = qplugins.at(i);
+ 
+-        PluginInfo* info = new PluginInfo;
+-        info->name = plugin.name;
+-        info->desc = plugin.description;
++            PluginInfo* info = new PluginInfo;
++            info->name = qplugin.name;
++            info->desc = qplugin.description;
++
++            for (int j = 0; j < qplugin.mimeTypes.count(); ++j) {
++                const QWebPluginFactory::MimeType& mimeType = qplugin.mimeTypes.at(j);
++
++                MimeClassInfo* mimeInfo = new MimeClassInfo;
++                mimeInfo->type = mimeType.name;
++                mimeInfo->desc = mimeType.description;
++                mimeInfo->suffixes = mimeType.fileExtensions.join("; ");
++
++                info->mimes.append(mimeInfo);
++            }
+ 
+-        for (int j = 0; j < plugin.mimeTypes.count(); ++j) {
+-            const QWebPluginFactory::MimeType& mimeType = plugin.mimeTypes.at(j);
++            m_plugins.append(info);
++        }
++    }
++#endif
+ 
+-            MimeClassInfo* mimeInfo = new MimeClassInfo;
+-            mimeInfo->type = mimeType.name;
+-            mimeInfo->desc = mimeType.description;
+-            mimeInfo->suffixes = mimeType.fileExtensions.join(QLatin1String("; "));
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    const Vector<PluginPackage*> &plugins = db->plugins();
+ 
+-            info->mimes.append(mimeInfo);
++    for (unsigned int i = 0; i < plugins.size(); ++i) {
++        PluginInfo* info = new PluginInfo;
++        PluginPackage* package = plugins[i];
++
++        info->name = package->name();
++        info->file = package->fileName();
++        info->desc = package->description();
++
++        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
++        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
++        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
++            MimeClassInfo* mime = new MimeClassInfo;
++            info->mimes.append(mime);
++
++            mime->type = it->first;
++            mime->desc = it->second;
++            mime->plugin = info;
++
++            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
++
++            for (unsigned i = 0; i < extensions.size(); i++) {
++                if (i > 0)
++                    mime->suffixes += ",";
++
++                mime->suffixes += extensions[i];
++            }
+         }
+ 
+         m_plugins.append(info);
+     }
+-#endif
+ }
+ 
+ void PluginData::refresh()
+ {
+-    // nothing to do
++    PluginDatabase *db = PluginDatabase::installedPlugins();
++    db->refresh();
+ }
+ 
+ };
+Index: WebCore/plugins/qt/PluginDatabaseQt.cpp
+===================================================================
+--- WebCore/plugins/qt/PluginDatabaseQt.cpp	(revision 0)
++++ WebCore/plugins/qt/PluginDatabaseQt.cpp	(revision 0)
 @@ -0,0 +1,102 @@
 +/*
 + * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
@@ -1804,7 +2073,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp WebKit-r32
 +{
 +    QDir path = QDir::home(); path.cd(".mozilla/plugins"); 
 +    paths.append(path.absolutePath());
-+    paths.append("/usr/lib/nsbrowser/plugins");
++    paths.append("/usr/lib/browser/plugins");
 +    paths.append("/usr/local/lib/mozilla/plugins");
 +    paths.append("/usr/lib/mozilla/plugins");
 +    
@@ -1833,125 +2102,17 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDatabaseQt.cpp WebKit-r32
 +}
 +
 +}
-diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginDataQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginDataQt.cpp
---- WebKit-r32416.orig/WebCore/plugins/qt/PluginDataQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/qt/PluginDataQt.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -1,5 +1,6 @@
- /*
-     Copyright (C) 2008 Trolltech ASA
-+    Copyright (C) 2008 Collabora Ltd. All rights reserved.
- 
-     This library is free software; you can redistribute it and/or
-     modify it under the terms of the GNU Library General Public
-@@ -20,10 +21,15 @@
- #include "config.h"
- #include "PluginData.h"
- 
-+#include "PluginDatabase.h"
-+#include "PluginPackage.h"
-+
-+#if QT_VERSION >= 0x040400
- #include "ChromeClientQt.h"
- #include "Page.h"
- #include <qwebpage.h>
- #include <qwebpluginfactory.h>
-+#endif
- 
- namespace WebCore {
- 
-@@ -32,36 +38,71 @@
- #if QT_VERSION >= 0x040400
-     QWebPage* webPage = static_cast<ChromeClientQt*>(m_page->chrome()->client())->m_webPage;
-     QWebPluginFactory* factory = webPage->pluginFactory();
--    if (!factory)
--        return;
-+    if (factory) {
- 
--    QList<QWebPluginFactory::Plugin> plugins = factory->plugins();
--    for (int i = 0; i < plugins.count(); ++i) {
--        const QWebPluginFactory::Plugin& plugin = plugins.at(i);
-+        QList<QWebPluginFactory::Plugin> qplugins = factory->plugins();
-+        for (int i = 0; i < qplugins.count(); ++i) {
-+            const QWebPluginFactory::Plugin& qplugin = qplugins.at(i);
- 
--        PluginInfo* info = new PluginInfo;
--        info->name = plugin.name;
--        info->desc = plugin.description;
-+            PluginInfo* info = new PluginInfo;
-+            info->name = qplugin.name;
-+            info->desc = qplugin.description;
-+
-+            for (int j = 0; j < qplugin.mimeTypes.count(); ++j) {
-+                const QWebPluginFactory::MimeType& mimeType = qplugin.mimeTypes.at(j);
-+
-+                MimeClassInfo* mimeInfo = new MimeClassInfo;
-+                mimeInfo->type = mimeType.name;
-+                mimeInfo->desc = mimeType.description;
-+                mimeInfo->suffixes = mimeType.fileExtensions.join("; ");
-+
-+                info->mimes.append(mimeInfo);
-+            }
- 
--        for (int j = 0; j < plugin.mimeTypes.count(); ++j) {
--            const QWebPluginFactory::MimeType& mimeType = plugin.mimeTypes.at(j);
-+            m_plugins.append(info);
-+        }
-+    }
-+#endif
- 
--            MimeClassInfo* mimeInfo = new MimeClassInfo;
--            mimeInfo->type = mimeType.name;
--            mimeInfo->desc = mimeType.description;
--            mimeInfo->suffixes = mimeType.fileExtensions.join("; ");
-+    PluginDatabase *db = PluginDatabase::installedPlugins();
-+    const Vector<PluginPackage*> &plugins = db->plugins();
- 
--            info->mimes.append(mimeInfo);
-+    for (unsigned int i = 0; i < plugins.size(); ++i) {
-+        PluginInfo* info = new PluginInfo;
-+        PluginPackage* package = plugins[i];
-+
-+        info->name = package->name();
-+        info->file = package->fileName();
-+        info->desc = package->description();
-+
-+        const MIMEToDescriptionsMap& mimeToDescriptions = package->mimeToDescriptions();
-+        MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
-+        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
-+            MimeClassInfo* mime = new MimeClassInfo;
-+            info->mimes.append(mime);
-+
-+            mime->type = it->first;
-+            mime->desc = it->second;
-+            mime->plugin = info;
-+
-+            Vector<String> extensions = package->mimeToExtensions().get(mime->type);
-+
-+            for (unsigned i = 0; i < extensions.size(); i++) {
-+                if (i > 0)
-+                    mime->suffixes += ",";
-+
-+                mime->suffixes += extensions[i];
-+            }
-         }
- 
-         m_plugins.append(info);
-     }
--#endif
- }
- 
- void PluginData::refresh()
- {
--    // nothing to do
-+    PluginDatabase *db = PluginDatabase::installedPlugins();
-+    db->refresh();
- }
- 
- };
-diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginPackageQt.cpp
---- WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/qt/PluginPackageQt.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -0,0 +1,213 @@
+
+Property changes on: WebCore/plugins/qt/PluginDatabaseQt.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/qt/PluginPackageQt.cpp
+===================================================================
+--- WebCore/plugins/qt/PluginPackageQt.cpp	(revision 0)
++++ WebCore/plugins/qt/PluginPackageQt.cpp	(revision 0)
+@@ -0,0 +1,214 @@
 +/*
 + * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
 + * Copyright (C) 2008 Collabora Ltd. All rights reserved.
@@ -2045,6 +2206,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp WebKit-r324
 +        if (mime.size() > 0) {
 +            Vector<String> exts;
 +            mime[0].split(UChar(','), false, exts);
++            determineQuirks(mime[0]);
 +            m_mimeToExtensions.add(mime[0], exts);
 +            if (mime.size() > 1) {
 +                m_mimeToDescriptions.add(mime[0], mime[2]);
@@ -2165,9 +2327,16 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginPackageQt.cpp WebKit-r324
 +}
 +
 +}
-diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/WebCore/plugins/qt/PluginViewQt.cpp
---- WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/qt/PluginViewQt.cpp	2008-04-23 15:39:41.000000000 +0200
+
+Property changes on: WebCore/plugins/qt/PluginPackageQt.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/qt/PluginViewQt.cpp
+===================================================================
+--- WebCore/plugins/qt/PluginViewQt.cpp	(revision 0)
++++ WebCore/plugins/qt/PluginViewQt.cpp	(revision 0)
 @@ -0,0 +1,462 @@
 +/*
 + * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
@@ -2336,10 +2505,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/
 +
 +void PluginView::setNPWindowRect(const IntRect& rect)
 +{
-+    if (!m_isStarted || !m_isWindowed)
-+        return;
-+
-+    if (!parent())
++    if (!m_isStarted || !parent())
 +        return;
 +
 +    IntPoint p = static_cast<FrameView*>(parent())->contentsToWindow(rect.location());
@@ -2353,6 +2519,10 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/
 +    m_npWindow.clipRect.top = 0;
 +    m_npWindow.clipRect.right = rect.width();
 +    m_npWindow.clipRect.bottom = rect.height();
++
++    if (m_npWindow.x < 0 || m_npWindow.y < 0 ||
++        m_npWindow.width <= 0 || m_npWindow.height <= 0)
++        return;
 +
 +    if (m_plugin->pluginFuncs()->setwindow) {
 +        KJS::JSLock::DropAllLocks dropAllLocks;
@@ -2404,6 +2574,8 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/
 +
 +    // Clear the window
 +    m_npWindow.window = 0;
++    delete (NPSetWindowCallbackStruct *)m_npWindow.ws_info;
++    m_npWindow.ws_info = 0;
 +    if (m_plugin->pluginFuncs()->setwindow && !m_plugin->quirks().contains(PluginQuirkDontSetNullWindowHandleOnDestroy)) {
 +        setCallingPlugin(true);
 +        m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
@@ -2567,11 +2739,8 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/
 +
 +    if (m_plugin && !(m_plugin->quirks().contains(PluginQuirkDontUnloadPlugin)))
 +        m_plugin->unload();
-+    
-+    if (m_window)
-+        delete m_window;
-+    if (m_npWindow.ws_info)
-+        delete (NPSetWindowCallbackStruct *)m_npWindow.ws_info;
++
++    delete m_window;
 +}
 +
 +void PluginView::init()
@@ -2631,10 +2800,17 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/qt/PluginViewQt.cpp WebKit-r32416/
 +}
 +
 +} // namespace WebCore
-diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginPackageWin.cpp WebKit-r32416/WebCore/plugins/win/PluginPackageWin.cpp
---- WebKit-r32416.orig/WebCore/plugins/win/PluginPackageWin.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/win/PluginPackageWin.cpp	2008-04-23 15:39:41.000000000 +0200
-@@ -66,30 +66,6 @@
+
+Property changes on: WebCore/plugins/qt/PluginViewQt.cpp
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Index: WebCore/plugins/win/PluginPackageWin.cpp
+===================================================================
+--- WebCore/plugins/win/PluginPackageWin.cpp	(revision 32726)
++++ WebCore/plugins/win/PluginPackageWin.cpp	(working copy)
+@@ -66,30 +66,6 @@ int PluginPackage::compareFileVersion(co
      return 0;
  }
  
@@ -2665,9 +2841,10 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginPackageWin.cpp WebKit-r3
  bool PluginPackage::isPluginBlacklisted()
  {
      static const PlatformModuleVersion slPluginMinRequired(0x51BE0000, 0x00010000);
-diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r32416/WebCore/plugins/win/PluginViewWin.cpp
---- WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/plugins/win/PluginViewWin.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebCore/plugins/win/PluginViewWin.cpp
+===================================================================
+--- WebCore/plugins/win/PluginViewWin.cpp	(revision 32726)
++++ WebCore/plugins/win/PluginViewWin.cpp	(working copy)
 @@ -1,6 +1,6 @@
  /*
   * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -2676,7 +2853,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
   *
   * Redistribution and use in source and binary forms, with or without
   * modification, are permitted provided that the following conditions
-@@ -562,7 +562,7 @@
+@@ -562,7 +562,7 @@ void PluginView::stop()
              SetWindowLongPtr(m_window, GWLP_WNDPROC, (LONG)m_pluginWndProc);
      }
  
@@ -2685,7 +2862,7 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
  
      // Clear the window
      m_npWindow.window = 0;
-@@ -588,32 +588,6 @@
+@@ -588,33 +588,6 @@ void PluginView::stop()
      m_instance->pdata = 0;
  }
  
@@ -2715,10 +2892,11 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
 -{
 -    return buffer.size() > 0 && buffer[0] == '\n';
 -}
- 
+-
  const char* PluginView::userAgent()
  {
-@@ -625,237 +599,89 @@
+     if (m_plugin->quirks().contains(PluginQuirkWantsMozillaUserAgent))
+@@ -625,237 +598,87 @@ const char* PluginView::userAgent()
      return m_userAgent.data();
  }
  
@@ -2747,11 +2925,10 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
 -    }
 -
 -    return -1;
- }
- 
+-}
+-
 -static inline const char* findEOL(const char* bytes, unsigned length)
-+NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
- {
+-{
 -    // According to the HTTP specification EOL is defined as
 -    // a CRLF pair. Unfortunately, some servers will use LF
 -    // instead. Worse yet, some servers will use a combination
@@ -2774,24 +2951,21 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
 -            return bytes + i;
 -        }
 -    }
-+    String filename(buf, len);
- 
+-
 -    return 0;
 -}
 -
 -static inline String capitalizeRFC822HeaderFieldName(const String& name)
--{
++NPError PluginView::handlePostReadFile(Vector<char>& buffer, uint32 len, const char* buf)
+ {
 -    bool capitalizeCharacter = true;
 -    String result;
-+    if (filename.startsWith("file:///"))
-+        filename = filename.substring(8);
++    String filename(buf, len);
  
 -    for (unsigned i = 0; i < name.length(); i++) {
 -        UChar c;
-+    // Get file info
-+    WIN32_FILE_ATTRIBUTE_DATA attrs;
-+    if (GetFileAttributesExW(filename.charactersWithNullTermination(), GetFileExInfoStandard, &attrs) == 0)
-+        return NPERR_FILE_NOT_FOUND;
++    if (filename.startsWith("file:///"))
++        filename = filename.substring(8);
  
 -        if (capitalizeCharacter && name[i] >= 'a' && name[i] <= 'z')
 -            c = toASCIIUpper(name[i]);
@@ -2799,25 +2973,29 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
 -            c = toASCIILower(name[i]);
 -        else
 -            c = name[i];
-+    if (attrs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
++    // Get file info
++    WIN32_FILE_ATTRIBUTE_DATA attrs;
++    if (GetFileAttributesExW(filename.charactersWithNullTermination(), GetFileExInfoStandard, &attrs) == 0)
 +        return NPERR_FILE_NOT_FOUND;
  
 -        if (name[i] == '-')
 -            capitalizeCharacter = true;
 -        else
 -            capitalizeCharacter = false;
++    if (attrs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
++        return NPERR_FILE_NOT_FOUND;
+ 
+-        result.append(c);
+-    }
 +    HANDLE fileHandle = CreateFileW(filename.charactersWithNullTermination(), FILE_READ_DATA, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 +    
 +    if (fileHandle == INVALID_HANDLE_VALUE)
 +        return NPERR_FILE_NOT_FOUND;
  
--        result.append(c);
--    }
-+    buffer.resize(attrs.nFileSizeLow);
- 
 -    return result;
 -}
--
++    buffer.resize(attrs.nFileSizeLow);
+ 
 -static inline HTTPHeaderMap parseRFC822HeaderFields(const Vector<char>& buffer, unsigned length)
 -{
 -    const char* bytes = buffer.data();
@@ -3011,37 +3189,10 @@ diff -Naur WebKit-r32416.orig/WebCore/plugins/win/PluginViewWin.cpp WebKit-r3241
  }
  
  void PluginView::invalidateRect(NPRect* rect)
-diff -Naur WebKit-r32416.orig/WebCore/WebCore.pro WebKit-r32416/WebCore/WebCore.pro
---- WebKit-r32416.orig/WebCore/WebCore.pro	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebCore/WebCore.pro	2008-04-23 15:39:41.000000000 +0200
-@@ -120,6 +120,10 @@
- #LIBS += -L$$OUTPUT_DIR/lib -lJavaScriptCore
- 
- qt-port {
-+    unix {
-+        DEFINES += XP_UNIX
-+    }
-+
- RESOURCES += \
-             $$PWD/../WebCore/page/inspector/WebKit.qrc \
-             $$PWD/../WebCore/Resources/WebKitResources.qrc
-@@ -1043,7 +1047,12 @@
-     ../WebKit/qt/Api/qwebhistoryinterface.cpp \
-     ../WebKit/qt/Api/qwebpluginfactory.cpp
- 
--    unix: SOURCES += platform/qt/SystemTimeQt.cpp
-+    unix: {
-+        SOURCES += platform/qt/SystemTimeQt.cpp \
-+                   plugins/qt/PluginDatabaseQt.cpp \
-+                   plugins/qt/PluginPackageQt.cpp \
-+                   plugins/qt/PluginViewQt.cpp
-+    }
-     else: SOURCES += platform/win/SystemTimeWin.cpp
- 
-     # Files belonging to the Qt 4.3 build
-diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
---- WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
+===================================================================
+--- WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	(revision 32726)
++++ WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp	(working copy)
 @@ -2,6 +2,7 @@
   *  Copyright (C) 2007 Alp Toker <alp@atoker.com>
   *  Copyright (C) 2007, 2008 Holger Hans Peter Freyther
@@ -3050,7 +3201,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
   *
   *  This library is free software; you can redistribute it and/or
   *  modify it under the terms of the GNU Lesser General Public
-@@ -57,6 +58,7 @@
+@@ -57,6 +58,7 @@ namespace WebKit {
  
  FrameLoaderClient::FrameLoaderClient(WebKitWebFrame* frame)
      : m_frame(frame)
@@ -3058,7 +3209,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
      , m_userAgent("")
  {
      ASSERT(m_frame);
-@@ -162,9 +164,30 @@
+@@ -162,9 +164,30 @@ void FrameLoaderClient::dispatchWillSubm
  
  void FrameLoaderClient::committedLoad(DocumentLoader* loader, const char* data, int length)
  {
@@ -3092,7 +3243,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
  }
  
  void FrameLoaderClient::dispatchDidReceiveAuthenticationChallenge(DocumentLoader*, unsigned long  identifier, const AuthenticationChallenge&)
-@@ -260,9 +283,13 @@
+@@ -260,9 +283,13 @@ void FrameLoaderClient::dispatchDecidePo
      (core(m_frame)->loader()->*policyFunction)(PolicyUse);
  }
  
@@ -3108,7 +3259,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
      return 0;
  }
  
-@@ -290,8 +317,7 @@
+@@ -290,8 +317,7 @@ PassRefPtr<Frame> FrameLoaderClient::cre
  
  void FrameLoaderClient::redirectDataToPlugin(Widget* pluginWidget)
  {
@@ -3118,7 +3269,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
  }
  
  Widget* FrameLoaderClient::createJavaAppletWidget(const IntSize&, Element*, const KURL& baseURL,
-@@ -587,14 +613,13 @@
+@@ -587,14 +613,13 @@ String FrameLoaderClient::generatedMIMET
  
  void FrameLoaderClient::finishedLoading(DocumentLoader* documentLoader)
  {
@@ -3140,7 +3291,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
  }
  
  
-@@ -710,9 +735,13 @@
+@@ -710,9 +735,13 @@ void FrameLoaderClient::dispatchUnableTo
      notImplemented();
  }
  
@@ -3156,9 +3307,10 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.cpp
  }
  
  void FrameLoaderClient::startDownload(const ResourceRequest&)
-diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h
---- WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	2008-04-23 15:39:41.000000000 +0200
+Index: WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h
+===================================================================
+--- WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	(revision 32726)
++++ WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h	(working copy)
 @@ -1,6 +1,7 @@
  /*
   * Copyright (C) 2006 Zack Rusin <zack@kde.org>
@@ -3175,7 +3327,7 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h W
  
  typedef struct _WebKitWebFrame WebKitWebFrame;
  
-@@ -170,6 +172,10 @@
+@@ -170,6 +172,10 @@ namespace WebKit {
          WebKitWebFrame* m_frame;
          WebCore::ResourceResponse m_response;
          WebCore::String m_userAgent;
@@ -3186,9 +3338,10 @@ diff -Naur WebKit-r32416.orig/WebKit/gtk/WebCoreSupport/FrameLoaderClientGtk.h W
      };
  
  }
-diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
---- WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	2008-04-23 15:39:41.000000000 +0200
+Index: WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
+===================================================================
+--- WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	(revision 32726)
++++ WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp	(working copy)
 @@ -2,6 +2,7 @@
   * Copyright (C) 2006 Zack Rusin <zack@kde.org>
   * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
@@ -3205,15 +3358,15 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
  #include "ProgressTracker.h"
  #include "RenderPart.h"
  #include "ResourceRequest.h"
-@@ -103,6 +105,7 @@
+@@ -132,6 +134,7 @@ namespace WebCore
  FrameLoaderClientQt::FrameLoaderClientQt()
      : m_frame(0)
      , m_webFrame(0)
 +    , m_pluginView(0)
      , m_firstData(false)
      , m_policyFunction(0)
- {
-@@ -457,10 +460,17 @@
+     , m_loadSucceeded(false)
+@@ -506,10 +509,17 @@ void FrameLoaderClientQt::didChangeTitle
  
  void FrameLoaderClientQt::finishedLoading(DocumentLoader* loader)
  {
@@ -3235,7 +3388,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
      }
  }
  
-@@ -603,22 +613,36 @@
+@@ -652,22 +662,36 @@ bool FrameLoaderClientQt::canCachePage()
  
  void FrameLoaderClientQt::setMainDocumentError(WebCore::DocumentLoader* loader, const WebCore::ResourceError& error)
  {
@@ -3282,7 +3435,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
  }
  
  WebCore::ResourceError FrameLoaderClientQt::cancelledError(const WebCore::ResourceRequest& request)
-@@ -877,7 +901,7 @@
+@@ -949,7 +973,7 @@ ObjectContentType FrameLoaderClientQt::o
      if (_mimeType == "application/x-qt-plugin" || _mimeType == "application/x-qt-styled-widget")
          return ObjectContentOtherPlugin;
  
@@ -3291,7 +3444,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
          return ObjectContentNone;
  
      String mimeType = _mimeType;
-@@ -892,6 +916,9 @@
+@@ -964,6 +988,9 @@ ObjectContentType FrameLoaderClientQt::o
      if (MIMETypeRegistry::isSupportedImageMIMEType(mimeType))
          return ObjectContentImage;
  
@@ -3301,7 +3454,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
      if (m_frame->page() && m_frame->page()->pluginData()->supportsMimeType(mimeType))
          return ObjectContentOtherPlugin;
  
-@@ -914,7 +941,7 @@
+@@ -986,7 +1013,7 @@ static const CSSPropertyID qstyleSheetPr
  
  const unsigned numqStyleSheetProperties = sizeof(qstyleSheetProperties) / sizeof(qstyleSheetProperties[0]);
  
@@ -3310,7 +3463,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
                                            const Vector<String>& paramValues, const String& mimeType, bool loadManually)
  {
  //     qDebug()<<"------ Creating plugin in FrameLoaderClientQt::createPlugin for "<<url.prettyURL() << mimeType;
-@@ -956,27 +983,31 @@
+@@ -1028,27 +1055,31 @@ Widget* FrameLoaderClientQt::createPlugi
  
              widget->setStyleSheet(styleSheet);
          }
@@ -3358,7 +3511,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
      }
  
      return 0;
-@@ -984,8 +1015,7 @@
+@@ -1056,8 +1087,7 @@ Widget* FrameLoaderClientQt::createPlugi
  
  void FrameLoaderClientQt::redirectDataToPlugin(Widget* pluginWidget)
  {
@@ -3368,7 +3521,7 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
  }
  
  Widget* FrameLoaderClientQt::createJavaAppletWidget(const IntSize&, Element*, const KURL& baseURL,
-@@ -1005,7 +1035,6 @@
+@@ -1077,7 +1107,6 @@ QString FrameLoaderClientQt::chooseFile(
      return webFrame()->page()->chooseFile(webFrame(), oldFile);
  }
  
@@ -3376,9 +3529,10 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp W
  }
  
  #include "moc_FrameLoaderClientQt.cpp"
-diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h
---- WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	2008-04-23 15:39:34.000000000 +0200
-+++ WebKit-r32416/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	2008-04-23 15:39:41.000000000 +0200
+Index: WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h
+===================================================================
+--- WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	(revision 32726)
++++ WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h	(working copy)
 @@ -2,6 +2,7 @@
   * Copyright (C) 2006 Zack Rusin <zack@kde.org>
   * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
@@ -3395,13 +3549,15 @@ diff -Naur WebKit-r32416.orig/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.h Web
  class QWebFrame;
  
  namespace WebCore {
-@@ -204,6 +206,9 @@
+@@ -204,6 +206,11 @@ namespace WebCore {
          ResourceResponse m_response;
          bool m_firstData;
          FramePolicyFunction m_policyFunction;
++
 +        // Plugin view to redirect data to
 +        WebCore::PluginView* m_pluginView;
 +        bool m_hasSentResponseToPlugin;
++
+         bool m_loadSucceeded;
      };
  
- }
