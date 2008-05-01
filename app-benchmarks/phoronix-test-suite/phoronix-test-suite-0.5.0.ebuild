@@ -10,7 +10,7 @@ SRC_URI="http://www.phoronix-test-suite.com/releases/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND="sys-process/time"
@@ -20,7 +20,7 @@ S="${WORKDIR}/${PN}"
 
 pkg_setup() {
 	has_php
-	require_php_with_use bcmath cli posix
+	require_php_with_use cli posix
 }
 
 
