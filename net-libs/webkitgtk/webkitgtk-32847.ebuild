@@ -40,7 +40,6 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	epatch "${FILESDIR}"/${PN}-npapi-plugin-gtk-qt.patch
 	# Fix path for Gentoo plugins path
 	sed -i -e 's#"browser"#"nsbrowser"#' WebCore/plugins/gtk/PluginDatabaseGtk.cpp || die "sed failed"
 	sed -i -e 's#/browser/#/nsbrowser/#' WebCore/plugins/qt/PluginDatabaseQt.cpp || die "sed failed"
