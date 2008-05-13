@@ -8,7 +8,7 @@ DESCRIPTION="An HTTP library implementation in C"
 HOMEPAGE="http://www.gnome.org/"
 
 LICENSE="LGPL-2"
-SLOT="2.23"
+SLOT="2.4"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
 IUSE="doc ssl"
 
