@@ -17,14 +17,6 @@ DEPEND=">=net-libs/webkitgtk-29723
 	x11-libs/libsexy"
 RDEPEND="${DEPEND}"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	epatch "${FILESDIR}"/${P}-webkit-30153.patch
-	eautoreconf
-}
-
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed."
 

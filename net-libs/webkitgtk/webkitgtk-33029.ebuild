@@ -29,7 +29,7 @@ RDEPEND=">=x11-libs/gtk+-2.8
 		>=media-libs/gst-plugins-base-0.10
 		>=gnome-base/gnome-vfs-2.0
 		)
-	soup? ( >=net-libs/libsoup-2.4 )
+	soup? ( >=net-libs/libsoup-2.23 )
 	xslt? ( dev-libs/libxslt )"
 
 DEPEND="${RDEPEND}
