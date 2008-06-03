@@ -36,12 +36,6 @@ pkg_setup() {
 	fi
 }
 
-src_unpack(){
-	unpack "${A}"
-	cd "${S}"
-	epatch "${FILESDIR}/${PN}-2.5.8-soname.patch"
-}
-
 src_compile(){
 	use amd64 && export DUMA_ALIGNMENT=16
 	# append-flags doesn't work here (stupid static makefile) and neither
