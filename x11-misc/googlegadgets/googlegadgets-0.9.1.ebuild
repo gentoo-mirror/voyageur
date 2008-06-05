@@ -63,4 +63,17 @@ src_compile() {
 
 src_install() {
 	emake DESTDIR="${D}" install || die "installation failed"
+
+	# Desktop entries
+	insinto /usr/share/icons/hicolor/32x32/apps
+	newins resources/gadgets.png googlegadgets.png
+	if use gtk; then
+		make_desktop_entry "ggl-gtk" "Google Gadgets (GTK)" googlegadgets
+		make_desktop_entry "ggl-gtk -s" "Google Gadgets (sidebar)" googlegadgets
+	fi
+	if use qt; then
+		make_desktop_entry "ggl-qt" "Google Gadgets (QT)" googlegadgets
+	fi
+
+
 }
