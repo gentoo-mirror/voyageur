@@ -20,7 +20,7 @@ S="${WORKDIR}/${PN}"
 
 pkg_setup() {
 	has_php
-	require_php_with_use cli posix
+	require_php_with_use cli gd
 }
 
 
@@ -33,9 +33,9 @@ src_unpack() {
 src_install() {
 	dodir /usr/share/${PN}
 	insinto /usr/share/${PN}
-	doins -r ${S}/pts{,-core} || die "Install failed!"
-	fperms 755 /usr/share/${PN}/pts/launch-browser.sh
 	exeinto /usr/bin
+	doins -r ${S}/pts{,-core} || die "Install failed!"
+	fperms 755 /usr/share/${PN}/pts-core/scripts/launch-browser.sh
 	doexe phoronix-test-suite || die "Installing the executable failed!"
-	dodoc CHANGE-LOG README TODO
+	dodoc CHANGE-LOG
 }
