@@ -1,0 +1,15 @@
+--- configure.ac.orig	2008-06-05 11:01:23.000000000 +0200
++++ configure.ac	2008-06-05 11:02:22.000000000 +0200
+@@ -279,10 +279,10 @@
+ ###########################################################
+ if test x$enable_debug = xyes; then
+   AC_DEFINE(GGL_ENABLE_DEBUG,1,[Enable debug])
+-  DEFAULT_COMPILE_FLAGS="-g -O0 -Werror -Wall -Wconversion"
++  DEFAULT_COMPILE_FLAGS="-Wconversion"
+   DEBUG_MACROS="_DEBUG";
+ else
+-  DEFAULT_COMPILE_FLAGS="-O2 -Werror -Wall -Wconversion"
++  DEFAULT_COMPILE_FLAGS="-Wconversion"
+   DEBUG_MACROS="NDEBUG";
+ fi
+ 
