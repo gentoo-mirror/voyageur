@@ -29,15 +29,11 @@ RDEPEND="${DEPEND}"
 S=${WORKDIR}/${MY_P}
 
 pkg_setup() {
-	if ! built_with_use net-misc/curl ssl; then
-		eerror
-		eerror "googlegadgets needs net-misc/curl with USE=ssl enabled"
-		eerror
-	fi
 	if built_with_use net-misc/curl gnutls; then
 		eerror
 		eerror "googlegadgets needs net-misc/curl with USE=-gnutls (for now)"
 		eerror
+		die "net-misc/curl rebuild needed"
 	fi
 }
 src_unpack() {
