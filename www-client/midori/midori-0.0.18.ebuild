@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=">=net-libs/webkitgtk-29723
+DEPEND=">=net-libs/webkit-gtk-29723
 	x11-libs/libsexy"
 RDEPEND="${DEPEND}"
 
