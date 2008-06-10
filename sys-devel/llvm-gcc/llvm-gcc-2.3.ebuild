@@ -2,37 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-# TODO:
-#     This ebuild emits a QA warning about executable stacks.  What I could
-#     find out so far is that cc1 from this package will not include the
-#     necessary line ".section ...  GNU-stack..." in its assembler output,
-#     while the system's cc1 does.  And of course this package's cc1 will be
-#     used to build its libraries.  (check if maybe vanilla gcc 4.0.1 just
-#     didn't do that either.)
-
 inherit eutils
-
-# TODO: handle gcc4.0 vs gcc4.2
 
 DESCRIPTION="C and C++ Frontend for the Low Level Virtual Machine"
 HOMEPAGE="http://llvm.org/"
-SRC_URI="http://llvm.org/releases/${PV}/llvm-gcc4.2-${PV}.source.tar.gz"
+SRC_URI="http://llvm.org/releases/${PV}/llvm-gcc-4.2-${PV}.source.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"
-# That arch status as of 2.0 is as follows (according to the docs):
-#
-# x86:     Works.
-#
-# x86-64:  Claimed to work.
-#
-# PowerPC: Won't work.
-#
-# Alpha:   Partial support claimed.
-#
-# IA-64:   Partial support claimed.
-
 IUSE=""
 
 # we're not mirrored, fetch from homepage

@@ -21,24 +21,7 @@ LICENSE="LLVM"
 SLOT="0"
 
 KEYWORDS="~x86"
-# That arch status as of 2.0 is as follows (according to the docs):
-#
-# x86:     Works.  Code generation for >= i568
-#
-# x86-64:  Claimed to work.  No native code generation
-#
-# PowerPC: Partial support claimed.  No native code generation.  (C/C++
-#          frontend will not build on this)
-#
-# Alpha:   Partial support claimed.  Native code generation exists but is
-#          incomplete
-#
-# IA-64:   Partial support claimed.  Native code generation exists but is
-#          incomplete
-
 IUSE="debug alltargets"
-# 'jit' is not a flag anymore.  at least on x86, disabling it saves nothing
-# at all, so having it always enabled for platforms that support it is fine
 
 # we're not mirrored, fetch from homepage
 RESTRICT="mirror"
@@ -46,7 +29,6 @@ RESTRICT="mirror"
 DEPEND="dev-lang/perl"
 RDEPEND="dev-lang/perl"
 PDEPEND=""
-# note that app-arch/pax is no longer a dependency
 
 S="${WORKDIR}/llvm-${PV}"
 
