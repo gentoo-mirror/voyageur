@@ -17,12 +17,8 @@ KEYWORDS="-* ~amd64 ~x86"
 IUSE="firefox thunderbird"
 RESTRICT="strip"
 
-RDEPEND="dev-libs/atk
-	dev-libs/glib
-	x11-libs/libX11
-	x11-libs/libXi
-	x11-libs/gtk+
-	x11-libs/pango"
+RDEPEND="x11-libs/gtk+
+	x11-libs/libXft"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}"
@@ -57,7 +53,6 @@ src_unpack() {
 src_install() {
 	insinto /opt/google/desktop
 	doins ${S}/opt/google/desktop/*
-	dolib.so ${S}/opt/google/desktop/lib/*
 
 	exeinto /opt/google/desktop/bin
 	doexe ${S}/opt/google/desktop/bin/*
@@ -70,7 +65,10 @@ src_install() {
 
 	insinto /usr/bin
 	dosym /opt/google/desktop/bin/gdlinux /usr/bin/gdlinux 
-	
+
+	into /opt/google/desktop
+	dolib.so ${S}/opt/google/desktop/lib/*
+
 	keepdir /var/cache/google/desktop
 	fperms 777 /var/cache/google/desktop
 	fperms o+t /var/cache/google/desktop
