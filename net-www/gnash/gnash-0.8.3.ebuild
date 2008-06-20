@@ -7,8 +7,7 @@ set-kdedir eutils
 
 DESCRIPTION="Gnash is a GNU Flash movie player that supports many SWF v7 features"
 HOMEPAGE="http://www.gnu.org/software/gnash"
-#SRC_URI="mirror://gnu/${PN}/${PV}/${P}.tar.bz2"
-SRC_URI="http://getgnash.org/packages/releases/${P}.tar.bz2"
+SRC_URI="mirror://gnu/${PN}/${PV}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
