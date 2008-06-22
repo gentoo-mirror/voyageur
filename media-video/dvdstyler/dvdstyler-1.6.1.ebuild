@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-video/dvdstyler/dvdstyler-1.5.1_p2.ebuild,v 1.2 2008/04/01 15:17:39 dragonheart Exp $
 
-inherit wxwidgets
+inherit autotools wxwidgets
 
 MY_P=DVDStyler-${PV/_p/_}
 
@@ -30,6 +30,14 @@ DEPEND="${RDEPEND}
 	sys-devel/gettext"
 
 S="${WORKDIR}"/${MY_P}
+
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
+
+	epatch "${FILESDIR}"/${P}-newer_ffmpeg.patch
+	eautoreconf
+}
 
 src_compile() {
 	export WX_GTK_VER="2.8"

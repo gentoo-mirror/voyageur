@@ -21,6 +21,7 @@ RDEPEND="=x11-libs/wxGTK-2.8*
 	>=media-libs/fontconfig-2.4
 	>=media-libs/freetype-2.2.0
 	>=media-libs/libart_lgpl-2.3.17
+	>=media-video/ffmpeg-0.4.9_p20080326
 	>=x11-libs/pango-1.14.9"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
@@ -30,6 +31,8 @@ S="${WORKDIR}/${PN}-${MY_PV}"
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
+
+	epatch "${FILESDIR}"/${P}-newer_ffmpeg.patch
 	AT_M4DIR="${S}" eautoreconf 
 }
 
