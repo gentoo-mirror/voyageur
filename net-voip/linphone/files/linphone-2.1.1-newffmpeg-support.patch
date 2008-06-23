@@ -1,0 +1,167 @@
+diff -Naur mediastreamer2.orig/configure.ac mediastreamer2/configure.ac
+--- mediastreamer2.orig/configure.ac	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/configure.ac	2008-05-16 10:14:26.000000000 +0200
+@@ -364,6 +364,10 @@
+ dnl check for video4linux headers
+ AC_CHECK_HEADERS(linux/videodev.h linux/videodev2.h)
+ 
++dnl check for new/old ffmpeg
++AC_CHECK_HEADERS(libavcodec/avcodec.h)
++
++
+ dnl ##################################################
+ dnl # Check for ESP Packager
+ dnl ##################################################
+diff -Naur mediastreamer2.orig/mediastreamer-config.h.in mediastreamer2/mediastreamer-config.h.in
+--- mediastreamer2.orig/mediastreamer-config.h.in	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/mediastreamer-config.h.in	2008-05-16 10:14:26.000000000 +0200
+@@ -15,6 +15,9 @@
+ /* Define to 1 if you have the <kde/artsc/artsc.h> header file. */
+ #undef HAVE_KDE_ARTSC_ARTSC_H
+ 
++/* Define to 1 if you have the <libavcodec/avcodec.h> header file. */
++#undef HAVE_LIBAVCODEC_AVCODEC_H
++
+ /* Define to 1 if you have the <linux/videodev2.h> header file. */
+ #undef HAVE_LINUX_VIDEODEV2_H
+ 
+diff -Naur mediastreamer2.orig/src/nowebcam.c mediastreamer2/src/nowebcam.c
+--- mediastreamer2.orig/src/nowebcam.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/nowebcam.c	2008-05-16 10:14:39.000000000 +0200
+@@ -1,12 +1,16 @@
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
+ #include "mediastreamer2/mscommon.h"
+ #include "mediastreamer2/msvideo.h"
+ 
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#include <libswscale/swscale.h>
++#else
+ #include <ffmpeg/avcodec.h>
+ #include <ffmpeg/swscale.h>
+-
+-
+-#ifdef HAVE_CONFIG_H
+-#include "mediastreamer-config.h"
+ #endif
+ 
+ #include <sys/stat.h>
+diff -Naur mediastreamer2.orig/src/pixconv.c mediastreamer2/src/pixconv.c
+--- mediastreamer2.orig/src/pixconv.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/pixconv.c	2008-05-16 10:14:26.000000000 +0200
+@@ -17,11 +17,20 @@
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+ 
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
+ #include "mediastreamer2/msfilter.h"
+ #include "mediastreamer2/msvideo.h"
+ 
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#include <libswscale/swscale.h>
++#else
+ #include <ffmpeg/avcodec.h>
+ #include <ffmpeg/swscale.h>
++#endif
+ 
+ extern void ms_ffmpeg_check_init();
+ 
+diff -Naur mediastreamer2.orig/src/sizeconv.c mediastreamer2/src/sizeconv.c
+--- mediastreamer2.orig/src/sizeconv.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/sizeconv.c	2008-05-16 10:14:26.000000000 +0200
+@@ -17,12 +17,21 @@
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+ 
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
+ #include "mediastreamer2/msfilter.h"
+ #include "mediastreamer2/msticker.h"
+ #include "mediastreamer2/msvideo.h"
+ 
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#include <libswscale/swscale.h>
++#else
+ #include <ffmpeg/avcodec.h>
+ #include <ffmpeg/swscale.h>
++#endif
+ 
+ typedef struct SizeConvState{
+ 	MSVideoSize target_vsize;
+diff -Naur mediastreamer2.orig/src/videodec.c mediastreamer2/src/videodec.c
+--- mediastreamer2.orig/src/videodec.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/videodec.c	2008-05-16 10:14:26.000000000 +0200
+@@ -17,8 +17,17 @@
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+ 
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#include <libswscale/swscale.h>
++#else
+ #include <ffmpeg/avcodec.h>
+ #include <ffmpeg/swscale.h>
++#endif
+ 
+ #include "mediastreamer2/msfilter.h"
+ #include "mediastreamer2/msvideo.h"
+diff -Naur mediastreamer2.orig/src/videoenc.c mediastreamer2/src/videoenc.c
+--- mediastreamer2.orig/src/videoenc.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/videoenc.c	2008-05-16 10:14:26.000000000 +0200
+@@ -17,7 +17,15 @@
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+ 
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#else
+ #include <ffmpeg/avcodec.h>
++#endif
+ #include "mediastreamer2/msfilter.h"
+ #include "mediastreamer2/msvideo.h"
+ #include "mediastreamer2/msticker.h"
+diff -Naur mediastreamer2.orig/src/videoout.c mediastreamer2/src/videoout.c
+--- mediastreamer2.orig/src/videoout.c	2008-05-16 10:14:17.000000000 +0200
++++ mediastreamer2/src/videoout.c	2008-05-16 10:14:26.000000000 +0200
+@@ -17,13 +17,23 @@
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+ 
++#ifdef HAVE_CONFIG_H
++#include "mediastreamer-config.h"
++#endif
++
+ #include "mediastreamer2/msfilter.h"
+ #include "mediastreamer2/msvideo.h"
+ #include "mediastreamer2/msvideoout.h"
+ 
++#ifdef HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#include <libswscale/swscale.h>
++#include <libavutil/avutil.h>
++#else
+ #include <ffmpeg/avcodec.h>
+ #include <ffmpeg/swscale.h>
+ #include <ffmpeg/avutil.h>
++#endif
+ 
+ static int video_out_handle_resize(MSFilter *f, void *arg);
+ 
