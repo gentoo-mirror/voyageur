@@ -34,8 +34,9 @@ src_install() {
 	dodir /usr/share/${PN}
 	insinto /usr/share/${PN}
 	exeinto /usr/bin
-	doins -r ${S}/pts{,-core} || die "Install failed!"
+	doins -r ${S}/{documentation,pts,pts-core,README.html} || die "Install failed!"
 	fperms 755 /usr/share/${PN}/pts-core/scripts/launch-browser.sh
+	fperms 755 /usr/share/${PN}/pts/distro-scripts/*.sh
 	doexe phoronix-test-suite || die "Installing the executable failed!"
 	dodoc CHANGE-LOG
 }
