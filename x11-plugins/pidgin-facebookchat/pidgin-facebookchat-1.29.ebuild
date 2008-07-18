@@ -24,7 +24,8 @@ S=${WORKDIR}
 src_compile() {
 	# Makefile is not usable
 	$(tc-getCC) ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} `pkg-config --cflags purple` \
-		-shared -fPIC libfacebook.c -o libfacebook.so || die "compilation failed"
+		-DPURPLE_PLUGINS -DENABLE_NLS  -shared -fPIC -DPIC \
+		libfacebook.c -o libfacebook.so || die "compilation failed"
 }
 
 src_install() {
