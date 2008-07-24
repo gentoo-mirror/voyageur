@@ -1,0 +1,16 @@
+--- src/guake.py.orig	2008-07-24 15:34:56.000000000 +0200
++++ src/guake.py	2008-07-24 15:34:46.000000000 +0200
+@@ -305,9 +305,10 @@
+                     cb.append_text(possible)
+ 
+         for i in os.environ.get('PATH', '').split(os.pathsep):
+-            for j in os.listdir(i):
+-                if PYTHONS.match(j):
+-                    cb.append_text(os.path.join(i, j))
++       	    if os.path.exists(i):
++                for j in os.listdir(i):
++                    if PYTHONS.match(j):
++                        cb.append_text(os.path.join(i, j))
+ 
+     def populate_keys_tree(self):
+         model = self.get_widget('treeview-keys').get_model()
