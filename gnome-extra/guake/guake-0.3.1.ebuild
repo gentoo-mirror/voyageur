@@ -2,12 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils gnome2 versionator
-MY_PN=$(get_version_component_range 1-2)
+inherit gnome2 eutils
 
 DESCRIPTION="Guake is a drop-down terminal for Gnome"
 HOMEPAGE="http://guake-terminal.org/"
-SRC_URI="http://guake-terminal.org/releases/${MY_PN}/${P}.tar.gz"
+SRC_URI="http://guake-terminal.org/releases/${PV}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -24,11 +23,4 @@ pkg_setup() {
 		eerror "You must rebuild x11-libs/vte with python USE flag."
 		die
 	fi
-}
-
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	epatch "${FILESDIR}"/${P}-empty-path.patch
 }
