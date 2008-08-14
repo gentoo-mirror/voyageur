@@ -27,7 +27,8 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	epatch "${FILESDIR}"/${P}-cflags.patch
+	sed -i -e 's/^LDFLAGS:=/LDFLAGS+=/1' Makefile \
+		|| die "Patching Makefile to honor LDFLAGS failed"
 }
 
 src_compile() {
