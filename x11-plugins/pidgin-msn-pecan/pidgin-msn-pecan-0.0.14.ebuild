@@ -23,14 +23,6 @@ DEPEND="dev-util/pkgconfig
 
 S="${WORKDIR}/${MY_P}"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	sed -i -e 's/^LDFLAGS:=/LDFLAGS+=/1' Makefile \
-		|| die "Patching Makefile to honor LDFLAGS failed"
-}
-
 src_compile() {
 	emake CC="$(tc-getCC)" || die "emake failed"
 }
@@ -38,4 +30,10 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 	dodoc COPYRIGHT ChangeLog README TODO || die "dodoc failed"
+}
+
+pkg_postinst() {
+	elog "For more information (how to change personal message, add"
+	elog "missing emoticons, ...), please read:"
+	elog "http://code.google.com/p/msn-pecan/wiki/FAQ"
 }
