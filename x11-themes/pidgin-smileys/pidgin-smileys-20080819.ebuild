@@ -1,6 +1,6 @@
 # Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-themes/pidgin-smileys/pidgin-smileys-20071023-r2.ebuild,v 1.1 2008/01/10 00:39:56 beandog Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-themes/pidgin-smileys/pidgin-smileys-20080819.ebuild,v 1.1 2008/08/20 01:55:03 beandog Exp $
 
 DESCRIPTION="Pidgin smiley themes"
 HOMEPAGE="http://pidgin.im/"
@@ -19,6 +19,7 @@ SRC_URI="http://gaim.sourceforge.net/exhaustive.tar.gz
 	http://www.zicklepop.com/downloads/dudes.zip
 	http://www.pfarroli.de/monne/piko/icq_lite.tar.gz
 	http://www.mbpublish.de/downloads/icq-lite-4_smileys.tar.gz
+	http://kolobok.us/files/user/kolobok_for_gaim.tar.gz
 	http://andreineculau.com/blog/download/pidgin-original-1.1.tgz"
 
 LICENSE="as-is"
