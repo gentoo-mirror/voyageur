@@ -1,4 +1,4 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,15 +6,13 @@ inherit eutils
 
 DESCRIPTION="Unofficial tool for controlling the Razer Copperhead mouse"
 HOMEPAGE="http://razertool.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${PN}_${PV}.orig.tar.gz"
+SRC_URI="mirror://sourceforge/${PN}/${P/-/_}.orig.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="gtk hal"
 
-# libusb-0.1.10a does not provide /usr/lib/pkgconfig/libusb.pc
-# hal creates the plugdev group
 DEPEND=">=dev-libs/libusb-0.1.12
 	hal? ( >=sys-apps/hal-0.5.7 )
 	gtk? (
@@ -31,7 +29,7 @@ src_unpack() {
 		|| die "sed razertool.rules.example action failed"
 
 	if ! use hal ; then
-		# plugdev group might not exist
+		# plugdev group might not exist (created by hal)
 		sed -i razertool.rules.example \
 			-e 's:plugdev:root:' \
 			|| die "sed razertool.rules.example plugdev failed"
