@@ -1,6 +1,18 @@
---- patches/icedtea-ecj.patch	Fri May 30 15:37:38 2008 +0200
-+++ patches/icedtea-ecj.patch	Fri May 30 15:39:55 2008 +0200
-@@ -665,9 +665,9 @@ diff -ru openjdk-ecj.orig/langtools/make
+diff -Nru icedtea6-1.1.orig/ChangeLog icedtea6-1.1/ChangeLog
+--- icedtea6-1.1.orig/ChangeLog	2008-04-04 14:56:04.000000000 +0100
++++ icedtea6-1.1/ChangeLog	2008-06-01 19:16:31.000000000 +0100
+@@ -1,3 +1,7 @@
++2008-05-30  Mark Wielaard  <mark@klomp.org>
++
++	* patches/icedtea-ecj.patch: Use `cat file-list` not gjar -@ stdin.
++
+ 2008-04-04  Gary Benson  <gbenson@redhat.com>
+ 
+ 	* patches/icedtea-ia64-bugfix.patch: New file.
+diff -Nru icedtea6-1.1.orig/patches/icedtea-ecj.patch icedtea6-1.1/patches/icedtea-ecj.patch
+--- icedtea6-1.1.orig/patches/icedtea-ecj.patch	2008-03-12 19:55:19.000000000 +0000
++++ icedtea6-1.1/patches/icedtea-ecj.patch	2008-06-01 19:16:14.000000000 +0100
+@@ -665,9 +665,9 @@
   	$(prep-target)
  -	$(BOOT_JAR_CMD) c0mf $(JAR_MANIFEST_FILE) $@ \
  -	    @$(RES_JAR_ARGLIST) $(JAR_JFLAGS)
@@ -13,7 +25,7 @@
   	@$(java-vm-cleanup)
   
   # Create jsse.jar containing SunJSSE implementation classes
-@@ -680,9 +680,9 @@ diff -ru openjdk-ecj.orig/langtools/make
+@@ -680,9 +680,9 @@
   	$(prep-target)
  -	$(BOOT_JAR_CMD) c0mf $(JAR_MANIFEST_FILE) $@ \
  -	    @$(RT_JAR_ARGLIST) $(JAR_JFLAGS)
@@ -26,4 +38,3 @@
   	@$(java-vm-cleanup)
   
   # Meta-index construction to make core class loaders lazier
-
