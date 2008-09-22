@@ -8,7 +8,7 @@ MY_PV="${PV/_beta/b}"
 
 DESCRIPTION="C++ library to create, manipulate and render SVG files."
 HOMEPAGE="http://wxsvg.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${PN}-${MY_PV}.tar.gz"
+SRC_URI="mirror://sourceforge/${PN}/${PN}-${MY_PV}.tar.bz2"
 
 LICENSE="wxWinLL-3"
 KEYWORDS="~amd64 ~ppc x86"
@@ -28,14 +28,7 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	epatch "${FILESDIR}"/${P}-newer_ffmpeg.patch
-	AT_M4DIR="${S}" eautoreconf 
-}
-
+#	AT_M4DIR="${S}" eautoreconf 
 src_compile() {
 	export WX_GTK_VER="2.8"
 	need-wxwidgets unicode

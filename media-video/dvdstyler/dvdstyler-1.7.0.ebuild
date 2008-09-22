@@ -8,7 +8,7 @@ MY_P=DVDStyler-${PV/_p/_}
 
 DESCRIPTION="DVDStyler is a cross-platform DVD authoring System"
 HOMEPAGE="http://www.dvdstyler.de"
-SRC_URI="mirror://sourceforge/dvdstyler/${MY_P}.tar.gz"
+SRC_URI="mirror://sourceforge/dvdstyler/${MY_P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,7 +21,7 @@ RDEPEND="app-cdr/dvd+rw-tools
 	>=media-video/mjpegtools-1.8.0
 	=x11-libs/wxGTK-2.8*
 	media-libs/netpbm
-	>=media-libs/wxsvg-1.0_beta10
+	>=media-libs/wxsvg-1.0_beta11
 	virtual/cdrtools
 	virtual/libc
 	gnome? ( >=gnome-base/libgnomeui-2.0 )"
@@ -35,7 +35,6 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	epatch "${FILESDIR}"/${P}-newer_ffmpeg.patch
 	eautoreconf
 }
 
