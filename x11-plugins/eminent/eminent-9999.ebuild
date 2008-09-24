@@ -4,10 +4,10 @@
 
 inherit git
 
-EGIT_REPO_URI="git://git.glacicle.com/awesome/wicked.git"
+EGIT_REPO_URI="git://git.glacicle.com/awesome/eminent.git"
 
-DESCRIPTION="Wicked widgets for the awesome window manager"
-HOMEPAGE="http://git.glacicle.com/?p=awesome/wicked.git;a=summary"
+DESCRIPTION="Eminent dynamic tagging lybrary for the awesome window manager"
+HOMEPAGE="http://git.glacicle.com/?p=awesome/eminent.git;a=summary"
 
 SRC_URI=""
 
