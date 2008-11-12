@@ -20,18 +20,13 @@ LICENSE="LLVM"
 
 SLOT="0"
 
-KEYWORDS="~x86 ~amd64"
-IUSE="debug alltargets pic"
+KEYWORDS="~x86"
+IUSE="debug alltargets"
 
 # we're not mirrored, fetch from homepage
 RESTRICT="mirror"
 
-DEPEND="dev-lang/perl
-		>=sys-devel/make-3.79
-		>=sys-devel/flex-2.5.4
-		>=sys-devel/bison-1.28
-		>=sys-devel/gcc-3.4.2
-        "
+DEPEND="dev-lang/perl"
 RDEPEND="dev-lang/perl"
 PDEPEND=""
 
@@ -71,17 +66,6 @@ src_unpack() {
 	# (the exception would be if we build shared libraries, which we don't)
 	einfo "Fixing rpath"
 	sed -e 's,-rpath \$(ToolDir),,g' -i Makefile.rules || die "sed failed"
-
-	# This patch solves the PIC code generation for 64bits platforms. It is
-	# activated with a USE flag, so users know what they are doing
-	if use amd64 && use pic; then
-		epatch "${FILESDIR}"/llvm-2.3-64bits-pic.patch
-		elog "PIC code generation for 64 bits -> patch applied"
-	fi
-	
-	epatch "${FILESDIR}"/llvm-2.3-dont-build-hello.patch
-	epatch "${FILESDIR}"/llvm-2.3-disable-strip.patch
-	
 }
 
 
@@ -93,18 +77,13 @@ src_compile() {
 		einfo "Note: Compiling LLVM in debug mode will create huge and slow binaries"
 		# ...and you probably shouldn't use tmpfs, unless it can hold 900MB
 	else
-		CONF_FLAGS="${CONF_FLAGS} --enable-optimized --disable-assertions \
---disable-expensive-checks"
+		CONF_FLAGS="${CONF_FLAGS} --enable-optimized"
 	fi
 	
 	if use alltargets; then
 		CONF_FLAGS="${CONF_FLAGS} --enable-targets=all"
 	else
 		CONF_FLAGS="${CONF_FLAGS} --enable-targets=host-only"
-	fi
-
-	if use amd64 && use pic; then
-		CONF_FLAGS="${CONF_FLAGS} --enable-pic"
 	fi
 
 	# a few minor things would be built a bit differently depending on whether
