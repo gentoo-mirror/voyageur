@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils
+inherit eutils toolchain-funcs 
 
 DESCRIPTION="Low Level Virtual Machine"
 HOMEPAGE="http://llvm.org/"
@@ -20,29 +20,92 @@ LICENSE="LLVM"
 
 SLOT="0"
 
-KEYWORDS="~x86"
-IUSE="debug alltargets"
+KEYWORDS="~x86 ~amd64"
+
+IUSE="debug alltargets pic"
+# 'jit' is not a flag anymore.  at least on x86, disabling it saves nothing
+# at all, so having it always enabled for platforms that support it is fine
 
 # we're not mirrored, fetch from homepage
 RESTRICT="mirror"
 
-DEPEND="dev-lang/perl"
+DEPEND="dev-lang/perl
+		>=sys-devel/make-3.79
+		>=sys-devel/flex-2.5.4
+		>=sys-devel/bison-1.28
+		>=sys-devel/gcc-3.0
+        "
 RDEPEND="dev-lang/perl"
 PDEPEND=""
+# note that app-arch/pax is no longer a dependency
 
 S="${WORKDIR}/llvm-${PV}"
 
-MY_LLVM_GCC_PREFIX=/usr/lib/llvm-gcc
-# this same variable is located in llvm-gcc's ebuild; keep them in sync
-
 pkg_setup() {
-	# TODO: some version of GCC are known to miscompile LLVM, check for them
-	# here.  (See docs/GettingStarted.html)
+	
+	broken_gcc=( 3.2.2 3.2.3 3.3.2 4.1.1 )
+	broken_gcc_x86=( 3.4.0 3.4.2 )
+	broken_gcc_amd64=( 3.4.6 )
+	
+	gcc_vers=`gcc-fullversion`
+	
+	for version in ${broken_gcc[@]}
+	do
+		if [ "$gcc_vers" = "$version" ]; then
+			elog "Your version of gcc is known to miscompile llvm"
+			elog "check http://www.llvm.org/docs/GettingStarted.html for \
+possible solutions"
+			die "Your version of gcc is known to miscompile llvm" 
+		fi
+	done
 
-	# inherit toolchain-funcs
-	# tc-getXX 
-	# gcc-fullversion
-	true
+	if use x86; then
+		for version in ${broken_gcc_x86[@]}
+		do
+			if [ "$gcc_vers" = "$version" ]; then
+				elog "Your version of gcc is known to miscompile llvm in x86 \
+architectures"
+				elog "check http://www.llvm.org/docs/GettingStarted.html for \
+possible solutions"
+				die "Your version of gcc is known to miscompile llvm" 
+			fi
+		done
+	fi
+
+	if use amd64; then
+		for version in ${broken_gcc_amd64[@]}
+		do
+			if [ "$gcc_vers" = "$version" ]; then
+				elog "Your version of gcc is known to miscompile llvm in amd64 \
+architectures"
+				elog "check http://www.llvm.org/docs/GettingStarted.html for \
+possible solutions"
+				die "Your version of gcc is known to miscompile llvm" 
+			fi
+		done
+	fi
+
+	broken_bison=( 1.85 1.875 )
+
+	for version in ${broken_bison[@]}
+	do
+		if [ $(bison --version | head -n1 | cut -f4 -d" ") = "$version" ]; then
+			elog "Your version of Bison is known not to work with llvm, please \
+upgrade to a newer version"
+			die "Your version of Bison is known not to work with llvm"
+		fi
+	done
+
+
+	buggy_ld=( 2.16 2.17 )
+
+	for version in ${buggy_ld[@]}
+	do
+		if [ $(ld --version | head -n1 | cut -f5 -d" ") = "$version" ]; then
+			ewarn "Your version of Binutils is known to be problematic with \
+llvm -> llvm team recommends upgrading"
+		fi
+	done
 }
 
 src_unpack() {
@@ -66,6 +129,9 @@ src_unpack() {
 	# (the exception would be if we build shared libraries, which we don't)
 	einfo "Fixing rpath"
 	sed -e 's,-rpath \$(ToolDir),,g' -i Makefile.rules || die "sed failed"
+
+	epatch "${FILESDIR}"/llvm-2.3-dont-build-hello.patch
+	epatch "${FILESDIR}"/llvm-2.3-disable-strip.patch
 }
 
 
@@ -77,13 +143,18 @@ src_compile() {
 		einfo "Note: Compiling LLVM in debug mode will create huge and slow binaries"
 		# ...and you probably shouldn't use tmpfs, unless it can hold 900MB
 	else
-		CONF_FLAGS="${CONF_FLAGS} --enable-optimized"
+		CONF_FLAGS="${CONF_FLAGS} --enable-optimized --disable-assertions \
+--disable-expensive-checks"
 	fi
 	
 	if use alltargets; then
 		CONF_FLAGS="${CONF_FLAGS} --enable-targets=all"
 	else
 		CONF_FLAGS="${CONF_FLAGS} --enable-targets=host-only"
+	fi
+
+	if use amd64 && use pic; then
+		CONF_FLAGS="${CONF_FLAGS} --enable-pic"
 	fi
 
 	# a few minor things would be built a bit differently depending on whether
@@ -104,33 +175,13 @@ src_install()
 	# for some reason, LLVM creates a few .dir files.  remove them
 	find "${D}" -name .dir -print0 | xargs -r0 rm
 
-	# tblgen and stkrc do not get installed and wouldn't be very useful anyway,
+	# tblgen does not get installed and wouldn't be very useful anyway
 	# so remove their man pages.  llvmgcc.1 and llvmgxx.1 are present here for
 	# unknown reasons.  llvm-gcc will install proper man pages for itself, so
-	# remove these strange thingies here.
+	# remove them here
 	einfo "Removing unnecessary man pages"
-	rm "${D}"/usr/share/man/man1/{tblgen,stkrc,llvmgcc,llvmgxx}.1
+	rm "${D}"/usr/share/man/man1/{tblgen,llvmgcc,llvmgxx}.1
 
-	# this also installed the man pages llvmgcc.1 and llvmgxx.1, which is a bit
-	# a mistery because those binares are provided by llvm-gcc
-
-	# llvmc makes use of the files in /etc/llvm to find programs to run; those
-	# files contain markers that are meant to be replaced at runtime with
-	# strings that were determined at llvm-base's compile time (odd isn't it?);
-	# those strings will be empty in case llvm-base is built while llvm-gcc
-	# doesn't exist yet (which is a common case).  to make things work in
-	# either case, fix it by replacing the markers with hard strings of where
-	# llvm-gcc will be in case it will be installed
-
-	einfo "Configuring llvmc"
-
-	for X in c c++ cpp cxx ll st; do
-		sed -e "s,%cc1%,${MY_LLVM_GCC_PREFIX}/libexec/gcc/${CHOST}/4.0.1/cc1,g" \
-			-e "s,%cc1plus%,${MY_LLVM_GCC_PREFIX}/libexec/gcc/${CHOST}/4.0.1/cc1plus,g" \
-			-e "s,%llvmgccdir%,${MY_LLVM_GCC_PREFIX},g" \
-			-e "s,%llvmgcclibexec%,${MY_LLVM_GCC_PREFIX}/libexec/gcc/${CHOST}/4.0.1,g" \
-			-e "s,%bindir%,/usr/bin,g" \
-			-i "${D}/etc/llvm/$X" || "sed failed"
-	done
 }
+
 

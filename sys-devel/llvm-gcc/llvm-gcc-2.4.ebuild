@@ -10,14 +10,14 @@ SRC_URI="http://llvm.org/releases/${PV}/llvm-gcc-4.2-${PV}.source.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 # we're not mirrored, fetch from homepage
 RESTRICT="mirror"
 
-DEPEND=">=sys-devel/llvm-base-2.1"
-RDEPEND=">=sys-devel/llvm-base-2.1"
+DEPEND="~sys-devel/llvm-${PV}"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/llvm-gcc4.2-${PV}.source"
 
