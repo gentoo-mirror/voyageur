@@ -59,16 +59,13 @@ src_compile() {
 
 	cd "${WORKDIR}/obj"
 
-	# TODO: someone put that in other ebuild attempts to llvm-gcc, but I don't
-	# know why
-	#replace-flags "-march=pentium-m" "-march=pentium3"
-
 	# TODO: shall we or not?
 	#CONF_FLAGS="${CONF_FLAGS} --disable-threads"
 
 	# this is to avoid this problem: http://llvm.org/bugs/show_bug.cgi?id=896
 	CONF_FLAGS="${CONF_FLAGS} --disable-shared"
-
+	
+	# TODO: multilib can be enabled by applying a patch listed in the README.LLVM file
 	if useq amd64; then
 		CONF_FLAGS="${CONF_FLAGS} --disable-multilib"
 	fi
