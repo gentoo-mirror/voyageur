@@ -31,29 +31,27 @@ RDEPEND=">=net-print/cups-1.2.12
 	 >=x11-libs/gtk+-2.8
 	 >=x11-libs/libXinerama-1.0.2
 	 >=x11-libs/libXp-1.0.0
+	 >=x11-libs/libXi-1.1.3
+	 >=x11-libs/libXau-1.0.3
+	 >=x11-libs/libXdmcp-1.0.2
 	 >=media-libs/jpeg-6b
 	 >=media-libs/libpng-1.2
 	 >=media-libs/giflib-4.1.6
 	 >=sys-libs/zlib-1.2.3
 	 x11-proto/inputproto
 	 x11-proto/xineramaproto
-	 nsplugin? ( || (
-		>=www-client/mozilla-firefox-3.0.0
-		>=net-libs/xulrunner-1.9
-	 ) )
-	 pulseaudio?  ( >=media-sound/pulseaudio-0.9.11 )"
+	 nsplugin? ( >=net-libs/xulrunner-1.9 )
+	 pulseaudio?  ( >=media-sound/pulseaudio-0.9.11 )
+	 javascript? ( dev-java/rhino:1.6 )"
 
 # Additional dependencies for building:
 #   unzip: extract OpenJDK tarball
 #   xalan/xerces: automatic code generation
 #   ant, ecj, jdk: required to build Java code
-
-# NOTE: we depend directly on dev-java/icedtea6 instead of virtual/icedtea-jdk
-#       because if the virtual is not installed, portage will try to satisfy
-#       gnu-classpath-jdk instead
-#       it would be possible if the order was reversed but then there are
-#       circular deps instead...
-# NOTE: we need to depend also on virtual/jdk unless the eclass won't switch VM
+# Only ant-core-1.7.0-r3 in java-overlay contains
+# a version of Ant that properly respects environment
+# variables.  1.7.1-r2 and on will work if the build
+# sets some environment variables.
 DEPEND="${RDEPEND}
 	|| ( >=virtual/gnu-classpath-jdk-1.5
 		 dev-java/icedtea6 )
@@ -61,8 +59,10 @@ DEPEND="${RDEPEND}
 	>=app-arch/unzip-5.52
 	>=dev-java/xalan-2.7.0
 	>=dev-java/xerces-2.9.1
-	>=dev-java/ant-core-1.7.0-r3
-	javascript? ( dev-java/rhino:1.6 )"
+	|| (
+	  =dev-java/ant-core-1.7.0-r3
+	  >=dev-java/ant-core-1.7.1-r2
+	)"
 
 pkg_setup() {
 	if use zero && ! built_with_use sys-devel/gcc libffi; then
@@ -111,6 +111,8 @@ src_unpack() {
 	# Don't hide the HotSpot build number
 	# (http://icedtea.classpath.org/hg/icedtea6/rev/6816e84bfc28)
 	epatch "${FILESDIR}/hotspot-${PV}.patch"
+	# Handle CACAO builds when aliases are specified
+	epatch "${FILESDIR}/cacao-alias.patch"
 
 	eautoreconf || die "failed to regenerate autoconf infrastructure"
 }
@@ -148,7 +150,7 @@ src_compile() {
 	fi
 
 	if use javascript ; then
-		rhino_jar=$(java-pkg_getjar --build-only rhino:1.6 js.jar);
+		rhino_jar=$(java-pkg_getjar rhino:1.6 js.jar);
 	fi
 
 	unset JAVA_HOME JDK_HOME CLASSPATH JAVAC JAVACFLAGS
@@ -168,6 +170,12 @@ src_compile() {
 		$(use_enable shark) \
 		$(use_enable pulseaudio pulse-java) \
 		|| die "configure failed"
+
+	# Newer versions of Gentoo's ant add
+	# an environment variable so it works properly...
+	export ANT_RESPECT_JAVA_HOME=TRUE
+	# Also make sure we don't bring in additional tasks
+	export ANT_TASKS=none
 
 	emake -j 1  || die "make failed"
 }
