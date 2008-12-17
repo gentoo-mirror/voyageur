@@ -1,6 +1,8 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+
+EAPI=1
 
 inherit qt4 games eutils
 
@@ -13,17 +15,15 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="$(qt4_min_version 4.2)"
+DEPEND="|| ( ( x11-libs/qt-core:4 x11-libs/qt-gui:4 )
+		>=x11-libs/qt-4.3:4 )"
+RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/SudokuSenseiSources
 
 src_compile() {
-	qmake -project SudokuSensei.pro || die "qmake project failed"
-	qmake SudokuSensei.pro || die "qmake failed"
-	emake \
-		CXX=$(tc-getCXX) \
-		LINK=$(tc-getCXX) \
-		|| die "emake failed"
+	eqmake4 SudokuSensei.pro || die "qmake failed"
+	emake || die "emake failed"
 }
 
 src_install() {
