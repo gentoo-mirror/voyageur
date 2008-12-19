@@ -1,0 +1,13 @@
+--- /tmp/tt-rss-1.2.28/magpierss/rss_parse.inc	2008-10-21 09:47:45.000000000 +0000
++++ /tmp/works/magpierss/rss_parse.inc	2008-10-29 10:34:35.000000000 +0000
+@@ -159,6 +159,10 @@
+                 'feed_start_element', 'feed_end_element' );
+                         
+         xml_set_character_data_handler( $this->parser, 'feed_cdata' ); 
++
++	$source=str_replace("&lt;","&#60;",$source);
++	$source=str_replace("&gt;","&#62;",$source);
++	$source=str_replace("&amp;","&#38;",$source);
+     
+         $status = xml_parse( $this->parser, $source );
+ 

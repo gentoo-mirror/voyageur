@@ -1,0 +1,13 @@
+--- /tmp/tt-rss-1.2.28/simplepie/simplepie.inc	2008-10-21 09:47:46.000000000 +0000
++++ /tmp/works/simplepie/simplepie.inc	2008-10-29 06:55:50.000000000 +0000
+@@ -12761,6 +12761,10 @@
+ 		xml_set_character_data_handler($xml, 'cdata');
+ 		xml_set_element_handler($xml, 'tag_open', 'tag_close');
+ 
++		$data=str_replace("&lt;","&#60;",$data);
++		$data=str_replace("&gt;","&#62;",$data);
++		$data=str_replace("&amp;","&#38;",$data);
++
+ 		// Parse!
+ 		if (!xml_parse($xml, $data, true))
+ 		{

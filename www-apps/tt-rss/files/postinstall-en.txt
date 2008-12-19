@@ -1,0 +1,11 @@
+0. Create a new database, schemas are available here:
+	${VHOST_ROOT}/${PN}/ttrss_schema_(mysql|pgsql).sql
+
+1. Adapt ${VHOST_ROOT}/${PN}/config.php to your setup:
+	* database name, user, password, connection type
+		(leave DB_HOST empty if you want to connect via unix socket)
+	* single or multi user mode
+
+Additional informations:
+http://tt-rss.org/trac/wiki/InstallationNotes
+README
