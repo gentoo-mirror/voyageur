@@ -12,12 +12,14 @@ SRC_URI="http://goodies.xfce.org/releases/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+gvfs +sourceview"
+IUSE="nls +soup sqlite"
 
 DEPEND="x11-libs/gtk+
 	net-libs/webkit-gtk
-	gvfs? ( gnome-base/gvfs )
-	sourceview? ( x11-libs/gtksourceview )"
+	nls? ( sys-devel/gettext )
+	soup? ( net-libs/libsoup )
+	sqlite? ( dev-db/sqlite )"
+RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	ewarn "Note: this software is not yet in a too mature status so expect some minor things to break"
