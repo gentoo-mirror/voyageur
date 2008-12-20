@@ -3,7 +3,7 @@
 # $Header: $
 
 EAPI="1"
-inherit eutils
+inherit eutils multilib gnome2-utils
 
 DESCRIPTION="A lightweight web browser"
 HOMEPAGE="http://www.twotoasts.de/index.php?/pages/midori_summary.html"
@@ -26,11 +26,15 @@ pkg_setup() {
 }
 
 src_compile() {
-	./waf --prefix="/usr/" configure || die "waf configure failed."
+	./waf --prefix="/usr/" --libdir="/usr/$(get_libdir)" configure || die "waf configure failed."
 	./waf build || die "waf build failed."
 }
 
 src_install() {
-	DESTDIR=${D} ./waf install || die "waf install failed."
+	DESTDIR="${D}" ./waf install || die "waf install failed."
 	dodoc AUTHORS ChangeLog INSTALL TODO
+}
+
+pkg_postinst() {
+	gnome2_icon_cache_update
 }
