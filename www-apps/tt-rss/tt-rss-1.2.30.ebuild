@@ -37,10 +37,6 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	# See http://tt-rss.org/forum/viewtopic.php?f=1&t=393
-	epatch "${FILESDIR}/${P}_inofficial_libxml2_bug_workaround_magpierss.patch"
-	epatch "${FILESDIR}/${P}_inofficial_libxml2_bug_workaround_simplepie.patch"
-
 	# Customize config.php so that the right 'DB_TYPE' is already set (according to the USE flag(s))
 	elog "Customizing config.php..."
 	cp config.php-dist config.php
