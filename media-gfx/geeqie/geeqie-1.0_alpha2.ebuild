@@ -17,7 +17,7 @@ S="${WORKDIR}/${MY_P}"
 
 RDEPEND=">=x11-libs/gtk+-2.4.0
 	lcms? ( media-libs/lcms )
-	exif? ( media-gfx/exiv2 )
+	exif? ( <media-gfx/exiv2-0.18 )
 	virtual/libintl"
 
 DEPEND="${RDEPEND}
