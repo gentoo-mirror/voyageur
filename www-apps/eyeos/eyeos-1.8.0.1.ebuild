@@ -6,7 +6,11 @@ inherit depend.php versionator webapp eutils
 
 DESCRIPTION="AJAX web-based desktop environment"
 HOMEPAGE="http://wwwwww.eyeos.org"
-SRC_URI="mirror://sourceforge/eyeos/eyeOS_$(get_version_component_range 1-4)-$(get_version_component_range 5).tar.gz"
+if [[ $(get_version_component_count) < 5 ]]; then
+	SRC_URI="mirror://sourceforge/eyeos/eyeOS_$(get_version_component_range 1-4).tar.gz"
+else
+	SRC_URI="mirror://sourceforge/eyeos/eyeOS_$(get_version_component_range 1-4)-$(get_version_component_range 5).tar.gz"
+fi
 
 LICENSE="GPL-3"
 KEYWORDS="~amd64 ~x86"
