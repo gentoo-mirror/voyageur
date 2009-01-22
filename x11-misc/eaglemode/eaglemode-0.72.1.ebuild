@@ -13,8 +13,6 @@ IUSE="abiword dvi html jpeg netpbm png povray rar svg tiff xine wmf zip"
 
 DEPEND="dev-lang/perl
 	x11-libs/libX11
-	x11-libs/libXext
-	x11-libs/libXxf86vm
 	virtual/ghostscript
 	jpeg? ( media-libs/jpeg )
 	png? ( media-libs/libpng )
