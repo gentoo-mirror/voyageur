@@ -11,13 +11,14 @@ SRC_URI="mirror://sourceforge/geeqie/${MY_P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="lcms exif"
+IUSE="exif lcms lirc"
 
 S="${WORKDIR}/${MY_P}"
 
 RDEPEND=">=x11-libs/gtk+-2.4.0
+	exif? ( media-gfx/exiv2 )
 	lcms? ( media-libs/lcms )
-	exif? ( <media-gfx/exiv2-0.18 )
+	lirc? ( app-misc/lirc )
 	virtual/libintl"
 
 DEPEND="${RDEPEND}
@@ -27,8 +28,9 @@ DEPEND="${RDEPEND}
 src_compile() {
 	econf \
 		--disable-dependency-tracking \
-		$(use_with lcms) \
-		$(use_with exif exiv2) \
+		$(use_enable exif exiv2) \
+		$(use_enable lcms) \
+		$(use_enable lirc) \
 		|| die "econf faild"
 	emake || die "emake failed"
 }
