@@ -7,6 +7,8 @@ Installation:
 		(leave DB_HOST empty if you want to connect via unix socket)
 	* single or multi user mode
 
+3. Set a feeds update method, read http://tt-rss.org/trac/wiki/UpdatingFeeds
+
 Upgrade:
 1. Remember to update your config.php
 2. Reload tt-rss in your browser for eventual database upgrade
