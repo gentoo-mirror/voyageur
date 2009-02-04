@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -37,5 +37,6 @@ src_install () {
 	done
 
 
+	webapp_postinst_txt en "${FILESDIR}"/postinstall-en.txt
 	webapp_src_install
 }
