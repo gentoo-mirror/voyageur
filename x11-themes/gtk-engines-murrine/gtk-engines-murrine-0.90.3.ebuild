@@ -37,6 +37,11 @@ DEPEND="dev-util/pkgconfig
 
 S="${WORKDIR}/${MY_P}"
 
+src_prepare() {
+	# More look-alike to cappuccino in old murrine engine
+	sed -i -e "s/contrast/#contrast/" "${WORKDIR}"/MurrinaCappuccino/gtk-2.0/gtkrc || die "sed failed"
+}
+
 src_configure() {
 	local myconf
 	use animation-rtl && myconf="--enable-animation-rtl"
