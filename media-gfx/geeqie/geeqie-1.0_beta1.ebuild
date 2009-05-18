@@ -4,19 +4,20 @@
 
 MY_P="${P/_/}"
 
-DESCRIPTION="A lightweight image viewer forked from GQview"
+DESCRIPTION="A lightweight GTK image viewer forked from GQview"
 HOMEPAGE="http://geeqie.sourceforge.net/"
 SRC_URI="mirror://sourceforge/geeqie/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="exif lcms lirc"
+IUSE="exif lcms lirc xmp"
 
 S="${WORKDIR}/${MY_P}"
 
 RDEPEND=">=x11-libs/gtk+-2.4.0
-	exif? ( media-gfx/exiv2 )
+	xmp? ( media-gfx/exiv2[xmp] )
+	!xmp? ( exif? ( media-gfx/exiv2 ) )
 	lcms? ( media-libs/lcms )
 	lirc? ( app-misc/lirc )
 	virtual/libintl"
@@ -37,7 +38,5 @@ src_compile() {
 
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
-	# leave README uncompressed because the program reads it
-	dodoc AUTHORS ChangeLog TODO
-	rm -f "${D}/usr/share/doc/${PF}/COPYING"
+	rm -f "${D}/usr/share/doc/${MY_P}/COPYING"
 }
