@@ -1,6 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+
+EAPI=2
 
 MY_P="${P/_/}"
 
@@ -26,14 +28,13 @@ DEPEND="${RDEPEND}
 	dev-util/pkgconfig
 	sys-devel/gettext"
 
-src_compile() {
+src_configure() {
 	econf \
 		--disable-dependency-tracking \
 		$(use_enable exif exiv2) \
 		$(use_enable lcms) \
 		$(use_enable lirc) \
 		|| die "econf faild"
-	emake || die "emake failed"
 }
 
 src_install() {
