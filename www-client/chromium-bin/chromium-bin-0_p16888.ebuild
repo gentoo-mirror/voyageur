@@ -14,32 +14,33 @@ HOMEPAGE="http://code.google.com/chromium/"
 SRC_URI="http://build.chromium.org/buildbot/snapshots/chromium-rel-linux/${MY_PV}/chrome-linux.zip -> ${PN}-${MY_PV}.zip"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="-* ~x86"
 IUSE=""
 
-DEPEND=">=dev-lang/python-2.4
-	>=dev-libs/nspr-4.7
+DEPEND=""
+RDEPEND=">=dev-libs/nspr-4.7
 	>=dev-libs/nss-3.12
-	x11-libs/gtk+:2
+	gnome-base/gconf
 	media-fonts/corefonts"
-RDEPEND="${DEPEND}"
 
-S="${WORKDIR}/chromium"
+S=${WORKDIR}
+
+QA_EXECSTACK="opt/chromium/chrome-linux/chrome"
 
 src_install() {
 	declare CHROMIUM_HOME=/opt/chromium
 
 	dodir ${CHROMIUM_HOME}
-	mv ${WORKDIR}/chrome-linux/ "${D}"${CHROMIUM_HOME}
+	cp -R chrome-linux/ "${D}"${CHROMIUM_HOME} || die "Unable to install chrome-linux folder"
 	
 	# Create symbol links for necessary libraries
 	dodir ${CHROMIUM_HOME}/lib
 	if use x86; then
-		NSS_DIR=/usr/$(get_libdir)/nss
-		NSPR_DIR=/usr/$(get_libdir)/nspr
+		NSS_DIR=../../../usr/$(get_libdir)/nss
+		NSPR_DIR=../../../usr/$(get_libdir)/nspr
 	fi
 	# amd64: firefox-bin, xulrunner-bin, adobe-flash[32bit] could
-	# provide these, but we miss libgconf-2.so.4 
+	# provide these, but we miss gconf/orbit
 
 	dosym ${NSPR_DIR}/libnspr4.so ${CHROMIUM_HOME}/lib/libnspr4.so.0d
 	dosym ${NSPR_DIR}/libplc4.so ${CHROMIUM_HOME}/lib/libplc4.so.0d
@@ -51,7 +52,7 @@ src_install() {
 
 	# Create chromium-bin wrapper
 	make_wrapper chromium-bin ./chrome ${CHROMIUM_HOME}/chrome-linux ${CHROMIUM_HOME}/lib
-	newicon ${FILESDIR}/chromium.png ${PN}.png
+	newicon "${FILESDIR}"/chromium.png ${PN}.png
 	make_desktop_entry chromium-bin "Chromium" ${PN}.png "Network;WebBrowser"
 }
 
