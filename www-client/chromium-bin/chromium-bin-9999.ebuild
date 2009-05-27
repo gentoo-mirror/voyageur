@@ -5,19 +5,15 @@
 EAPI="2"
 inherit eutils multilib
 
-# Latest revision id can be found at
-# http://build.chromium.org/buildbot/snapshots/chromium-rel-linux/LATEST
-MY_PV="${PV/0\_p}"
-
 DESCRIPTION="Chromium is the open-source project behind Google Chrome"
 HOMEPAGE="http://code.google.com/chromium/"
-SRC_URI="http://build.chromium.org/buildbot/snapshots/chromium-rel-linux/${MY_PV}/chrome-linux.zip -> ${PN}-${MY_PV}.zip"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="-* ~x86"
 IUSE=""
 
-DEPEND=""
+DEPEND="app-arch/unzip
+	net-misc/curl"
 RDEPEND=">=dev-libs/nspr-4.7
 	>=dev-libs/nss-3.12
 	gnome-base/gconf
@@ -27,12 +23,19 @@ S=${WORKDIR}
 
 QA_EXECSTACK="opt/chromium/chrome-linux/chrome"
 
+src_unpack() {
+	LV=`curl --silent http://build.chromium.org/buildbot/snapshots/chromium-rel-linux/LATEST`
+	elog "Installing/updating to version ${LV}"
+	wget -c "http://build.chromium.org/buildbot/snapshots/chromium-rel-linux/${LV}/chrome-linux.zip" -O "${DISTDIR}"/${PN}-${LV}.zip
+	unpack ${PN}-${LV}.zip
+}
+
 src_install() {
-	declare CHROMIUM_HOME=/opt/chromium
+	declare CHROMIUM_HOME=/opt/chromium.org
 
 	dodir ${CHROMIUM_HOME}
 	cp -R chrome-linux/ "${D}"${CHROMIUM_HOME} || die "Unable to install chrome-linux folder"
-	
+
 	# Create symbol links for necessary libraries
 	dodir ${CHROMIUM_HOME}/lib
 	if use x86; then
@@ -40,7 +43,7 @@ src_install() {
 		NSPR_DIR=../../../usr/$(get_libdir)/nspr
 	fi
 	# amd64: firefox-bin, xulrunner-bin, adobe-flash[32bit] could
-	# provide these, but we miss gconf/orbit
+	# provide these, but we miss gconf
 
 	dosym ${NSPR_DIR}/libnspr4.so ${CHROMIUM_HOME}/lib/libnspr4.so.0d
 	dosym ${NSPR_DIR}/libplc4.so ${CHROMIUM_HOME}/lib/libplc4.so.0d

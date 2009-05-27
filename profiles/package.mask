@@ -1,2 +1,3 @@
-# SVN live ebuild
+# Live ebuilds
 =games-arcade/blobby2-9999
+=www-client/chromium-bin-9999
