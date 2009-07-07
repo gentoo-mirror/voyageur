@@ -1,0 +1,22 @@
+media-libs/libsdl opengl? ( virtual/opengl ) X? ( x11-misc/imake ) dev-lang/nasm
+media-libs/libsdl opengl? ( virtual/opengl )
+0
+http://www.pknet.com/~joe/dgen-sdl-1.23.tar.gz
+
+http://www.pknet.com/~joe/dgen-sdl.html
+dgen-sdl
+A Linux/SDL-Port of the famous DGen MegaDrive/Genesis-Emulator
+~amd64 x86
+base eutils games multilib portability toolchain-funcs
+X mmx opengl
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

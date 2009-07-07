@@ -1,0 +1,22 @@
+x11-libs/gtk+ =sys-devel/automake-1.10* >=sys-devel/autoconf-2.61 sys-devel/libtool
+x11-libs/gtk+
+0
+mirror://sourceforge/seam-carver/arachne-1.0.0.tar.gz
+
+http://seam-carver.sourceforge.net/
+GPL-2
+Seam carving resizing library and realtime demonstration program
+~amd64 ~x86
+autotools eutils libtool multilib portability toolchain-funcs
+
+
+
+
+
+
+install unpack
+
+
+
+
+

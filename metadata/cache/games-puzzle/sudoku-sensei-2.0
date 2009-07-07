@@ -1,0 +1,22 @@
+|| ( ( x11-libs/qt-core:4 x11-libs/qt-gui:4 ) >=x11-libs/qt-4.3:4 )
+|| ( ( x11-libs/qt-core:4 x11-libs/qt-gui:4 ) >=x11-libs/qt-4.3:4 )
+0
+mirror://sourceforge/sudoku-sensei/sudoku-sensei-src-02-00.tar.gz
+
+http://sudoku-sensei.sourceforge.net
+GPL-2
+The Sudoku Explainer Game
+~amd64 ~x86
+base eutils games multilib portability qt4 toolchain-funcs versionator
+
+
+
+
+1
+
+compile install postinst preinst setup unpack
+
+
+
+
+

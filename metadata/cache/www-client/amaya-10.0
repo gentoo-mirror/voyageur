@@ -1,0 +1,22 @@
+media-libs/imlib x11-libs/wxGTK:2.8
+media-libs/imlib x11-libs/wxGTK:2.8
+0
+http://www.w3.org/Amaya/Distribution/amaya-fullsrc-10.0.tgz
+
+http://www.w3.org/Amaya/
+GPL-2
+The W3C Web-Browser
+~amd64 ~x86
+eutils multilib portability toolchain-funcs wxwidgets
+debug opengl
+
+
+
+1
+
+compile install setup
+
+
+
+
+

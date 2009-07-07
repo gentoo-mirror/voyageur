@@ -1,0 +1,22 @@
+media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl ) opengl? ( virtual/opengl ) demo? ( app-arch/unzip ) !pic? ( x86? ( dev-lang/nasm ) )
+media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl ) opengl? ( virtual/opengl )
+0
+mirror://gentoo/duke3d-20040817.tar.bz2 demo? ( ftp://ftp.3drealms.com/share/3dduke13.zip ftp://ftp.planetmirror.com/pub/gameworld/downloads/3dduke13.zip )
+
+http://icculus.org/projects/duke3d/
+GPL-2
+Port of the original Duke Nukem 3D
+~amd64 ~hppa ~ppc ~x86
+base eutils flag-o-matic games multilib portability toolchain-funcs
+demo pic perl opengl
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

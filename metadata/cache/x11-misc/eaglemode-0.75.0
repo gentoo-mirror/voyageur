@@ -1,0 +1,22 @@
+dev-lang/perl x11-libs/libX11 virtual/ghostscript jpeg? ( media-libs/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) zip? ( app-arch/unzip ) rar? ( app-arch/unrar ) abiword? ( app-office/abiword ) dvi? ( virtual/tetex ) netpbm? ( media-libs/netpbm ) html? ( app-text/htmldoc ) povray? ( media-gfx/povray ) svg? ( gnome-base/librsvg ) wmf? ( media-libs/libwmf )
+dev-lang/perl x11-libs/libX11 virtual/ghostscript jpeg? ( media-libs/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) zip? ( app-arch/unzip ) rar? ( app-arch/unrar ) abiword? ( app-office/abiword ) dvi? ( virtual/tetex ) netpbm? ( media-libs/netpbm ) html? ( app-text/htmldoc ) povray? ( media-gfx/povray ) svg? ( gnome-base/librsvg ) wmf? ( media-libs/libwmf )
+0
+mirror://sourceforge/eaglemode/eaglemode-0.75.0.tar.bz2
+
+http://eaglemode.sourceforge.net
+GPL-3
+Visit almost everything in your PC simply by zooming in
+~amd64 ~x86
+
+abiword dvi html jpeg netpbm png povray rar svg tiff xine wmf zip
+
+
+
+
+
+compile install
+
+
+
+
+

@@ -1,0 +1,22 @@
+net-im/pidgin libcaca? ( media-libs/libcaca[imlib] ) >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+net-im/pidgin libcaca? ( media-libs/libcaca[imlib] )
+0
+http://symlink.me/attachments/download/6/minbif-1.0alpha.tar.gz
+
+http://symlink.me/projects/show/minbif
+GPL-2
+an IRC instant messaging gateway, using libpurple
+~amd64 ~x86
+base cmake-utils eutils flag-o-matic multilib portability toolchain-funcs
+libcaca
+
+
+
+2
+
+compile configure install prepare test unpack
+
+
+
+
+

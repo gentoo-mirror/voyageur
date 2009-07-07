@@ -1,0 +1,22 @@
+>=x11-libs/gtk+-2.2 dev-util/pkgconfig nls? ( sys-devel/gettext ) >=sys-apps/sed-4
+>=x11-libs/gtk+-2.2 nls? ( virtual/libintl )
+0
+mirror://sourceforge/dvdisaster/dvdisaster-0.71.26.tar.bz2
+
+http://dvdisaster.sourceforge.net/
+GPL-2
+Data-protection and recovery tool for DVDs
+amd64 ppc x86
+eutils fdo-mime gnome.org gnome2 gnome2-utils libtool multilib portability toolchain-funcs
+linguas_cs linguas_de linguas_it linguas_sv gnome nls debug
+
+
+
+
+
+compile install postinst postrm preinst unpack
+
+
+
+
+
