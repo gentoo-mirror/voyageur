@@ -1,0 +1,158 @@
+# ChangeLog for gnome-extra/avant-window-navigator-extras
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  10 May 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-0.3.2.2.ebuild:
+  Fixed some deps and made some improvements to the ebuild - thanks to
+  malept.
+
+*avant-window-navigator-extras-0.3.2.2 (10 May 2009)
+
+  10 May 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  +avant-window-navigator-extras-0.3.2.2.ebuild:
+  Bumped awn-extras to the 0.3.2.2 version - thanks malept for the review.
+
+  01 Apr 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  gnome-extra/avant-window-navigator-extras/avant-window-navigator-extras-99
+  99.ebuild:
+  Updated deps for awne-9999. Thanks to Mark Lee (malept) for the dep info.
+
+  12 Mar 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  gnome-extra/avant-window-navigator-extras/avant-window-navigator-extras-99
+  99.ebuild:
+  Added missing dev-python/gconf-python dep for awn-extras-9999 - thanks to
+  termite47384 for the heads up.
+
+  21 Feb 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Updated deps for awne-9999. Thanks to Mark Lee (malept) for the dep info.
+
+  21 Feb 2009; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Bumped awne-9999 now that the gnome2.eclass was updated to EAPI=2 and
+  changed EBZR_REPO_URI from https to lp.
+
+*avant-window-navigator-extras-0.3.2 (20 Feb 2009)
+
+  20 Feb 2009; Mike Auty <ikelos@gentoo.org>
+  +avant-window-navigator-extras-0.3.2.ebuild:
+  Add in avant-window-navigator-extras-0.3.2 ebuild.
+
+  05 Oct 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Fixed the deps.
+
+  05 Oct 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Bumped awn-extra deps. Thanks to malept.
+
+  29 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Fixed 2 errors on S, the missing $ and it's ${P} and not ${PN}, thus no
+  need to define S.
+
+  28 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Redefined S and removed a call to bzr_src_unpack from src_prepare.
+
+  28 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Don't forget to call bzr_src_unpack.
+
+  26 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Moved src_unpack to src_prepare.
+
+  26 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  -avant-window-navigator-extras-9999-r1.ebuild,
+  avant-window-navigator-extras-9999.ebuild:
+  Bumped to EAPI-2.
+
+  13 Sep 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999-r1.ebuild,
+  avant-window-navigator-extras-9999.ebuild:
+  Call eautoreconf after intltoolize.
+
+*avant-window-navigator-extras-9999-r1 (09 Aug 2008)
+
+  09 Aug 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  +avant-window-navigator-extras-9999-r1.ebuild,
+  avant-window-navigator-extras-9999.ebuild:
+  I've restored the old 9999 ebuild and moved the new one to 9999-r1.
+
+  03 Aug 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  metadata.xml, avant-window-navigator-extras-9999.ebuild:
+  Fixed QA errors: Added webkit use flag description to metadata.xml. Fixed
+  inherit order and corrected the dep on awn.
+
+  02 Aug 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  metadata.xml:
+  Fixed vala description.
+
+  02 Aug 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  metadata.xml:
+  Added use flags descriptions to metadata.xml.
+
+  01 Aug 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Added webkit-gtk dep and moved to EAPI 2_pre1 for awn-extras-9999.
+
+  13 Jul 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Updated vala dep to >=0.3.4.
+
+  09 Jun 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  vte is no longer a dep on gconf?, but a hard dep.
+
+  24 Apr 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Update dependency on vala as awn-extras doesn't support >=vala-0.3.1.
+
+  27 Mar 2008; Ingmar Vanhassel <ingmar@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Fix some Jorge-failure.
+
+  23 Mar 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Added optional dep on >=vala-0.1.7.
+
+  15 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Moved back to the trunk branch as the development moved there again.
+  Added some use flags descriptions.
+
+  10 Feb 2008; Ingmar Vanhassel <ingmar@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Indent.
+
+  09 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Moved the python deps to RDEPEND.
+
+  08 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Disabled python-checks and added call to gnome2_pkg_postinst.
+
+  08 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Use the gnome2 eclass default src_compile to avoid the scrollkeeper sandbox
+  errors.
+
+  08 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Fixed license.
+
+  08 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  avant-window-navigator-extras-9999.ebuild:
+  Fixed the bug-tracker for awne, made gnome-menus a dep just for gnome and
+  fixed a typo.
+
+*avant-window-navigator-extras-9999 (08 Feb 2008)
+
+  08 Feb 2008; Jorge Manuel B. S. Vicetto <jmbsvicetto@gentoo.org>
+  +metadata.xml, +avant-window-navigator-extras-9999.ebuild:
+  Initial import of avant-window-navigator-extras. Many thanks to Mark Lee
+  (malept) <gentoo@lazymalevolence.com>.
+
