@@ -1,0 +1,22 @@
+virtual/python dev-util/subversion net-misc/rsync
+>=dev-lang/python-2.5 dev-python/twisted-conch dev-python/pyserial dev-python/pytz net-dialup/wvdial sys-apps/usb_modeswitch
+0
+
+
+https://forge.betavine.net/projects/vodafonemobilec/
+GPL
+Vodafone Mobile Connect Card driver for Linux
+~amd64 ~x86
+alternatives distutils eutils multilib portability python subversion toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm preinst unpack
+
+
+
+
+
