@@ -17,9 +17,12 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="${DEPEND}
-	>=dev-lang/python-2.5
-	dev-python/twisted-conch
+	>=dev-lang/python-2.5[sqlite]
+	dev-python/dbus-python
+	dev-python/gnome-python
+	dev-python/notify-python
 	dev-python/pyserial
 	dev-python/pytz
+	dev-python/twisted-conch
 	net-dialup/wvdial
-	sys-apps/usb_modeswitch"
+	>=sys-apps/usb_modeswitch-0.9.6"
