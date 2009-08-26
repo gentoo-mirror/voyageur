@@ -3,7 +3,7 @@
 # $Header: $
 
 EAPI="2"
-inherit eutils toolchain-funcs
+inherit eutils multilib toolchain-funcs
 
 DESCRIPTION="Chromium Web Browser"
 HOMEPAGE="http://chromium.org/"
@@ -86,6 +86,9 @@ src_install() {
 	#doins sconsbuild/Release/libavcodec.so.52
 	#doins sconsbuild/Release/libavformat.so.52
 	#doins sconsbuild/Release/libavutil.so.50
+
+	# Plugins symlink
+	dosym /usr/$(get_libdir)/nsbrowser/plugins ${CHROMIUM_HOME}/plugins
 
 	newicon sconsbuild/Release/product_logo_48.png ${PN}.png
 	make_wrapper chromium ./chrome ${CHROMIUM_HOME} ${CHROMIUM_HOME}/lib
