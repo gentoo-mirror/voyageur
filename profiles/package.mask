@@ -1,2 +1,6 @@
 # Live ebuilds
 =games-arcade/blobby2-9999
+
+# WIP on chromium, missing source files for some, others may not compile,...
+www-client/chromium
+

@@ -7,7 +7,7 @@ http://gna.org/projects/biniou
 GPL-2
 biniou is a command-line oriented binary newsreader
 ~x86 ~amd64
-alternatives bash-completion distutils eutils multilib portability python toolchain-funcs
+bash-completion distutils eutils multilib portability python toolchain-funcs
 bash-completion
 
 

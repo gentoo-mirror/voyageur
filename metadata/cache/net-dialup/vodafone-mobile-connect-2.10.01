@@ -7,7 +7,7 @@ https://forge.betavine.net/projects/vodafonemobilec/
 GPL
 Vodafone Mobile Connect Card driver for Linux
 ~amd64 ~x86
-alternatives distutils eutils multilib portability python subversion toolchain-funcs
+distutils eutils multilib portability python subversion toolchain-funcs
 
 
 
