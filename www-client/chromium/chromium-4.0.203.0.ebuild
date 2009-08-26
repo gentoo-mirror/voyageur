@@ -89,6 +89,5 @@ src_install() {
 
 	newicon sconsbuild/Release/product_logo_48.png ${PN}.png
 	make_wrapper chromium ./chrome ${CHROMIUM_HOME} ${CHROMIUM_HOME}/lib
-	dosym ${CHROMIUM_HOME}/chromium-launcher.sh /usr/bin/chromium
 	make_desktop_entry chromium "Chromium" ${PN}.png "Network;WebBrowser"
 }
