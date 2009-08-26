@@ -90,7 +90,7 @@ src_install() {
 	# Plugins symlink
 	dosym /usr/$(get_libdir)/nsbrowser/plugins ${CHROMIUM_HOME}/plugins
 
-	newicon sconsbuild/Release/product_logo_48.png ${PN}.png
+	newicon sconsbuild/Release/product_logo_48.png ${PN}-browser.png
 	make_wrapper chromium ./chrome ${CHROMIUM_HOME} ${CHROMIUM_HOME}/lib
-	make_desktop_entry chromium "Chromium" ${PN}.png "Network;WebBrowser"
+	make_desktop_entry chromium "Chromium" ${PN}-browser.png "Network;WebBrowser"
 }
