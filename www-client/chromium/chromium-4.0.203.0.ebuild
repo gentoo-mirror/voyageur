@@ -72,6 +72,7 @@ src_install() {
 	exeinto ${CHROMIUM_HOME}
 	doexe sconsbuild/Release/chrome
 	doexe sconsbuild/Release/xdg-settings
+	doexe "${FILESDIR}"/chromium-launcher.sh
 
 	insinto ${CHROMIUM_HOME}
 	doins sconsbuild/Release/chrome.pak
@@ -91,6 +92,6 @@ src_install() {
 	dosym /usr/$(get_libdir)/nsbrowser/plugins ${CHROMIUM_HOME}/plugins
 
 	newicon sconsbuild/Release/product_logo_48.png ${PN}-browser.png
-	make_wrapper chromium ./chrome ${CHROMIUM_HOME} ${CHROMIUM_HOME}/lib
+	dosym ${CHROMIUM_HOME}/chromium-launcher.sh /usr/bin/chromium
 	make_desktop_entry chromium "Chromium" ${PN}-browser.png "Network;WebBrowser"
 }
