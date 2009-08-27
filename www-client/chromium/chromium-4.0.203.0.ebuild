@@ -64,8 +64,8 @@ src_compile() {
 }
 
 src_install() {
-	declare CHROMIUM_HOME=/opt/chromium
 	# Chromium does not have "install" target in the build system.
+	declare CHROMIUM_HOME=/usr/lib/chromium-browser
 
 	dodir ${CHROMIUM_HOME}
 
