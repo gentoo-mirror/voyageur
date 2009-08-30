@@ -32,6 +32,11 @@ DEPEND="${RDEPEND}
 	>=dev-util/pkgconfig-0.23
 	>=dev-util/scons-1.2.0"
 
+pkg_setup() {
+	# Fails in webkit, core browser, ... Any scons expert around?
+	append-ldflags -Wl,--no-as-needed
+}
+
 src_configure() {
 	# CFLAGS/LDFLAGS
 	mkdir -p "${S}"/.gyp
