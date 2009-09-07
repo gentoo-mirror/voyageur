@@ -1,7 +1,7 @@
 app-arch/bzip2 dev-db/sqlite:3 dev-libs/libxml2 dev-libs/libxslt >=dev-libs/nss-3.12.2 >=gnome-base/gconf-2.24.0 media-fonts/corefonts >=media-libs/alsa-lib-1.0.19 media-libs/jpeg media-libs/libpng media-video/ffmpeg sys-libs/zlib >=x11-libs/gtk+-2.14.7 >=dev-util/gperf-3.0.3 >=dev-util/pkgconfig-0.23
 app-arch/bzip2 dev-db/sqlite:3 dev-libs/libxml2 dev-libs/libxslt >=dev-libs/nss-3.12.2 >=gnome-base/gconf-2.24.0 media-fonts/corefonts >=media-libs/alsa-lib-1.0.19 media-libs/jpeg media-libs/libpng media-video/ffmpeg sys-libs/zlib >=x11-libs/gtk+-2.14.7
 0
-http://build.chromium.org/buildbot/archives/chromium-4.0.206.0.tar.bz2
+http://build.chromium.org/buildbot/archives/chromium-4.0.207.0.tar.bz2
 
 http://chromium.org/
 BSD
