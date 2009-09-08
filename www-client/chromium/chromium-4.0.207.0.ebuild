@@ -15,7 +15,6 @@ IUSE=""
 
 RDEPEND="
 	app-arch/bzip2
-	dev-db/sqlite:3
 	dev-libs/libxml2
 	dev-libs/libxslt
 	>=dev-libs/nss-3.12.2
@@ -27,11 +26,18 @@ RDEPEND="
 	media-video/ffmpeg
 	sys-libs/zlib
 	>=x11-libs/gtk+-2.14.7"
+#	dev-db/sqlite:3
 DEPEND="${RDEPEND}
 	>=dev-util/gperf-3.0.3
 	>=dev-util/pkgconfig-0.23"
 
 src_prepare() {
+	# Workaround for "Argument list too long" bug, see below
+	for i in app webkit third_party/ffmpeg build/util base chrome v8/tools/gyp
+	do
+		ln -s ${S}/out ${i}/out
+	done
+
 	# http://code.google.com/p/chromium/issues/detail?id=20014
 	# Marked as fixed, so should be committed soon
 	cd tools/gyp
@@ -52,7 +58,9 @@ EOF
 	export HOME="${S}"
 
 	# Configuration options
-	local myconf="-Duse_system_bzip2=1 -Duse_system_zlib=1 -Duse_system_libjpeg=1 -Duse_system_libpng=1 -Duse_system_libxml=1 -Duse_system_libxslt=1 -Duse_system_sqlite=1 -Duse_system_ffmpeg=1"
+	local myconf="-Duse_system_bzip2=1 -Duse_system_zlib=1 -Duse_system_libjpeg=1 -Duse_system_libpng=1 -Duse_system_libxml=1 -Duse_system_libxslt=1-Duse_system_ffmpeg=1"
+	# -Duse_system_sqlite=1 : chromium added initUnixFile() and fillInUnixFile() functions
+
 
 	if use amd64; then
 		myconf="${myconf} -Dtarget_arch=x64"
@@ -68,14 +76,14 @@ src_compile() {
 	# Broken for "Argument list too long", waiting for these
 	# http://code.google.com/p/chromium/issues/detail?id=19854
 	# http://code.google.com/p/gyp/issues/detail?id=71
-	emake -r V=1 BUILDTYPE=Release chrome \
-		rootdir=${S} \
+	# When this is fixed, remove the src_prepare workaround
+	# and add back "rootdir=${S}"
+	emake -r V=1 chrome BUILDTYPE=Release \
 		CC=$(tc-getCC) \
 		CXX=$(tc-getCXX) \
 		AR=$(tc-getAR) \
 		RANLIB=$(tc-getRANLIB) \
 		|| die "compilation failed"
-		#LD=$(tc-getLD) \
 }
 
 src_install() {
