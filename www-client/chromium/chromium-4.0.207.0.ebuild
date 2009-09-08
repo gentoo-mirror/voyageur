@@ -38,10 +38,7 @@ src_prepare() {
 		ln -s ${S}/out ${i}/out
 	done
 
-	# http://code.google.com/p/chromium/issues/detail?id=20014
-	# Marked as fixed, so should be committed soon
-	cd tools/gyp
-	epatch "${FILESDIR}"/chrome-gyp.patch
+	# TODO: change gyp version, >=r614 needed to make --as-needed work
 }
 
 src_configure() {
@@ -58,7 +55,7 @@ EOF
 	export HOME="${S}"
 
 	# Configuration options
-	local myconf="-Duse_system_bzip2=1 -Duse_system_zlib=1 -Duse_system_libjpeg=1 -Duse_system_libpng=1 -Duse_system_libxml=1 -Duse_system_libxslt=1-Duse_system_ffmpeg=1"
+	local myconf="-Duse_system_bzip2=1 -Duse_system_zlib=1 -Duse_system_libjpeg=1 -Duse_system_libpng=1 -Duse_system_libxml=1 -Duse_system_libxslt=1 -Duse_system_ffmpeg=1 -Dlinux_use_tcmalloc=1"
 	# -Duse_system_sqlite=1 : chromium added initUnixFile() and fillInUnixFile() functions
 
 
