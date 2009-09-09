@@ -23,7 +23,7 @@ RDEPEND="
 	>=media-libs/alsa-lib-1.0.19
 	media-libs/jpeg
 	media-libs/libpng
-	media-video/ffmpeg
+	>=media-video/ffmpeg-0.5_p19787
 	sys-libs/zlib
 	>=x11-libs/gtk+-2.14.7"
 #	dev-db/sqlite:3
@@ -101,12 +101,10 @@ src_install() {
 	doins -r out/Release/resources
 	doins -r out/Release/themes
 
-	# Chromium compiles patched versions of these media libraries.
-	#dodir ${CHROMIUM_HOME}/lib
-	#insinto ${CHROMIUM_HOME}/lib
-	#doins out/Release/libavcodec.so.52
-	#doins out/Release/libavformat.so.52
-	#doins out/Release/libavutil.so.50
+	# Chromium looks for these in its folder
+	dosym /usr/$(get_libdir)/libavcodec.so.52 ${CHROMIUM_HOME}
+	dosym /usr/$(get_libdir)/libavformat.so.52 ${CHROMIUM_HOME}
+	dosym /usr/$(get_libdir)/libavutil.so.50 ${CHROMIUM_HOME}
 
 	# Plugins symlink
 	dosym /usr/$(get_libdir)/nsbrowser/plugins ${CHROMIUM_HOME}/plugins
