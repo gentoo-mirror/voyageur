@@ -1,5 +1,5 @@
-virtual/python dev-util/subversion net-misc/rsync
->=dev-lang/python-2.5[sqlite] dev-python/dbus-python dev-python/gnome-python dev-python/notify-python dev-python/pyserial dev-python/pytz dev-python/twisted-conch net-dialup/wvdial >=sys-apps/usb_modeswitch-0.9.6
+>=app-shells/bash-3.2 virtual/python dev-util/subversion net-misc/rsync
+>=dev-lang/python-2.5[sqlite] dev-python/dbus-python dev-python/gnome-python dev-python/notify-python dev-python/pyserial dev-python/pytz dev-python/twisted-conch net-dialup/wvdial >=sys-apps/usb_modeswitch-0.9.6 virtual/python
 0
 
 

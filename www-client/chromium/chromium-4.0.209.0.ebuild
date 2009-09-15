@@ -31,6 +31,8 @@ DEPEND="${RDEPEND}
 	>=dev-util/gperf-3.0.3
 	>=dev-util/pkgconfig-0.23"
 
+export CHROMIUM_HOME=/usr/$(get_libdir)/chromium-browser
+
 src_prepare() {
 	# Workaround for "Argument list too long" bug, see below
 	for i in app webkit third_party/ffmpeg build/util base chrome v8/tools/gyp
@@ -54,10 +56,13 @@ src_configure() {
 EOF
 	export HOME="${S}"
 
-	# Configuration options
+	# Configuration options (system libraries)
 	local myconf="-Duse_system_bzip2=1 -Duse_system_zlib=1 -Duse_system_libjpeg=1 -Duse_system_libpng=1 -Duse_system_libxml=1 -Duse_system_libxslt=1 -Duse_system_ffmpeg=1 -Dlinux_use_tcmalloc=1"
 	# -Duse_system_sqlite=1 : chromium added initUnixFile() and fillInUnixFile() functions
+	# Others still bundled: icu (not possible?), hunspell, libevent
 
+	# Sandbox paths
+	myconf="${myconf} -Dlinux_sandbox_path=${CHROMIUM_HOME}/chrome_sandbox -Dlinux_sandbox_chrome_path=${CHROMIUM_HOME}/chrome"
 
 	if use amd64; then
 		myconf="${myconf} -Dtarget_arch=x64"
@@ -75,7 +80,7 @@ src_compile() {
 	# http://code.google.com/p/gyp/issues/detail?id=71
 	# When this is fixed, remove the src_prepare workaround
 	# and add back "rootdir=${S}"
-	emake -r V=1 chrome BUILDTYPE=Release \
+	emake -r V=1 chrome chrome_sandbox BUILDTYPE=Release \
 		CC=$(tc-getCC) \
 		CXX=$(tc-getCXX) \
 		AR=$(tc-getAR) \
@@ -85,12 +90,13 @@ src_compile() {
 
 src_install() {
 	# Chromium does not have "install" target in the build system.
-	declare CHROMIUM_HOME=/usr/$(get_libdir)/chromium-browser
 
 	dodir ${CHROMIUM_HOME}
 
 	exeinto ${CHROMIUM_HOME}
 	doexe out/Release/chrome
+	doexe out/Release/chrome_sandbox
+	fperms 4755 ${CHROMIUM_HOME}/chrome_sandbox
 	doexe out/Release/xdg-settings
 	doexe "${FILESDIR}"/chromium-launcher.sh
 
