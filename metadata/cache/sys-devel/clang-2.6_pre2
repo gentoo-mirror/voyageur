@@ -1,0 +1,22 @@
+
+~sys-devel/llvm-2.6_pre2
+0
+http://llvm.org/prereleases/2.6/pre-release2/llvm-2.6.tar.gz -> llvm-2.6_pre2.tar.gz http://llvm.org/prereleases/2.6/pre-release2/clang-2.6.tar.gz -> clang-2.6_pre2.tar.gz
+
+http://clang.llvm.org/
+UoI-NCSA
+C language family frontend for LLVM
+~amd64 ~x86
+
++static-analyzer
+
+
+
+2
+
+compile configure install prepare
+
+
+
+
+
