@@ -26,6 +26,9 @@ S="${WORKDIR}/llvm-2.6"
 
 src_prepare() {
 	mv "${WORKDIR}"/clang-2.6 "${S}"/tools/clang || die "clang source directory not found"
+	sed -e "s#lib/clang/1.0#$(get_libdir)/clang/1.0#" \
+		-i "${S}"/tools/clang/lib/Headers/Makefile \
+		|| die "clang Makefile failed"
 	sed -e 's/import ScanView/from clang \0/'  \
 		-i "${S}"/tools/clang/tools/scan-view/scan-view \
 		|| die "scan-view sed failed"
@@ -35,10 +38,11 @@ src_prepare() {
 	sed -e 's,^PROJ_docsdir.*,PROJ_docsdir := $(DESTDIR)$(PROJ_prefix)/share/doc/'${PF}, \
 		-e 's,^PROJ_etcdir.*,PROJ_etcdir := $(DESTDIR)/etc/llvm,' \
 		-e 's,^PROJ_libdir.*,PROJ_libdir := $(DESTDIR)/usr/'$(get_libdir), \
-		-i Makefile.config.in || die "sed failed"
+		-i Makefile.config.in || die "Makefile.config sed failed"
 
 	einfo "Fixing rpath"
-	sed -e 's/\$(RPATH) -Wl,\$(\(ToolDir\|LibDir\))//g' -i Makefile.rules || die "sed failed"
+	sed -e 's/\$(RPATH) -Wl,\$(\(ToolDir\|LibDir\))//g' -i Makefile.rules \
+		|| die "rpath sed failed"
 }
 
 src_configure() {
@@ -55,23 +59,9 @@ src_configure() {
 			--disable-expensive-checks"
 	fi
 
-	if use alltargets; then
-		CONF_FLAGS="${CONF_FLAGS} --enable-targets=all"
-	else
-		CONF_FLAGS="${CONF_FLAGS} --enable-targets=host-only"
-	fi
-
 	if use amd64; then
 		CONF_FLAGS="${CONF_FLAGS} --enable-pic"
 	fi
-
-	# things would be built differently depending on whether llvm-gcc is
-	# already present on the system or not.
-
-	CONF_FLAGS="${CONF_FLAGS} \
-		--with-llvmgccdir=/dev/null \
-		--with-llvmgcc=none \
-		--with-llvmgxx=none"
 
 	econf ${CONF_FLAGS} || die "econf failed"
 }
