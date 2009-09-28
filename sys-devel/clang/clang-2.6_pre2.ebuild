@@ -15,10 +15,11 @@ SRC_URI="http://llvm.org/prereleases/${PV/_pre*}/pre-release${PV/*_pre}/llvm-${P
 LICENSE="UoI-NCSA"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+static-analyzer"
+IUSE="+static-analyzer test"
 
 # Note: for LTO support, clang will depend on binutils with gold plugins, and LLVM built after that - http://llvm.org/docs/GoldPlugin.html
-DEPEND="static-analyzer? ( dev-lang/perl )"
+DEPEND="static-analyzer? ( dev-lang/perl )
+	test? ( dev-util/dejagnu )"
 RDEPEND="~sys-devel/llvm-${PV}"
 
 S="${WORKDIR}/llvm-2.6"
