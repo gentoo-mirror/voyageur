@@ -3,6 +3,7 @@
 # $Header: $
 
 EAPI=2
+inherit python
 
 DESCRIPTION="C language family frontend for LLVM"
 HOMEPAGE="http://clang.llvm.org/"
@@ -16,15 +17,26 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+static-analyzer"
 
-# TODO: non-system deps?
 # Note: for LTO support, clang will depend on binutils with gold plugins, and LLVM built after that - http://llvm.org/docs/GoldPlugin.html
-DEPEND=""
+DEPEND="static-analyzer? ( dev-lang/perl )"
 RDEPEND="~sys-devel/llvm-${PV}"
 
 S="${WORKDIR}/llvm-2.6"
 
 src_prepare() {
-	mv "${WORKDIR}"/clang-2.6 "${S}/tools/clang" || die "clang source directory not found"
+	mv "${WORKDIR}"/clang-2.6 "${S}"/tools/clang || die "clang source directory not found"
+	sed -e 's/import ScanView/from clang \0/'  \
+		-i "${S}"/tools/clang/tools/scan-view/scan-view \
+		|| die "scan-view sed failed"
+
+	# From llvm src_prepare
+	einfo "Fixing install dirs"
+	sed -e 's,^PROJ_docsdir.*,PROJ_docsdir := $(DESTDIR)$(PROJ_prefix)/share/doc/'${PF}, \
+		-e 's,^PROJ_etcdir.*,PROJ_etcdir := $(DESTDIR)/etc/llvm,' \
+		-i Makefile.config.in || die "sed failed"
+
+	einfo "Fixing rpath"
+	sed -e 's/\$(RPATH) -Wl,\$(\(ToolDir\|LibDir\))//g' -i Makefile.rules || die "sed failed"
 }
 
 src_configure() {
@@ -67,12 +79,27 @@ src_compile() {
 }
 
 src_install() {
-	cd "${S}/tools/clang"
-	emake DESTDIR="${D}" install || die "emake install failed"
-	
+	cd "${S}"/tools/clang || die "cd clang failed"
+	emake KEEP_SYMBOLS=1 DESTDIR="${D}" install || die "install failed"
+
 	if use static-analyzer ; then
-		dobin utils/scan-build
 		dobin utils/ccc-analyzer
-		dobin tools/scan-view/scan-view
+		dobin utils/scan-build
+
+		cd tools/scan-view || "die cd scan-view failed"
+		dobin scan-view
+		python_version
+		insinto /usr/$(get_libdir)/python${PYVER}/site-packages/clang
+		doins Reporter.py Resources ScanView.py startfile.py
+		touch "${D}"/usr/$(get_libdir)/python${PYVER}/site-packages/clang/__init__.py
 	fi
+}
+
+pkg_postinst() {
+	python_version
+	python_mod_optimize /usr/$(get_libdir)/python${PYVER}/site-packages/clang
+}
+
+pkg_postrm() {
+	python_mod_cleanup
 }
