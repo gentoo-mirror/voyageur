@@ -1,0 +1,22 @@
+>=sys-devel/llvm-2.6_pre2 >=sys-apps/texinfo-4.2-r4 >=sys-devel/binutils-2.18 >=sys-devel/bison-1.875 test? ( dev-util/dejagnu )
+>=sys-devel/llvm-2.6_pre2
+0
+http://llvm.org/prereleases/2.6/pre-release2/llvm-gcc-4.2-2.6.source.tar.gz -> llvm-gcc-2.6_pre2.tar.gz
+
+http://llvm.org
+GPL-2
+LLVM C front-end
+~amd64 ~x86
+multilib toolchain-funcs
+bootstrap fortran nls objc objc++ test
+
+
+
+2
+
+compile configure install prepare
+
+
+
+
+

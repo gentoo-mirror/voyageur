@@ -1,7 +1,7 @@
 net-im/pidgin libcaca? ( media-libs/libcaca[imlib] ) >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
 net-im/pidgin libcaca? ( media-libs/libcaca[imlib] )
 0
-http://symlink.me/attachments/download/6/minbif-1.0alpha.tar.gz
+http://symlink.me/attachments/download/22/minbif-1.0beta.tar.gz
 
 http://symlink.me/projects/show/minbif
 GPL-2
