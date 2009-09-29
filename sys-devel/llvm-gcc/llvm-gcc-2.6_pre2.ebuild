@@ -7,7 +7,6 @@ inherit multilib
 
 LLVM_GCC_VERSION=4.2
 MY_PV=${LLVM_GCC_VERSION}-${PV/_pre*}
-LLVM_GCC_PREFIX=usr/$(get_libdir)/${PN}/${MY_PV}
 
 DESCRIPTION="LLVM C front-end"
 HOMEPAGE="http://llvm.org"
@@ -34,7 +33,6 @@ src_prepare() {
 }
 
 src_configure() {
-	PROGRAM_PREFIX=${PN}-${MY_PV}
 	# Target options are handled by econf
 
 	EXTRALANGS=""
@@ -42,8 +40,8 @@ src_configure() {
 	use objc && EXTRALANGS="${EXTRALANGS},objc"
 	use objc++ && EXTRALANGS="${EXTRALANGS},obj-c++"
 
-	ECONF_SOURCE="${WORKDIR}"/llvm-gcc${MY_PV}.source econf --prefix=/${LLVM_GCC_PREFIX} \
-		--program-prefix=${PROGRAM_PREFIX}- \
+	ECONF_SOURCE="${WORKDIR}"/llvm-gcc${MY_PV}.source econf --prefix=/usr/$(get_libdir)/${PN}/${MY_PV} \
+		--program-prefix=${PN}-${MY_PV}- \
 		--enable-llvm=/usr --enable-languages=c,c++${EXTRALANGS} \
 		|| die "configure failed"
 }
