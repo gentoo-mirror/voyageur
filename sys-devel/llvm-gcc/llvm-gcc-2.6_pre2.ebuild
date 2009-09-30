@@ -40,7 +40,7 @@ src_configure() {
 	use objc && EXTRALANGS="${EXTRALANGS},objc"
 	use objc++ && EXTRALANGS="${EXTRALANGS},obj-c++"
 
-	ECONF_SOURCE="${WORKDIR}"/llvm-gcc${MY_PV}.source econf --prefix=/usr/$(get_libdir)/${PN}/${MY_PV} \
+	ECONF_SOURCE="${WORKDIR}"/llvm-gcc${MY_PV}.source econf --prefix=/usr/$(get_libdir)/${PN}-${MY_PV} \
 		--program-prefix=${PN}-${MY_PV}- \
 		--enable-llvm=/usr --enable-languages=c,c++${EXTRALANGS} \
 		|| die "configure failed"
@@ -59,4 +59,14 @@ src_install() {
 		einfo "nls USE flag disabled, not installing locale files"
 		rm -rf "${D}"/usr/share/locale
 	fi
+
+	# Add some symlinks
+	dodir /usr/bin
+	cd "${D}/usr/bin"
+	SYMLINKS=c++ g++ cpp gcc gcov gccbug
+	for X in ; do
+		ln -s /usr/$(get_libdir)/${PN}-${MY_PV}/bin/${PN}-${MY_PV}-${X}  llvm-${X}
+	done
+	use fortran && \
+		ln -s /usr/$(get_libdir)/${PN}-${MY_PV}/bin/${PN}-${MY_PV}-gfortran llvm-gfortran
 }
