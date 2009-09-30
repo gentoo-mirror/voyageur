@@ -63,8 +63,7 @@ src_install() {
 	# Add some symlinks
 	dodir /usr/bin
 	cd "${D}/usr/bin"
-	SYMLINKS=c++ g++ cpp gcc gcov gccbug
-	for X in ; do
+	for X in c++ g++ cpp gcc gcov gccbug ; do
 		ln -s /usr/$(get_libdir)/${PN}-${MY_PV}/bin/${PN}-${MY_PV}-${X}  llvm-${X}
 	done
 	use fortran && \
