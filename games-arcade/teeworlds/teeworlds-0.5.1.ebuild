@@ -1,13 +1,16 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI="2"
 inherit eutils games
+
+BAM_VERSION=0.2.0
 
 DESCRIPTION="Crossover between Quake and Worms."
 HOMEPAGE="http://www.teeworlds.com"
 SRC_URI="http://www.${PN}.com/files/${P}-src.tar.gz
-	http://www.${PN}.com/files/bam.zip"
+	http://teeworlds.com/trac/bam/browser/releases/bam-${BAM_VERSION}.tar.gz?format=raw -> bam-${BAM_VERSION}.tar.gz"
 
 # see license.txt
 LICENSE="ZLIB"
@@ -21,10 +24,9 @@ RDEPEND="!dedicated? (
 		media-libs/mesa
 		x11-libs/libX11
 		)"
-DEPEND="${RDEPEND}
-	app-arch/zip"
+DEPEND="${RDEPEND}"
 
-SB=${WORKDIR}/bam
+SB=${WORKDIR}/bam-${BAM_VERSION}
 S=${WORKDIR}/${P}-src
 
 dir=${GAMES_DATADIR}/${PN}
@@ -39,9 +41,7 @@ pkg_setup() {
 	fi
 }
 
-src_unpack() {
-	unpack ${A}
-
+src_prepare() {
 	# fix bam default optimisation
 	cd "${SB}"
 #	sed -i \
@@ -69,13 +69,13 @@ src_unpack() {
 }
 
 src_compile() {
-	cd ${SB}
+	cd "${SB}"
 	./make_unix.sh \
 		${LDFLAGS} \
 		-Wp,${CXXFLAGS} \
 		|| die "make_unix.sh failed"
 
-	cd ${S}
+	cd "${S}"
 
 	# set optimisation
 	sed -i \
@@ -85,13 +85,13 @@ src_compile() {
 		default.bam || die "sed failed"
 
 	if use debug && use server; then
-		../bam/src/bam -v debug || die "bam failed"
+		../bam-${BAM_VERSION}/src/bam -v debug || die "bam failed"
 	elif use debug && use dedicated; then
-		../bam/src/bam -v server_debug || die "bam failed"
+		../bam-${BAM_VERSION}/src/bam -v server_debug || die "bam failed"
 	elif use !debug && use dedicated; then
-		../bam/src/bam -v server_release || die "bam failed"
+		../bam-${BAM_VERSION}/src/bam -v server_release || die "bam failed"
 	else
-		../bam/src/bam -v release || die "bam failed"
+		../bam-${BAM_VERSION}/src/bam -v release || die "bam failed"
 	fi
 }
 
@@ -104,21 +104,26 @@ src_install() {
 		doins -r data || die "doins failed"
 	fi
 
-	if use debug && use server; then
-		dogamesbin ${PN}_srv_d || die "dogamesbin failed"
-		dogamesbin ${PN}_d || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teeworlds"
-	elif use !debug && use server; then
-		dogamesbin ${PN}_srv || die "dogamesbin failed"
-		dogamesbin ${PN} || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teeworlds"
-	elif use debug && use dedicated; then
-		dogamesbin ${PN}_srv_d || die "dogamesbin failed"
-	elif use !debug && use dedicated; then
-		dogamesbin ${PN}_srv || die "dogamesbin failed"
+	if use debug; then
+		if use server || use dedicated; then
+			dogamesbin ${PN}_srv_d || die "dogamesbin failed"
+		fi
+		if ! use dedicated; then
+			exeinto "${dir}"
+			doexe ${PN}_d || die "doexe failed"
+			games_make_wrapper ${PN} ./${PN}_d "${dir}"
+			make_desktop_entry ${PN} "Teeworlds"
+		fi
 	else
-		dogamesbin ${PN} || die "dogamesbin failed"
-		make_desktop_entry ${PN} "Teeworlds"
+		if use server || use dedicated; then
+			dogamesbin ${PN}_srv || die "dogamesbin failed"
+		fi
+		if ! use dedicated; then
+			exeinto "${dir}"
+			doexe ${PN} || die "doexe failed"
+			games_make_wrapper ${PN} ./${PN} "${dir}"
+			make_desktop_entry ${PN} "Teeworlds"
+		fi
 	fi
 
 	dodoc *.txt
