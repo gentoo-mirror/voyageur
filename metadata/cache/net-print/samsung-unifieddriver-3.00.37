@@ -2,7 +2,7 @@
 net-print/cups scanner? ( media-gfx/sane-backends ) qt4? ( x11-libs/qt-core:4 )
 0
 http://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?VPath=DR/200908/20090831171020531/UnifiedLinuxDriver.tar.gz -> samsung-unifieddriver-3.00.37.tar.gz
-strip
+mirror strip
 http://www.samsung.com
 samsung
 Samsung binary unified driver

@@ -13,7 +13,7 @@ LICENSE="samsung"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 IUSE=""
-RESTRICT="strip"
+RESTRICT="mirror strip"
 
 DEPEND=""
 RDEPEND="net-print/samsung-unifieddriver

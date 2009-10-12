@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 # Parallel support looks ugly, not supported in this ebuild
 IUSE="+scanner +qt4"
-RESTRICT="strip"
+RESTRICT="mirror strip"
 
 DEPEND=""
 RDEPEND="net-print/cups
