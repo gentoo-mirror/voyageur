@@ -1,0 +1,22 @@
+
+net-print/samsung-unifieddriver sys-libs/libstdc++-v3 x11-libs/qt:3
+0
+http://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?VPath=DR/200908/20090831171020531/smartpanel-2.00.33.tar.gz
+strip
+http://www.samsung.com
+samsung
+Samsung binary unified driver
+-* ~amd64 ~x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+2
+
+install prepare unpack
+
+
+
+
+
