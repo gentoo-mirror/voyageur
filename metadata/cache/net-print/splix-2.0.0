@@ -1,0 +1,22 @@
+|| ( >=net-print/cups-1.4.0 net-print/cupsddk ) jbig? ( media-libs/jbigkit )
+|| ( >=net-print/cups-1.4.0 net-print/cupsddk ) jbig? ( media-libs/jbigkit )
+0
+mirror://sourceforge/splix/splix-2.0.0.tar.bz2 http://splix.ap2c.org/samsung_cms.tar.bz2
+
+http://splix.sourceforge.net/
+GPL-2
+A set of CUPS printer drivers for SPL (Samsung Printer Language) printers
+~amd64 ~x86
+eutils multilib portability toolchain-funcs
++jbig
+
+
+
+2
+
+compile install postinst prepare
+
+
+
+
+
