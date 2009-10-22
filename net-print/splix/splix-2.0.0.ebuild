@@ -22,6 +22,8 @@ DEPEND="|| ( >=net-print/cups-1.4.0 net-print/cupsddk )
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	# http://sourceforge.net/tracker/?func=detail&aid=2880411&group_id=175815&atid=874748
+	epatch "${FILESDIR}"/algo0x0d_one_scanline_over_fix.patch
 	# Honor LDFLAGS
 	sed -e "/[a-z]_LDFLAGS/s/:=.*/:= $\{LDFLAGS\}/" -i module.mk \
 		|| die "module.mk sed failed"
