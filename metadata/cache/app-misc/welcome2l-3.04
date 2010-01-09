@@ -1,0 +1,22 @@
+
+
+0
+http://www.chez.com/littleigloo/files/Welcome2L-3.04.src.tar.gz mirror://gentoo/welcome2l-3.04-gentoo-r1.patch.bz2
+
+http://www.littleigloo.org/
+GPL-2
+Welcome to Linux, ANSI login logo for Linux
+amd64 ppc sparc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+install postinst unpack
+
+
+
+
+
