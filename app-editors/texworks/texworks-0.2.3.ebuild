@@ -20,8 +20,8 @@ for LNG in ${LANGS}; do
 	IUSE="${IUSE} linguas_${LNG}"
 done
 
-RDEPEND=">=dev-libs/poppler-0.10.5[qt4]
-		 =x11-libs/qt-core-4.5.2
+RDEPEND=">=app-text/poppler-0.10.5[qt4]
+		 >=x11-libs/qt-core-4.5.2
          >=x11-libs/qt-gui-4.5.2[dbus]
 		 >=app-text/hunspell-1.2.8"
 DEPEND="${RDEPEND}"
