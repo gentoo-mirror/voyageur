@@ -1,6 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+
+EAPI=2
 
 DESCRIPTION="Visit almost everything in your PC simply by zooming in"
 HOMEPAGE="http://eaglemode.sourceforge.net"
@@ -9,11 +11,11 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="abiword dvi html jpeg netpbm png povray rar svg tiff xine wmf zip"
+IUSE="abiword dvi +html +jpeg +netpbm +png povray rar svg +tiff xine wmf +zip"
 
 DEPEND="dev-lang/perl
 	x11-libs/libX11
-	virtual/ghostscript
+	app-text/ghostscript-gpl
 	jpeg? ( media-libs/jpeg )
 	png? ( media-libs/libpng )
 	tiff? ( media-libs/tiff )
@@ -21,7 +23,7 @@ DEPEND="dev-lang/perl
 	zip? ( app-arch/unzip )
 	rar? ( app-arch/unrar )
 	abiword? ( app-office/abiword )
-	dvi? ( virtual/tetex )
+	dvi? ( dev-texlive/texlive-basic )
 	netpbm? ( media-libs/netpbm )
 	html? ( app-text/htmldoc )
 	povray? ( media-gfx/povray )
