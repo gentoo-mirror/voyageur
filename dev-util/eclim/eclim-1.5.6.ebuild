@@ -21,7 +21,7 @@ COMMON_DEPEND="dev-util/eclipse-sdk:3.5"
 DEPEND="${COMMON_DEPEND}
 	>=virtual/jdk-1.5"
 RDEPEND="${COMMON_DEPEND}
-	|| ( app-editors/vim app-editors/gvim )
+	|| ( app-editors/vim app-editors/gvim[netbeans] )
 	>=virtual/jre-1.5"
 
 S=${WORKDIR}/${MY_P}
