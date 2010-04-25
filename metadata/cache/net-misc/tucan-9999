@@ -1,0 +1,22 @@
+dev-util/subversion net-misc/rsync
+dev-lang/python gtk? ( dev-python/pygtk gnome-base/librsvg ) app-text/tesseract[linguas_en] dev-python/imaging
+0
+
+
+http://tucaneando.com/
+GPL-3
+Manages automatic downloads and uploads from one-click hosting sites like RapidShare
+
+eutils multilib portability subversion toolchain-funcs
+gtk
+
+
+
+2
+
+install preinst prepare unpack
+
+
+
+
+
