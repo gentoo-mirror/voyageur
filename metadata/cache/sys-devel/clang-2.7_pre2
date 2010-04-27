@@ -1,0 +1,22 @@
+static-analyzer? ( dev-lang/perl ) test? ( dev-util/dejagnu ) >=app-admin/eselect-python-20091230
+~sys-devel/llvm-2.7_pre2 >=app-admin/eselect-python-20091230
+0
+http://llvm.org/pre-releases/2.7/pre-release2/llvm-clang-2.7.tgz -> llvm-2.7_pre2.tgz http://llvm.org/pre-releases/2.7/pre-release2/clang-2.7.tgz -> clang-2.7_pre2.tgz
+
+http://clang.llvm.org/
+UoI-NCSA
+C language family frontend for LLVM
+~amd64 ~x86
+eutils multilib portability python toolchain-funcs
+debug +static-analyzer test
+
+
+
+2
+
+compile configure install postinst postrm prepare test
+
+
+
+
+
