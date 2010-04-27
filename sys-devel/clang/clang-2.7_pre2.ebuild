@@ -108,7 +108,7 @@ src_install() {
 
 	if use static-analyzer ; then
 		dobin tools/scan-build/ccc-analyzer
-		dobin tools/scan-build/c++-analyzer
+		dosym ccc-analyzer /usr/bin/c++-analyzer
 		dobin tools/scan-build/scan-build
 
 		insinto /usr/share/${PN}
