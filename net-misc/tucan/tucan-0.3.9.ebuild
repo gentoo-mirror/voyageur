@@ -18,7 +18,7 @@ IUSE="gtk"
 RDEPEND="dev-lang/python
 	gtk? ( dev-python/pygtk
 		gnome-base/librsvg )
-	app-text/tesseract[linguas_en]
+	>=app-text/tesseract-2.0.4-r1
 	dev-python/imaging"
 
 src_compile() { :; }
