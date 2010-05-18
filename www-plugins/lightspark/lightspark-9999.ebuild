@@ -3,19 +3,17 @@
 # $Header: $
 
 EAPI=3
-inherit multilib cmake-utils bzr
+inherit multilib cmake-utils git
 
 DESCRIPTION="High performance flash player designed from scratch to be efficient on modern hardware"
 HOMEPAGE="https://launchpad.net/lightspark"
 SRC_URI=""
+EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspark"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-# Disabling nsplugin is broken for now
 IUSE="+nsplugin vaapi"
-
-EBZR_REPO_URI="lp:lightspark"
 
 RDEPEND="dev-libs/libpcre
 	media-libs/ftgl
@@ -40,12 +38,14 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	# Get plugin in correct place for us
-	dodir /usr/$(get_libdir)/nsbrowser/plugins
-	mv "${D}"/usr/lib/mozilla/plugins/* \
-		"${D}"/usr/$(get_libdir)/nsbrowser/plugins || die "plugin move failed"
-	rmdir -p "${D}"/usr/lib/mozilla/plugins
+	if use nsplugin; then
+		# Get plugin in correct Gentoo place
+		dodir /usr/$(get_libdir)/nsbrowser/plugins
+		mv "${D}"/usr/lib/mozilla/plugins/* \
+			"${D}"/usr/$(get_libdir)/nsbrowser/plugins || die "plugin move failed"
+		rmdir -p "${D}"/usr/lib/mozilla/plugins
+	fi
 
 	# Executable bit missing
-	chmod a+x "${D}"/usr/bin/* "${D}"/usr/lib/mozilla/plugins/*
+	chmod a+x "${D}"/usr/bin/* "${D}"/usr/$(get_libdir)/nsbrowser/plugins/*
 }
