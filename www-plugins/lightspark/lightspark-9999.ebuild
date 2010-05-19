@@ -13,7 +13,7 @@ EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspar
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="+nsplugin vaapi"
+IUSE="+nsplugin"
 
 RDEPEND="dev-libs/libpcre
 	media-libs/ftgl
@@ -22,16 +22,14 @@ RDEPEND="dev-libs/libpcre
 	net-misc/curl
 	nsplugin? ( dev-libs/nspr
 		net-libs/xulrunner:1.9
-		x11-libs/gtkglext )
-	vaapi? ( x11-libs/libva[opengl] )"
+		x11-libs/gtkglext )"
 DEPEND="${RDEPEND}
 	dev-lang/nasm
 	dev-util/pkgconfig
 	>=sys-devel/llvm-2.7"
 
 src_configure() {
-	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
-		$(cmake-utils_use vaapi USE_VAAPI)"
+	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)"
 	cmake-utils_src_configure
 }
 

@@ -1,5 +1,5 @@
-dev-libs/libpcre media-libs/ftgl media-libs/libsdl media-video/ffmpeg net-misc/curl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext ) vaapi? ( x11-libs/libva[opengl] ) dev-lang/nasm dev-util/pkgconfig >=sys-devel/llvm-2.7 >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
-dev-libs/libpcre media-libs/ftgl media-libs/libsdl media-video/ffmpeg net-misc/curl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext ) vaapi? ( x11-libs/libva[opengl] )
+dev-libs/libpcre media-libs/ftgl media-libs/libsdl media-video/ffmpeg net-misc/curl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext ) dev-lang/nasm dev-util/pkgconfig >=sys-devel/llvm-2.7 >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
+dev-libs/libpcre media-libs/ftgl media-libs/libsdl media-video/ffmpeg net-misc/curl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext )
 0
 
 
@@ -8,7 +8,7 @@ GPL-3
 High performance flash player designed from scratch to be efficient on modern hardware
 
 base cmake-utils eutils flag-o-matic git multilib portability toolchain-funcs
-+nsplugin vaapi
++nsplugin
 
 
 
