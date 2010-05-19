@@ -13,13 +13,15 @@ EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspar
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="+nsplugin"
+IUSE="nsplugin"
 
 RDEPEND="dev-libs/libpcre
 	media-libs/ftgl
+	media-libs/glew
 	media-libs/libsdl
 	media-video/ffmpeg
 	net-misc/curl
+	virtual/opengl
 	nsplugin? ( dev-libs/nspr
 		net-libs/xulrunner:1.9
 		x11-libs/gtkglext )"
@@ -29,21 +31,7 @@ DEPEND="${RDEPEND}
 	>=sys-devel/llvm-2.7"
 
 src_configure() {
-	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)"
+	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
+		-DPLUGIN_DIRECTORY=/usr/$(get_libdir)/nsbrowser/plugins"
 	cmake-utils_src_configure
-}
-
-src_install() {
-	cmake-utils_src_install
-
-	if use nsplugin; then
-		# Get plugin in correct Gentoo place
-		dodir /usr/$(get_libdir)/nsbrowser/plugins
-		mv "${D}"/usr/lib/mozilla/plugins/* \
-			"${D}"/usr/$(get_libdir)/nsbrowser/plugins || die "plugin move failed"
-		rmdir -p "${D}"/usr/lib/mozilla/plugins
-	fi
-
-	# Executable bit missing
-	chmod a+x "${D}"/usr/bin/* "${D}"/usr/$(get_libdir)/nsbrowser/plugins/*
 }
