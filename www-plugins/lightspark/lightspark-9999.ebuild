@@ -16,6 +16,7 @@ KEYWORDS=""
 IUSE="nsplugin"
 
 RDEPEND="dev-libs/libpcre
+	media-fonts/liberation-fonts
 	media-libs/ftgl
 	media-libs/glew
 	media-libs/libsdl
@@ -29,6 +30,13 @@ DEPEND="${RDEPEND}
 	dev-lang/nasm
 	dev-util/pkgconfig
 	>=sys-devel/llvm-2.7"
+
+src_prepare() {
+	#/usr/share/fonts/truetype/ttf-liberation/LiberationSerif-Regular.ttf
+	# Hardcoded font path...
+	sed -i "s#truetype/ttf-liberation/#liberation-fonts/#" \
+		swf.cpp || die "font path sed failed"
+}
 
 src_configure() {
 	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
