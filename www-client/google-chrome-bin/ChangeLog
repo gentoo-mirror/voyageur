@@ -2,6 +2,14 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header$
 
+*google-chrome-bin-5.0.375.55_p47796 (03 Jun 2010)
+
+  03 Jun 2010; Bernard Cafarelli <voyageur@gentoo.org>
+  -google-chrome-bin-5.0.342.9_p43360.ebuild,
+  -google-chrome-bin-5.0.375.9_p44625.ebuild,
+  +google-chrome-bin-5.0.375.55_p47796.ebuild:
+  Update to stable version, not synced with latest changes from bugreport
+
 *google-chrome-bin-5.0.375.3_p44229 (15 Apr 2010)
 *google-chrome-bin-5.0.342.9_p43360 (15 Apr 2010)
 

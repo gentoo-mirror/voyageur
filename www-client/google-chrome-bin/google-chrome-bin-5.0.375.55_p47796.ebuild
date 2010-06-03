@@ -8,10 +8,11 @@ inherit eutils toolchain-funcs versionator
 
 # wget -qO- http://dl.google.com/linux/deb/dists/stable/main/binary-amd64/Packages|grep Filename
 
-MY_PN="${PN%-bin}-beta"
-#MY_PN="${PN%-bin}-unstable"
-MY_P="${MY_PN}_${PV/_p/-r}"
-SRC_BASE="http://dl.google.com/linux/deb/pool/main/${MY_PN:0:1}/${MY_PN}/"
+#stable,unstable,beta
+CHAN="stable"
+MY_PN="${PN%-bin}"
+MY_P="${MY_PN}-${CHAN}_${PV/_p/-r}"
+SRC_BASE="http://dl.google.com/linux/deb/pool/main/${MY_PN:0:1}/${MY_PN}-${CHAN}/"
 
 DESCRIPTION="Google Chrome web browser (binary)"
 HOMEPAGE="http://www.google.com/chrome"
@@ -88,7 +89,7 @@ pkg_setup() {
 
 src_unpack() {
 	unpack ${A}
-	lzma -dc data.tar.lzma | tar xof - || die "failure unpackaing data.tar.lzma"
+	unpack ./data.tar.lzma
 }
 
 src_install() {
