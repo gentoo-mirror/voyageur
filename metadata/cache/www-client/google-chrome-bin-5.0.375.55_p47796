@@ -1,7 +1,7 @@
 || ( app-arch/xz-utils app-arch/lzma-utils ) !~app-arch/deb2targz-1
 app-arch/bzip2 >=dev-libs/nss-3.12.3 >=gnome-base/gconf-2.24.0 >=media-libs/alsa-lib-1.0.19 media-libs/jpeg:0 =media-libs/libpng-1.2* >=sys-devel/gcc-4.2 sys-libs/zlib >=x11-libs/gtk+-2.14.7 x11-libs/libXScrnSaver || ( x11-themes/gnome-icon-theme x11-themes/tango-icon-theme x11-themes/xfce4-icon-theme ) x11-misc/xdg-utils virtual/ttf-fonts plugins-symlink? ( !www-plugins/gecko-mediaplayer[gnome] )
 0
-amd64? ( http://dl.google.com/linux/deb/pool/main/g/google-chrome-beta/google-chrome-beta_5.0.342.9-r43360_amd64.deb ) x86? ( http://dl.google.com/linux/deb/pool/main/g/google-chrome-beta/google-chrome-beta_5.0.342.9-r43360_i386.deb )
+amd64? ( http://dl.google.com/linux/deb/pool/main/g/google-chrome-stable/google-chrome-stable_5.0.375.55-r47796_amd64.deb ) x86? ( http://dl.google.com/linux/deb/pool/main/g/google-chrome-stable/google-chrome-stable_5.0.375.55-r47796_i386.deb )
 mirror strip
 http://www.google.com/chrome
 google-chrome
