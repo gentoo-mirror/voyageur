@@ -8,6 +8,6 @@
 	</maintainer>
 	<longdescription>High performance flash player designed from scratch to be efficient on modern hardware</longdescription>
 	<use>
-		<flag name="vaapi">Use <pkg>x11-libs/libva</pkg> video acceleration</flag>
+		<flag name="pulseaudio">Use <pkg>media-sound/pulseaudio</pkg> for audio support</flag>
 	</use>
 </pkgmetadata>

@@ -1,0 +1,9 @@
+# ChangeLog for www-plugins/lightspark
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  18 Jun 2010; Bernard Cafarelli <voyageur@gentoo.org>
+  +files/lightspark-0.4.1-debug-defines.patch, lightspark-9999.ebuild,
+  metadata.xml:
+  Add pulseaudio USE-flag and compilation fix, thanks Zeev Tarantov
+

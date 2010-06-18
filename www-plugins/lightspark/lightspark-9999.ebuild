@@ -13,7 +13,7 @@ EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspar
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="nsplugin"
+IUSE="nsplugin pulseaudio"
 
 RDEPEND="dev-libs/libpcre
 	media-fonts/liberation-fonts
@@ -25,13 +25,17 @@ RDEPEND="dev-libs/libpcre
 	virtual/opengl
 	nsplugin? ( dev-libs/nspr
 		net-libs/xulrunner:1.9
-		x11-libs/gtkglext )"
+		x11-libs/gtkglext )
+	pulseaudio? ( media-sound/pulseaudio )"
 DEPEND="${RDEPEND}
 	dev-lang/nasm
 	dev-util/pkgconfig
 	>=sys-devel/llvm-2.7"
 
 src_prepare() {
+	# Fix gcc complaint about undefined debug variable
+	epatch "${FILESDIR}"/${PN}-0.4.1-debug-defines.patch
+
 	#/usr/share/fonts/truetype/ttf-liberation/LiberationSerif-Regular.ttf
 	# Hardcoded font path...
 	sed -i "s#truetype/ttf-liberation/#liberation-fonts/#" \
@@ -40,6 +44,7 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
+		$(cmake-utils_use pulseaudio ENABLE_SOUND)
 		-DPLUGIN_DIRECTORY=/usr/$(get_libdir)/nsbrowser/plugins"
 	cmake-utils_src_configure
 }
