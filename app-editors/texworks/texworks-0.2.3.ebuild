@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI="3"
 
-inherit qt4
+inherit qt4-r2
 
 DESCRIPTION="A simple interface for working with TeX documents"
 HOMEPAGE="http://tug.org/texworks/"
@@ -36,9 +36,8 @@ src_prepare() {
 	sed -i '/TW_HELPPATH/ s:/usr/local:/usr:' TeXworks.pro || die
 }
 
-src_compile() {
+src_configure() {
 	eqmake4 TeXworks.pro
-	emake || die "emake failed"
 }
 
 src_install() {

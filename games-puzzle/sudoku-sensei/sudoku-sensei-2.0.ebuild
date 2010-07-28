@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=1
+EAPI=3
 
-inherit qt4 games eutils
+inherit qt4-r2 games eutils
 
 DESCRIPTION="The Sudoku Explainer Game"
 HOMEPAGE="http://sudoku-sensei.sourceforge.net"
@@ -15,15 +15,14 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="|| ( ( x11-libs/qt-core:4 x11-libs/qt-gui:4 )
-		>=x11-libs/qt-4.3:4 )"
+DEPEND="x11-libs/qt-core:4
+	x11-libs/qt-gui:4"
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/SudokuSenseiSources
 
-src_compile() {
+src_configure() {
 	eqmake4 SudokuSensei.pro || die "qmake failed"
-	emake || die "emake failed"
 }
 
 src_install() {
