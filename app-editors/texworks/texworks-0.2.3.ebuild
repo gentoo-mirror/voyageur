@@ -12,7 +12,7 @@ SRC_URI="http://${PN}.googlecode.com/files/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="+latex"
 
 LANGS="ar ca cs de es fa fr it ja ko nl pl pt_BR ru sl tr zh_CN"
@@ -20,9 +20,9 @@ for LNG in ${LANGS}; do
 	IUSE="${IUSE} linguas_${LNG}"
 done
 
-RDEPEND=">=app-text/poppler-0.10.5[qt4]
-		 >=x11-libs/qt-core-4.5.2
+RDEPEND=">=x11-libs/qt-core-4.5.2
          >=x11-libs/qt-gui-4.5.2[dbus]
+		 >=app-text/poppler-0.12.3-r3[qt4]
 		 >=app-text/hunspell-1.2.8"
 DEPEND="${RDEPEND}"
 PDEPEND="latex? ( dev-texlive/texlive-latex )
@@ -34,6 +34,7 @@ src_prepare() {
 	echo '#define DEFAULT_BIN_PATHS "/usr/bin"' > src/DefaultBinaryPaths.h || die
 
 	sed -i '/TW_HELPPATH/ s:/usr/local:/usr:' TeXworks.pro || die
+	cp "${FILESDIR}/TeXworks.desktop" "${S}" || die
 }
 
 src_configure() {
@@ -50,4 +51,8 @@ src_install() {
 			doins trans/TeXworks_${LNG}.qm || die
 		fi
 	done
+	insinto /usr/share/pixmaps/
+	doins res/images/TeXworks.png || die
+	insinto /usr/share/applications/
+	doins TeXworks.desktop || die
 }

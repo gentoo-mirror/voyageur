@@ -1,4 +1,4 @@
-dev-util/cmake dev-util/subversion net-misc/rsync
+dev-util/cmake dev-vcs/subversion net-misc/rsync
 virtual/opengl media-libs/libsdl dev-games/physfs
 0
 

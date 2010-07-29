@@ -1,0 +1,12 @@
+[Desktop Entry]
+Categories=Office;Publishing;
+Exec=texworks
+GenericName=TeXworks LaTeX Editor
+Comment=Simple LaTeX development environment
+Icon=TeXworks
+MimeType=text/x-tex;
+Name=TeXworks
+StartupNotify=false
+Terminal=false
+Type=Application
+
