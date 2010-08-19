@@ -33,9 +33,6 @@ DEPEND="${RDEPEND}
 	>=sys-devel/llvm-2.7"
 
 src_prepare() {
-	# Fix gcc complaint about undefined debug variable
-	epatch "${FILESDIR}"/${PN}-0.4.1-debug-defines.patch
-
 	#/usr/share/fonts/truetype/ttf-liberation/LiberationSerif-Regular.ttf
 	# Hardcoded font path...
 	sed -i "s#truetype/ttf-liberation/#liberation-fonts/#" \
