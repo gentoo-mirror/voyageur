@@ -1,2 +1,0 @@
-# Live ebuilds
-=games-arcade/blobby2-9999

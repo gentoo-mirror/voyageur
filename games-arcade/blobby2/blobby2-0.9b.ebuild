@@ -2,7 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit games
+EAPI=3
+inherit games cmake-utils
 
 MY_PN="${PN}-linux"
 DESCRIPTION="The new Blobby Volley, a volley-game with colorful blobs"
@@ -16,14 +17,12 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="virtual/opengl
 	media-libs/libsdl
 	dev-games/physfs"
+DEPEND="${RDEPEND}"
 
-# TODO: hardcoded to version...
-S="${WORKDIR}/blobby-alpha-6"
+S="${WORKDIR}/blobby-beta-${PV}"
 
 src_install() {
-	make DESTDIR=${D} install
-	dodoc AUTHORS README || die "installing docs failed"
-
+	cmake-utils_src_install
 	prepgamesdirs
 }
 
