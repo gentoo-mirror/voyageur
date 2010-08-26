@@ -15,33 +15,47 @@ SLOT="0"
 KEYWORDS=""
 IUSE="nsplugin pulseaudio"
 
-RDEPEND="dev-libs/libpcre
+RDEPEND="dev-libs/libpcre[cxx]
 	media-fonts/liberation-fonts
-	media-libs/ftgl
-	media-libs/glew
-	media-libs/libsdl
 	media-video/ffmpeg
+	media-libs/fontconfig
+	media-libs/ftgl
+	>=media-libs/glew-1.5.3
+	media-libs/libsdl
+	pulseaudio? (
+		media-sound/pulseaudio
+	)
 	net-misc/curl
+	>=sys-devel/gcc-4.4
+	>=sys-devel/llvm-2.7
 	virtual/opengl
-	nsplugin? ( dev-libs/nspr
-		net-libs/xulrunner:1.9
-		x11-libs/gtkglext )
-	pulseaudio? ( media-sound/pulseaudio )"
+	nsplugin? (
+		dev-libs/nspr
+		net-libs/xulrunner
+		x11-libs/gtk+:2
+		x11-libs/gtkglext
+	)
+	x11-libs/libX11"
 DEPEND="${RDEPEND}
 	dev-lang/nasm
-	dev-util/pkgconfig
-	>=sys-devel/llvm-2.7"
-
-src_prepare() {
-	#/usr/share/fonts/truetype/ttf-liberation/LiberationSerif-Regular.ttf
-	# Hardcoded font path...
-	sed -i "s#truetype/ttf-liberation/#liberation-fonts/#" \
-		swf.cpp || die "font path sed failed"
-}
+	dev-util/pkgconfig"
 
 src_configure() {
 	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
 		$(cmake-utils_use pulseaudio ENABLE_SOUND)
 		-DPLUGIN_DIRECTORY=/usr/$(get_libdir)/nsbrowser/plugins"
 	cmake-utils_src_configure
+}
+
+pkg_postinst() {
+	if use nsplugin && ! has_version www-plugins/gnash; then
+		elog "Lightspark now supports gnash fallback for its browser plugin."
+		elog "Install www-plugins/gnash to take advantage of it."
+	fi
+	if use nsplugin && has_version www-plugins/gnash[nsplugin]; then
+		elog "Having two plugins installed for the same MIME type may confuse"
+		elog "Mozilla based browsers. It is recommended to disable the nsplugin"
+		elog "USE flag for either gnash or lightspark. For details, see"
+		elog "https://bugzilla.mozilla.org/show_bug.cgi?id=581848"
+	fi
 }

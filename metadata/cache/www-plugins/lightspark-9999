@@ -1,5 +1,5 @@
-dev-libs/libpcre media-fonts/liberation-fonts media-libs/ftgl media-libs/glew media-libs/libsdl media-video/ffmpeg net-misc/curl virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext ) pulseaudio? ( media-sound/pulseaudio ) dev-lang/nasm dev-util/pkgconfig >=sys-devel/llvm-2.7 >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
-dev-libs/libpcre media-fonts/liberation-fonts media-libs/ftgl media-libs/glew media-libs/libsdl media-video/ffmpeg net-misc/curl virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner:1.9 x11-libs/gtkglext ) pulseaudio? ( media-sound/pulseaudio )
+dev-libs/libpcre[cxx] media-fonts/liberation-fonts media-video/ffmpeg media-libs/fontconfig media-libs/ftgl >=media-libs/glew-1.5.3 media-libs/libsdl pulseaudio? ( media-sound/pulseaudio ) net-misc/curl >=sys-devel/gcc-4.4 >=sys-devel/llvm-2.7 virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner x11-libs/gtk+:2 x11-libs/gtkglext ) x11-libs/libX11 dev-lang/nasm dev-util/pkgconfig >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
+dev-libs/libpcre[cxx] media-fonts/liberation-fonts media-video/ffmpeg media-libs/fontconfig media-libs/ftgl >=media-libs/glew-1.5.3 media-libs/libsdl pulseaudio? ( media-sound/pulseaudio ) net-misc/curl >=sys-devel/gcc-4.4 >=sys-devel/llvm-2.7 virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner x11-libs/gtk+:2 x11-libs/gtkglext ) x11-libs/libX11
 0
 
 
@@ -14,7 +14,7 @@ nsplugin pulseaudio
 
 3
 
-compile configure install prepare test unpack
+compile configure install postinst prepare test unpack
 
 
 
