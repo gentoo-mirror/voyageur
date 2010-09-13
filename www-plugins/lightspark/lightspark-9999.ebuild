@@ -13,7 +13,7 @@ EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspar
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="nsplugin pulseaudio"
+IUSE="alsa openal nsplugin pulseaudio"
 
 RDEPEND="dev-libs/libpcre[cxx]
 	media-fonts/liberation-fonts
@@ -22,6 +22,12 @@ RDEPEND="dev-libs/libpcre[cxx]
 	media-libs/ftgl
 	>=media-libs/glew-1.5.3
 	media-libs/libsdl
+	alsa? (
+		media-sound/alsa-utils
+	)
+	openal? (
+		media-libs/openal
+	)
 	pulseaudio? (
 		media-sound/pulseaudio
 	)
@@ -42,8 +48,23 @@ DEPEND="${RDEPEND}
 
 src_configure() {
 	local mycmakeargs="$(cmake-utils_use nsplugin COMPILE_PLUGIN)
-		$(cmake-utils_use pulseaudio ENABLE_SOUND)
 		-DPLUGIN_DIRECTORY=/usr/$(get_libdir)/nsbrowser/plugins"
+
+	# Default order: pulseaudio (oldest plugin), openal, alsa (not in git yet)
+	if use pulseaudio; then
+		local mycmakeargs="${mycmakeargs} -DAUDIO_BACKEND=pulseaudio"
+	else if use openal; then
+		local mycmakeargs="${mycmakeargs} -DAUDIO_BACKEND=openal"
+		else if use alsa; then
+			local mycmakeargs="${mycmakeargs} -DAUDIO_BACKEND=alsa"
+			fi
+		fi
+	fi
+
+	if ! use alsa && ! use openal && ! use pulseaudio; then
+		local mycmakeargs="${mycmakeargs}
+			-DAUDIO_BACKEND=none"
+	fi
 	cmake-utils_src_configure
 }
 
