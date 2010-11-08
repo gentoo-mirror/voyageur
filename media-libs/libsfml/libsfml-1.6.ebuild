@@ -19,7 +19,7 @@ IUSE=""
 DEPEND="media-libs/freetype:2
 	media-libs/libsndfile
 	media-libs/openal
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/libpng
 	media-libs/glew
 	sys-libs/zlib"

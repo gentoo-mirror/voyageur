@@ -16,7 +16,7 @@ IUSE="abiword dvi +html +jpeg +netpbm +png povray rar svg +tiff xine wmf +zip"
 DEPEND="dev-lang/perl
 	x11-libs/libX11
 	app-text/ghostscript-gpl
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	png? ( media-libs/libpng )
 	tiff? ( media-libs/tiff )
 	xine? ( media-libs/xine-lib )

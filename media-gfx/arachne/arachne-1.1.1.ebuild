@@ -13,8 +13,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="media-libs/jpeg
-	media-libs/tiff
+DEPEND="media-libs/tiff
+	virtual/jpeg
 	x11-libs/gtk+"
 RDEPEND="${DEPEND}"
 
