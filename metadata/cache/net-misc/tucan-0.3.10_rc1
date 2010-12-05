@@ -1,0 +1,22 @@
+
+dev-lang/python gtk? ( dev-python/pygtk gnome-base/librsvg ) app-text/tesseract dev-python/imaging
+0
+http://forja.rediris.es/frs/download.php/2003/tucan-0.3.10-RC1.tar.gz
+
+http://tucaneando.com/
+GPL-3
+Manages automatic downloads and uploads from one-click hosting sites like RapidShare
+~amd64 ~x86
+eutils multilib portability toolchain-funcs
+gtk
+
+
+
+2
+
+compile install postinst
+
+
+
+
+
