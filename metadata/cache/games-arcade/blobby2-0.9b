@@ -1,4 +1,4 @@
-virtual/opengl media-libs/libsdl dev-games/physfs >=dev-util/cmake-2.6.2-r1 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+virtual/opengl media-libs/libsdl dev-games/physfs >=dev-util/cmake-2.8.1 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
 virtual/opengl media-libs/libsdl dev-games/physfs
 0
 mirror://sourceforge/blobby/blobby2-linux-0.9b.tar.gz

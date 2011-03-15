@@ -1,0 +1,22 @@
+
+amd64? ( app-emulation/emul-linux-x86-xlibs ) x86? ( dev-libs/glib x11-libs/libX11 )
+0
+http://ukdl.synology.com/download/ds/DSAssistant/dsassistant_Linux_1593.zip
+mirror strip
+http://www.synology.com/
+as-is
+Synology Assistant to setup DiskStations
+~amd64 ~x86
+
+
+
+
+
+3
+
+install unpack
+
+
+
+
+
