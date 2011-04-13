@@ -8,7 +8,7 @@ inherit eutils
 
 DESCRIPTION="Manages automatic downloads and uploads from one-click hosting sites like RapidShare"
 HOMEPAGE="http://tucaneando.com/"
-SRC_URI="http://forja.rediris.es/frs/download.php/2003/${P/_rc/-RC}.tar.gz"
+SRC_URI="http://forja.rediris.es/frs/download.php/2051/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -21,15 +21,13 @@ RDEPEND="dev-lang/python
 	app-text/tesseract
 	dev-python/imaging"
 
-S=${WORKDIR}/${P/_rc1/-RC}
-
 src_compile() { :; }
 
 src_install() {
 	emake DESTDIR="${D}"/usr install || die "emake install failed"
 	dodoc CHANGELOG README || die "dodoc failed"
 	if use gtk ; then
-		doicon media/tucan.svg || die "doicon failed"
+		doicon media/tucan.png || die "doicon failed"
 		make_desktop_entry tucan Tucan
 	fi
 }
