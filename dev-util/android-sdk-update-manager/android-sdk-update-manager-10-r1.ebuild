@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/android-sdk-update-manager/android-sdk-update-manager-10.ebuild,v 1.1 2011/02/23 15:45:20 rich0 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/android-sdk-update-manager/android-sdk-update-manager-10-r1.ebuild,v 1.1 2011/06/04 20:09:42 rich0 Exp $
 
 EAPI="3"
 
@@ -61,8 +61,8 @@ src_install(){
 	#keepdir "${ANDROID_SDK_DIR}"/{add-ons,docs,platforms,temp} || die "failed to keepdir"
 	dodir "${ANDROID_SDK_DIR}"/{add-ons,docs,platforms,temp} || die "failed to dodir"
 
-	fowners root:android "${ANDROID_SDK_DIR}"/{,add-ons,docs,platforms,temp} || die
-	fperms 0775 "${ANDROID_SDK_DIR}"/{,add-ons,docs,platforms,temp} || die
+	fowners root:android "${ANDROID_SDK_DIR}"/{,add-ons,docs,platforms,temp,tools} || die
+	fperms 0775 "${ANDROID_SDK_DIR}"/{,add-ons,docs,platforms,temp,tools} || die
 
 	echo "PATH=\"${EPREFIX}${ANDROID_SDK_DIR}/tools:${EPREFIX}${ANDROID_SDK_DIR}/platform-tools\"" > "${T}/80${PN}" || die
 
@@ -74,12 +74,13 @@ src_install(){
 
 	echo "SEARCH_DIRS_MASK=\"${EPREFIX}${ANDROID_SDK_DIR}\"" > "${T}/80${PN}" || die
 
-	insinto "${EPREFIX}/etc/revdep-rebuild" && doins "${T}/80${PN}" || die
+	insinto "/etc/revdep-rebuild" && doins "${T}/80${PN}" || die
 
 }
 
 pkg_postinst() {
 	elog "The Android SDK now uses its own manager for the development	environment."
+	elog "Run 'android' to download the full SDK, including some of the platform tools."
 	elog "You must be in the android group to manage the development environment."
 	elog "Just run 'gpasswd -a <USER> android', then have <USER> re-login."
 	elog "See http://developer.android.com/sdk/adding-components.html for more"
