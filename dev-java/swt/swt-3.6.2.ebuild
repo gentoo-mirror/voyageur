@@ -30,7 +30,7 @@ SRC_URI="x86? (
 
 SLOT="3.6"
 LICENSE="CPL-1.0 LGPL-2.1 MPL-1.1"
-KEYWORDS="amd64 ~ppc ~ppc64 x86"
+KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 
 IUSE="cairo gnome opengl webkit xulrunner"
 COMMON=">=dev-libs/glib-2.6
@@ -43,7 +43,7 @@ COMMON=">=dev-libs/glib-2.6
 				=gnome-base/libgnomeui-2*
 				)
 		xulrunner? ( =net-libs/xulrunner-1.9* )
-		webkit? ( >=net-libs/webkit-gtk-1.2 )
+		webkit? ( net-libs/webkit-gtk:2 )
 		opengl?	(
 			virtual/opengl
 			virtual/glu
@@ -89,6 +89,11 @@ java_prepare() {
 
 	# Fix Makefiles to respect flags and work with --as-needed
 	epatch "${FILESDIR}"/as-needed-and-flag-fixes-3.6.patch
+
+	# Fix flags for webkit
+	sed -e '/WEBKITCFLAGS/s/=.*/= `pkg-config --cflags webkit-1.0`/' \
+		-e '/WEBKITLIBS/s/=.*/= `pkg-config --libs webkit-1.0`/' \
+		-i make_linux.mak || die "webkit sed failed"
 }
 
 src_compile() {
