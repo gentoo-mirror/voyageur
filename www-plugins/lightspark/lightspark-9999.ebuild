@@ -8,16 +8,16 @@ inherit multilib cmake-utils git
 DESCRIPTION="High performance flash player designed from scratch to be efficient on modern hardware"
 HOMEPAGE="https://launchpad.net/lightspark"
 SRC_URI=""
-EGIT_REPO_URI="git://lightspark.git.sourceforge.net/gitroot/lightspark/lightspark"
+EGIT_REPO_URI="git://github.com/lightspark/lightspark.git"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
 IUSE="alsa openal nsplugin pulseaudio"
 
-RDEPEND="dev-libs/libpcre[cxx]
+RDEPEND="dev-cpp/libxmlpp
+	dev-libs/libpcre[cxx]
 	media-fonts/liberation-fonts
-	media-video/ffmpeg
 	media-libs/fontconfig
 	media-libs/ftgl
 	>=media-libs/glew-1.5.3
@@ -33,7 +33,8 @@ RDEPEND="dev-libs/libpcre[cxx]
 	)
 	net-misc/curl
 	>=sys-devel/gcc-4.4
-	>=sys-devel/llvm-2.7
+	>=sys-devel/llvm-2.8-r2
+	virtual/ffmpeg
 	virtual/opengl
 	nsplugin? (
 		dev-libs/nspr
