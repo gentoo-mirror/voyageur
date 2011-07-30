@@ -1,7 +1,7 @@
 app-arch/tar app-arch/gzip
 >=virtual/jdk-1.5 >=dev-java/ant-core-1.6.5 =dev-java/swt-3.6* amd64? ( app-emulation/emul-linux-x86-gtklibs ) x86? ( x11-libs/gtk+:2 )
 0
-http://dl.google.com/android/android-sdk_r11-linux_x86.tgz
+http://dl.google.com/android/android-sdk_r12-linux_x86.tgz
 mirror
 http://developer.android.com
 android
