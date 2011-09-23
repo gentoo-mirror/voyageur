@@ -18,10 +18,11 @@ RESTRICT="mirror strip"
 IUSE=""
 
 DEPEND=""
-RDEPEND="amd64? ( app-emulation/emul-linux-x86-xlibs )
+RDEPEND="amd64? ( app-emulation/emul-linux-x86-qtlibs )
 	x86? (
 		dev-libs/glib
-		x11-libs/libX11
+		x11-libs/qt-core
+		x11-libs/qt-gui
 	)"
 
 S=${WORKDIR}/linux
