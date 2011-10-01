@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/android-sdk-update-manager/android-sdk-update-manager-10-r1.ebuild,v 1.1 2011/06/04 20:09:42 rich0 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/android-sdk-update-manager/android-sdk-update-manager-13.ebuild,v 1.1 2011/09/30 20:17:11 rich0 Exp $
 
 EAPI="3"
 
