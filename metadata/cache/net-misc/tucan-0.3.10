@@ -7,7 +7,7 @@ http://tucaneando.com/
 GPL-3
 Manages automatic downloads and uploads from one-click hosting sites like RapidShare
 ~amd64 ~x86
-eutils multilib portability toolchain-funcs
+eutils multilib portability toolchain-funcs user
 gtk
 
 

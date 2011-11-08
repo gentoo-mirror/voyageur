@@ -1,4 +1,4 @@
-dev-cpp/libxmlpp dev-libs/libpcre[cxx] media-fonts/liberation-fonts media-libs/fontconfig media-libs/ftgl >=media-libs/glew-1.5.3 media-libs/libsdl alsa? ( media-sound/alsa-utils ) openal? ( media-libs/openal ) pulseaudio? ( media-sound/pulseaudio ) net-misc/curl >=sys-devel/gcc-4.4 >=sys-devel/llvm-2.8-r2 virtual/ffmpeg virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner x11-libs/gtk+:2 x11-libs/gtkglext ) x11-libs/libX11 dev-lang/nasm dev-util/pkgconfig >=dev-util/cmake-2.8.1 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
+dev-cpp/libxmlpp dev-libs/libpcre[cxx] media-fonts/liberation-fonts media-libs/fontconfig media-libs/ftgl >=media-libs/glew-1.5.3 media-libs/libsdl alsa? ( media-sound/alsa-utils ) openal? ( media-libs/openal ) pulseaudio? ( media-sound/pulseaudio ) net-misc/curl >=sys-devel/gcc-4.4 >=sys-devel/llvm-2.8-r2 virtual/ffmpeg virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner x11-libs/gtk+:2 x11-libs/gtkglext ) x11-libs/libX11 dev-lang/nasm dev-util/pkgconfig >=dev-util/cmake-2.8.4 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) >=dev-vcs/git-1.6
 dev-cpp/libxmlpp dev-libs/libpcre[cxx] media-fonts/liberation-fonts media-libs/fontconfig media-libs/ftgl >=media-libs/glew-1.5.3 media-libs/libsdl alsa? ( media-sound/alsa-utils ) openal? ( media-libs/openal ) pulseaudio? ( media-sound/pulseaudio ) net-misc/curl >=sys-devel/gcc-4.4 >=sys-devel/llvm-2.8-r2 virtual/ffmpeg virtual/opengl nsplugin? ( dev-libs/nspr net-libs/xulrunner x11-libs/gtk+:2 x11-libs/gtkglext ) x11-libs/libX11
 0
 
@@ -7,7 +7,7 @@ https://launchpad.net/lightspark
 GPL-3
 High performance flash player designed from scratch to be efficient on modern hardware
 
-base cmake-utils eutils flag-o-matic git multilib portability toolchain-funcs
+base cmake-utils eutils flag-o-matic git multilib portability toolchain-funcs user
 alsa openal nsplugin pulseaudio
 
 

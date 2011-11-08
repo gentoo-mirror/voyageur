@@ -1,0 +1,22 @@
+virtual/opengl media-libs/libsdl dev-games/physfs >=dev-util/cmake-2.8.4 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+virtual/opengl media-libs/libsdl dev-games/physfs
+0
+mirror://sourceforge/blobby/blobby2-linux-0.9c.tar.gz
+
+http://blobby.sourceforge.net
+GPL-2
+The new Blobby Volley, a volley-game with colorful blobs
+~amd64 ~x86
+base cmake-utils eutils flag-o-matic games multilib portability toolchain-funcs user
+
+
+
+
+3
+
+compile configure install postinst preinst prepare setup test unpack
+
+
+
+
+

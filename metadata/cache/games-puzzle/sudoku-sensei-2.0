@@ -7,7 +7,7 @@ http://sudoku-sensei.sourceforge.net
 GPL-2
 The Sudoku Explainer Game
 ~amd64 ~x86
-base eutils games multilib portability qt4-r2 toolchain-funcs
+base eutils games multilib portability qt4-r2 toolchain-funcs user
 
 
 
