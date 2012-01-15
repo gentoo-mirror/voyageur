@@ -1,7 +1,7 @@
 dev-lang/perl x11-libs/libX11 app-text/ghostscript-gpl jpeg? ( virtual/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) zip? ( app-arch/unzip ) rar? ( app-arch/unrar ) abiword? ( app-office/abiword ) dvi? ( dev-texlive/texlive-basic ) netpbm? ( media-libs/netpbm ) html? ( app-text/htmldoc ) povray? ( media-gfx/povray ) svg? ( gnome-base/librsvg ) wmf? ( media-libs/libwmf )
 dev-lang/perl x11-libs/libX11 app-text/ghostscript-gpl jpeg? ( virtual/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) zip? ( app-arch/unzip ) rar? ( app-arch/unrar ) abiword? ( app-office/abiword ) dvi? ( dev-texlive/texlive-basic ) netpbm? ( media-libs/netpbm ) html? ( app-text/htmldoc ) povray? ( media-gfx/povray ) svg? ( gnome-base/librsvg ) wmf? ( media-libs/libwmf )
 0
-mirror://sourceforge/eaglemode/eaglemode-0.82.0.tar.bz2
+mirror://sourceforge/eaglemode/eaglemode-0.83.0.tar.bz2
 
 http://eaglemode.sourceforge.net
 GPL-3
