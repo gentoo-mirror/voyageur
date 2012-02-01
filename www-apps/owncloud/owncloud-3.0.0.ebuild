@@ -1,10 +1,10 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=4
 
-inherit webapp eutils depend.php
+inherit webapp depend.php
 
 
 DESCRIPTION="Web-based storage application where all your data is under your own control"
@@ -42,6 +42,7 @@ src_install() {
 	webapp_serverowned "${MY_HTDOCSDIR}"/apps
 	webapp_serverowned "${MY_HTDOCSDIR}"/data
 	webapp_serverowned "${MY_HTDOCSDIR}"/config
+	webapp_configfile "${MY_HTDOCSDIR}"/.htaccess
 
 	webapp_src_install
 }
