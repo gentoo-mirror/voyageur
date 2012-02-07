@@ -13,7 +13,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=">=dev-libs/glib-2.28.0
+DEPEND="dev-db/sqlite:3
+	>=dev-libs/glib-2.28.0
 	dev-libs/libgusb
 	media-libs/lcms:2
 	net-libs/libsoup:2.4
