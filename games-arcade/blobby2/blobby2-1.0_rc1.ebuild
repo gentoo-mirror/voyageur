@@ -1,25 +1,27 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=3
 inherit games cmake-utils
 
-MY_PN="${PN}-linux"
-DESCRIPTION="The new Blobby Volley, a volley-game with colorful blobs"
+DESCRIPTION="a volley-game with colorful blobs"
 HOMEPAGE="http://blobby.sourceforge.net"
-SRC_URI="mirror://sourceforge/blobby/${MY_PN}-${PV}.tar.gz"
+SRC_URI="mirror://sourceforge/blobby/${PN}-linux-${PV/_}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+# TODO build failures without debug
+IUSE="+debug"
 
-RDEPEND="virtual/opengl
+RDEPEND="dev-games/physfs
+	dev-libs/boost
 	media-libs/libsdl
-	dev-games/physfs"
+	virtual/opengl"
 DEPEND="${RDEPEND}"
 
-S="${WORKDIR}/blobby-beta-${PV}"
+S="${WORKDIR}/blobby-${PV/_}"
 
 src_install() {
 	cmake-utils_src_install
