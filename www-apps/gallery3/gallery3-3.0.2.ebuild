@@ -15,7 +15,7 @@ IUSE="+gd imagemagick"
 
 DEPEND=""
 RDEPEND=">=dev-db/mysql-5.0
-	>=dev-lang/php-5.3[ctype,gd?,filter,iconv,json,simplexml]
+	>=dev-lang/php-5.3[ctype,gd?,filter,iconv,json,simplexml,tokenizer]
 	>=www-servers/apache-2.2
 	imagemagick? ( || ( media-gfx/imagemagick
 		media-gfx/graphicsmagick[imagemagick] ) )"
