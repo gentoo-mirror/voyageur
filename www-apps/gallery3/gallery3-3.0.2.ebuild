@@ -13,7 +13,7 @@ LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
 IUSE="+gd imagemagick mysql mysqli"
 
-DEPEND=""
+DEPEND="app-arch/unzip"
 RDEPEND=">=dev-db/mysql-5.0
 	>=dev-lang/php-5.2.3[ctype,gd?,filter,iconv,json,mysql?,mysqli?,simplexml,tokenizer]
 	>=www-servers/apache-2.2
@@ -37,6 +37,7 @@ src_install() {
 
 	dodir "${MY_HTDOCSDIR}"/var
 	webapp_serverowned "${MY_HTDOCSDIR}"/var
+	webapp_configfile "${MY_HTDOCSDIR}"/.htaccess
 
 	webapp_src_install
 }
