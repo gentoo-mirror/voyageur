@@ -7,7 +7,7 @@ http://blobby.sourceforge.net
 GPL-2
 a volley-game with colorful blobs
 ~amd64 ~x86
-base cmake-utils eutils flag-o-matic games multilib portability toolchain-funcs user
+base cmake-utils eutils flag-o-matic games multilib toolchain-funcs user
 +debug
 
 

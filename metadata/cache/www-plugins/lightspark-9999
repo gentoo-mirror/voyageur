@@ -7,7 +7,7 @@ https://launchpad.net/lightspark
 GPL-3
 High performance flash player designed from scratch to be efficient on modern hardware
 
-base cmake-utils eutils flag-o-matic git multilib portability toolchain-funcs user
+base cmake-utils eutils flag-o-matic git multilib toolchain-funcs user
 alsa openal nsplugin pulseaudio
 
 
