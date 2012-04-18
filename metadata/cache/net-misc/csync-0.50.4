@@ -1,0 +1,22 @@
+>=dev-db/sqlite-3.4:3 >=dev-libs/iniparser-3.1 log? ( >=dev-libs/log4c-1.2 ) owncloud? ( net-libs/neon ) samba? ( >=net-fs/samba-3.5[smbclient] ) sftp? ( >=net-libs/libssh-0.5 ) >=dev-util/cmake-2.8.4 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+>=dev-db/sqlite-3.4:3 >=dev-libs/iniparser-3.1 log? ( >=dev-libs/log4c-1.2 ) owncloud? ( net-libs/neon ) samba? ( >=net-fs/samba-3.5[smbclient] ) sftp? ( >=net-libs/libssh-0.5 )
+0
+http://download.owncloud.com/download/csync-0.50.4.tar.bz2
+
+http://www.csync.org/ https://owncloud.com/download
+GPL-2
+a client only bidirectional file synchronizer
+~amd64 ~x86
+base cmake-utils eutils flag-o-matic multilib toolchain-funcs user
+log +owncloud samba sftp
+
+
+
+4
+
+compile configure install prepare test unpack
+
+
+
+
+
