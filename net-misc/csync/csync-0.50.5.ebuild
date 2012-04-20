@@ -7,8 +7,8 @@ inherit cmake-utils
 
 DESCRIPTION="a client only bidirectional file synchronizer"
 HOMEPAGE="http://www.csync.org/
-	https://owncloud.com/download"
-SRC_URI="http://download.owncloud.com/download/${P}.tar.bz2 "
+	https://build.opensuse.org/package/files?package=csync&project=isv:ownCloud:devel"
+SRC_URI="https://api.opensuse.org/public/source/isv:ownCloud:devel/${PN}/${P}.tar.bz2 "
 
 LICENSE="GPL-2"
 SLOT="0"
