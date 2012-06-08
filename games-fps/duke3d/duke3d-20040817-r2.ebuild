@@ -1,7 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.4 2008/01/04 20:59:41 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.11 2010/10/08 12:55:49 tupone Exp $
 
+EAPI=2
 fromcvs=0
 ECVS_MODULE="duke3d"
 if [[ ${fromcvs} -eq 1 ]] ; then
@@ -31,7 +32,7 @@ RDEPEND="media-libs/libsdl
 	media-libs/sdl-mixer
 	media-sound/timidity++
 	media-sound/timidity-eawpatches
-	perl? ( dev-lang/perl )
+	perl? ( dev-lang/perl[-ithreads] )
 	opengl? ( virtual/opengl )"
 DEPEND="${RDEPEND}
 	demo? ( app-arch/unzip )
@@ -43,23 +44,12 @@ use_tf() { use ${1} && echo "true" || echo "false"; }
 
 pkg_setup() {
 	if use amd64 ; then
-		if ! has_m32 ; then
-			eerror "Your compiler seems to be unable to compile 32bit code."
-			eerror "Make sure you compile gcc with:"
-			echo
-			eerror "    USE=multilib FEATURES=-sandbox"
-			die "Cannot produce 32bit code"
-		fi
 		if has_multilib_profile ; then
 			export ABI=x86
 		else
 			append-flags -m32
 			append-ldflags -m32
 		fi
-	fi
-	if built_with_use dev-lang/perl ithreads ; then
-		eerror "${PN} needs perl compiled with ithreads use-flag disabled!"
-		die "perl with ithreads detected"
 	fi
 	games_pkg_setup
 }
@@ -77,7 +67,9 @@ src_unpack() {
 	if use demo ; then
 		unzip -qo DN3DSW13.SHR || die "unzip DN3DSW13.SHR failed"
 	fi
+}
 
+src_prepare() {
 	# configure buildengine
 	cd "${S}/source/buildengine"
 	sed -i \
@@ -92,11 +84,15 @@ src_unpack() {
 
 	# configure duke3d
 	cd "${S}/source"
-	epatch "${FILESDIR}/${PV}-credits.patch"
 	# need to sync features with build engine
-	epatch "${FILESDIR}/${PV}-duke3d-makefile-opts.patch"
-	epatch "${FILESDIR}/${PV}-gcc34.patch" # compile fixes for GCC 3.4
-	epatch "${FILESDIR}"/${P}-gcc4.patch
+	epatch \
+		"${FILESDIR}/${PV}-credits.patch" \
+		"${FILESDIR}/${PV}-duke3d-makefile-opts.patch" \
+		"${FILESDIR}/${PV}-gcc34.patch" \
+		"${FILESDIR}"/${P}-gcc4.patch \
+		"${FILESDIR}"/${P}-noinline.patch \
+		"${FILESDIR}"/${P}-as-needed.patch \
+		"${FILESDIR}"/${P}-ldflags.patch
 	sed -i \
 		-e "/^use_opengl := / s:=.*:= $(use_tf opengl):" \
 		-e "/^use_physfs := / s:=.*:= false:" \

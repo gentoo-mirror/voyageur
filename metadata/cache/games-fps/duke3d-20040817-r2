@@ -1,5 +1,5 @@
-media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl ) opengl? ( virtual/opengl ) demo? ( app-arch/unzip ) !pic? ( x86? ( dev-lang/nasm ) )
-media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl ) opengl? ( virtual/opengl )
+media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl[-ithreads] ) opengl? ( virtual/opengl ) demo? ( app-arch/unzip ) !pic? ( x86? ( dev-lang/nasm ) )
+media-libs/libsdl media-libs/sdl-mixer media-sound/timidity++ media-sound/timidity-eawpatches perl? ( dev-lang/perl[-ithreads] ) opengl? ( virtual/opengl )
 0
 mirror://gentoo/duke3d-20040817.tar.bz2 demo? ( ftp://ftp.3drealms.com/share/3dduke13.zip ftp://ftp.planetmirror.com/pub/gameworld/downloads/3dduke13.zip )
 
@@ -12,9 +12,9 @@ demo pic perl opengl
 
 
 
+2
 
-
-compile install postinst preinst setup unpack
+compile configure install postinst preinst prepare setup unpack
 
 
 
