@@ -1,0 +1,22 @@
+>=dev-util/cmake-2.8.4 userland_GNU? ( >=sys-apps/findutils-4.4.0 ) dev-vcs/git
+|| ( app-emulation/qemu-kvm >=app-emulation/qemu-0.9.0 ) vnc? ( net-libs/libvncserver ) x11-libs/qt-gui:4 x11-libs/qt-test:4 x11-libs/qt-xmlpatterns:4
+0
+
+
+http://sourceforge.net/projects/aqemu
+GPL-2
+Graphical interface for QEMU and KVM emulators. Using Qt4.
+
+base cmake-utils eutils flag-o-matic git-2 multilib toolchain-funcs user
++vnc
+
+
+
+4
+
+compile configure install prepare test unpack
+
+
+
+
+
