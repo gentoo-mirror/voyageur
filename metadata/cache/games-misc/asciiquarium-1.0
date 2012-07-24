@@ -1,20 +1,20 @@
-
->=dev-lang/perl-5.6 dev-perl/Curses dev-perl/Term-Animation
+>=dev-lang/perl-5.6 dev-perl/Term-Animation[ncurses]
+>=dev-lang/perl-5.6 dev-perl/Term-Animation[ncurses]
 0
 http://www.robobunny.com/projects/asciiquarium/asciiquarium_1.0.tar.gz
-nostrip
-http://www.robobunny.com/projects/asciiquarium/
+
+http://www.robobunny.com/projects/asciiquarium/html/
 GPL-2
-ASCII Aquarium - Swimming fishes! :-)
+an aquarium/sea animation in ASCII art
 ~amd64 ~x86
 
 
 
 
 
+4
 
-
-
+install
 
 
 

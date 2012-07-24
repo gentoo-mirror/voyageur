@@ -1,9 +1,12 @@
-# Copyright 2005 Michael Pyne <michael.pyne@kdemail.net>
-# Distribute however you'd like.
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+EAPI=4
 
 MY_P=${P/-/_}
-DESCRIPTION="ASCII Aquarium - Swimming fishes! :-)"
-HOMEPAGE="http://www.robobunny.com/projects/asciiquarium/"
+DESCRIPTION="an aquarium/sea animation in ASCII art"
+HOMEPAGE="http://www.robobunny.com/projects/asciiquarium/html/"
 SRC_URI="http://www.robobunny.com/projects/asciiquarium/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
@@ -11,21 +14,14 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-# This may work with earlier Perl versions, but I don't know.  If you'd like
-# to try, be my guest, just go ahead and decrement the version below.
-# Most of the depends are based from the kdelibs-3.4 ebuild, the ones
-# needing USE flags weren't included.
-RDEPEND=">=dev-lang/perl-5.6
-         dev-perl/Curses
-		 dev-perl/Term-Animation"
+DEPEND=">=dev-lang/perl-5.6
+		 dev-perl/Term-Animation[ncurses]"
+RDEPEND="${DEPEND}"
 
-RESTRICT="nostrip"
-
-S="${WORKDIR}/${MY_P}"
+S=${WORKDIR}/${MY_P}
 
 src_install()
 {
-	dodoc README CHANGES MANIFEST gpl.txt
-	into /usr
+	dodoc README CHANGES
 	dobin asciiquarium
 }
