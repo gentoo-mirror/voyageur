@@ -17,7 +17,7 @@ IUSE=""
 
 DEPEND="media-libs/mesa"
 RDEPEND="${RDEPEND}
-	!media-libs/libtx_dxtn"
+	!media-libs/libtxc_dxtn"
 
 S=${WORKDIR}
 
