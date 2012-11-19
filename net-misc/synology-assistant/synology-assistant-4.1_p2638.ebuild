@@ -36,5 +36,5 @@ src_unpack() {
 src_install() {
 	dodir /opt
 	cp -r ${MY_PN} ${D}/opt || die "copy failed"
-	dosym /opt/${MY_PN}/${MY_PN} /opt/bin/
+	dosym /opt/${MY_PN}/${MY_PN} /opt/bin/${MY_PN}
 }

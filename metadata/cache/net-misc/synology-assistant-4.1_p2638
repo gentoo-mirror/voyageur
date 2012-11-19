@@ -1,7 +1,7 @@
 
 amd64? ( app-emulation/emul-linux-x86-qtlibs ) x86? ( dev-libs/glib x11-libs/qt-core x11-libs/qt-gui )
 0
-http://ukdl.synology.com/download/ds/DSAssistant/dsassistant_Linux_1920.zip
+http://ukdl.synology.com/download/ds/DSAssistant/dsassistant_Linux_2638.zip
 mirror strip
 http://www.synology.com/
 as-is
