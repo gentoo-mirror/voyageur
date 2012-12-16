@@ -12,11 +12,13 @@ SRC_URI="https://github.com/downloads/liftoff/GateOne/${P}.tar.gz"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+dtach"
+IUSE="dtach kerberos pam"
 
 DEPEND=">=www-servers/tornado-2.2"
 RDEPEND="${DEPEND}
 	dev-python/imaging
-	dtach? ( app-misc/dtach )"
+	dtach? ( app-misc/dtach )
+	kerberos? ( dev-python/pykerberos )
+	pam? ( dev-python/python-pam )"
 
 S="${WORKDIR}/GateOne"
