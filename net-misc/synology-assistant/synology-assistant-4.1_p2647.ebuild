@@ -25,7 +25,7 @@ RDEPEND="amd64? ( app-emulation/emul-linux-x86-qtlibs )
 		x11-libs/qt-gui
 	)"
 
-S=${WORKDIR}/linux
+S=${WORKDIR}
 
 src_unpack() {
 	unpack ${A}
