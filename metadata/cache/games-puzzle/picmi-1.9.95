@@ -1,4 +1,4 @@
-kde-base/kdelibs:4 kde-base/libkdegames:4 >=dev-util/cmake-2.8.4 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+kde-base/kdelibs:4 kde-base/libkdegames:4 sys-devel/make >=dev-util/cmake-2.8.9 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
 kde-base/kdelibs:4 kde-base/libkdegames:4
 0
 http://github.com/downloads/schuay/picmi-rewrite/picmi-1.9.95.tar.bz2

@@ -20,7 +20,7 @@ DEPEND=""
 RDEPEND="net-print/cups
 	!net-print/splix
 	scanner? ( media-gfx/sane-backends )
-	qt4? ( x11-libs/qt-core:4 )"
+	qt4? ( dev-qt/qtcore:4 )"
 
 S=${WORKDIR}/cdroot/Linux
 

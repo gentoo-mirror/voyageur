@@ -1,4 +1,4 @@
-media-libs/mesa dev-vcs/git || ( >=sys-devel/automake-1.11.1:1.11 >=sys-devel/automake-1.12:1.12 ) >=sys-devel/autoconf-2.68 sys-devel/libtool
+media-libs/mesa dev-vcs/git
 !media-libs/libtxc_dxtn
 0
 
@@ -7,12 +7,12 @@ https://github.com/divVerent/s2tc/wiki
 MIT
 S2TC texture compression and conversion tools
 ~amd64 ~x86
-autotools autotools-multilib autotools-utils eutils git-2 libtool multilib multiprocessing toolchain-funcs user
-multilib
+autotools autotools-multilib autotools-utils eutils git-2 libtool multilib multilib-build multiprocessing toolchain-funcs user
+abi_x86_32 abi_x86_64 abi_x86_x32
 
 
 
-4
+5
 
 compile configure install prepare test unpack
 

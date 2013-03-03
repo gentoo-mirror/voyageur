@@ -21,8 +21,8 @@ DEPEND=""
 RDEPEND="amd64? ( app-emulation/emul-linux-x86-qtlibs )
 	x86? (
 		dev-libs/glib
-		x11-libs/qt-core
-		x11-libs/qt-gui
+		dev-qt/qtcore
+		dev-qt/qtgui
 	)"
 
 S=${WORKDIR}

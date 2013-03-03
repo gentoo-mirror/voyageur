@@ -19,9 +19,9 @@ IUSE="+vnc"
 DEPEND="${RDEPEND}"
 RDEPEND="|| ( app-emulation/qemu-kvm >=app-emulation/qemu-0.9.0 )
 	vnc? ( net-libs/libvncserver )
-	x11-libs/qt-gui:4
-	x11-libs/qt-test:4
-	x11-libs/qt-xmlpatterns:4"
+	dev-qt/qtgui:4
+	dev-qt/qttest:4
+	dev-qt/qtxmlpatterns:4"
 
 DOCS="AUTHORS CHANGELOG README TODO"
 PATCHES=()

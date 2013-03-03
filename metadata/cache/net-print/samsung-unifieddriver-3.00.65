@@ -1,5 +1,5 @@
 
-net-print/cups !net-print/splix scanner? ( media-gfx/sane-backends ) qt4? ( x11-libs/qt-core:4 )
+net-print/cups !net-print/splix scanner? ( media-gfx/sane-backends ) qt4? ( dev-qt/qtcore:4 )
 0
 http://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?VPath=DR/200911/20091118140019125/UnifiedLinuxDriver_1.00.tar.gz -> samsung-unifieddriver-3.00.65.tar.gz
 mirror strip

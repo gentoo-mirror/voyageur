@@ -1,7 +1,7 @@
->=x11-libs/qt-core-4.5.2 >=x11-libs/qt-gui-4.5.2[dbus] >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
->=x11-libs/qt-core-4.5.2 >=x11-libs/qt-gui-4.5.2[dbus] >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
+>=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtgui-4.5.2:4[dbus] >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
+>=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtgui-4.5.2:4[dbus] >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
 0
-http://texworks.googlecode.com/files/texworks-0.4.3-r858.tar.gz
+http://texworks.googlecode.com/files/texworks-0.4.4-r1004.tar.gz
 
 http://tug.org/texworks/
 GPL-2
@@ -12,7 +12,7 @@ base eutils multilib qt4-r2 toolchain-funcs user
 
 latex? ( dev-texlive/texlive-latex ) !latex? ( app-text/texlive-core )
 
-2
+5
 
 compile configure install prepare unpack
 
