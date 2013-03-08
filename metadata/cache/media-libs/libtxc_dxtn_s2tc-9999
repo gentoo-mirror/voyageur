@@ -7,7 +7,7 @@ https://github.com/divVerent/s2tc/wiki
 MIT
 S2TC texture compression and conversion tools
 ~amd64 ~x86
-autotools autotools-multilib autotools-utils eutils git-2 libtool multilib multilib-build multiprocessing toolchain-funcs user
+autotools autotools-multilib autotools-utils eutils git-2 libtool multibuild multilib multilib-build multiprocessing toolchain-funcs user
 abi_x86_32 abi_x86_64 abi_x86_x32
 
 
