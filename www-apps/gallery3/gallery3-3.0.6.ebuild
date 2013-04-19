@@ -6,7 +6,7 @@ EAPI=4
 inherit webapp eutils depend.php
 
 DESCRIPTION="Web based photo album organizer"
-HOMEPAGE="http://gallery.menalto.com/"
+HOMEPAGE="http://http://galleryproject.org/"
 SRC_URI="mirror://sourceforge/gallery/${P/y3/y}.zip"
 
 LICENSE="GPL-2"
