@@ -11,17 +11,16 @@ SRC_URI="mirror://sourceforge/gallery/${P/y3/y}.zip"
 
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
-IUSE="+gd imagemagick mysql mysqli"
+IUSE="+gd imagemagick"
 
 DEPEND="app-arch/unzip"
-RDEPEND=">=dev-db/mysql-5.0
-	>=dev-lang/php-5.2.3[ctype,gd?,filter,iconv,json,mysql?,mysqli?,simplexml,tokenizer]
+RDEPEND=">=dev-lang/php-5.2.3[ctype,gd?,filter,iconv,json,mysqli,simplexml,tokenizer]
+	>=virtual/mysql-5.0
 	>=www-servers/apache-2.2
 	imagemagick? ( || ( media-gfx/imagemagick
 		media-gfx/graphicsmagick[imagemagick] ) )"
 
-REQUIRED_USE="|| ( gd imagemagick )
-	|| ( mysql mysqli )"
+REQUIRED_USE="|| ( gd imagemagick )"
 
 S=${WORKDIR}/${PN}
 
