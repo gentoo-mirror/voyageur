@@ -19,7 +19,7 @@ RDEPEND="dev-lang/python
 	gtk? ( dev-python/pygtk
 		gnome-base/librsvg )
 	app-text/tesseract
-	dev-python/imaging"
+	virtual/python-imaging"
 
 src_compile() { :; }
 

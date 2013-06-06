@@ -1,5 +1,5 @@
 
-dev-lang/python gtk? ( dev-python/pygtk gnome-base/librsvg ) app-text/tesseract dev-python/imaging
+dev-lang/python gtk? ( dev-python/pygtk gnome-base/librsvg ) app-text/tesseract virtual/python-imaging
 0
 http://forja.rediris.es/frs/download.php/2051/tucan-0.3.10.tar.gz
 
