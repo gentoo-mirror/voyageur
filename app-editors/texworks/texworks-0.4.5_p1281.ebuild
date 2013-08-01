@@ -10,7 +10,6 @@ MY_P=${P/_p/-r}
 DESCRIPTION="A simple interface for working with TeX documents"
 HOMEPAGE="http://tug.org/texworks/"
 SRC_URI="http://${PN}.googlecode.com/files/${MY_P}.tar.gz"
-#SRC_URI="http://texworks.googlecode.com/files/texworks-0.4.3-r858.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -23,7 +22,8 @@ for LNG in ${LANGS}; do
 done
 
 RDEPEND=">=dev-qt/qtcore-4.5.2:4
-		 >=dev-qt/qtgui-4.5.2:4[dbus]
+		 >=dev-qt/qtdbus-4.5.2:4
+		 >=dev-qt/qtgui-4.5.2:4
 		 >=app-text/poppler-0.12.3-r3[qt4]
 		 >=app-text/hunspell-1.2.8"
 DEPEND="${RDEPEND}"
@@ -37,7 +37,9 @@ src_prepare() {
 	sed -i '\:system(./getDefaultBinPaths.sh): d' TeXworks.pro || die
 	echo '#define DEFAULT_BIN_PATHS "/usr/bin"' > src/DefaultBinaryPaths.h || die
 
-	sed -i '/TW_HELPPATH/ s:/usr/local:/usr:' TeXworks.pro || die
+	sed -i '/INSTALL_PREFIX/ s:/usr/local:/usr:' TeXworks.pro || die
+	sed -i '/TW_HELPPATH/ s:DATA_DIR/texworks-help:DATA_DIR/doc/texworks-help:' TeXworks.pro || die
+	sed -i '/TW_DICPATH/ s:/usr/share/myspell/dicts:/usr/share/myspell:' TeXworks.pro || die
 	cp "${FILESDIR}/TeXworks.desktop" "${S}" || die
 }
 
@@ -47,6 +49,11 @@ src_configure() {
 
 src_install() {
 	dobin ${PN}
+
+	insinto /usr/share/doc/texworks-help
+	doins -r manual/en
+	dodoc README PACKAGING COPYING NEWS
+	doman man/texworks.1
 
 	# install translations
 	insinto /usr/share/${PN}/
