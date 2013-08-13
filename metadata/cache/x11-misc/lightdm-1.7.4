@@ -1,0 +1,22 @@
+>=dev-libs/glib-2.32.3:2 dev-libs/libxml2 sys-apps/accountsservice virtual/pam x11-libs/libX11 >=x11-libs/libxklavier-5 introspection? ( >=dev-libs/gobject-introspection-1 ) qt4? ( dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 ) dev-util/gtk-doc-am dev-util/intltool gnome-base/gnome-common sys-devel/gettext virtual/pkgconfig || ( >=sys-devel/automake-1.12:1.12 >=sys-devel/automake-1.13:1.13 ) >=sys-devel/autoconf-2.68 sys-devel/libtool virtual/pkgconfig
+>=dev-libs/glib-2.32.3:2 dev-libs/libxml2 sys-apps/accountsservice virtual/pam x11-libs/libX11 >=x11-libs/libxklavier-5 introspection? ( >=dev-libs/gobject-introspection-1 ) qt4? ( dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 ) >=sys-auth/pambase-20101024-r2
+0
+http://launchpad.net/lightdm/1.8/1.7.4/+download/lightdm-1.7.4.tar.xz mirror://gentoo/introspection-20110205.m4.tar.bz2
+
+http://www.freedesktop.org/wiki/Software/LightDM
+GPL-3 LGPL-3
+A lightweight display manager
+~amd64 ~arm ~ppc ~x86
+autotools eutils flag-o-matic libtool multilib multiprocessing pam readme.gentoo systemd toolchain-funcs user
++gtk +introspection kde qt4 razor
+|| ( gtk kde razor )
+gtk? ( x11-misc/lightdm-gtk-greeter ) kde? ( x11-misc/lightdm-kde ) razor? ( razorqt-base/razorqt-lightdm-greeter )
+
+5
+
+configure install postinst prepare
+
+
+
+
+
