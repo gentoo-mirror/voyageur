@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-simulation/fgrun/fgrun-1.6.0.ebuild,v 1.1 2012/01/21 15:57:35 reavertm Exp $
 
-EAPI=3
+EAPI=5
 inherit eutils games cmake-utils
 
 DESCRIPTION="A graphical frontend for the FlightGear Flight Simulator"
@@ -20,12 +20,16 @@ COMMON_DEPEND="
 	x11-libs/fltk:1[opengl,threads]
 "
 DEPEND="${COMMON_DEPEND}
-	~dev-games/simgear-2.8.0
+	~dev-games/simgear-2.10.0
 	>=dev-libs/boost-1.34
 "
 RDEPEND="${COMMON_DEPEND}
 	>=games-simulation/flightgear-2
 "
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-fix-simgear-version.patch
+}
 
 src_configure() {
 	local mycmakeargs=(
