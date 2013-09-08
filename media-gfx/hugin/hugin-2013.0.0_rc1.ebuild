@@ -57,6 +57,10 @@ pkg_setup() {
 	python-single-r1_pkg_setup
 }
 
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-pod_encoding.patch
+}
+
 src_install() {
 	cmake-utils_src_install
 	python_optimize
