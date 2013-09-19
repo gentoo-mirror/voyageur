@@ -18,5 +18,5 @@ IUSE=""
 
 DEPEND="~dev-python/botocore-0.16.0[${PYTHON_USEDEP}]
    dev-python/colorama[${PYTHON_USEDEP}]
-   dev-python/rsa[${PYTHON_USEDEP}]"
+   dev-python/rsa"
 RDEPEND="${DEPEND}"

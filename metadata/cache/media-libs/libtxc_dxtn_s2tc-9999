@@ -1,4 +1,4 @@
-media-libs/mesa dev-vcs/git
+media-libs/mesa dev-vcs/git userland_GNU? ( >=sys-apps/coreutils-8.5 )
 !media-libs/libtxc_dxtn
 0
 
@@ -7,7 +7,7 @@ https://github.com/divVerent/s2tc/wiki
 MIT
 S2TC texture compression and conversion tools
 ~amd64 ~x86
-autotools autotools-multilib autotools-utils eutils git-2 libtool multibuild multilib multilib-build multiprocessing toolchain-funcs user
+autotools autotools-multilib autotools-utils eutils git-2 git-r3 libtool multibuild multilib multilib-build multiprocessing toolchain-funcs user
 abi_x86_32 abi_x86_64 abi_x86_x32 abi_x86_32 abi_x86_64 abi_mips_n32 abi_mips_n64 abi_mips_o32
 
 

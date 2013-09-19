@@ -7,7 +7,7 @@ http://sourceforge.net/projects/aqemu
 GPL-2
 Graphical interface for QEMU and KVM emulators. Using Qt4.
 
-cmake-utils eutils flag-o-matic git-2 multilib toolchain-funcs user
+cmake-utils eutils flag-o-matic git-2 git-r3 multilib toolchain-funcs user
 +vnc
 
 
