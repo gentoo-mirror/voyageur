@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="dev-python/jmespath[${PYTHON_USEDEP}]
-   dev-python/python-dateutil:0[${PYTHON_USEDEP}]
-   dev-python/requests[${PYTHON_USEDEP}]
-   dev-python/six[${PYTHON_USEDEP}]"
+	dev-python/python-dateutil:0[${PYTHON_USEDEP}]
+	dev-python/requests[${PYTHON_USEDEP}]
+	dev-python/six[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
