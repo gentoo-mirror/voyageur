@@ -11,7 +11,7 @@ DESCRIPTION="declaratively specify how to extract elements from a JSON document"
 HOMEPAGE="https://github.com/boto/jmespath"
 SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz"
 
-LICENSE=""
+LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""

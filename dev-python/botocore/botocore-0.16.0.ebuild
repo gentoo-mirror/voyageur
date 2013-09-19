@@ -11,7 +11,7 @@ DESCRIPTION="A low-level interface to a growing number of Amazon Web Services"
 HOMEPAGE="https://github.com/boto/botocore"
 SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz"
 
-LICENSE=""
+LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
