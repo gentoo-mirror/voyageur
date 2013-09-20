@@ -9,7 +9,7 @@ inherit distutils-r1
 
 DESCRIPTION="Tools to help document botocore-based projects"
 HOMEPAGE="https://github.com/boto/bcdoc"
-SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz"
+SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"

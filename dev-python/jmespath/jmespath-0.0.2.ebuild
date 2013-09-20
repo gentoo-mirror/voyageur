@@ -9,7 +9,8 @@ inherit distutils-r1
 
 DESCRIPTION="declaratively specify how to extract elements from a JSON document"
 HOMEPAGE="https://github.com/boto/jmespath"
-SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz"
+SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+
 
 LICENSE="MIT"
 SLOT="0"
