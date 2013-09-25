@@ -1,0 +1,22 @@
+>=dev-lang/perl-5 dev-libs/expat dev-libs/glib dev-libs/libxml2 dev-libs/openssl dev-perl/Archive-Zip dev-perl/Class-MethodMaker dev-perl/Crypt-SSLeay dev-perl/Data-Dump dev-perl/Data-Dumper-Concise dev-perl/HTML-Parser dev-perl/SOAP-Lite dev-perl/URI dev-perl/Data-UUID dev-perl/XML-LibXML dev-perl/XML-NamespaceSupport dev-perl/XML-SAX dev-perl/libwww-perl dev-perl/libxml-perl perl-core/Compress-Raw-Zlib perl-core/IO-Compress perl-core/version sys-fs/e2fsprogs sys-libs/zlib !=dev-perl/LWP-Protocol-https-6.30.0 || ( >=dev-lang/perl-5.16 <dev-lang/perl-5.16[-build] )
+>=dev-lang/perl-5 dev-libs/expat dev-libs/glib dev-libs/libxml2 dev-libs/openssl dev-perl/Archive-Zip dev-perl/Class-MethodMaker dev-perl/Crypt-SSLeay dev-perl/Data-Dump dev-perl/Data-Dumper-Concise dev-perl/HTML-Parser dev-perl/SOAP-Lite dev-perl/URI dev-perl/Data-UUID dev-perl/XML-LibXML dev-perl/XML-NamespaceSupport dev-perl/XML-SAX dev-perl/libwww-perl dev-perl/libxml-perl perl-core/Compress-Raw-Zlib perl-core/IO-Compress perl-core/version sys-fs/e2fsprogs sys-libs/zlib !=dev-perl/LWP-Protocol-https-6.30.0 || ( >=dev-lang/perl-5.16 <dev-lang/perl-5.16[-build] )
+0
+x86? ( http://mail.sootmonkey.com/VMware-vSphere-CLI-4.1.0-254719.i386.tar.gz ) amd64? ( http://mail.sootmonkey.com/VMware-vSphere-CLI-4.1.0-254719.x86_64.tar.gz )
+strip
+http://www.vmware.com/
+vmware
+VMware vSphere Command-Line Interface
+-* ~x86 ~amd64
+base eutils multilib multiprocessing perl-module toolchain-funcs user versionator
+
+
+
+
+5
+
+compile configure install postinst prepare setup test unpack
+
+
+
+
+
