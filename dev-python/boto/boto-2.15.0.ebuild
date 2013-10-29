@@ -4,11 +4,11 @@
 
 EAPI=5
 
-PYTHON_COMPAT=( python{2_6,2_7,3_2,3_3} )
+PYTHON_COMPAT=( python{2_6,2_7} )
 inherit distutils-r1
 
-DESCRIPTION="A low-level interface to a growing number of Amazon Web Services"
-HOMEPAGE="https://github.com/boto/botocore"
+DESCRIPTION="Python interface to Amazon Web Services"
+HOMEPAGE="https://github.com/boto/boto"
 SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
@@ -16,8 +16,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="dev-python/jmespath[${PYTHON_USEDEP}]
-	dev-python/python-dateutil:0[${PYTHON_USEDEP}]
+DEPEND="
+	~dev-python/botocore-0.22.0[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
-	dev-python/six[${PYTHON_USEDEP}]"
+	dev-python/rsa"
 RDEPEND="${DEPEND}"
