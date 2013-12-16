@@ -21,11 +21,12 @@ for LNG in ${LANGS}; do
 	IUSE="${IUSE} linguas_${LNG}"
 done
 
-RDEPEND=">=dev-qt/qtcore-4.5.2:4
-		 >=dev-qt/qtdbus-4.5.2:4
-		 >=dev-qt/qtgui-4.5.2:4
-		 >=app-text/poppler-0.12.3-r3[qt4]
-		 >=app-text/hunspell-1.2.8"
+RDEPEND=">=dev-qt/designer-4.5.2:4
+		>=dev-qt/qtcore-4.5.2:4
+		>=dev-qt/qtdbus-4.5.2:4
+		>=dev-qt/qtgui-4.5.2:4
+		>=app-text/poppler-0.12.3-r3[qt4]
+		>=app-text/hunspell-1.2.8"
 DEPEND="${RDEPEND}"
 PDEPEND="latex? ( dev-texlive/texlive-latex )
 	!latex? ( app-text/texlive-core )"

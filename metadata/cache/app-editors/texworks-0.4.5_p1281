@@ -1,5 +1,5 @@
->=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtdbus-4.5.2:4 >=dev-qt/qtgui-4.5.2:4 >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
->=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtdbus-4.5.2:4 >=dev-qt/qtgui-4.5.2:4 >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
+>=dev-qt/designer-4.5.2:4 >=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtdbus-4.5.2:4 >=dev-qt/qtgui-4.5.2:4 >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
+>=dev-qt/designer-4.5.2:4 >=dev-qt/qtcore-4.5.2:4 >=dev-qt/qtdbus-4.5.2:4 >=dev-qt/qtgui-4.5.2:4 >=app-text/poppler-0.12.3-r3[qt4] >=app-text/hunspell-1.2.8
 0
 http://texworks.googlecode.com/files/texworks-0.4.5-r1281.tar.gz
 
