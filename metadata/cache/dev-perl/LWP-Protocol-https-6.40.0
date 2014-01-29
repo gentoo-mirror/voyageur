@@ -7,7 +7,7 @@ http://search.cpan.org/dist/LWP-Protocol-https/
 || ( Artistic GPL-1 GPL-2 GPL-3 )
 Provide https support for LWP::UserAgent
 alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 s390 sh sparc x86 ~ppc-aix ~amd64-fbsd ~x86-fbsd ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris
-base eutils multilib multiprocessing perl-module toolchain-funcs user
+base eutils multilib multiprocessing perl-module toolchain-funcs
 
 
 

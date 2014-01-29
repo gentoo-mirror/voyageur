@@ -7,7 +7,7 @@ https://github.com/boto/botocore
 MIT
 A low-level interface to a growing number of Amazon Web Services
 ~amd64 ~x86
-distutils-r1 eutils multibuild multilib multiprocessing python-r1 python-utils-r1 toolchain-funcs user
+distutils-r1 eutils multibuild multilib multiprocessing python-r1 python-utils-r1 toolchain-funcs
 python_targets_python2_6 python_targets_python2_7 python_targets_python3_2 python_targets_python3_3
 || ( python_targets_python2_6 python_targets_python2_7 python_targets_python3_2 python_targets_python3_3 )
 
