@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
-	>=dev-python/botocore-0.19.0[${PYTHON_USEDEP}]
+	>=dev-python/botocore-0.32.0[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/rsa"
 RDEPEND="${DEPEND}"
