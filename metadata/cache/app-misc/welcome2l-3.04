@@ -12,7 +12,7 @@ eutils flag-o-matic multilib toolchain-funcs
 
 
 
-4
+5
 
 compile install postinst prepare
 
