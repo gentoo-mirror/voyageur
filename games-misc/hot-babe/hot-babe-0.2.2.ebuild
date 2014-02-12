@@ -15,7 +15,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 RESTRICT="nomirror"
 
-RDEPEND="=x11-libs/gtk+-2*"
+RDEPEND="x11-libs/gtk+:2"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 

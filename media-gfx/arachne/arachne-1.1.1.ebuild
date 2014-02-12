@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
+EAPI=5
 
 DESCRIPTION="Seam carving resizing library and realtime demonstration program"
 HOMEPAGE="http://seam-carver.sourceforge.net/"
@@ -17,7 +17,3 @@ DEPEND="media-libs/tiff
 	virtual/jpeg
 	x11-libs/gtk+"
 RDEPEND="${DEPEND}"
-
-src_install() {
-	emake DESTDIR="${D}" install || die "install failed"
-}
