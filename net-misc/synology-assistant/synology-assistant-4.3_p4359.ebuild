@@ -9,7 +9,7 @@ MY_PV="${PV/[0-9.]*\_p}"
 
 DESCRIPTION="Synology Assistant to setup DiskStations"
 HOMEPAGE="http://www.synology.com/"
-SRC_URI="http://ukdl.synology.com/download/ds/DSAssistant/dsassistant_Linux_${MY_PV}.zip"
+SRC_URI="http://global.download.synology.com/download/Tools/${MY_PN}/${MY_PV}/Linux/${MY_PN}-${PV/_p/-}.zip"
 
 LICENSE="as-is"
 SLOT="0"
