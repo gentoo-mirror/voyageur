@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 DESCRIPTION="Hyper-animated face analog clock for X11"
 HOMEPAGE="http://download.vector.co.jp/pack/unix/personal/tokei/"

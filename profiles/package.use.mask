@@ -1,0 +1,7 @@
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/base/package.use.mask,v 1.543 2014/02/03 12:42:50 vapier Exp $
+
+# Bernard Cafarelli <voyageur@gentoo.org> <12 Feb 2014>
+# Requires old version of xine
+x11-misc/eaglemode xine
