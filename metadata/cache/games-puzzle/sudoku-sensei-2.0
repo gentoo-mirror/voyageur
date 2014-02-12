@@ -12,7 +12,7 @@ base eutils games multilib qmake-utils qt4-r2 toolchain-funcs user
 
 
 
-3
+5
 
 compile configure install postinst preinst prepare setup unpack
 

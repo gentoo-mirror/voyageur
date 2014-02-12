@@ -1,17 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.11 2010/10/08 12:55:49 tupone Exp $
 
-EAPI=2
-fromcvs=0
-ECVS_MODULE="duke3d"
-if [[ ${fromcvs} -eq 1 ]] ; then
-	ECVS_PASS="anonymous"
-	ECVS_SERVER="icculus.org:/cvs/cvsroot"
-	inherit cvs eutils flag-o-matic games
-else
-	inherit eutils flag-o-matic games
-fi
+EAPI=5
+inherit eutils flag-o-matic games
 
 DEMO="3dduke13.zip"
 
@@ -38,7 +30,7 @@ DEPEND="${RDEPEND}
 	demo? ( app-arch/unzip )
 	!pic? ( x86? ( dev-lang/nasm ) )"
 
-S="${WORKDIR}/${PN}"
+S=${WORKDIR}/${PN}
 
 use_tf() { use ${1} && echo "true" || echo "false"; }
 
@@ -55,14 +47,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	if [[ ${fromcvs} -eq 1 ]] ; then
-		cvs_src_unpack
-		cd duke3d/source
-		ECVS_MODULE="buildengine"
-		cvs_src_unpack
-	else
-		unpack ${A}
-	fi
+	unpack ${A}
 
 	if use demo ; then
 		unzip -qo DN3DSW13.SHR || die "unzip DN3DSW13.SHR failed"
@@ -113,13 +98,13 @@ src_prepare() {
 }
 
 src_compile() {
-	emake -C source/buildengine OPTFLAGS="${CFLAGS}" || die "buildengine failed"
-	emake -C source OPTIMIZE="${CFLAGS}" || die "duke3d failed"
+	emake -C source/buildengine OPTFLAGS="${CFLAGS}"
+	emake -C source OPTIMIZE="${CFLAGS}"
 }
 
 src_install() {
 	games_make_wrapper duke3d "${GAMES_BINDIR}/duke3d.bin" "${GAMES_DATADIR}/${PN}"
-	newgamesbin source/duke3d duke3d.bin || die "newgamesbin failed"
+	newgamesbin source/duke3d duke3d.bin
 
 	dodoc readme.txt
 
@@ -130,7 +115,7 @@ src_install() {
 	newins user.con USER.CON
 	newins "${FILESDIR}/network.cfg" network.cfg.template
 	if use demo ; then
-		doins "${WORKDIR}/DUKE3D.GRP" || die "doins DUKE3D.GRP failed"
+		doins "${WORKDIR}/DUKE3D.GRP"
 	fi
 
 	insinto "${GAMES_SYSCONFDIR}"
