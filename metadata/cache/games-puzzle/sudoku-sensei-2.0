@@ -1,5 +1,5 @@
 dev-qt/qtcore:4 dev-qt/qtgui:4
-dev-qt/qtcore:4 dev-qt/qtgui:4
+dev-qt/qtcore:4 dev-qt/qtgui:4 games-misc/games-envd
 0
 mirror://sourceforge/sudoku-sensei/sudoku-sensei-src-02-00.tar.gz
 

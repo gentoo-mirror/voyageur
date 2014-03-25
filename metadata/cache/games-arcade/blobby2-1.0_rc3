@@ -1,5 +1,5 @@
 dev-games/physfs dev-libs/boost media-libs/libsdl virtual/opengl sys-devel/make >=dev-util/cmake-2.8.9 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
-dev-games/physfs dev-libs/boost media-libs/libsdl virtual/opengl
+dev-games/physfs dev-libs/boost media-libs/libsdl virtual/opengl games-misc/games-envd
 0
 mirror://sourceforge/blobby/blobby2-linux-1.0rc3.tar.gz
 
