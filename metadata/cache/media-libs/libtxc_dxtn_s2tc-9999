@@ -1,4 +1,4 @@
-media-libs/mesa dev-vcs/git userland_GNU? ( >=sys-apps/coreutils-8.5 )
+media-libs/mesa dev-vcs/git
 !media-libs/libtxc_dxtn
 0
 

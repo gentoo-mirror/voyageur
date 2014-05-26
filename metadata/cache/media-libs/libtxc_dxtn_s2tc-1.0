@@ -1,4 +1,4 @@
-media-libs/mesa userland_GNU? ( >=sys-apps/coreutils-8.5 )
+media-libs/mesa
 !media-libs/libtxc_dxtn
 0
 https://github.com/divVerent/s2tc/archive/v1.0.tar.gz -> libtxc_dxtn_s2tc-1.0.tar.gz

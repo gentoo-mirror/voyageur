@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -11,7 +11,7 @@ DESCRIPTION="Synology Assistant to setup DiskStations"
 HOMEPAGE="http://www.synology.com/"
 SRC_URI="http://global.download.synology.com/download/Tools/${MY_PN}/${MY_PV}/Linux/${MY_PN}-${PV/_p/-}.zip"
 
-LICENSE="as-is"
+LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 RESTRICT="mirror strip"
@@ -25,11 +25,10 @@ RDEPEND="amd64? ( app-emulation/emul-linux-x86-qtlibs )
 		dev-qt/qtgui
 	)"
 
-S=${WORKDIR}/linux
+S=${WORKDIR}
 
 src_unpack() {
 	unpack ${A}
-	cd "${S}" || die "unpack cd failed"
 	unpack ./${MY_PN}-${PV/_p/-}.tar.gz
 }
 
