@@ -17,14 +17,23 @@ IUSE="+debug"
 
 RDEPEND="dev-games/physfs
 	dev-libs/boost
-	media-libs/libsdl
+	media-libs/libsdl2
 	virtual/opengl"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/blobby-${PV/_}"
 
+src_prepare() {
+	sed -i "s|data|/usr/share/blobby|g" src/main.cpp || die
+	sed -i "s|file\(filename\)|file(\"/usr/share/blobby\" + filename|g" src/main.cpp || die
+}
+
 src_install() {
 	cmake-utils_src_install
+
+	insinto usr/share/blobby
+	doins data/Icon.bmp
+
 	prepgamesdirs
 }
 

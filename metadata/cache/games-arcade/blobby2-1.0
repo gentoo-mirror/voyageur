@@ -1,0 +1,22 @@
+dev-games/physfs dev-libs/boost media-libs/libsdl2 virtual/opengl sys-devel/make >=dev-util/cmake-2.8.9 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+dev-games/physfs dev-libs/boost media-libs/libsdl2 virtual/opengl games-misc/games-envd
+0
+mirror://sourceforge/blobby/blobby2-linux-1.0.tar.gz
+
+http://blobby.sourceforge.net
+GPL-2
+a volley-game with colorful blobs
+~amd64 ~x86
+base cmake-utils eutils flag-o-matic games multilib toolchain-funcs user
++debug
+
+
+
+4
+
+compile configure install postinst preinst prepare setup test unpack
+
+
+
+
+
