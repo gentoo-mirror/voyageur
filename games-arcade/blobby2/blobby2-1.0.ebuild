@@ -12,8 +12,7 @@ SRC_URI="mirror://sourceforge/blobby/${PN}-linux-${PV/_}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-# TODO build failures without debug
-IUSE="+debug"
+IUSE="debug"
 
 RDEPEND="dev-games/physfs
 	dev-libs/boost
@@ -23,9 +22,8 @@ DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/blobby-${PV/_}"
 
-src_prepare() {
-	epatch "${FILESDIR}"/${P}-fix_install.patch
-}
+PATCHES=( "${FILESDIR}"/${P}-fix_install.patch
+	"${FILESDIR}"/${P}-fix_release.patch )
 
 src_install() {
 	cmake-utils_src_install
