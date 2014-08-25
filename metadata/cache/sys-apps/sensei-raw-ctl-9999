@@ -1,0 +1,22 @@
+virtual/libusb:1 gtk? ( x11-libs/gtk+:3 ) sys-apps/help2man >=dev-vcs/git-1.8.2.1 sys-devel/make >=dev-util/cmake-2.8.12 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+virtual/libusb:1 gtk? ( x11-libs/gtk+:3 )
+0
+
+
+https://github.com/pjanouch/sensei-raw-ctl
+ISC
+SteelSeries Sensei Raw configuration tool
+
+cmake-utils eutils flag-o-matic git-r3 multilib toolchain-funcs
+gtk
+
+
+
+5
+
+compile configure install prepare test unpack
+
+
+
+
+
