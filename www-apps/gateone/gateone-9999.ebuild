@@ -31,3 +31,9 @@ src_prepare() {
 	# Install system files
 	sed -i "s/if os.getuid() == 0/if True/" setup.py || die "sed failed"
 }
+
+src_install() {
+	distutils-r1_src_install
+	# Override gateone path
+	sed -i "/^GATEONE=/s/=.*/=${EPREFIX}\/usr\/bin\/gateone/" "${D}"/etc/init.d/gateone || die "sed failed"
+}
