@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,7 +7,7 @@ inherit distutils
 
 DESCRIPTION="an HTML5-powered terminal emulator and SSH client"
 HOMEPAGE="https://github.com/liftoff/GateOne"
-SRC_URI="https://github.com/downloads/liftoff/GateOne/${P}.tar.gz"
+SRC_URI="mirror://github/liftoff/GateOne/${P}.tar.gz"
 
 LICENSE="AGPL-3"
 SLOT="0"
