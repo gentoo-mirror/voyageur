@@ -18,12 +18,7 @@ RESTRICT="mirror strip"
 IUSE=""
 
 DEPEND=""
-RDEPEND="amd64? ( app-emulation/emul-linux-x86-qtlibs )
-	x86? (
-		dev-libs/glib
-		dev-qt/qtcore
-		dev-qt/qtgui
-	)"
+RDEPEND=""
 
 S=${WORKDIR}
 
@@ -34,6 +29,6 @@ src_unpack() {
 
 src_install() {
 	dodir /opt
-	cp -r ${MY_PN} ${D}/opt || die "copy failed"
+	cp -r ${MY_PN} "${D}"/opt || die "copy failed"
 	dosym /opt/${MY_PN}/${MY_PN} /opt/bin/${MY_PN}
 }
