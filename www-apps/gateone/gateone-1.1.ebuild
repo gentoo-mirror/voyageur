@@ -2,8 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
-inherit distutils
+EAPI=5
+
+PYTHON_COMPAT=(python{2_6,2_7,3_2,3_3})
+inherit distutils-r1
 
 DESCRIPTION="an HTML5-powered terminal emulator and SSH client"
 HOMEPAGE="https://github.com/liftoff/GateOne"
