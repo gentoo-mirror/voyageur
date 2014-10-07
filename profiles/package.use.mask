@@ -1,3 +1,0 @@
-# Bernard Cafarelli <voyageur@gentoo.org> <12 Feb 2014>
-# Requires old version of xine
-x11-misc/eaglemode xine
