@@ -14,7 +14,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="jpeg pdf png svg tiff truetype xine"
 
-	#xine? ( =media-libs/xine-lib-1.1* )
 DEPEND=">=dev-lang/perl-5.8
 	x11-libs/libX11
 	jpeg? ( virtual/jpeg )

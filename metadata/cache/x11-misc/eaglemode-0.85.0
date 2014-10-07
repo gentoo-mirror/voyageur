@@ -1,7 +1,7 @@
 >=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 )
 >=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg ) png? ( media-libs/libpng ) tiff? ( media-libs/tiff ) xine? ( media-libs/xine-lib ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 ) >=app-text/ghostscript-gpl-8
 0
-mirror://sourceforge/eaglemode/eaglemode-0.84.0.tar.bz2
+mirror://sourceforge/eaglemode/eaglemode-0.85.0.tar.bz2
 
 http://eaglemode.sourceforge.net
 GPL-3
