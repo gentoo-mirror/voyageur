@@ -19,5 +19,5 @@ IUSE=""
 DEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
 	=dev-python/botocore-0.63*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
-	dev-python/rsa"
+	dev-python/rsa[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
