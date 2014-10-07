@@ -5,5 +5,4 @@
 		<email>voyageur@gentoo.org</email>
 		<name>Bernard Cafarelli</name>
 	</maintainer>
-	<longdescription>Remote incremental file backup utility; uses librsync's rdiff utility to create concise, versioned backups</longdescription>
 </pkgmetadata>

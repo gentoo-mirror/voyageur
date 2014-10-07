@@ -17,11 +17,11 @@ KEYWORDS="~amd64 ~arm ~x86"
 IUSE="test"
 
 RDEPEND=">=dev-python/pyasn1-0.0.13
-	>=dev-python/setuptools-0.6.10
-	test? ( dev-python/nose 
-	  dev-python/unittest2 )"
-DEPEND="${RDEPEND}"
+	>=dev-python/setuptools-0.6.10"
+DEPEND="${RDEPEND}
+	test? ( dev-python/nose
+		dev-python/unittest2 )"
 
 python_test() {
-   nosetests || die "Tests fail with ${EPYTHON}"
+	nosetests || die "Tests fail with ${EPYTHON}"
 }

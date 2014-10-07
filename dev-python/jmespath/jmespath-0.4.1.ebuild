@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -10,7 +10,6 @@ inherit distutils-r1
 DESCRIPTION="declaratively specify how to extract elements from a JSON document"
 HOMEPAGE="https://github.com/boto/jmespath"
 SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-
 
 LICENSE="MIT"
 SLOT="0"

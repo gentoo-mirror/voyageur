@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -29,4 +29,3 @@ src_install() {
 	cmake-utils_src_install
 	prepgamesdirs
 }
-

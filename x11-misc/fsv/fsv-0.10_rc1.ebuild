@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,7 +7,7 @@ inherit flag-o-matic
 
 DESCRIPTION="3-Dimensional File System Visualizer"
 HOMEPAGE="https://bitbucket.org/legoscia/fsv/overview
-   http://fsv.sourceforge.net/"
+	http://fsv.sourceforge.net/"
 SRC_URI="https://bitbucket.org/legoscia/fsv/downloads/${P/_}.tar.gz"
 
 LICENSE="LGPL-2.1"
