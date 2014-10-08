@@ -25,5 +25,6 @@ DEPEND="${RDEPEND}
 		dev-python/nose[${PYTHON_USEDEP}] )"
 
 python_test() {
-	nosetests || die "Tests fail with ${EPYTHON}"
+	# Only run unit tests
+	nosetests tests/unit || die "Tests fail with ${EPYTHON}"
 }
