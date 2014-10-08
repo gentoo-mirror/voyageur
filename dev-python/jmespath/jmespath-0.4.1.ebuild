@@ -14,12 +14,12 @@ SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="test"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND=""
+DEPEND="${RDEPEND}
+	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
 
-src_prepare() {
-	# Remove tests for now (get installed)
-	rm -Rf tests
+python_test() {
+	nosetests || die "Tests fail with ${EPYTHON}"
 }

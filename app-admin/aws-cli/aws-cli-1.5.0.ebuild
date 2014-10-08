@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -14,10 +14,15 @@ SRC_URI="https://github.com/aws/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="test"
 
-DEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
-	=dev-python/botocore-0.63*[${PYTHON_USEDEP}]
+RDEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
+	=dev-python/botocore-0.64*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/rsa[${PYTHON_USEDEP}]"
-RDEPEND="${DEPEND}"
+DEPEND="${RDEPEND}
+	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
+
+python_test() {
+	nosetests || die "Tests fail with ${EPYTHON}"
+}

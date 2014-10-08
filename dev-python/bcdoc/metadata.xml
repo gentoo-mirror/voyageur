@@ -5,4 +5,5 @@
 		<email>voyageur@gentoo.org</email>
 		<name>Bernard Cafarelli</name>
 	</maintainer>
+	<longdescription>Tools to help document botocore-based projects</longdescription>
 </pkgmetadata>

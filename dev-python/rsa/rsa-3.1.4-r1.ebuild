@@ -19,7 +19,7 @@ IUSE="test"
 RDEPEND=">=dev-python/pyasn1-0.0.13
 	>=dev-python/setuptools-0.6.10"
 DEPEND="${RDEPEND}
-	test? ( dev-python/nose
+	test? ( dev-python/nose[${PYTHON_USEDEP}]
 		dev-python/unittest2 )"
 
 python_test() {
