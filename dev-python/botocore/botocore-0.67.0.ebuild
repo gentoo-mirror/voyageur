@@ -24,6 +24,16 @@ DEPEND="${RDEPEND}
 	test? ( dev-python/mock[${PYTHON_USEDEP}]
 		dev-python/nose[${PYTHON_USEDEP}] )"
 
+src_prepare() {
+	# unbundle requests https://github.com/boto/botocore/issues/266
+	rm -Rf botocore/vendored || die "rm failed"
+	grep -rl 'botocore.vendored' | xargs \
+		sed -i -e "/import requests/s/from botocore.vendored //" \
+		-e "/^from/s/botocore.vendored.//" \
+		-e "s/'botocore.vendored./'/" \
+		|| die "sed failed"
+}
+
 python_test() {
 	# Only run unit tests
 	nosetests tests/unit || die "Tests fail with ${EPYTHON}"
