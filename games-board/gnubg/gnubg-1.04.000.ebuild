@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/games-board/gnubg/gnubg-20130203.ebuild,v 1.7 2013/12/24 12:52:37 ago Exp $
 
 EAPI=5
-PYTHON_COMPAT=( python2_6 python2_7 )
+PYTHON_COMPAT=( python2_6 python2_7 python3_3 python3_4 )
 inherit eutils python-single-r1 gnome2-utils games
 
 DESCRIPTION="GNU BackGammon"
