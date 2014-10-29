@@ -38,7 +38,6 @@ RDEPEND=">=net-libs/rb_libtorrent-0.14.9[python]
 
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-1.3.5-disable_libtorrent_internal_copy.patch"
-
 }
 
 src_install() {
@@ -50,7 +49,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	distutils_pkg_postinst
+	distutils-r1_pkg_postinst
 	elog
 	elog "If after upgrading it doesn't work, please remove the"
 	elog "'~/.config/deluge' directory and try again, but make a backup"
