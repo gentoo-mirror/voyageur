@@ -1,0 +1,22 @@
+virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net app-arch/unzip dev-util/scons || ( dev-vcs/subversion[http] dev-vcs/subversion[webdav-neon] dev-vcs/subversion[webdav-serf] ) net-misc/rsync
+virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net games-misc/games-envd
+0
+
+
+http://dangerdeep.sourceforge.net/
+GPL-2 CC-BY-NC-ND-2.0
+a World War II German submarine simulation
+
+base eutils games multilib scons-utils subversion toolchain-funcs user
+sse debug
+
+
+
+5
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+
