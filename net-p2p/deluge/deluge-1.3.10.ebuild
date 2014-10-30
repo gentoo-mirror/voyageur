@@ -49,7 +49,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	distutils-r1_pkg_postinst
 	elog
 	elog "If after upgrading it doesn't work, please remove the"
 	elog "'~/.config/deluge' directory and try again, but make a backup"
