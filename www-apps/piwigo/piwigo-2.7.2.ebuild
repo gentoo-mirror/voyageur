@@ -11,12 +11,12 @@ SRC_URI="http://piwigo.org/download/dlcounter.php?code=${PV} -> ${P}.zip"
 
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
-IUSE="+gd imagemagick"
+IUSE="+exif +gd imagemagick"
 
 DEPEND=""
 RDEPEND="imagemagick? ( || ( media-gfx/imagemagick
 		media-gfx/graphicsmagick[imagemagick] ) )
-	dev-lang/php[ctype,gd?,filter,iconv,json,mysqli]
+	dev-lang/php[ctype,exif?,gd?,filter,iconv,json,mysqli]
 	>=virtual/mysql-5.0
 	virtual/httpd-php"
 

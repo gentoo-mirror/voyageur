@@ -1,5 +1,5 @@
->=www-servers/tornado-3.2 python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) python_targets_python3_2? ( >=dev-lang/python-3.2.5-r2:3.2 ) python_targets_python3_3? ( >=dev-lang/python-3.3.2-r2:3.3 ) dev-lang/python-exec:=[python_targets_python2_7(-)?,python_targets_python3_2(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_2(-),-python_single_target_python3_3(-)] dev-vcs/git
->=www-servers/tornado-3.2 >=dev-python/html5lib-0.999[python_targets_python2_7(-)?,python_targets_python3_2(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_2(-),-python_single_target_python3_3(-)] virtual/python-futures[python_targets_python2_7(-)?,python_targets_python3_2(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_2(-),-python_single_target_python3_3(-)] virtual/python-imaging[python_targets_python2_7(-)?,python_targets_python3_2(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_2(-),-python_single_target_python3_3(-)] dtach? ( app-misc/dtach ) python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) python_targets_python3_2? ( >=dev-lang/python-3.2.5-r2:3.2 ) python_targets_python3_3? ( >=dev-lang/python-3.3.2-r2:3.3 ) dev-lang/python-exec:=[python_targets_python2_7(-)?,python_targets_python3_2(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_2(-),-python_single_target_python3_3(-)]
+>=www-servers/tornado-3.2 python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) python_targets_python3_3? ( >=dev-lang/python-3.3.2-r2:3.3 ) dev-lang/python-exec:=[python_targets_python2_7(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_3(-)] dev-vcs/git
+>=www-servers/tornado-3.2 >=dev-python/html5lib-0.999[python_targets_python2_7(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_3(-)] virtual/python-futures[python_targets_python2_7(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_3(-)] virtual/python-imaging[python_targets_python2_7(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_3(-)] dtach? ( app-misc/dtach ) python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) python_targets_python3_3? ( >=dev-lang/python-3.3.2-r2:3.3 ) dev-lang/python-exec:=[python_targets_python2_7(-)?,python_targets_python3_3(-)?,-python_single_target_python2_7(-),-python_single_target_python3_3(-)]
 0
 
 
@@ -7,9 +7,9 @@ https://github.com/liftoff/GateOne
 AGPL-3
 an HTML5-powered terminal emulator and SSH client
 
-distutils-r1 eutils git-2 git-r3 multibuild multilib multiprocessing python-r1 python-utils-r1 toolchain-funcs
-dtach python_targets_python2_7 python_targets_python3_2 python_targets_python3_3
-|| ( python_targets_python2_7 python_targets_python3_2 python_targets_python3_3 )
+distutils-r1 eutils git-2 multibuild multilib multiprocessing python-r1 python-utils-r1 toolchain-funcs
+dtach python_targets_python2_7 python_targets_python3_3
+|| ( python_targets_python2_7 python_targets_python3_3 )
 
 
 5
