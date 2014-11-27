@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="test"
 
 RDEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
-	=dev-python/botocore-0.67*[${PYTHON_USEDEP}]
+	=dev-python/botocore-0.76*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/rsa[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
