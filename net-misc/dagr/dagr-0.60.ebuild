@@ -9,7 +9,7 @@ inherit distutils-r1
 
 DESCRIPTION="a deviantArt image downloader script written in Python."
 HOMEPAGE="https://github.com/voyageur/dagr"
-SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/voyageur/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
