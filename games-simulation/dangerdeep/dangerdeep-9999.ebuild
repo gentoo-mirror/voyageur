@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-simulation/dangerdeep/dangerdeep-0.3.0.ebuild,v 1.12 2013/02/07 22:15:30 ulm Exp $
 
@@ -14,7 +14,7 @@ ESVN_REPO_URI="https://${PN}.svn.sourceforge.net/svnroot/${PN}/trunk/${PN}"
 LICENSE="GPL-2 CC-BY-NC-ND-2.0"
 SLOT="0"
 KEYWORDS=""
-IUSE="sse debug"
+IUSE="cpu_flags_x86_sse debug"
 
 RDEPEND="virtual/opengl
 	virtual/glu
@@ -35,7 +35,7 @@ src_prepare() {
 src_configure() {
 	local sse=-1
 
-	if use sse ; then
+	if use cpu_flags_x86_sse ; then
 		use amd64 && sse=3 || sse=1
 	fi
 

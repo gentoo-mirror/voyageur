@@ -8,7 +8,7 @@ GPL-2 CC-BY-NC-ND-2.0
 a World War II German submarine simulation
 
 base eutils games multilib scons-utils subversion toolchain-funcs user
-sse debug
+cpu_flags_x86_sse debug
 
 
 
