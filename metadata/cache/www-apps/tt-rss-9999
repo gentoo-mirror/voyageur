@@ -1,0 +1,22 @@
+daemon? ( dev-lang/php[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php[mysql?,postgres?,curl] ) virtual/httpd-php >=dev-vcs/git-1.8.2.1 >=app-admin/webapp-config-1.50.15
+daemon? ( dev-lang/php[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php[mysql?,postgres?,curl] ) virtual/httpd-php >=app-admin/webapp-config-1.50.15
+9999
+
+
+http://tt-rss.org/
+GPL-3
+Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
+
+eutils git-r3 multilib toolchain-funcs user webapp
+daemon +mysql postgres vhosts
+|| ( mysql postgres )
+
+
+5
+
+install postinst prepare prerm setup unpack
+
+
+
+
+
