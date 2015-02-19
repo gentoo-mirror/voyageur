@@ -19,6 +19,7 @@ IUSE="test"
 RDEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
 	=dev-python/botocore-0.91*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
+	dev-python/docutils[${PYTHON_USEDEP}]
 	dev-python/rsa[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
 	test? ( dev-python/nose[${PYTHON_USEDEP}] )"

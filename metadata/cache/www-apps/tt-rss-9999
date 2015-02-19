@@ -1,5 +1,5 @@
-daemon? ( dev-lang/php[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php[mysql?,postgres?,curl] ) virtual/httpd-php >=dev-vcs/git-1.8.2.1 >=app-admin/webapp-config-1.50.15
-daemon? ( dev-lang/php[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php[mysql?,postgres?,curl] ) virtual/httpd-php >=app-admin/webapp-config-1.50.15
+daemon? ( dev-lang/php:*[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php:*[mysql?,postgres?,curl] ) virtual/httpd-php:* >=dev-vcs/git-1.8.2.1 >=app-admin/webapp-config-1.50.15
+daemon? ( dev-lang/php:*[mysql?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php:*[mysql?,postgres?,curl] ) virtual/httpd-php:* >=app-admin/webapp-config-1.50.15
 9999
 
 
