@@ -14,9 +14,9 @@ KEYWORDS=""
 IUSE="daemon +mysql postgres"
 
 DEPEND="
-	daemon? ( dev-lang/php[mysql?,postgres?,pcntl,curl] )
-	!daemon? ( dev-lang/php[mysql?,postgres?,curl] )
-	virtual/httpd-php"
+	daemon? ( dev-lang/php:*[mysql?,postgres?,pcntl,curl] )
+	!daemon? ( dev-lang/php:*[mysql?,postgres?,curl] )
+	virtual/httpd-php:*"
 
 RDEPEND="${DEPEND}"
 

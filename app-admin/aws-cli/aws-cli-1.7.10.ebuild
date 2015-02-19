@@ -1,10 +1,10 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
 
-PYTHON_COMPAT=( python{2_6,2_7,3_2,3_3} )
+PYTHON_COMPAT=( python{2_7,3_2,3_3,3_4} )
 inherit distutils-r1
 
 DESCRIPTION="Universal Command Line Interface for Amazon Web Services"
@@ -17,15 +17,14 @@ KEYWORDS="~amd64 ~x86"
 IUSE="test"
 
 RDEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
-	=dev-python/botocore-0.76*[${PYTHON_USEDEP}]
+	=dev-python/botocore-0.91*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/rsa[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
 	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
 
 src_prepare() {
-	# unbundle requests https://github.com/boto/botocore/issues/266
-	rm -Rf botocore/vendored || die "rm failed"
+	# Unbundled requests in dev-python/botocore
 	grep -rl 'botocore.vendored' | xargs \
 		sed -i -e "/import requests/s/from botocore.vendored //" \
 		-e "/^from/s/botocore.vendored.//" \

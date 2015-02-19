@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -16,9 +16,9 @@ IUSE="jpeg pdf png svg tiff truetype xine"
 
 DEPEND=">=dev-lang/perl-5.8
 	x11-libs/libX11
-	jpeg? ( virtual/jpeg )
-	png? ( media-libs/libpng )
-	tiff? ( media-libs/tiff )
+	jpeg? ( virtual/jpeg:* )
+	png? ( media-libs/libpng:* )
+	tiff? ( media-libs/tiff:* )
 	xine? ( media-libs/xine-lib )
 	svg? ( gnome-base/librsvg:2 )
 	pdf? ( app-text/poppler[cairo] )
