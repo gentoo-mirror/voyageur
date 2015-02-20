@@ -7,9 +7,12 @@ EAPI=5
 PYTHON_COMPAT=( python{2_7,3_3,3_4} )
 inherit distutils-r1
 
+MY_PN=${PN}.py
+MY_P=${MY_PN}-${PV}
+
 DESCRIPTION="a query language for JSON"
 HOMEPAGE="htts://jmespath.org"
-SRC_URI="https://github.com/${PN}/${PN}.py/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/${PN}/${MY_PN}/archive/${PV}.tar.gz -> ${MY_P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -20,7 +23,7 @@ RDEPEND=""
 DEPEND="${RDEPEND}
 	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
 
-S=${WORKDIR}/${PN}.py-${PV}
+S=${WORKDIR}/${MY_P}
 
 python_test() {
 	nosetests || die "Tests fail with ${EPYTHON}"
