@@ -9,7 +9,8 @@ MY_PV="${PV/[0-9.]*\_p}"
 
 DESCRIPTION="Synology Assistant to setup DiskStations"
 HOMEPAGE="http://www.synology.com/"
-SRC_URI="http://global.download.synology.com/download/Tools/${MY_PN}/${MY_PV}/Linux/${MY_PN}-${PV/_p/-}.zip"
+SRC_URI="amd64? ( http://global.download.synology.com/download/Tools/${MY_PN}/${MY_PV}/Linux/${MY_PN}-${PV/_p/-}_x64.tar.gz )
+	x86? ( http://global.download.synology.com/download/Tools/${MY_PN}/${MY_PV}/Linux/${MY_PN}-${PV/_p/-}.tar.gz )"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
@@ -21,11 +22,6 @@ DEPEND=""
 RDEPEND=""
 
 S=${WORKDIR}
-
-src_unpack() {
-	unpack ${A}
-	unpack ./${MY_PN}-${PV/_p/-}.tar.gz
-}
 
 src_install() {
 	dodir /opt
