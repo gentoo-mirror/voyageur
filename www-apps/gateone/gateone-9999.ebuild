@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS=""
 IUSE="dtach"
 
-DEPEND=">=www-servers/tornado-3.2"
+DEPEND=">=www-servers/tornado-4.0"
 RDEPEND="${DEPEND}
 	>=dev-python/html5lib-0.999[${PYTHON_USEDEP}]
 	virtual/python-futures[${PYTHON_USEDEP}]
