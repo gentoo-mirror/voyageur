@@ -1,0 +1,22 @@
+app-text/hunspell qt4? ( app-text/poppler[qt4] dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 dev-qt/qtscript:4 ) qt5? ( app-text/poppler[qt5] dev-qt/qtcore:5 dev-qt/qtdbus:5 dev-qt/qtgui:5 dev-qt/qtscript:5[scripttools] ) lua? ( dev-lang/lua:0 ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_5(-),-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_3(-),-python_single_target_python3_4(-),python_single_target_python2_7(+)] ) virtual/pkgconfig sys-devel/make >=dev-util/cmake-2.8.12 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
+app-text/hunspell qt4? ( app-text/poppler[qt4] dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 dev-qt/qtscript:4 ) qt5? ( app-text/poppler[qt5] dev-qt/qtcore:5 dev-qt/qtdbus:5 dev-qt/qtgui:5 dev-qt/qtscript:5[scripttools] ) lua? ( dev-lang/lua:0 ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_5(-),-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_3(-),-python_single_target_python3_4(-),python_single_target_python2_7(+)] )
+0
+https://github.com/TeXworks/texworks/archive/release-0.4.6.tar.gz -> texworks-0.4.6.tar.gz
+
+http://tug.org/texworks/
+GPL-2
+A simple interface for working with TeX documents
+~amd64 ~x86
+cmake-utils eutils fdo-mime flag-o-matic multilib python-single-r1 python-utils-r1 toolchain-funcs
+lua python +qt4 qt5 python_targets_python2_7
+python? ( python_targets_python2_7 ) ^^ ( qt4 qt5 )
+
+
+5
+
+compile configure install postinst postrm prepare setup test
+
+
+
+
+
