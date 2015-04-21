@@ -18,7 +18,10 @@ IUSE=""
 
 RDEPEND="dev-python/click[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
-	=dev-python/pyvcloud-12*[${PYTHON_USEDEP}]"
+	=dev-python/pyvcloud-12*[${PYTHON_USEDEP}]
+	>=dev-python/pyyaml-3.10[${PYTHON_USEDEP}]
+	>=dev-python/tabulate-0.7.3[${PYTHON_USEDEP}]
+	>=dev-python/xmltodict-0.9.0[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}"
 
 S=${WORKDIR}/${P/_}
