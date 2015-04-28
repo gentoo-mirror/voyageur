@@ -11,7 +11,7 @@ MY_PN=${PN}.py
 MY_P=${MY_PN}-${PV}
 
 DESCRIPTION="a query language for JSON"
-HOMEPAGE="https://jmespath.org"
+HOMEPAGE="https://jmespath.org https://github.com/jmespath/jmespath.py"
 SRC_URI="https://github.com/${PN}/${MY_PN}/archive/${PV}.tar.gz -> ${MY_P}.tar.gz"
 
 LICENSE="MIT"
