@@ -9,7 +9,8 @@ DESCRIPTION="software synthesiser emulating pre-GM MIDI devices (Roland MT-32)"
 HOMEPAGE="http://munt.sourceforge.net"
 SRC_URI="mirror://sourceforge/munt/${PV}/${P}.tar.gz"
 
-LICENSE="GPL-3+"
+# library: GPL-2 and LGPL-2.1, qt frontend: GPL-3
+LICENSE="LGPL-2.1+ GPL-2+ GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+alsa pulseaudio +qt4"
@@ -24,6 +25,12 @@ DEPEND="alsa? ( media-libs/alsa-lib )
 		dev-qt/qtmultimedia:4 )
 	|| ( media-libs/soxr media-libs/libsamplerate )"
 RDEPEND="${DEPEND}"
+
+src_prepare() {
+	sed -e "s#share/doc/${PN}#share/doc/${PF}#" \
+		-e "s#COPYING\(.LESSER\)\?.txt ##g" \
+		-i */CMakeLists.txt || die "sed failed"
+}
 
 src_configure() {
 	local mycmakeargs=(
