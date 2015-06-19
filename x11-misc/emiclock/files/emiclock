@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/aoss /usr/bin/emiclock-bin $@
