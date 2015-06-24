@@ -20,16 +20,18 @@ RDEPEND="dev-python/bcdoc[${PYTHON_USEDEP}]
 	=dev-python/botocore-0.106*[${PYTHON_USEDEP}]
 	dev-python/colorama[${PYTHON_USEDEP}]
 	dev-python/docutils[${PYTHON_USEDEP}]
-	dev-python/rsa[${PYTHON_USEDEP}]"
+	dev-python/rsa[${PYTHON_USEDEP}]
+	dev-python/six[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
 	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
 
 src_prepare() {
-	# Unbundled requests in dev-python/botocore
+	# Unbundled in dev-python/botocore
 	grep -rl 'botocore.vendored' | xargs \
 		sed -i -e "/import requests/s/from botocore.vendored //" \
-		-e "/^from/s/botocore.vendored.//" \
-		-e "s/'botocore.vendored./'/" \
+		-e "/^from/s/botocore\.vendored\.//" \
+		-e "s/^from botocore\.vendored //" \
+		-e "s/'botocore\.vendored\./'/" \
 		|| die "sed failed"
 }
 
