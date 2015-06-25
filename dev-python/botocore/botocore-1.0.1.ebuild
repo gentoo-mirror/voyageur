@@ -11,13 +11,14 @@ DESCRIPTION="A low-level interface to a growing number of Amazon Web Services"
 HOMEPAGE="https://github.com/boto/botocore"
 SRC_URI="https://github.com/boto/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
-LICENSE="MIT"
+LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="test"
 
-RDEPEND=">=dev-python/jmespath-0.6.1[${PYTHON_USEDEP}]
-	dev-python/python-dateutil:0[${PYTHON_USEDEP}]
+RDEPEND="dev-python/docutils[${PYTHON_USEDEP}]
+	>=dev-python/jmespath-0.7.1[${PYTHON_USEDEP}]
+	dev-python/python-dateutil[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	dev-python/six[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
