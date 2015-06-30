@@ -1,9 +1,9 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
-inherit qt4-r2 games eutils
+inherit qmake-utils games
 
 DESCRIPTION="The Sudoku Explainer Game"
 HOMEPAGE="http://sudoku-sensei.sourceforge.net"
@@ -20,6 +20,10 @@ RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/SudokuSenseiSources
 
+src_prepare() {
+	sed -e '/license.txt/d' -i main.cpp || die
+}
+
 src_configure() {
 	eqmake4 SudokuSensei.pro
 }
@@ -27,7 +31,7 @@ src_configure() {
 src_install() {
 	games_make_wrapper SudokuSensei ./SudokuSensei "${GAMES_DATADIR}"/${PN}
 	insinto "${GAMES_DATADIR}"/${PN}
-	doins -r license.txt doc images language saves system
+	doins -r doc images language saves system
 	exeinto "${GAMES_DATADIR}"/${PN}
 	doexe SudokuSensei
 	prepgamesdirs
@@ -35,5 +39,5 @@ src_install() {
 
 pkg_postinst() {
 	#ugly... but games group needs write access on some files
-	chmod -R g+w "${GAMES_DATADIR}"/${PN}/
+	chmod -R g+w "${GAMES_DATADIR}"/${PN}/{saves,system}
 }
