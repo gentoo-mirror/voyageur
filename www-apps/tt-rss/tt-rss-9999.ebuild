@@ -7,7 +7,7 @@ inherit git-r3 user eutils webapp
 
 DESCRIPTION="Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX"
 HOMEPAGE="http://tt-rss.org/"
-EGIT_REPO_URI="https://github.com/gothfox/Tiny-Tiny-RSS.git"
+EGIT_REPO_URI="https://tt-rss.org/git/tt-rss.git"
 
 LICENSE="GPL-3"
 KEYWORDS=""
