@@ -1,11 +1,11 @@
+_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	flag-o-matic	c9602887773166fe300444712fc7ff98	git-r3	8608aff23da0fc7572d3930592462b1e	multilib	62927b3db3a589b0806255f3a002d5d3	cmake-utils	430c386d85cec959d72640afd63ea91	eutils	9fb270e417e0e83d64ca52586c4a79de
+_md5_=c57fda2c1039c24705bea36bc98e5e8b
+SLOT=0
 DEFINED_PHASES=compile configure install prepare test unpack
+EAPI=5
 DEPEND=virtual/libusb:1 gtk? ( x11-libs/gtk+:3 ) sys-apps/help2man >=dev-vcs/git-1.8.2.1 sys-devel/make >=dev-util/cmake-2.8.12 userland_GNU? ( >=sys-apps/findutils-4.4.0 )
 DESCRIPTION=SteelSeries Sensei Raw configuration tool
-EAPI=5
-HOMEPAGE=https://github.com/pjanouch/sensei-raw-ctl
-IUSE=gtk
 LICENSE=ISC
+IUSE=gtk
+HOMEPAGE=https://github.com/pjanouch/sensei-raw-ctl
 RDEPEND=virtual/libusb:1 gtk? ( x11-libs/gtk+:3 )
-SLOT=0
-_eclasses_=cmake-utils	0430c386d85cec959d72640afd63ea91	eutils	9fb270e417e0e83d64ca52586c4a79de	flag-o-matic	c9602887773166fe300444712fc7ff98	git-r3	727a612b4c6247766904e3f74a326e2b	multilib	62927b3db3a589b0806255f3a002d5d3	toolchain-funcs	42408102d713fbad60ca21349865edb4
-_md5_=c57fda2c1039c24705bea36bc98e5e8b
