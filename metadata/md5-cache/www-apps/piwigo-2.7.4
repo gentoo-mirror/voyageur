@@ -1,14 +1,14 @@
+_eclasses_=webapp	2442891c368d310c1d3fe77d9c77fe5b
+_md5_=f075737ac8cab55ffd59669724e7b40b
+SLOT=2.7.4
 DEFINED_PHASES=install postinst prerm setup
+EAPI=5
 DEPEND=>=app-admin/webapp-config-1.50.15
 DESCRIPTION=a photo gallery software for the web
-EAPI=5
-HOMEPAGE=http://piwigo.org/
-IUSE=+exif +gd imagemagick vhosts
-KEYWORDS=~amd64 ~x86
 LICENSE=GPL-2
-RDEPEND=imagemagick? ( || ( media-gfx/imagemagick media-gfx/graphicsmagick[imagemagick] ) ) dev-lang/php[ctype,exif?,gd?,filter,iconv,json,mysqli] >=virtual/mysql-5.0 virtual/httpd-php >=app-admin/webapp-config-1.50.15
+IUSE=+exif +gd imagemagick vhosts
 REQUIRED_USE=|| ( gd imagemagick )
-SLOT=2.7.4
 SRC_URI=http://piwigo.org/download/dlcounter.php?code=2.7.4 -> piwigo-2.7.4.zip
-_eclasses_=webapp	094698bf1c7a5b1acd3184e94f484017
-_md5_=f075737ac8cab55ffd59669724e7b40b
+KEYWORDS=~amd64 ~x86
+HOMEPAGE=http://piwigo.org/
+RDEPEND=imagemagick? ( || ( media-gfx/imagemagick media-gfx/graphicsmagick[imagemagick] ) ) dev-lang/php[ctype,exif?,gd?,filter,iconv,json,mysqli] >=virtual/mysql-5.0 virtual/httpd-php >=app-admin/webapp-config-1.50.15
