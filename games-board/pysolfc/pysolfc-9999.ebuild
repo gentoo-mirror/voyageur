@@ -5,7 +5,7 @@
 EAPI=5
 ESVN_REPO_URI="svn://svn.code.sourceforge.net/p/pysolfc/code/PySolFC/trunk"
 
-PYTHON_COMPAT=( python2_6 python2_7 )
+PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="tk"
 DISTUTILS_SINGLE_IMPL="1"
 
