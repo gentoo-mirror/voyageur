@@ -1,0 +1,9 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using pmaint *
+
+games-board/pysolfc:extra-cardsets - Install extra cardsets
+games-board/pysolfc:sound - Enable sound support using dev-python/pygame
+sci-misc/boinc:cuda - Use nvidia cuda toolkit for speeding up computations. NOTE: works only for subset of nvidia graphic cards so make sure your card is supported before opening bug about it.
+www-apps/gateone:dtach - Emulate the detach feature of screen via app-misc/dtach
+www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
