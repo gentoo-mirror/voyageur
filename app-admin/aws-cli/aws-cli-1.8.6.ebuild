@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -16,13 +16,17 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="test"
 
-RDEPEND="=dev-python/botocore-1.1*[${PYTHON_USEDEP}]
-	dev-python/colorama[${PYTHON_USEDEP}]
-	dev-python/docutils[${PYTHON_USEDEP}]
-	dev-python/rsa[${PYTHON_USEDEP}]
+RDEPEND="=dev-python/botocore-1.2*[${PYTHON_USEDEP}]
+	>=dev-python/colorama-0.2.5[${PYTHON_USEDEP}]
+	>=dev-python/docutils-0.10[${PYTHON_USEDEP}]
+	dev-python/requests[${PYTHON_USEDEP}]
+	>=dev-python/rsa-3.1.2[${PYTHON_USEDEP}]
 	dev-python/six[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}
-	test? ( dev-python/nose[${PYTHON_USEDEP}] )"
+	test? (
+		dev-python/mock[${PYTHON_USEDEP}]
+		dev-python/nose[${PYTHON_USEDEP}]
+	)"
 
 src_prepare() {
 	# Unbundled in dev-python/botocore
