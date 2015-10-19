@@ -13,7 +13,7 @@ games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
 games-puzzle/sudoku-sensei 2.0: The Sudoku Explainer Game
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
-media-gfx/arachne 1.1.1: Seam carving resizing library and realtime demonstration program
+media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion tools
 media-sound/munt 1.5.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.60 9999: a deviantArt image downloader script written in Python.
