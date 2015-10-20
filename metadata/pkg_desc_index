@@ -6,7 +6,7 @@ app-misc/welcome2l 3.04: Welcome to Linux, ANSI login logo for Linux
 dev-libs/libedit 20150325.3.1: BSD replacement for libreadline
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
-games-action/supertuxkart 0.9: A kart racing game starring Tux, the linux penguin (TuxKart fork)
+games-action/supertuxkart 0.9 0.9.1: A kart racing game starring Tux, the linux penguin (TuxKart fork)
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
