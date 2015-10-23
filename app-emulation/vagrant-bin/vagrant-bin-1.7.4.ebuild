@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -13,8 +13,8 @@ HOMEPAGE="http://vagrantup.com/"
 SRC_URI_AMD64="https://dl.bintray.com/mitchellh/${MY_PN}/${MY_PN}_${PV}_x86_64.deb"
 SRC_URI_X86="https://dl.bintray.com/mitchellh/${MY_PN}/${MY_PN}_${PV}_i686.deb"
 SRC_URI="
-    amd64? ( ${SRC_URI_AMD64} )
-    x86? ( ${SRC_URI_X86} )
+	amd64? ( ${SRC_URI_AMD64} )
+	x86? ( ${SRC_URI_X86} )
 "
 
 LICENSE="MIT"
@@ -38,6 +38,11 @@ src_unpack() {
 }
 
 src_install() {
+	pushd embedded/gems/gems/${MY_PN}-${PV}/contrib > /dev/null || die
+	insinto /usr/share/vim/vimfiles/plugin
+	doins vim/*
+	popd > /dev/null || die
+
 	local dir="/opt/${MY_PN}"
 	dodir ${dir}
 	cp -ar ./* "${ED}${dir}" || die "copy files failed"
