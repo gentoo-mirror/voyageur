@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="test"
 
-RDEPEND="=dev-python/botocore-1.2*[${PYTHON_USEDEP}]
+RDEPEND="=dev-python/botocore-1.3*[${PYTHON_USEDEP}]
 	>=dev-python/colorama-0.2.5[${PYTHON_USEDEP}]
 	>=dev-python/docutils-0.10[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
