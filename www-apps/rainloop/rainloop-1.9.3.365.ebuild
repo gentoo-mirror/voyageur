@@ -7,7 +7,7 @@ EAPI=5
 inherit eutils webapp
 
 # Grab from http://repository.rainloop.net/v2/core.stable.json
-TAG="edc31b7ce610007055627ea93757bea9"
+TAG="f6a947c1a9edf971d7e3ba80fb6723b7"
 
 DESCRIPTION="Simple, modern and fast web-based email client"
 HOMEPAGE="http://www.rainloop.net"
