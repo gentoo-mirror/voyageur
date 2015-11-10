@@ -22,7 +22,6 @@ RDEPEND="${DEPEND}
 	>=dev-python/html5lib-0.999[${PYTHON_USEDEP}]
 	dev-python/pillow[${PYTHON_USEDEP}]
 	virtual/python-futures[${PYTHON_USEDEP}]
-	virtual/python-imaging[${PYTHON_USEDEP}]
 	dtach? ( app-misc/dtach )"
 
 src_prepare() {
