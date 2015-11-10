@@ -18,7 +18,7 @@ IUSE="dtach kerberos pam"
 
 DEPEND=">=www-servers/tornado-2.2"
 RDEPEND="${DEPEND}
-	virtual/python-imaging
+	dev-python/pillow[${PYTHON_USEDEP}]
 	dtach? ( app-misc/dtach )
 	kerberos? ( dev-python/pykerberos )
 	pam? ( dev-python/python-pam )"

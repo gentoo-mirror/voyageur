@@ -20,6 +20,7 @@ IUSE="dtach"
 DEPEND=">=www-servers/tornado-4.0"
 RDEPEND="${DEPEND}
 	>=dev-python/html5lib-0.999[${PYTHON_USEDEP}]
+	dev-python/pillow[${PYTHON_USEDEP}]
 	virtual/python-futures[${PYTHON_USEDEP}]
 	virtual/python-imaging[${PYTHON_USEDEP}]
 	dtach? ( app-misc/dtach )"
