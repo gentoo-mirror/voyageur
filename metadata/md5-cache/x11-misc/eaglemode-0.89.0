@@ -9,5 +9,5 @@ LICENSE=GPL-3
 RDEPEND=>=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg:* ) png? ( media-libs/libpng:* ) tiff? ( media-libs/tiff:* ) xine? ( media-libs/xine-lib ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 ) >=app-text/ghostscript-gpl-8
 SLOT=0
 SRC_URI=mirror://sourceforge/eaglemode/eaglemode-0.89.0.tar.bz2
-_eclasses_=multiprocessing	d769539d9bace6eaca30af23bc2b4dde
+_eclasses_=multiprocessing	e32940a7b2a9992ad217eccddb84d548
 _md5_=40fceeb9e7446f301f2ff860fd1773c5
