@@ -1,6 +1,5 @@
 app-crypt/acme 0.1.0: An implementation of the ACME protocol
 app-crypt/letsencrypt 0.1.0: Let's Encrypt client to automate deployment of X.509 certificates
-app-editors/texworks 0.4.6: A simple interface for working with TeX documents
 app-emulation/aws-cli 1.9.5: Universal Command Line Interface for Amazon Web Services
 app-emulation/vagrant-bin 1.7.4: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
@@ -10,7 +9,6 @@ dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
 games-action/supertuxkart 0.9.1: A kart racing game starring Tux, the linux penguin (TuxKart fork)
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
-games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
 games-puzzle/sudoku-sensei 2.0: The Sudoku Explainer Game
