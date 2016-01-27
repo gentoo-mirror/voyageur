@@ -1,5 +1,5 @@
---- Makefile.orig	2014-02-12 22:01:22.940578253 +0100
-+++ Makefile	2014-02-12 22:09:13.810909003 +0100
+--- hot-babe-0.2.2/Makefile.orig	2014-02-12 22:01:22.940578253 +0100
++++ hot-babe-0.2.2/Makefile	2014-02-12 22:09:13.810909003 +0100
 @@ -1,5 +1,5 @@
  # where to install this program
 -PREFIX := /usr/local
