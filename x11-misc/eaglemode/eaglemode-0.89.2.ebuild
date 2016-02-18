@@ -1,9 +1,9 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-inherit multiprocessing
+EAPI=6
+inherit multiprocessing toolchain-funcs
 
 DESCRIPTION="Zoomable user interface with plugin applications"
 HOMEPAGE="http://eaglemode.sourceforge.net"
@@ -26,6 +26,15 @@ DEPEND=">=dev-lang/perl-5.8
 RDEPEND="${DEPEND}
 	>=app-text/ghostscript-gpl-8"
 
+PATCHES=(
+	"${FILESDIR}"/${P}-pkg-config.patch
+)
+
+src_prepare() {
+	default
+	sed -e "s/\<gcc/$(tc-getCC)/" -i makers/unicc/plugins/unicc_gnu.pm || die
+}
+
 make_pl_buildargs() {
 	echo "continue=no"
 	# make sure we don't try to build modules that need build-time libs
@@ -46,8 +55,9 @@ src_compile() {
 		einfo "Perl not built with threads support, using 1 CPU core"
 		cpus=1
 	fi
-	# TODO honor CC/CFLAGS/...
-	perl make.pl build cpus="${cpus}" $(make_pl_buildargs) || die "Compilation failed"
+	# TODO honor CFLAGS/LDFLAGS/...
+	perl make.pl build cpus="${cpus}" \
+		$(make_pl_buildargs) || die "Compilation failed"
 }
 
 src_install() {

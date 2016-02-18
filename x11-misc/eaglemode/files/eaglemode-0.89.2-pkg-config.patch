@@ -1,0 +1,33 @@
+diff -Naur eaglemode-0.89.2.orig/makers/emPdf.maker.pm eaglemode-0.89.2/makers/emPdf.maker.pm
+--- eaglemode-0.89.2.orig/makers/emPdf.maker.pm	2016-01-31 11:34:23.000000000 +0100
++++ eaglemode-0.89.2/makers/emPdf.maker.pm	2016-02-18 11:47:58.956788823 +0100
+@@ -61,6 +61,7 @@
+ 	my @libpopplerglibFlags=();
+ 	my $str=readpipe('pkg-config --cflags --libs gtk+-2.0 poppler-glib');
+ 	if (!$str) { return 0; }
++	chomp($str);
+ 	foreach my $f (split(/ /,$str)) {
+ 		if (substr($f,0,2) eq '-I') {
+ 			push(@libpopplerglibFlags,'--inc-search-dir',substr($f,2));
+diff -Naur eaglemode-0.89.2.orig/makers/emSvg.maker.pm eaglemode-0.89.2/makers/emSvg.maker.pm
+--- eaglemode-0.89.2.orig/makers/emSvg.maker.pm	2016-01-31 11:34:23.000000000 +0100
++++ eaglemode-0.89.2/makers/emSvg.maker.pm	2016-02-18 11:47:55.089788157 +0100
+@@ -60,6 +60,7 @@
+ 	my @librsvgFlags=();
+ 	my $str=readpipe('pkg-config --cflags --libs librsvg-2.0');
+ 	if (!$str) { return 0; }
++	chomp($str);
+ 	foreach my $f (split(/ /,$str)) {
+ 		if (substr($f,0,2) eq '-I') {
+ 			push(@librsvgFlags,'--inc-search-dir',substr($f,2));
+diff -Naur eaglemode-0.89.2.orig/makers/font2em.maker.pm eaglemode-0.89.2/makers/font2em.maker.pm
+--- eaglemode-0.89.2.orig/makers/font2em.maker.pm	2016-01-31 11:34:23.000000000 +0100
++++ eaglemode-0.89.2/makers/font2em.maker.pm	2016-02-18 11:48:10.167790758 +0100
+@@ -32,6 +32,7 @@
+ 		my @libFtFlags=();
+ 		my $str=readpipe('pkg-config --cflags --libs freetype2');
+ 		if ($str) {
++			chomp($str);
+ 			foreach my $f (split(/ /,$str)) {
+ 				if (substr($f,0,2) eq '-I') {
+ 					push(@libFtFlags,'--inc-search-dir',substr($f,2));
