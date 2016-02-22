@@ -4,7 +4,7 @@
 
 EAPI=6
 
-inherit autotools git-r3
+inherit autotools git-r3 multilib-minimal
 
 DESCRIPTION="Glide to OpenGL wrapper"
 HOMEPAGE="http://openglide.sourceforge.net"
@@ -24,17 +24,24 @@ RDEPEND="
 	sdl? ( media-libs/libsdl )"
 DEPEND="${RDEPEND}"
 
+MULTILIB_WRAPPED_HEADERS+=( /usr/include/openglide/sdk2_unix.h )
+
 src_prepare() {
 	default
 	eautoreconf
+
+	multilib_copy_sources
 }
 
-src_configure() {
+multilib_src_configure() {
 	econf \
  		$(use_enable sdl) \
  		$(use_enable static-libs static)
 }
 
-#src_install() {
-#	emake DESTDIR="${D}" install
-#}
+multilib_src_compile() {
+	if ! multilib_is_native_abi ; then
+		sed -i -e 's/install-data-hook:/disabled_\0/' Makefile || die
+	fi
+	default
+}
