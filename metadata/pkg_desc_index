@@ -4,6 +4,7 @@ app-emulation/vagrant-bin 1.8.1: Tool for building and distributing virtual mach
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04: Welcome to Linux, ANSI login logo for Linux
 dev-libs/libedit 20150325.3.1: BSD replacement for libreadline
+dev-libs/openssl 1.0.2g-r1: full-strength general purpose cryptography library (including SSL and TLS)
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
 games-action/supertuxkart 0.9.1: A kart racing game starring Tux, the linux penguin (TuxKart fork)
