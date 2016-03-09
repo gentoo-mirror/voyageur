@@ -10,5 +10,6 @@ RDEPEND=imagemagick? ( || ( media-gfx/imagemagick media-gfx/graphicsmagick[image
 REQUIRED_USE=|| ( gd imagemagick )
 SLOT=2.8.0
 SRC_URI=http://piwigo.org/download/dlcounter.php?code=2.8.0 -> piwigo-2.8.0.zip
+_eclass_exported_funcs=pkg_prerm:webapp pkg_postinst:webapp pkg_setup:webapp src_install:-
 _eclasses_=webapp	42c6ef7af496b228f9854b3c81e4b226
 _md5_=cba971b21b3d2e1bce9e13efb22237cf
