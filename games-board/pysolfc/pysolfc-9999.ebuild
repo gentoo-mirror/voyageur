@@ -1,99 +1,53 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-ESVN_REPO_URI="svn://svn.code.sourceforge.net/p/pysolfc/code/PySolFC/trunk"
+EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="tk"
 DISTUTILS_SINGLE_IMPL="1"
 
-inherit eutils subversion python-single-r1 distutils-r1 games
+inherit git-r3 python-single-r1 distutils-r1
 
-CARDSETS=PySolFC-Cardsets-2.0
-
+MY_PN="PySolFC"
 DESCRIPTION="An exciting collection of more than 1000 solitaire card games"
-HOMEPAGE="http://pysolfc.sourceforge.net/"
-SRC_URI="extra-cardsets? ( mirror://sourceforge/${PN}/${CARDSETS}.tar.bz2 )"
+HOMEPAGE="https://github.com/shlomif/PySolFC"
+EGIT_REPO_URI="https://github.com/shlomif/PySolFC.git"
+SRC_URI=""
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+extra-cardsets minimal +sound"
+IUSE="+sound themes"
 
 DEPEND=""
 RDEPEND="${RDEPEND}
+	dev-python/pillow[tk,${PYTHON_USEDEP}]
 	sound? ( dev-python/pygame[${PYTHON_USEDEP}] )
-	!minimal? ( dev-python/pillow[tk,${PYTHON_USEDEP}]
-		dev-tcltk/tktable )"
+	themes? ( dev-tcltk/tktable )"
 
-src_unpack() {
-	use extra-cardsets && unpack ${A}
-	subversion_src_unpack
-}
-
-python_prepare_all() {
-	local PATCHES=(
-		"${FILESDIR}/${PN}-PIL-imports.patch" #471514
-		"${FILESDIR}"/${PN}-2.0-gentoo.patch
-	)
-
-	distutils-r1_python_prepare_all
-}
-
-pkg_setup() {
-	games_pkg_setup
-	python-single-r1_pkg_setup
-}
+DOCS=( README.md AUTHORS docs/README docs/README.SOURCE )
+HTML_DOCS=( docs/all_games.html )
 
 src_prepare() {
-	distutils-r1_src_prepare
-
 	sed -i \
 		-e "/pysol.desktop/d" \
 		-e "s:share/icons:share/pixmaps:" \
-		-e "s:data_dir =.*:data_dir = \'${GAMES_DATADIR}/${PN}\':" \
 		setup.py || die
 
-	sed -i \
-		-e "s:@GAMES_DATADIR@:${GAMES_DATADIR}/${PN}:" \
-		pysollib/settings.py || die "fixing settings"
-
-	mv docs/README{,.txt}
+	distutils-r1_src_prepare
 }
 
 python_compile_all() {
-	# Missing in SVN checkout
-	emake mo rules
-}
-
-src_compile() {
-	distutils-r1_src_compile
+	# Not called from distutils
+	emake all_games_html mo rules
 }
 
 python_install_all() {
 	make_desktop_entry pysol.py "PySol Fan Club Edition" pysol02
 
-	if use extra-cardsets; then
-		# doins is slow
-		cp -ra "${WORKDIR}"/${CARDSETS}/* "${D}/${GAMES_DATADIR}"/${PN}
-	fi
-
 	doman docs/*.6
 
-	DOCS=( README AUTHORS docs/README.txt docs/README.SOURCE )
-	HTML_DOCS=( data/*html )
-
 	distutils-r1_python_install_all
-
-	dodir "${GAMES_BINDIR}"
-
-	mv "${D}"/usr/bin/pysol.py "${D}""${GAMES_BINDIR}"/
-
-	prepgamesdirs
-}
-
-src_install() {
-	distutils-r1_src_install
 }

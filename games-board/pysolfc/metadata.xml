@@ -6,7 +6,7 @@
 		<name>Bernard Cafarelli</name>
 	</maintainer>
 	<use>
-		<flag name="extra-cardsets">Install extra cardsets</flag>
 		<flag name="sound">Enable sound support using <pkg>dev-python/pygame</pkg></flag>
+		<flag name="themes">Enable UI theming using <pkg>dev-tcltk/tktable</pkg></flag>
 	</use>
 </pkgmetadata>
