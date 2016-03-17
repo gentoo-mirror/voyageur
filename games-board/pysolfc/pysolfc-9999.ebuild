@@ -19,13 +19,12 @@ SRC_URI=""
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+sound themes"
+IUSE="+sound"
 
 DEPEND=""
 RDEPEND="${RDEPEND}
 	dev-python/pillow[tk,${PYTHON_USEDEP}]
-	sound? ( dev-python/pygame[${PYTHON_USEDEP}] )
-	themes? ( dev-tcltk/tktable )"
+	sound? ( dev-python/pygame[${PYTHON_USEDEP}] )"
 
 DOCS=( README.md AUTHORS docs/README docs/README.SOURCE )
 HTML_DOCS=( docs/all_games.html )
