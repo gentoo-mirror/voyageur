@@ -5,7 +5,6 @@
 games-action/supertuxkart:fribidi - Support for right-to-left languages
 games-action/supertuxkart:wiimote - Support for wiimote input devices
 games-board/pysolfc:sound - Enable sound support using dev-python/pygame
-games-board/pysolfc:themes - Enable UI theming using dev-tcltk/tktable
 games-strategy/openra:debug - Compile and run with full debugging information
 games-strategy/openra:doc - Generate additional documentation
 games-strategy/openra:tools - Install some development tools such as editor.
