@@ -1,27 +1,29 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
-inherit eutils flag-o-matic
+inherit flag-o-matic
 
-MY_PN=Welcome2L
-MY_P=${MY_PN}-${PV}
+MY_P=${P}-gentoo
 DESCRIPTION="Welcome to Linux, ANSI login logo for Linux"
-HOMEPAGE="http://www.littleigloo.org/"
-SRC_URI="http://www.chez.com/littleigloo/files/${MY_P}.src.tar.gz"
+HOMEPAGE="http://www.littleigloo.org/ https://github.com/voyageur/welcome2l"
+SRC_URI="https://github.com/voyageur/${PN}/archive/v${PV}-gentoo.tar.gz -> ${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ppc sparc x86"
+KEYWORDS="~amd64 ~ppc ~sparc ~x86"
 IUSE=""
 
 S=${WORKDIR}/${MY_P}
 
+DOCS=( AUTHORS README INSTALL ChangeLog BUGS TODO )
+
 src_prepare() {
-	epatch "${FILESDIR}"/${P}-gentoo-r1.patch
 	sed -i -e "s:gcc:$(tc-getCC):g" Makefile || die
+
+	default
 }
 
 src_compile() {
@@ -32,9 +34,12 @@ src_compile() {
 }
 
 src_install() {
+	local MY_PN=Welcome2L
 	dobin ${MY_PN}
+
 	doman ${MY_PN}.1
-	dodoc AUTHORS README INSTALL ChangeLog BUGS TODO
+	einstalldocs
+
 	newinitd "${FILESDIR}"/${PN}.initscript ${MY_PN}
 }
 
