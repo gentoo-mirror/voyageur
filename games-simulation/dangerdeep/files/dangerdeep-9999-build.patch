@@ -1,5 +1,5 @@
---- SConstruct.orig	2014-10-30 20:10:41.864713576 +0100
-+++ SConstruct	2014-10-30 20:10:37.231709639 +0100
+--- dangerdeep-9999.orig/SConstruct	2014-10-30 20:10:41.864713576 +0100
++++ dangerdeep-9999/SConstruct	2014-10-30 20:10:37.231709639 +0100
 @@ -208,9 +208,13 @@
  	# Set libpath for real
  	libpath = [archlib, archlib + '/X11', '/usr/X11R6/lib']
