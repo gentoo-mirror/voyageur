@@ -1,13 +1,13 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
 inherit eutils webapp
 
 # Grab from http://repository.rainloop.net/v2/core.stable.json
-TAG="f6a947c1a9edf971d7e3ba80fb6723b7"
+TAG="7fa2fa59853642efb61f6e566611b817"
 
 DESCRIPTION="Simple, modern and fast web-based email client"
 HOMEPAGE="http://www.rainloop.net"
