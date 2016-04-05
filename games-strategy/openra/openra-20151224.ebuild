@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
-inherit eutils mono-env gnome2-utils vcs-snapshot fdo-mime games
+inherit mono-env gnome2-utils vcs-snapshot fdo-mime readme.gentoo-r1
 
 MY_PV=release-${PV}
 #MY_PV=playtest-${PV}
@@ -35,7 +35,6 @@ DEPEND="${RDEPEND}
 
 pkg_setup() {
 	mono-env_pkg_setup
-	games_pkg_setup
 }
 
 src_unpack() {
@@ -43,6 +42,7 @@ src_unpack() {
 }
 
 src_prepare() {
+	default
 	emake cli-dependencies
 }
 
@@ -54,11 +54,7 @@ src_compile() {
 src_install()
 {
 	emake $(usex debug "" "DEBUG=false") \
-		datadir="${GAMES_DATADIR}" \
-		bindir="${GAMES_BINDIR}" \
-		libdir="$(games_get_libdir)/${PN}" \
-		gameinstalldir="${GAMES_DATADIR}/${PN}" \
-		DESTDIR="${D}" \
+		prefix=/usr DESTDIR="${D}" \
 		$(usex tools "install-all" "install") install-linux-scripts install-man-page
 	emake \
 		datadir="/usr/share" \
@@ -81,7 +77,7 @@ src_install()
 	doins "${FILESDIR}"/games-${PN}.menu
 
 	# docs
-	dodoc "${FILESDIR}"/README.gentoo
+	readme.gentoo_create_doc
 	if [[ -n "$(type -P markdown)" ]] ; then
 		local file; for file in {README,CONTRIBUTING,DOCUMENTATION,Lua-API}; do \
 		markdown ${file}.md > ${file}.html && dohtml ${file}.html || die; done
@@ -94,8 +90,6 @@ src_install()
 	else
 		dodoc {README,CONTRIBUTING,DOCUMENTATION,Lua-API}.md
 	fi
-	# file permissions
-	prepgamesdirs
 }
 
 pkg_preinst() {
@@ -103,15 +97,11 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	games_pkg_postinst
 	gnome2_icon_cache_update
 	fdo-mime_desktop_database_update
 	fdo-mime_mime_database_update
 
-	elog
-	elog "If you have problems starting the game or want to know more"
-	elog "about it read README.gentoo file in your doc folder."
-	elog
+	readme.gentoo_print_elog
 }
 
 pkg_postrm() {
