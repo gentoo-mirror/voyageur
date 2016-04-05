@@ -6,7 +6,6 @@ app-misc/welcome2l 3.04: Welcome to Linux, ANSI login logo for Linux
 dev-libs/libedit 20150325.3.1: BSD replacement for libreadline
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
-games-action/supertuxkart 0.9.1: A kart racing game starring Tux, the linux penguin (TuxKart fork)
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
@@ -23,8 +22,7 @@ net-misc/synology-assistant 5.2_p5005: Synology Assistant to setup DiskStations
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 sys-fs/exfat-nofuse 9999: Non-fuse kernel driver for exFat and VFat file systems
 www-apps/gateone 1.1 9999: an HTML5-powered terminal emulator and SSH client
-www-apps/piwigo 2.7.4 2.8.0: a photo gallery software for the web
-www-apps/rainloop 1.9.3.365: Simple, modern and fast web-based email client
+www-apps/rainloop 1.9.4.402: Simple, modern and fast web-based email client
 www-apps/tt-rss 9999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
 x11-misc/3dfsb 1.1.1: 3-Dimensional File System Browser
 x11-misc/eaglemode 0.89.2: Zoomable user interface with plugin applications
