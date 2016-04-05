@@ -1,12 +1,11 @@
-DEFINED_PHASES=compile configure install postinst preinst prepare setup unpack
+DEFINED_PHASES=compile install preinst prepare unpack
 DEPEND=virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net app-arch/unzip dev-util/scons || ( dev-vcs/subversion[http] dev-vcs/subversion[webdav-neon] dev-vcs/subversion[webdav-serf] ) net-misc/rsync
 DESCRIPTION=a World War II German submarine simulation
-EAPI=5
+EAPI=6
 HOMEPAGE=http://dangerdeep.sourceforge.net/
 IUSE=cpu_flags_x86_sse debug
 LICENSE=GPL-2 CC-BY-NC-ND-2.0
-RDEPEND=virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net games-misc/games-envd
+RDEPEND=virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net
 SLOT=0
-_eclass_exported_funcs=pkg_preinst:subversion pkg_postinst:games pkg_setup:games src_unpack:subversion src_prepare:- src_configure:- src_compile:- src_install:-
-_eclasses_=base	3fe4f8980633fd7bc69e9887209ba2fe	eutils	9d81603248f2ba3ec59124320d123e5e	games	2cf0d67d765e6358b435ccda30c13ad8	multilib	3972ca401cf7dbb430df9995f5d8d580	scons-utils	6a35944612b7ecb18a3803359554badc	subversion	4fee0a764150bb4dda27ed4d2c4ed7ce	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	user	906f3c8eb3a2350a4f1191a89baa3e46
-_md5_=7dc6332bfeb8916dbc100933f9cda47c
+_eclasses_=eutils	9d81603248f2ba3ec59124320d123e5e	multilib	3972ca401cf7dbb430df9995f5d8d580	scons-utils	6a35944612b7ecb18a3803359554badc	subversion	4fee0a764150bb4dda27ed4d2c4ed7ce	toolchain-funcs	d513d423d449877e49d99af3f7af7acb
+_md5_=8e83f7d25bb46c411c3c7e12cfe77b3c

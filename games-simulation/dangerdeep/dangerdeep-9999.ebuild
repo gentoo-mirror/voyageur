@@ -1,14 +1,12 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-inherit eutils scons-utils games subversion toolchain-funcs
+EAPI=6
+inherit scons-utils subversion toolchain-funcs
 
 DESCRIPTION="a World War II German submarine simulation"
 HOMEPAGE="http://dangerdeep.sourceforge.net/"
-#SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz
-#	mirror://sourceforge/${PN}/${PN}-data-${PV}.zip"
 ESVN_REPO_URI="https://${PN}.svn.sourceforge.net/svnroot/${PN}/trunk/${PN}"
 
 LICENSE="GPL-2 CC-BY-NC-ND-2.0"
@@ -26,41 +24,33 @@ RDEPEND="virtual/opengl
 DEPEND="${RDEPEND}
 	app-arch/unzip"
 
+DOCS=( ChangeLog CREDITS README )
+PATCHES=( "${FILESDIR}"/${P}-build.patch )
+
 src_prepare() {
-	epatch \
-		"${FILESDIR}"/${P}-build.patch
-	sed -i -e "/console_log.txt/ s:fopen.*:stderr;:" src/system.cpp || die
+	default
 }
 
-src_configure() {
+src_compile() {
 	local sse=-1
 
 	if use cpu_flags_x86_sse ; then
 		use amd64 && sse=3 || sse=1
 	fi
 
-	myesconsargs=(
-		CXX="$(tc-getCXX)"
-		usex86sse=${sse}
-		datadir="${GAMES_DATADIR}"/${PN}
-		$(use_scons debug)
-	)
-}
-
-src_compile() {
-	escons
+	CXX="$(tc-getCXX)" escons \
+		usex86sse=${sse} debug=$(usex debug 1 0) \
+		datadir=/usr/share/${PN}
 }
 
 src_install() {
-	dogamesbin build/linux/${PN}
+	dobin build/linux/${PN}
 
-	insinto "${GAMES_DATADIR}"/${PN}
+	insinto /usr/share/${PN}
 	doins -r data/*
 
 	newicon dftd_icon.png ${PN}.png
 	make_desktop_entry ${PN} "Danger from the Deep"
 
-	dodoc ChangeLog CREDITS README
-
-	prepgamesdirs
+	einstalldocs
 }
