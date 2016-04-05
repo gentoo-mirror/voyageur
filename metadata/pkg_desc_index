@@ -10,7 +10,6 @@ games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
-games-puzzle/sudoku-sensei 2.0: The Sudoku Explainer Game
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
 games-strategy/openra 20151224: A free RTS engine supporting games like Command & Conquer, Red Alert and Dune2k
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
