@@ -1,4 +1,4 @@
-DEFINED_PHASES=install postinst prepare prerm setup
+DEFINED_PHASES=install postinst prerm setup
 DEPEND=>=app-admin/webapp-config-1.50.15
 DESCRIPTION=Simple, modern and fast web-based email client
 EAPI=6
@@ -10,4 +10,4 @@ RDEPEND=dev-lang/php[curl,iconv,json,ssl,xml] virtual/httpd-php >=app-admin/weba
 SLOT=1.9.4.402
 SRC_URI=http://repository.rainloop.net/v2/webmail/1.9.4/rainloop-1.9.4.402-7fa2fa59853642efb61f6e566611b817.zip
 _eclasses_=webapp	42c6ef7af496b228f9854b3c81e4b226
-_md5_=5101087f4b84421625b77519ef1d5587
+_md5_=c80de820905b85168c84f63bc08756fd

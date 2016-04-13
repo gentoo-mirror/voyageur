@@ -23,10 +23,6 @@ RDEPEND="dev-lang/php[curl,iconv,json,ssl,xml]
 
 S=${WORKDIR}
 
-src_prepare() {
-	default
-}
-
 src_install() {
 	webapp_src_preinst
 
