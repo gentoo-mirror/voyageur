@@ -4,7 +4,7 @@
 
 EAPI=6
 
-inherit eutils webapp
+inherit webapp
 
 # Grab from http://repository.rainloop.net/v2/core.stable.json
 TAG="7fa2fa59853642efb61f6e566611b817"
@@ -24,7 +24,7 @@ RDEPEND="dev-lang/php[curl,iconv,json,ssl,xml]
 S=${WORKDIR}
 
 src_prepare() {
-	epatch_user
+	default
 }
 
 src_install() {
