@@ -1,4 +1,4 @@
-DEFINED_PHASES=install postinst prepare prerm setup
+DEFINED_PHASES=install postinst prerm setup
 DEPEND=>=app-admin/webapp-config-1.50.15
 DESCRIPTION=Simple, modern and fast web-based email client
 EAPI=6
@@ -9,6 +9,5 @@ LICENSE=AGPL-3
 RDEPEND=dev-lang/php[curl,iconv,json,ssl,xml] virtual/httpd-php >=app-admin/webapp-config-1.50.15
 SLOT=1.9.4.402
 SRC_URI=http://repository.rainloop.net/v2/webmail/1.9.4/rainloop-1.9.4.402-7fa2fa59853642efb61f6e566611b817.zip
-_eclass_exported_funcs=pkg_prerm:webapp pkg_postinst:webapp pkg_setup:webapp src_prepare:- src_install:-
-_eclasses_=eutils	9d81603248f2ba3ec59124320d123e5e	multilib	23ae8c186171e6476af098d2a50d0ee0	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	webapp	42c6ef7af496b228f9854b3c81e4b226
-_md5_=61da10a0178a4f1d13fab62083b44a5c
+_eclasses_=webapp	42c6ef7af496b228f9854b3c81e4b226
+_md5_=c80de820905b85168c84f63bc08756fd
