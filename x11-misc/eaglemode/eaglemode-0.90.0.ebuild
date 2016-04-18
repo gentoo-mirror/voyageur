@@ -27,7 +27,7 @@ RDEPEND="${DEPEND}
 	>=app-text/ghostscript-gpl-8"
 
 PATCHES=(
-	"${FILESDIR}"/${P}-pkg-config.patch
+	"${FILESDIR}"/${PN}-0.89.2-pkg-config.patch
 )
 
 src_prepare() {

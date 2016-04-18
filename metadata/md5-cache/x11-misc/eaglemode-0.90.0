@@ -8,7 +8,6 @@ KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3
 RDEPEND=>=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg:* ) png? ( media-libs/libpng:* ) tiff? ( media-libs/tiff:* ) xine? ( media-libs/xine-lib ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 ) >=app-text/ghostscript-gpl-8
 SLOT=0
-SRC_URI=mirror://sourceforge/eaglemode/eaglemode-0.89.2.tar.bz2
-_eclass_exported_funcs=pkg_postinst:- src_prepare:- src_compile:- src_install:-
+SRC_URI=mirror://sourceforge/eaglemode/eaglemode-0.90.0.tar.bz2
 _eclasses_=multilib	23ae8c186171e6476af098d2a50d0ee0	multiprocessing	e32940a7b2a9992ad217eccddb84d548	toolchain-funcs	d513d423d449877e49d99af3f7af7acb
-_md5_=6e2e738c12c9b510a986d96eb7cb79a9
+_md5_=5a49a2bc8cff76cfa281b1b446750d64
