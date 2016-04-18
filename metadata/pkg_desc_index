@@ -1,4 +1,4 @@
-app-editors/texworks 0.4.6: A simple interface for working with TeX documents
+app-editors/texworks 0.4.6 0.6.0: A simple interface for working with TeX documents
 app-emulation/aws-cli 1.9.5: Universal Command Line Interface for Amazon Web Services
 app-emulation/vagrant-bin 1.8.1: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
