@@ -10,3 +10,6 @@ games-strategy/openra:xdg - xdg-utils are used to open web pages
 games-strategy/openra:zenity - zenity is used to display crash dialogs
 www-apps/gateone:dtach - Emulate the detach feature of screen via app-misc/dtach
 www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
+www-plugins/freshplayerplugin:gles2 - Use system GLESv2 libraries instead of ANGLE for shader translation
+www-plugins/freshplayerplugin:gtk3 - Build with GTK+ 3 instead of GTK+ 2
+www-plugins/freshplayerplugin:v4l - Use libv4l2 for colorspace conversion
