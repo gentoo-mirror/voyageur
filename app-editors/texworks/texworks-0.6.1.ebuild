@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
 inherit multilib python-single-r1 cmake-utils fdo-mime
@@ -14,7 +14,7 @@ SRC_URI="https://github.com/TeXworks/texworks/archive/release-${PV}.tar.gz -> ${
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="lua python +qt4 qt5"
+IUSE="lua python qt4 +qt5"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	^^ ( qt4 qt5 )"
 
@@ -50,8 +50,8 @@ pkg_setup() {
 
 src_configure() {
 	local mycmakeargs=(
-		$(cmake-utils_use_with lua LUA)
-		$(cmake-utils_use_with python PYTHON)
+		-DWITH_LUA=$(usex lua ON OFF)
+		-DWITH_PYTHON=$(usex python ON OFF)
 		-DTeXworks_PLUGIN_DIR="/usr/$(get_libdir)/texworks"
 		-DTeXworks_DOCS_DIR="/share/doc/${PF}"
 		-DDESIRED_QT_VERSION=$(usex qt4 4 "$(usex qt5 5 4)")
