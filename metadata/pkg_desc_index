@@ -16,7 +16,6 @@ media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstratio
 media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion tools
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 1.5.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
-media-video/devedeng 4.6.1 4.7.0: DevedeNG is a program to create video DVDs and CDs (VCD, sVCD or CVD)
 net-misc/dagr 0.60 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 5.2_p5005: Synology Assistant to setup DiskStations
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
