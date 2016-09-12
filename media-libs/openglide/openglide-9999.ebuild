@@ -38,10 +38,3 @@ multilib_src_configure() {
  		$(use_enable sdl) \
  		$(use_enable static-libs static)
 }
-
-multilib_src_compile() {
-	if ! multilib_is_native_abi ; then
-		sed -i -e 's/install-data-hook:/disabled_\0/' Makefile || die
-	fi
-	default
-}
