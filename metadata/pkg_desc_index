@@ -4,6 +4,7 @@ app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1: Welcome to Linux, ANSI login logo for Linux
 dev-libs/libedit 20150325.3.1: BSD replacement for libreadline
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
+dev-python/pyproj 1.9.5.1: Python interface to PROJ.4 library
 dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
