@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 inherit git-r3 user eutils webapp
 
 DESCRIPTION="Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX"
@@ -11,16 +11,16 @@ EGIT_REPO_URI="https://tt-rss.org/git/tt-rss.git"
 
 LICENSE="GPL-3"
 KEYWORDS=""
-IUSE="daemon +mysql postgres"
+IUSE="daemon +mysqli postgres"
 
 DEPEND="
-	daemon? ( dev-lang/php:*[mysql?,postgres?,pcntl,curl] )
-	!daemon? ( dev-lang/php:*[mysql?,postgres?,curl] )
+	daemon? ( dev-lang/php:*[mysqli?,postgres?,pcntl,curl] )
+	!daemon? ( dev-lang/php:*[mysqli?,postgres?,curl] )
 	virtual/httpd-php:*"
 
 RDEPEND="${DEPEND}"
 
-REQUIRED_USE="|| ( mysql postgres )"
+REQUIRED_USE="|| ( mysqli postgres )"
 
 pkg_setup() {
 	webapp_pkg_setup
@@ -35,7 +35,7 @@ src_prepare() {
 	# Customize config.php-dist so that the right 'DB_TYPE' is already set (according to the USE flag)
 	einfo "Customizing config.php-dist..."
 
-	if use mysql && ! use postgres; then
+	if use mysqli && ! use postgres; then
 			sed -i \
 				-e "/define('DB_TYPE',/{s:pgsql:mysql:}" \
 				config.php-dist || die
@@ -45,8 +45,7 @@ src_prepare() {
 		-e "/define('DB_TYPE',/{s:// \(or mysql\):// pgsql \1:}" \
 		config.php-dist || die
 
-	# per 462578
-	epatch_user
+	default
 }
 
 src_install() {
