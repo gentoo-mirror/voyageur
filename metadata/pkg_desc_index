@@ -1,11 +1,11 @@
-app-editors/texworks 0.6.0 0.6.1: A simple interface for working with TeX documents
-app-emulation/vagrant-bin 1.8.1 1.8.4: Tool for building and distributing virtual machines
+app-editors/texworks 0.6.1: A simple interface for working with TeX documents
+app-emulation/vagrant-bin 1.8.4 1.8.7: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1: Welcome to Linux, ANSI login logo for Linux
 dev-libs/libedit 20150325.3.1: BSD replacement for libreadline
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/pyproj 1.9.5.1: Python interface to PROJ.4 library
-dev-python/robobrowser 0.5.2 0.5.3: A python library for browsing the web without a standalone web browser
+dev-python/robobrowser 0.5.3: A python library for browsing the web without a standalone web browser
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-board/pysolfc 9999: An exciting collection of more than 1000 solitaire card games
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
@@ -15,7 +15,7 @@ games-strategy/openra 20151224: A free RTS engine supporting games like Command 
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion tools
 media-libs/openglide 9999: Glide to OpenGL wrapper
-media-sound/munt 1.5.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
+media-sound/munt 1.5.0 2.0.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.60 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 5.2_p5005 6.0_p7319: Synology Assistant to setup DiskStations
 sci-geosciences/googleearth 7.1.7.2600: A 3D interface to the planet

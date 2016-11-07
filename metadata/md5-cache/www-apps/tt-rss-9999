@@ -8,5 +8,6 @@ LICENSE=GPL-3
 RDEPEND=daemon? ( dev-lang/php:*[mysqli?,postgres?,pcntl,curl] ) !daemon? ( dev-lang/php:*[mysqli?,postgres?,curl] ) virtual/httpd-php:* >=app-admin/webapp-config-1.50.15
 REQUIRED_USE=|| ( mysqli postgres )
 SLOT=9999
+_eclass_exported_funcs=pkg_prerm:webapp pkg_postinst:webapp pkg_setup:- src_unpack:git-r3 src_prepare:- src_install:-
 _eclasses_=eutils	b83a2420b796f7c6eff682679d08fe25	git-r3	e928b84a9f6f1d9076d1d27687876dc6	multilib	165fc17c38d1b11dac2008280dab6e80	toolchain-funcs	1b1da0c45c555989dc5d832b54880783	user	80aaa71614ced86f02ee1a513821dc87	webapp	42c6ef7af496b228f9854b3c81e4b226
 _md5_=56d5554e63ea50667e238d0b870628b5
