@@ -1,5 +1,5 @@
 DEFINED_PHASES=compile configure install postinst postrm prepare setup test
-DEPEND=app-text/hunspell qt4? ( app-text/poppler[qt4] dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 dev-qt/qtscript:4 ) qt5? ( app-text/poppler[qt5] dev-qt/qtcore:5 dev-qt/qtdbus:5 dev-qt/qtgui:5 dev-qt/qtscript:5[scripttools] ) lua? ( dev-lang/lua:0 ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_4(-),-python_single_target_python3_5(-),python_single_target_python2_7(+)] ) virtual/pkgconfig sys-devel/make >=dev-util/cmake-2.8.12
+DEPEND=app-text/hunspell qt4? ( app-text/poppler[qt4] dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 dev-qt/qtscript:4 ) qt5? ( app-text/poppler[qt5] dev-qt/qtcore:5 dev-qt/qtdbus:5 dev-qt/qtgui:5 dev-qt/qtscript:5[scripttools] ) lua? ( dev-lang/lua:0 ) python? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_4(-),-python_single_target_python3_5(-),python_single_target_python2_7(+)] ) virtual/pkgconfig sys-devel/make >=dev-util/cmake-3.5.2
 DESCRIPTION=A simple interface for working with TeX documents
 EAPI=6
 HOMEPAGE=http://tug.org/texworks/
@@ -10,5 +10,5 @@ RDEPEND=app-text/hunspell qt4? ( app-text/poppler[qt4] dev-qt/qtcore:4 dev-qt/qt
 REQUIRED_USE=python? ( python_targets_python2_7 ) ^^ ( qt4 qt5 )
 SLOT=0
 SRC_URI=https://github.com/TeXworks/texworks/archive/release-0.6.1.tar.gz -> texworks-0.6.1.tar.gz
-_eclasses_=cmake-utils	5e0b7e906a2e173540595bcd12cd2ae1	eutils	b83a2420b796f7c6eff682679d08fe25	fdo-mime	92d07846ea8ea54172f8c0112a47ae3d	flag-o-matic	7366202dd55cb8f018f5d450d54e7749	multilib	165fc17c38d1b11dac2008280dab6e80	python-single-r1	19a74c6b5c191723a997dc7e0cc6bb09	python-utils-r1	d142329ab093dd20c1dd0edb5f094108	toolchain-funcs	1b1da0c45c555989dc5d832b54880783	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
+_eclasses_=cmake-utils	b43f5e0df58483dd4b68aef4777f6e22	eutils	b83a2420b796f7c6eff682679d08fe25	fdo-mime	92d07846ea8ea54172f8c0112a47ae3d	flag-o-matic	7366202dd55cb8f018f5d450d54e7749	multilib	165fc17c38d1b11dac2008280dab6e80	python-single-r1	19a74c6b5c191723a997dc7e0cc6bb09	python-utils-r1	d142329ab093dd20c1dd0edb5f094108	toolchain-funcs	1b1da0c45c555989dc5d832b54880783	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
 _md5_=6aa9d92d6dd5ac441898c6a5cd053d4d
