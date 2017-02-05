@@ -17,7 +17,7 @@ media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 1.5.0 2.0.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.60 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 5.2_p5005 6.0_p7319: Synology Assistant to setup DiskStations
-sci-geosciences/googleearth 7.1.7.2606: A 3D interface to the planet
+sci-geosciences/googleearth 7.1.8.3036: A 3D interface to the planet
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 sys-fs/exfat-nofuse 9999: Non-fuse kernel driver for exFat and VFat file systems
 www-apps/gateone 1.1 9999: an HTML5-powered terminal emulator and SSH client
