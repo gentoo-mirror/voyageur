@@ -8,5 +8,5 @@ RESTRICT=mirror strip
 SLOT=0
 SRC_URI=amd64? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/x86_64/synology-assistant_6.0-7319_amd64.deb ) x86? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/i686/synology-assistant_6.0-7319_i386.deb )
 _eclass_exported_funcs=src_unpack:unpacker src_install:-
-_eclasses_=unpacker	76ddf385f3c212c12857bb8ec2a8bd35
+_eclasses_=unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
 _md5_=87b7c8d5cf184c3d7782b699d79060bd
