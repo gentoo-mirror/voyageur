@@ -7,4 +7,5 @@ LICENSE=all-rights-reserved
 RESTRICT=mirror strip
 SLOT=0
 SRC_URI=amd64? ( http://global.download.synology.com/download/Tools/SynologyAssistant/5005/Linux/SynologyAssistant-5.2-5005_x64.tar.gz ) x86? ( http://global.download.synology.com/download/Tools/SynologyAssistant/5005/Linux/SynologyAssistant-5.2-5005.tar.gz )
+_eclass_exported_funcs=src_install:-
 _md5_=58932eadf7685927f8ffb99ab56b10d3
