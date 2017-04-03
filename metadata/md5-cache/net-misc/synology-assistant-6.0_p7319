@@ -7,5 +7,5 @@ LICENSE=all-rights-reserved
 RESTRICT=mirror strip
 SLOT=0
 SRC_URI=amd64? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/x86_64/synology-assistant_6.0-7319_amd64.deb ) x86? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/i686/synology-assistant_6.0-7319_i386.deb )
-_eclasses_=unpacker	45d07319df5f40ee6af58418b0f930be
-_md5_=87b7c8d5cf184c3d7782b699d79060bd
+_eclasses_=unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
+_md5_=1ff87ee68c8b4b93dd751161abcc106f
