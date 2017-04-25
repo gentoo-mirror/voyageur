@@ -26,7 +26,7 @@ src_install() {
 	doman ${MY_PN}.1
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initscript ${MY_PN}
+	newinitd "${FILESDIR}"/${PN}-r1.initscript ${MY_PN}
 }
 
 pkg_postinst() {
