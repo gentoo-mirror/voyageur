@@ -13,31 +13,17 @@ SRC_URI="https://github.com/TeXworks/texworks/archive/release-${PV}.tar.gz -> ${
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="lua python qt4 +qt5"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
-	^^ ( qt4 qt5 )"
+IUSE="lua python"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
-QT4_DEPS="
-	app-text/poppler[qt4]
-	dev-qt/qtcore:4
-	dev-qt/qtdbus:4
-	dev-qt/qtgui:4
-	dev-qt/qtscript:4
-"
-QT5_DEPS="
+RDEPEND="app-text/hunspell
 	app-text/poppler[qt5]
 	dev-qt/qtcore:5
 	dev-qt/qtdbus:5
 	dev-qt/qtgui:5
 	dev-qt/qtscript:5[scripttools]
-"
-RDEPEND="
-	app-text/hunspell
-	qt4? ( ${QT4_DEPS} )
-	qt5? ( ${QT5_DEPS} )
 	lua? ( dev-lang/lua:0 )
-	python? ( ${PYTHON_DEPS} )
-"
+	python? ( ${PYTHON_DEPS} ) "
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
@@ -53,7 +39,9 @@ src_configure() {
 		-DWITH_PYTHON=$(usex python ON OFF)
 		-DTeXworks_PLUGIN_DIR="/usr/$(get_libdir)/texworks"
 		-DTeXworks_DOCS_DIR="/share/doc/${PF}"
-		-DDESIRED_QT_VERSION=$(usex qt4 4 "$(usex qt5 5 4)")
+		-DDESIRED_QT_VERSION=5
+		-DQTPDF_VIEWER=ON
+
 	)
 	cmake-utils_src_configure
 }
