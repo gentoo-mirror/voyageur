@@ -1,0 +1,13 @@
+DEFINED_PHASES=install prepare setup
+DESCRIPTION=the sysadmin's rolling upgrade tool
+EAPI=6
+HOMEPAGE=https://github.com/voyageur/checkrestart/
+IUSE=python_targets_python2_7
+KEYWORDS=~amd64 ~arm ~hppa ~x86
+LICENSE=GPL-2
+RDEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_4(-),-python_single_target_python3_5(-),-python_single_target_python3_6(-),python_single_target_python2_7(+)] sys-apps/lsb-release app-portage/portage-utils sys-process/lsof
+REQUIRED_USE=python_targets_python2_7
+SLOT=0
+SRC_URI=https://github.com/voyageur/checkrestart/archive/0.50.tar.gz -> checkrestart-0.50.tar.gz
+_eclasses_=multilib	97f470f374f2e94ccab04a2fb21d811e	python-single-r1	317a2557b4d7319a7418225f65accf77	python-utils-r1	7aaf8e4bc5ba6cae58ff688b5a857866	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=1a38a3a5152f559462ccc2d1b103a850
