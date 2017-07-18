@@ -15,7 +15,6 @@ media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstratio
 media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion tools
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 1.5.0 2.1.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
-net-analyzer/munin 2.0.33: Munin Server Monitoring Tool
 net-misc/dagr 0.61 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 5.2_p5005 6.0_p7319: Synology Assistant to setup DiskStations
 sci-geosciences/googleearth 7.1.8.3036: A 3D interface to the planet
