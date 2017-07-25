@@ -1,6 +1,6 @@
 app-admin/checkrestart 0.50: the sysadmin's rolling upgrade tool
 app-editors/texworks 0.6.2: A simple interface for working with TeX documents
-app-emulation/vagrant-bin 1.9.6: Tool for building and distributing virtual machines
+app-emulation/vagrant-bin 1.9.7: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
@@ -16,7 +16,7 @@ media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion to
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 1.5.0 2.1.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.61 9999: a deviantArt image downloader script written in Python.
-net-misc/synology-assistant 5.2_p5005 6.0_p7319: Synology Assistant to setup DiskStations
+net-misc/synology-assistant 6.0_p7319: Synology Assistant to setup DiskStations
 sci-geosciences/googleearth 7.1.8.3036: A 3D interface to the planet
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 sys-fs/exfat-nofuse 9999: Non-fuse kernel driver for exFat and VFat file systems
