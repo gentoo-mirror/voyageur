@@ -25,5 +25,5 @@ S=${WORKDIR}
 
 src_install() {
 	cp -a opt usr "${D}" || die
-	dosym /opt/Synology/${MY_PN}/${MY_PN} /opt/bin/${MY_PN}
+	dosym ../Synology/${MY_PN}/${MY_PN} /opt/bin/${MY_PN}
 }

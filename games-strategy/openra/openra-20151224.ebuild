@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit mono-env gnome2-utils vcs-snapshot fdo-mime readme.gentoo-r1
+inherit mono-env gnome2-utils vcs-snapshot xdg-utils readme.gentoo-r1
 
 MY_PV=release-${PV}
 #MY_PV=playtest-${PV}
@@ -97,14 +97,14 @@ pkg_preinst() {
 
 pkg_postinst() {
 	gnome2_icon_cache_update
-	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 
 	readme.gentoo_print_elog
 }
 
 pkg_postrm() {
 	gnome2_icon_cache_update
-	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 }

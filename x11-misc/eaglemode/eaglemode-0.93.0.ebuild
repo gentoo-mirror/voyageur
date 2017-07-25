@@ -65,7 +65,7 @@ src_install() {
 		menu=yes bin=yes || die "Installation failed"
 
 	dodoc README
-	dosym /usr/lib/eaglemode/doc/ /usr/share/doc/${PF}/doc
+	dosym ../../../lib/eaglemode/doc/ /usr/share/doc/${PF}/doc
 }
 
 pkg_postinst() {

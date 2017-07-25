@@ -4,7 +4,7 @@
 EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
-inherit multilib python-single-r1 cmake-utils fdo-mime
+inherit multilib python-single-r1 cmake-utils xdg-utils
 
 DESCRIPTION="A simple interface for working with TeX documents"
 HOMEPAGE="http://tug.org/texworks/"
@@ -47,7 +47,7 @@ src_configure() {
 }
 
 pkg_postinst() {
-	fdo-mime_desktop_database_update
+	xdg_desktop_database_update
 
 	elog "=== optional dependencies ==="
 	elog
@@ -59,5 +59,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	fdo-mime_desktop_database_update
+	xdg_desktop_database_update
 }

@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit pax-utils eutils unpacker fdo-mime gnome2-utils
+inherit pax-utils eutils unpacker xdg-utils gnome2-utils
 
 DESCRIPTION="A 3D interface to the planet"
 HOMEPAGE="https://earth.google.com/"
@@ -111,13 +111,13 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 	gnome2_icon_cache_update
 }

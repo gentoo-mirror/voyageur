@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-inherit git-r3 autotools-multilib
+inherit git-r3 autotools multilib-minimal
 
 DESCRIPTION="S2TC texture compression and conversion tools"
 HOMEPAGE="https://github.com/divVerent/s2tc/wiki"
