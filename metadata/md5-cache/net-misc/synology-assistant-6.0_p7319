@@ -9,4 +9,4 @@ SLOT=0
 SRC_URI=amd64? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/x86_64/synology-assistant_6.0-7319_amd64.deb ) x86? ( http://global.download.synology.com/download/Tools/Assistant/6.0-7319/Ubuntu/i686/synology-assistant_6.0-7319_i386.deb )
 _eclass_exported_funcs=src_unpack:unpacker src_install:-
 _eclasses_=unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
-_md5_=1ff87ee68c8b4b93dd751161abcc106f
+_md5_=483474d1562f92d3fa846f6f4b7ed7e5
