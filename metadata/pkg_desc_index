@@ -12,7 +12,6 @@ games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
 games-strategy/openra 20151224: A free RTS engine supporting games like Command & Conquer, Red Alert and Dune2k
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
-media-libs/libtxc_dxtn_s2tc 1.0 9999: S2TC texture compression and conversion tools
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 1.5.0 2.1.0 2.2.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.62 9999: a deviantArt image downloader script written in Python.
