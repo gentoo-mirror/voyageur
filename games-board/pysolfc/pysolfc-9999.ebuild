@@ -3,21 +3,20 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5} )
-PYTHON_REQ_USE="tk"
+PYTHON_COMPAT=( python{2_7,3_5,3_6} )
 
-inherit git-r3 distutils-r1
+inherit git-r3 distutils-r1 eutils
 
 MY_PN="PySolFC"
 DESCRIPTION="An exciting collection of more than 1000 solitaire card games"
-HOMEPAGE="https://github.com/shlomif/PySolFC"
+HOMEPAGE="https://pysolfc.sourceforge.net"
 EGIT_REPO_URI="https://github.com/voyageur/PySolFC.git"
 EGIT_BRANCH="2to3"
 SRC_URI=""
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 IUSE="+sound"
 
 DEPEND=""
