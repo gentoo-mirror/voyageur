@@ -3,20 +3,19 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6} )
+# Helper tools are still python2 only
+PYTHON_COMPAT=( python2_7 )
 
-inherit git-r3 distutils-r1 eutils
+inherit distutils-r1 eutils
 
-MY_PN="PySolFC"
+MY_P="PySolFC-${PV}"
 DESCRIPTION="An exciting collection of more than 1000 solitaire card games"
-HOMEPAGE="https://pysolfc.sourceforge.net"
-EGIT_REPO_URI="https://github.com/voyageur/PySolFC.git"
-EGIT_BRANCH="2to3"
-SRC_URI=""
+HOMEPAGE="http://pysolfc.sourceforge.net"
+SRC_URI="mirror://sourceforge/pysolfc/${MY_P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86"
 IUSE="+sound"
 
 DEPEND=""
@@ -26,6 +25,8 @@ RDEPEND="${RDEPEND}
 
 DOCS=( README.md AUTHORS docs/README docs/README.SOURCE )
 HTML_DOCS=( docs/all_games.html )
+
+S=${WORKDIR}/${MY_P}
 
 src_prepare() {
 	sed -i \
