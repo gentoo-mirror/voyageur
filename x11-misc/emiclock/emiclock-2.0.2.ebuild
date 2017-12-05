@@ -4,8 +4,8 @@
 EAPI=5
 
 DESCRIPTION="Hyper-animated face analog clock for X11"
-HOMEPAGE="http://download.vector.co.jp/pack/unix/personal/tokei/"
-SRC_URI="http://download.vector.co.jp/pack/unix/personal/tokei/${P}.tar.gz"
+HOMEPAGE="http://www.vector.co.jp/soft/dl/unix/personal/se117802.html"
+SRC_URI="http://ftp.vector.co.jp/11/78/1347/${P}.tar.gz"
 
 LICENSE="free-noncomm"
 SLOT="0"
@@ -21,7 +21,6 @@ DEPEND="${RDEPEND}
 	virtual/x11 )"
 
 src_configure() {
-
 	sed -i 's/#undef\s*USE_SOUND\(.*\)/#define USE_SOUND\1/' config.h
 	if use Xaw3d; then
 		sed -i 's/#undef\s*USE_XAW3D\(.*\)/#define USE_XAW3D\1/' config.h
