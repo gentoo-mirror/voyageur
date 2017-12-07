@@ -1,0 +1,11 @@
+DEFINED_PHASES=install unpack
+DESCRIPTION=Synology Assistant to setup DiskStations
+EAPI=6
+HOMEPAGE=http://www.synology.com/
+KEYWORDS=~amd64 ~x86
+LICENSE=all-rights-reserved
+RESTRICT=mirror strip
+SLOT=0
+SRC_URI=amd64? ( http://global.download.synology.com/download/Tools/Assistant/6.1-15163/Ubuntu/x86_64/synology-assistant_6.1-15163_amd64.deb ) x86? ( http://global.download.synology.com/download/Tools/Assistant/6.1-15163/Ubuntu/i686/synology-assistant_6.1-15163_i386.deb )
+_eclasses_=unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
+_md5_=fa4ac119f100ae285541b6bb67be7745
