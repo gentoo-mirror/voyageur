@@ -2,11 +2,3 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-games-board/pysolfc:sound - Enable sound support using dev-python/pygame
-games-strategy/openra:debug - Compile and run with full debugging information
-games-strategy/openra:doc - Generate additional documentation
-games-strategy/openra:tools - Install some development tools such as editor.
-games-strategy/openra:xdg - xdg-utils are used to open web pages
-games-strategy/openra:zenity - zenity is used to display crash dialogs
-www-apps/gateone:dtach - Emulate the detach feature of screen via app-misc/dtach
-www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
