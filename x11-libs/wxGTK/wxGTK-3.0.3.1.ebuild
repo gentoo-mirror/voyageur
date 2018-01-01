@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -62,8 +62,6 @@ PDEPEND=">=app-eselect/eselect-wxwidgets-20131230"
 LICENSE="wxWinLL-3
 		GPL-2
 		doc?	( wxWinFDL-3 )"
-
-HTML_DOCS=( "${WORKDIR}"/wxWidgets-${PV%.*}-docs-html/* )
 
 S="${WORKDIR}/wxWidgets-${PV}"
 
@@ -164,7 +162,7 @@ multilib_src_install_all() {
 	newdoc gtk/readme.txt gtk_readme.txt
 
 	if use doc; then
-		einstalldocs
+		dodoc -r "${WORKDIR}"/wxWidgets-${PV%.*}-docs-html/*
 	fi
 
 	# Unversioned links
