@@ -1,12 +1,12 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-inherit scons-utils subversion toolchain-funcs
+inherit desktop git-r3 scons-utils toolchain-funcs
 
 DESCRIPTION="a World War II German submarine simulation"
 HOMEPAGE="http://dangerdeep.sourceforge.net/"
-ESVN_REPO_URI="https://${PN}.svn.sourceforge.net/svnroot/${PN}/trunk/${PN}"
+EGIT_REPO_URI="https://git.code.sf.net/p/${PN}/git"
 
 LICENSE="GPL-2 CC-BY-NC-ND-2.0"
 SLOT="0"
@@ -23,12 +23,10 @@ RDEPEND="virtual/opengl
 DEPEND="${RDEPEND}
 	app-arch/unzip"
 
+S=${WORKDIR}/${P}/${PN}
 DOCS=( ChangeLog CREDITS README )
-PATCHES=( "${FILESDIR}"/${P}-build.patch )
-
-src_prepare() {
-	default
-}
+PATCHES=( "${FILESDIR}"/${P}-build.patch
+	"${FILESDIR}"/${P}-gcc6.patch )
 
 src_compile() {
 	local sse=-1
