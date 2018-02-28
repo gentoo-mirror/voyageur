@@ -10,4 +10,4 @@ RDEPEND=ayatana? ( dev-libs/libindicator:3 ) x11-libs/gtk+:3 >=x11-misc/lightdm-
 SLOT=0
 SRC_URI=https://launchpad.net/lightdm-gtk-greeter/2.0/2.0.2/+download/lightdm-gtk-greeter-2.0.2.tar.gz branding? ( https://dev.gentoo.org/~hwoarang/distfiles/lightdm-gentoo-patch-2.tar.gz )
 _eclasses_=estack	43ddf5aaffa7a8d0482df54d25a66a1f	versionator	ce21313503c41896ebcd7d58b0607e37
-_md5_=bcb32b133db7776c5d81754634fe698e
+_md5_=38f82e3b4d994f2c7e087a53c9dfcca1
