@@ -37,7 +37,7 @@ src_unpack() {
 }
 
 src_install() {
-	pushd embedded/gems/gems/${MY_PN}-${PV}/contrib > /dev/null || die
+	pushd embedded/gems/${PV}/gems/${MY_PN}-${PV}/contrib > /dev/null || die
 	insinto /usr/share/vim/vimfiles/plugin
 	doins vim/*
 	popd > /dev/null || die
