@@ -7,5 +7,5 @@ IUSE=cpu_flags_x86_sse debug
 LICENSE=GPL-2 CC-BY-NC-ND-2.0
 RDEPEND=virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net
 SLOT=0
-_eclasses_=desktop	2ccd1dd1dd7bfb8795eea024a4f91bb6	git-r3	25b08efef07cea6bcd45b8c6dcce2782	multilib	97f470f374f2e94ccab04a2fb21d811e	multiprocessing	cac3169468f893670dac3e7cb940e045	scons-utils	fcace052aef60e6b0eb3023c26aa585a	toolchain-funcs	fa02994d0beba88681127d93da4411ec
+_eclasses_=desktop	2ccd1dd1dd7bfb8795eea024a4f91bb6	git-r3	af51ccfceeb403ab80f1bf9209d372c8	multilib	97f470f374f2e94ccab04a2fb21d811e	multiprocessing	cac3169468f893670dac3e7cb940e045	scons-utils	3790b47674a03f79525a1a517bd2191f	toolchain-funcs	fa02994d0beba88681127d93da4411ec
 _md5_=9471efede6de30cf79b28ce3e49d804f
