@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -25,6 +25,7 @@ RDEPEND="app-text/hunspell
 	lua? ( dev-lang/lua:0 )
 	python? ( ${PYTHON_DEPS} ) "
 DEPEND="${RDEPEND}
+	dev-util/cmake[qt5]
 	virtual/pkgconfig"
 
 S=${WORKDIR}/${PN}-release-${PV}
