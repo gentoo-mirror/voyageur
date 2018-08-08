@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -48,7 +48,7 @@ make_pl_buildargs() {
 src_compile() {
 	local cpus
 	if has_version dev-lang/perl[ithreads] ; then
-		einfo "Building with mutliple CPU cores"
+		einfo "Building with multiple CPU cores"
 		cpus=$(makeopts_jobs)
 	else
 		einfo "Perl not built with threads support, using 1 CPU core"
