@@ -4,15 +4,15 @@
 EAPI=7
 
 PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
-inherit git-r3 distutils-r1
+inherit distutils-r1
 
 DESCRIPTION="a deviantArt image downloader script written in Python."
 HOMEPAGE="https://github.com/voyageur/dagr"
-EGIT_REPO_URI="https://github.com/voyageur/dagr.git"
+SRC_URI="https://github.com/voyageur/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RDEPEND="dev-python/MechanicalSoup[${PYTHON_USEDEP}]"
