@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>voyageur@gentoo.org</email>
+		<name>Bernard Cafarelli</name>
+	</maintainer>
+	<longdescription>an XAudio reimplementation that focuses solely on developing fully accurate DirectX Audio runtime libraries for the FNA project, including XAudio2, X3DAudio, XAPO, and XACT3.</longdescription>
+	<use>
+		<flag name="ffmpeg">ptional support for decoding xWMA resources using <pkg>media-video/ffmpeg</pkg></flag>
+	</use>
+</pkgmetadata>
