@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python2_7 python3_{4,5,6} )
+PYTHON_COMPAT=( python2_7 python3_{5,6,7} )
 inherit distutils-r1
 
 DESCRIPTION="an HTML5-powered terminal emulator and SSH client"
