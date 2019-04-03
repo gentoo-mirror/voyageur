@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 inherit multilib python-single-r1 cmake-utils xdg-utils
@@ -36,6 +36,7 @@ pkg_setup() {
 
 src_configure() {
 	local mycmakeargs=(
+		-DPREFER_BUNDLED_SYNCTEX=ON
 		-DWITH_LUA=$(usex lua ON OFF)
 		-DWITH_PYTHON=$(usex python ON OFF)
 		-DTeXworks_PLUGIN_DIR="/usr/$(get_libdir)/texworks"
