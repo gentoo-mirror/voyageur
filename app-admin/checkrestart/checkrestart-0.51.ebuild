@@ -1,7 +1,7 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 
@@ -16,12 +16,10 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~hppa ~x86"
 IUSE=""
 
-RDEPEND="
-	${PYTHON_DEPS}
+RDEPEND="${PYTHON_DEPS}
 	sys-apps/lsb-release
-	<app-portage/portage-utils-0.80
-	sys-process/lsof
-"
+	>=app-portage/portage-utils-0.80
+	sys-process/lsof"
 
 REQUIRED_USE=${PYTHON_REQUIRED_USE}
 
