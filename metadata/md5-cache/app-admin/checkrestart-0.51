@@ -10,4 +10,4 @@ REQUIRED_USE=python_targets_python2_7
 SLOT=0
 SRC_URI=https://github.com/voyageur/checkrestart/archive/0.51.tar.gz -> checkrestart-0.51.tar.gz
 _eclasses_=multilib	1d91b03d42ab6308b5f4f6b598ed110e	python-single-r1	3a0fc81f484bfdbd9c2b7448015a36e4	python-utils-r1	08e17157a6807add7db1f8d01e7e391f	toolchain-funcs	2f8b8f320bee13b71a8a54cc6d09e08a
-_md5_=45a2858f5f1497c5364b14290c88da9f
+_md5_=eefeee6fbbb2341fd25ace5601e12d7b
