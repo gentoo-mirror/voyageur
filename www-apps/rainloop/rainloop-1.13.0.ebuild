@@ -1,16 +1,13 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit webapp
 
-# Grab from http://repository.rainloop.net/v2/core.stable.json
-TAG="7fa2fa59853642efb61f6e566611b817"
-
 DESCRIPTION="Simple, modern and fast web-based email client"
 HOMEPAGE="http://www.rainloop.net"
-SRC_URI="http://repository.rainloop.net/v2/webmail/${PV%.*}/${P}-${TAG}.zip"
+SRC_URI="https://github.com/RainLoop/rainloop-webmail/releases/download/v${PV}/${P}.zip"
 LICENSE="AGPL-3"
 
 KEYWORDS="~amd64 ~x86"

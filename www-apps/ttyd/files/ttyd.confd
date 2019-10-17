@@ -1,0 +1,4 @@
+# conf.d file for ttyd 
+
+# Please check man 1 ttyd for more information about the options
+TTYD_OPTS="login"
