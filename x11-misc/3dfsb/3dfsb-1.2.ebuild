@@ -1,12 +1,12 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=7
 inherit cmake-utils
 
 DESCRIPTION="3-Dimensional File System Browser"
-HOMEPAGE="https://github.com/tomvanbraeckel/3dfsb"
-SRC_URI="https://github.com/tomvanbraeckel/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/3dfsb-dev/3dfsb"
+SRC_URI="https://github.com/3dfsb-dev/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2+"
 SLOT="0"
@@ -23,10 +23,12 @@ DEPEND="${RDEPEND}
 	media-gfx/imagemagick
 	virtual/pkgconfig"
 
-PATCHES=( "${FILESDIR}"/${P}-complete_cmake.patch )
+PATCHES=(
+	"${FILESDIR}"/${P}-cmake_out_of_tree.patch
+	"${FILESDIR}"/${P}-gstreamer_search.patch
+	)
 
 src_compile() {
-	mogrify -format xpm images/*.png || die
 	cmake-utils_src_compile
 }
 
