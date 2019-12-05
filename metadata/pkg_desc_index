@@ -11,12 +11,12 @@ games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
 games-strategy/openra 20151224: A free RTS engine supporting games like Command & Conquer, Red Alert and Dune2k
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
+media-gfx/mcomix3 9999: A fork of mcomix, a GTK3 image viewer for comic book archives
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 2.3.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
-sys-fs/exfat-nofuse 9999: Non-fuse kernel driver for exFat and VFat file systems
 www-apps/rainloop 1.13.0: Simple, modern and fast web-based email client
 www-apps/tt-rss 9999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
 www-apps/ttyd 1.5.2: ttyd, a simple command-line tool for sharing terminal over the web
