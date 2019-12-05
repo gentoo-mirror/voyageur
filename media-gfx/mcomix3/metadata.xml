@@ -5,8 +5,7 @@
 		<email>voyageur@gentoo.org</email>
 		<name>Bernard Cafarelli</name>
 	</maintainer>
-	<longdescription>
-Linux non-fuse read/write kernel driver for the exFAT, FAT12, FAT16 and vfat (FAT32) file systems.
-Originally ported from Android kernel v3.0.
-	</longdescription>
+	<upstream>
+		<remote-id type="github">multiSnow/mcomix3</remote-id>
+	</upstream>
 </pkgmetadata>
