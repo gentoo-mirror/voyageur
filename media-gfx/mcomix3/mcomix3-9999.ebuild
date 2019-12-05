@@ -9,7 +9,6 @@ inherit desktop git-r3 python-r1 xdg-utils
 DESCRIPTION="A fork of mcomix, a GTK3 image viewer for comic book archives"
 HOMEPAGE="https://github.com/multiSnow/mcomix3"
 EGIT_REPO_URI="https://github.com/multiSnow/mcomix3"
-#AUTOTOOLS_AUTORECONF="1"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -27,13 +26,8 @@ RDEPEND="${DEPEND}
 REQUIRED_USE=${PYTHON_REQUIRED_USE}
 
 src_install() {
-
-	#dodoc CHANGELOG.txt DEVELOPING.txt README.txt TODO.txt
-
 	python_foreach_impl python_domodule mcomix/mcomix
-	python_foreach_impl python_newscript mcomix/mcomixstarter.py mcomix3
-
-	doman man/mcomix.1
+	python_foreach_impl python_newscript mcomix/mcomixstarter.py mcomix
 
 	for size in 16 22 24 32 48
 	do
@@ -43,6 +37,7 @@ src_install() {
 	done
 	doicon mcomix/mcomix/images/mcomix.png
 	domenu mime/mcomix.desktop
+	doman man/mcomix.1
 
 	insinto /usr/share/metainfo
 	doins mime/mcomix.appdata.xml
@@ -50,6 +45,7 @@ src_install() {
 	insinto /usr/share/mime/packages
 	doins mime/mcomix.xml
 
+	dodoc README.rst TODO
 }
 
 pkg_postinst() {
