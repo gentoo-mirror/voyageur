@@ -2,6 +2,7 @@ app-admin/checkrestart 0.50 0.51: the sysadmin's rolling upgrade tool
 app-emulation/vagrant-bin 2.2.6: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
+app-portage/euscan 9999: Ebuild upstream scan utility
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
