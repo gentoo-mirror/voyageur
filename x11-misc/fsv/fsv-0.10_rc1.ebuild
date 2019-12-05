@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=7
 inherit flag-o-matic
 
 DESCRIPTION="3-Dimensional File System Visualizer"
@@ -15,8 +15,7 @@ KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 
 DEPEND=">=x11-libs/gtk+-2.12:2
-	>=x11-libs/gtkglarea-1.99:2
-	>=gnome-base/libgnomeui-2.22"
+	>=x11-libs/gtkglarea-1.99:2"
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${P/_}
@@ -24,5 +23,5 @@ DOCS=( AUTHORS ChangeLog NOTES TODO )
 
 src_configure() {
 	append-libs -lm
-	econf
+	default
 }
