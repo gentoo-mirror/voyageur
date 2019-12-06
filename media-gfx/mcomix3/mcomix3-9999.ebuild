@@ -4,7 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{5,6,7,8} )
-inherit desktop git-r3 python-r1 xdg-utils
+inherit desktop git-r3 python-r1 xdg
 
 DESCRIPTION="A fork of mcomix, a GTK3 image viewer for comic book archives"
 HOMEPAGE="https://github.com/multiSnow/mcomix3"
@@ -22,8 +22,19 @@ RDEPEND="${DEPEND}
 	dev-python/pygobject[${PYTHON_USEDEP}]
 	!media-gfx/comix
 	!media-gfx/mcomix"
+BDEPEND="sys-devel/gettext"
 
 REQUIRED_USE=${PYTHON_REQUIRED_USE}
+
+src_prepare() {
+	default
+
+	for file in mcomix/mcomix/messages/*/LC_MESSAGES/*po
+	do
+		msgfmt ${file} -o ${file/po/mo} || die
+		rm ${file} || die
+	done
+}
 
 src_install() {
 	python_foreach_impl python_domodule mcomix/mcomix
@@ -49,9 +60,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
-	xdg_icon_cache_update
+	xdg_pkg_postinst
 	echo
 	elog "Additional packages are required to open the most common comic archives:"
 	elog
@@ -62,10 +71,4 @@ pkg_postinst() {
 	elog "app-arch/p7zip or app-arch/lha. Install app-text/mupdf for"
 	elog "pdf support."
 	echo
-}
-
-pkg_postrm() {
-	xdg_mimeinfo_database_update
-	xdg_desktop_database_update
-	xdg_icon_cache_update
 }
