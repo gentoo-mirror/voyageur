@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit desktop distutils-r1 git-r3 xdg-utils
+inherit desktop distutils-r1 git-r3 xdg
 
 DESCRIPTION="Python version of the board game Rush Hour"
 HOMEPAGE="https://github.com/voyageur/pytraffic"
@@ -50,12 +50,4 @@ python_install_all() {
 
 	doicon -s 64 icons/64x64/${PN}.png
 	make_desktop_entry ${PN} PyTraffic
-}
-
-pkg_postinst() {
-	xdg_icon_cache_update
-}
-
-pkg_postrm() {
-	xdg_icon_cache_update
 }
