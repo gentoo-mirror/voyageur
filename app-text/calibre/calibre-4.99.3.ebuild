@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_7 )
 PYTHON_REQ_USE="sqlite,ssl"
 
 inherit bash-completion-r1 desktop toolchain-funcs python-single-r1 xdg-utils
@@ -113,8 +113,6 @@ pkg_pretend() {
 }
 
 src_prepare() {
-	# Try depend on lower python version
-	sed -e "s|if vi.major > 3 or (vi.major == 3 and vi\[1:3\] >= (7, 0)):|if vi.major > 3 or (vi.major == 3 and vi[1:3] >= (6, 0)):|" -i setup.py
 	# no_updates: do not annoy user with "new version is availible all the time
 	# disable_plugins: walking sec-hole, wait for upstream to use GHNS interface
 	eapply \
