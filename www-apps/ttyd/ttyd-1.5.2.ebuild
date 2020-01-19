@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -17,7 +17,7 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-libs/json-c
-	net-libs/libwebsockets"
+	net-libs/libwebsockets:="
 RDEPEND="!net-misc/termpkg"
 BDEPEND="dev-util/cmake"
 
