@@ -3,7 +3,7 @@ app-emulation/vagrant-bin 2.2.6: Tool for building and distributing virtual mach
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
-app-text/calibre 4.99.3: Ebook management application
+app-text/calibre 4.99.4: Ebook management application
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
