@@ -1,13 +1,13 @@
 app-admin/checkrestart 0.51 0.52: the sysadmin's rolling upgrade tool
-app-emulation/vagrant-bin 2.2.6: Tool for building and distributing virtual machines
+app-emulation/vagrant-bin 2.2.7: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
-app-text/calibre 4.99.4: Ebook management application
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
 games-arcade/skystreets 9999: A remake of the old DOS game Skyroads
+games-board/gnubg 9999: GNU BackGammon
 games-kids/pytraffic 9999: Python version of the board game Rush Hour
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
@@ -15,15 +15,15 @@ games-simulation/dangerdeep 9999: a World War II German submarine simulation
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-gfx/mcomix3 9999: A fork of mcomix, a GTK3 image viewer for comic book archives
 media-libs/openglide 9999: Glide to OpenGL wrapper
+media-sound/grip 9999: GTK+ based Audio CD Player/Ripper
 media-sound/munt 2.3.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
-www-apps/rainloop 1.13.0: Simple, modern and fast web-based email client
+www-apps/rainloop 1.14.0: Simple, modern and fast web-based email client
 www-apps/tt-rss 9999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
 www-apps/ttyd 1.5.2: ttyd, a simple command-line tool for sharing terminal over the web
 x11-misc/3dfsb 1.2: 3-Dimensional File System Browser
 x11-misc/eaglemode 0.94.2: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 0.10_rc1: 3-Dimensional File System Visualizer
-x11-terms/xfce4-terminal 0.6.3: A terminal emulator for the Xfce desktop environment
