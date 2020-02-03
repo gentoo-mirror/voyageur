@@ -2,13 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>mpagano@gentoo.org</email>
+		<email>voyageur@gentoo.org</email>
+		<name>Bernard Cafarelli</name>
 	</maintainer>
-	<longdescription lang="en">
-		Termpkg is a terminal server daemon and simple telnet like client.
-		Allows access to one or more serial ports through the telnet protocol.
-		Can be configured to connect in a one to one relation of telnet ports
-		to serial ports or in a round-robin fashion where one telnet port
-		serves many serial ports.
-	</longdescription>
 </pkgmetadata>
