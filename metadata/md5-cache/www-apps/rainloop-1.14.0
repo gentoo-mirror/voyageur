@@ -7,7 +7,7 @@ IUSE=vhosts
 KEYWORDS=~amd64 ~x86
 LICENSE=AGPL-3
 RDEPEND=dev-lang/php[curl,iconv,json,ssl,xml] virtual/httpd-php >=app-admin/webapp-config-1.50.15
-SLOT=1.13.0
-SRC_URI=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.13.0/rainloop-1.13.0.zip
+SLOT=1.14.0
+SRC_URI=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-1.14.0.zip
 _eclasses_=webapp	16783e418aca3ffa461d68310bf7ab12
 _md5_=80b3495c404c6163f5f5299ef5dd831b
