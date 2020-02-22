@@ -17,8 +17,9 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-libs/json-c
-	net-libs/libwebsockets:="
-RDEPEND="!net-misc/termpkg"
+	net-libs/libwebsockets:=[libuv]"
+RDEPEND="${DEPEND}
+	!net-misc/termpkg"
 BDEPEND="dev-util/cmake"
 
 S="${WORKDIR}/${PN}-${MY_PV}"
