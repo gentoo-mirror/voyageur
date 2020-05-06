@@ -11,10 +11,11 @@ SRC_URI="https://github.com/dosbox-staging/dosbox-staging/archive/v${PV}.tar.gz 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="alsa +core-inline debug hardened opengl opus X"
+IUSE="alsa debug dynrec opengl opus X"
 
 RDEPEND="alsa? ( media-libs/alsa-lib )
 	debug? ( sys-libs/ncurses:0= )
+	opengl? ( virtual/glu virtual/opengl )
 	opus? ( media-libs/opus )
 	media-libs/libpng:0=
 	media-libs/libsdl2[joystick,opengl?,video,X?]
@@ -32,10 +33,9 @@ src_prepare() {
 src_configure() {
 	econf \
 		$(use_enable alsa alsa-midi) \
-		$(use_enable core-inline) \
 		$(use_enable debug) \
-		$(use_enable !hardened dynamic-core) \
-		$(use_enable !hardened dynamic-x86) \
+		$(use_enable !dynrec dynamic-x86) \
+		$(use_enable dynrec) \
 		$(use_enable opengl) \
 		$(use_enable opus opus-cdda)
 }
