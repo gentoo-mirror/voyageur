@@ -15,7 +15,6 @@ games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-libs/openglide 9999: Glide to OpenGL wrapper
-media-sound/grip 4.1.0 9999: GTK+ based Audio CD Player/Ripper
 media-sound/munt 2.3.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
