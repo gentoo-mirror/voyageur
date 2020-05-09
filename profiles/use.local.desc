@@ -3,7 +3,5 @@
 # * generated automatically using pmaint *
 
 games-board/gnubg:gtk3 - Use GTK+3 instead of GTK+2
-games-emulation/dosbox-staging:dynrec - Use recompiling cpu core instead of dynamic x86/x64 specific cpu core
-games-emulation/dosbox-staging:opus - Support compressed audio tracks (.opus) used with CDROM images
 sys-apps/earlyoom:docs - Generate man page
 www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
