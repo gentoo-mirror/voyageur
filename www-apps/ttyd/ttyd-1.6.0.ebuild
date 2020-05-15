@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-libs/json-c
+DEPEND="dev-libs/json-c:=
 	net-libs/libwebsockets:=[libuv]"
 RDEPEND="${DEPEND}
 	!net-misc/termpkg"
