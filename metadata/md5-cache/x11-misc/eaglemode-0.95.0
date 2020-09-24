@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst prepare
+DEPEND=>=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg:* ) png? ( media-libs/libpng:* ) tiff? ( media-libs/tiff:* ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 ) vlc? ( media-video/vlc:= )
+DESCRIPTION=Zoomable user interface with plugin applications
+EAPI=7
+HOMEPAGE=http://eaglemode.sourceforge.net
+IUSE=+jpeg +pdf +png +svg +tiff +truetype +vlc
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-3
+RDEPEND=>=dev-lang/perl-5.8 x11-libs/libX11 jpeg? ( virtual/jpeg:* ) png? ( media-libs/libpng:* ) tiff? ( media-libs/tiff:* ) svg? ( gnome-base/librsvg:2 ) pdf? ( app-text/poppler[cairo] ) truetype? ( media-libs/freetype:2 ) vlc? ( media-video/vlc:= ) >=app-text/ghostscript-gpl-8
+SLOT=0
+SRC_URI=mirror://sourceforge/eaglemode/eaglemode-0.95.0.tar.bz2
+_eclasses_=multilib	98584e405e2b0264d37e8f728327fed1	multiprocessing	cac3169468f893670dac3e7cb940e045	toolchain-funcs	605c126bed8d87e4378d5ff1645330cb
+_md5_=3b84f63b480e36c42c5d93ef1c7b9030
