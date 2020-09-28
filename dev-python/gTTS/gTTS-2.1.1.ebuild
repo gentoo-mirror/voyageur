@@ -31,3 +31,8 @@ RDEPEND="
 #"
 
 distutils_enable_tests pytest
+
+src_prepare() {
+	default
+	sed -e "/twine/d" -i setup.cfg || die
+}
