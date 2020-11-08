@@ -1,5 +1,5 @@
 app-admin/checkrestart 0.52: the sysadmin's rolling upgrade tool
-app-emulation/vagrant-bin 2.2.10: Tool for building and distributing virtual machines
+app-emulation/vagrant-bin 2.2.13: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
@@ -19,7 +19,7 @@ media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 2.3.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
-sys-apps/earlyoom 1.6: Early OOM Daemon for Linux
+sys-apps/earlyoom 1.6.2: Early OOM Daemon for Linux
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 www-apps/rainloop 1.14.0: Simple, modern and fast web-based email client
 www-apps/tt-rss 9999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
