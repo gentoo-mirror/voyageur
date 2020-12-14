@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit cmake-utils
+inherit cmake
 
 MY_PV="$(ver_rs 3 '-')"
 
@@ -20,7 +20,6 @@ DEPEND="dev-libs/json-c:=
 	net-libs/libwebsockets:=[libuv]"
 RDEPEND="${DEPEND}
 	!net-misc/termpkg"
-BDEPEND="dev-util/cmake"
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
