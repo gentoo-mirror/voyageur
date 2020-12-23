@@ -9,5 +9,5 @@ LICENSE=AGPL-3
 RDEPEND=dev-lang/php[curl,iconv,json,ssl,xml] virtual/httpd-php >=app-admin/webapp-config-1.50.15
 SLOT=1.14.0
 SRC_URI=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.14.0/rainloop-1.14.0.zip
-_eclasses_=webapp	16783e418aca3ffa461d68310bf7ab12
+_eclasses_=webapp	1d03df021d958f89f4cc78e289d0b116
 _md5_=42b07b7f73d0eecce372aec548c53493
