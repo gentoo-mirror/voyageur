@@ -31,3 +31,4 @@ x11-misc/3dfsb 1.2: 3-Dimensional File System Browser
 x11-misc/eaglemode 0.94.2 0.95.0: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 0.10_rc1: 3-Dimensional File System Visualizer
+x11-misc/rss-glx 0.9.1-r2: Really Slick OpenGL Screensavers for XScreenSaver
