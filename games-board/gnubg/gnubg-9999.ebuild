@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{7..9} )
 inherit autotools cvs desktop python-single-r1 xdg
 
 DESCRIPTION="GNU BackGammon"
@@ -14,7 +14,7 @@ ECVS_MODULE="gnubg"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="cpu_flags_x86_avx cpu_flags_x86_fma3 cpu_flags_x86_sse cpu_flags_x86_sse2 gtk gtk3 neon python sqlite threads"
+IUSE="cpu_flags_x86_avx gtk gtk3 python sqlite cpu_flags_x86_sse cpu_flags_x86_sse2 threads"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="
@@ -68,7 +68,6 @@ src_configure() {
 	use cpu_flags_x86_sse  && simd=sse
 	use cpu_flags_x86_sse2 && simd=sse2
 	use cpu_flags_x86_avx  && simd=avx
-	use neon  && simd=neon
 	econf \
 		--localedir="${EPREFIX}"/usr/share/locale \
 		--docdir="${EPREFIX}"/usr/share/doc/${PF}/html \
@@ -79,7 +78,7 @@ src_configure() {
 		$(use_with gtk3 gtk3) \
 		$(use_with gtk3 board3d) \
 		$(use_with python python "${EPYTHON}") \
-		$(use_with sqlite)
+		$(use_with sqlite sqlite)
 }
 
 src_install() {

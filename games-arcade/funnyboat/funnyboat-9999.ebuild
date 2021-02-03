@@ -1,8 +1,8 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python2_7 python3_{5,6,7} )
+PYTHON_COMPAT=( python3_{7..9} )
 
 inherit desktop eutils git-r3 python-single-r1 xdg
 
@@ -18,7 +18,9 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="${DEPEND}
-	>=dev-python/pygame-1.6.2[${PYTHON_USEDEP}]"
+	$(python_gen_cond_dep '
+		>=dev-python/pygame-1.6.2[${PYTHON_USEDEP}]
+	')"
 
 src_install() {
 	python_moduleinto funnyboat
