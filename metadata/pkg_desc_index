@@ -16,6 +16,7 @@ games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
 games-simulation/dangerdeep 9999: a World War II German submarine simulation
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
+media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and compressors
 media-libs/libldac 2.0.2.3: LDAC codec library from AOSP
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt 2.3.0 2.4.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
