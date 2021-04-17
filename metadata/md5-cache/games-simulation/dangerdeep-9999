@@ -8,5 +8,5 @@ LICENSE=GPL-2 CC-BY-NC-ND-2.0
 PROPERTIES=live
 RDEPEND=virtual/opengl virtual/glu sci-libs/fftw:3.0 media-libs/libsdl[joystick,opengl,video] media-libs/sdl-mixer[vorbis] media-libs/sdl-image[jpeg,png] media-libs/sdl-net
 SLOT=0
-_eclasses_=desktop	c0d27bf73aa08ca05b663dbd31fbef28	git-r3	b8e8c92aa5fe8df7187e466138eb4e52	multilib	d410501a125f99ffb560b0c523cd3d1e	multiprocessing	cac3169468f893670dac3e7cb940e045	scons-utils	0c3d02e3e56d99a17ac273db118e8a24	toolchain-funcs	24921b57d6561d87cbef4916a296ada4
+_eclasses_=desktop	c0d27bf73aa08ca05b663dbd31fbef28	git-r3	b8e8c92aa5fe8df7187e466138eb4e52	multilib	d410501a125f99ffb560b0c523cd3d1e	multiprocessing	cac3169468f893670dac3e7cb940e045	scons-utils	fc8e53815030125602cc608cd1bff857	toolchain-funcs	24921b57d6561d87cbef4916a296ada4
 _md5_=9471efede6de30cf79b28ce3e49d804f
