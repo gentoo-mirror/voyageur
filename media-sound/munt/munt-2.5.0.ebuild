@@ -1,8 +1,8 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit cmake-utils
+EAPI=7
+inherit cmake xdg
 
 DESCRIPTION="software synthesiser emulating pre-GM MIDI devices (Roland MT-32)"
 HOMEPAGE="http://munt.sourceforge.net"
@@ -30,15 +30,16 @@ src_prepare() {
 		-e "s#COPYING\(.LESSER\)\?.txt ##g" \
 		-i */CMakeLists.txt || die
 
-	default
+	cmake_src_prepare
 }
 
 src_configure() {
 	local mycmakeargs=(
+		-DLIB_INSTALL_DIR="${EPREFIX}/usr/$(get_libdir)"
 		-Dmunt_WITH_MT32EMU_QT=$(usex qt5)
 		-Dmt32emu-qt_WITH_ALSA_MIDI_SEQUENCER=$(usex alsa)
 		-Dmt32emu-qt_USE_PULSEAUDIO_DYNAMIC_LOADING=$(usex pulseaudio)
 		-Dmt32emu-qt_WITH_QT5=ON
 	)
-	cmake-utils_src_configure
+	cmake_src_configure
 }
