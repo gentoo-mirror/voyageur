@@ -2,6 +2,5 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-games-board/gnubg:gtk3 - Use GTK+3 instead of GTK+2
 sys-apps/earlyoom:docs - Generate man page
 x11-misc/eaglemode:vlc - Play audio/video via media-video/vlc
