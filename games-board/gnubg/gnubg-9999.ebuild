@@ -14,7 +14,7 @@ ECVS_MODULE="gnubg"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
-IUSE="cpu_flags_x86_avx gtk gtk3 python sqlite cpu_flags_x86_sse cpu_flags_x86_sse2 threads"
+IUSE="cpu_flags_x86_avx gtk opengl python sqlite cpu_flags_x86_sse cpu_flags_x86_sse2 threads"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="
@@ -29,8 +29,8 @@ RDEPEND="
 	sys-libs/readline:0=
 	x11-libs/cairo
 	x11-libs/pango
-	gtk3? ( x11-libs/gtk+:3 )
-	!gtk3? ( gtk? ( x11-libs/gtk+:2 ) )
+	gtk? ( x11-libs/gtk+:2 )
+	opengl? ( media-libs/libepoxy )
 	python? ( ${PYTHON_DEPS} )
 	virtual/libintl"
 DEPEND="${RDEPEND}"
@@ -38,7 +38,7 @@ BDEPEND="
 	sys-devel/gettext
 	virtual/pkgconfig"
 
-REQUIRED_USE="gtk3? ( gtk )"
+REQUIRED_USE="opengl? ( gtk )"
 S=${WORKDIR}/${PN}
 
 pkg_setup() {
@@ -47,6 +47,9 @@ pkg_setup() {
 
 src_prepare() {
 	default
+
+	#TODO: add ebuild for cglm
+	sh non-src/cglm.shar || die
 
 	# use ${T} instead of /tmp for constructing credits (bug #298275)
 	sed -i -e 's:/tmp:${T}:' credits.sh || die
@@ -75,8 +78,8 @@ src_configure() {
 		--enable-simd="${simd}" \
 		$(use_enable threads) \
 		$(use_with gtk) \
-		$(use_with gtk3 gtk3) \
-		$(use_with gtk3 board3d) \
+		$(use_with gtk gtk3) \
+		$(use_with opengl board3d) \
 		$(use_with python python "${EPYTHON}") \
 		$(use_with sqlite sqlite)
 }
