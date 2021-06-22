@@ -10,5 +10,5 @@ RDEPEND=python_single_target_python3_8? ( dev-lang/python:3.8 >=dev-lang/python-
 REQUIRED_USE=^^ ( python_single_target_python3_8 python_single_target_python3_9 )
 SLOT=0
 SRC_URI=https://github.com/voyageur/checkrestart/archive/0.52.tar.gz -> checkrestart-0.52.tar.gz
-_eclasses_=toolchain-funcs	e867df3870e8ff04a5b94f925be8b06a	multilib	f8d35c2432bb32c4f1e779c4287b31ec	python-utils-r1	6e84b7d3d8d0bb1ee12774f4a66909e2	python-single-r1	d25ac9d5d91fe9d44fda6ec192aca11a
+_eclasses_=multilib	f8d35c2432bb32c4f1e779c4287b31ec	python-single-r1	d25ac9d5d91fe9d44fda6ec192aca11a	python-utils-r1	6e84b7d3d8d0bb1ee12774f4a66909e2	toolchain-funcs	e867df3870e8ff04a5b94f925be8b06a
 _md5_=c066f524fc4b07fbd9431ca6a3a6eb0e
