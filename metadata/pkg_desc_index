@@ -23,7 +23,6 @@ net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Pytho
 net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
 sys-apps/earlyoom 1.6.2: Early OOM Daemon for Linux
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
-www-apps/element 1.7.32: A glossy Matrix collaboration client for the web
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/ttyd 1.6.3: ttyd, a simple command-line tool for sharing terminal over the web
 x11-misc/3dfsb 1.2: 3-Dimensional File System Browser
