@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,17 +11,18 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="jpeg pdf png svg tiff truetype xine"
+IUSE="+jpeg +pdf +png +svg +tiff +truetype +vlc +webp"
 
 DEPEND=">=dev-lang/perl-5.8
 	x11-libs/libX11
 	jpeg? ( virtual/jpeg:* )
 	png? ( media-libs/libpng:* )
 	tiff? ( media-libs/tiff:* )
-	xine? ( media-libs/xine-lib )
 	svg? ( gnome-base/librsvg:2 )
 	pdf? ( app-text/poppler[cairo] )
-	truetype? ( media-libs/freetype:2 )"
+	truetype? ( media-libs/freetype:2 )
+	vlc? ( media-video/vlc:= )
+	webp? ( media-libs/libwebp:* )"
 RDEPEND="${DEPEND}
 	>=app-text/ghostscript-gpl-8"
 
@@ -31,34 +32,34 @@ src_prepare() {
 }
 
 make_pl_buildargs() {
+	if has_version dev-lang/perl[ithreads] ; then
+		einfo "Building with multiple CPU cores"
+		echo "cpus=$(makeopts_jobs)"
+	else
+		einfo "Perl not built with threads support, using 1 CPU core"
+		echo "cpus=1"
+	fi
 	echo "continue=no"
 	# make sure we don't try to build modules that need build-time libs
-	if ! (use jpeg && use pdf && use png && use svg && use tiff && use xine); then
+	if ! (use jpeg && use pdf && use png && use svg && use tiff && use vlc); then
 		echo "projects=not:$(\
 			use jpeg || echo -n emJpeg,; use png || echo -n emPng,;\
-			use tiff || echo -n emTiff,; use xine || echo -n emAv,;\
-			use pdf || echo -n emPdf,; use svg || echo -n emSvg)"
+			use tiff || echo -n emTiff,; use vlc || echo -n emAv,;\
+			use pdf || echo -n emPdf,; use svg || echo -n emSvg,;\
+			use webp || echo -n emWebp)"
 	fi
+	use vlc && echo "emAv=vlc"
 }
 
 src_compile() {
-	local cpus
-	if has_version dev-lang/perl[ithreads] ; then
-		einfo "Building with multiple CPU cores"
-		cpus=$(makeopts_jobs)
-	else
-		einfo "Perl not built with threads support, using 1 CPU core"
-		cpus=1
-	fi
 	# TODO honor CFLAGS/LDFLAGS/...
-	perl make.pl build cpus="${cpus}" \
-		$(make_pl_buildargs) || die "Compilation failed"
+	perl make.pl build $(make_pl_buildargs) || die
 }
 
 src_install() {
 	# TODO multilib
 	perl make.pl install "root=${D}" "dir=/usr/lib/eaglemode" \
-		menu=yes bin=yes || die "Installation failed"
+		menu=yes bin=yes || die
 
 	dodoc README
 	dosym ../../../lib/eaglemode/doc/ /usr/share/doc/${PF}/doc
