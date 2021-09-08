@@ -22,7 +22,7 @@ DEPEND="sys-apps/portage[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}
 	>=app-portage/gentoolkit-0.2.8[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]
-	dev-python/beautifulsoup[${PYTHON_USEDEP}]"
+	dev-python/beautifulsoup4[${PYTHON_USEDEP}]"
 
 python_prepare_all() {
 	python_setup
