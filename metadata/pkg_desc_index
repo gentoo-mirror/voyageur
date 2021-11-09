@@ -1,5 +1,5 @@
 app-admin/checkrestart 0.52: the sysadmin's rolling upgrade tool
-app-emulation/vagrant-bin 2.2.18: Tool for building and distributing virtual machines
+app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual machines
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
