@@ -20,7 +20,7 @@ media-libs/libldac 2.0.2.3: LDAC codec library from AOSP
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.9.0: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
-net-misc/synology-assistant 6.1_p15163: Synology Assistant to setup DiskStations
+net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
 sys-apps/earlyoom 1.6.2: Early OOM Daemon for Linux
 sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
