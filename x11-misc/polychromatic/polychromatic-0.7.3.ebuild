@@ -31,3 +31,10 @@ RDEPEND="${DEPEND}"
 
 BDEPEND="dev-lang/sassc
 	dev-util/intltool"
+
+src_prepare() {
+	default
+
+	# Old library only used for custom effects
+	sed -e "/import colour/s/^/#/" -i pylib/fx.py || die
+}

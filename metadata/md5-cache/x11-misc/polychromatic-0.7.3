@@ -1,9 +1,10 @@
 BDEPEND=dev-lang/sassc dev-util/intltool >=dev-util/meson-0.58.2-r1 >=dev-util/ninja-1.8.2 dev-util/meson-format-array
-DEFINED_PHASES=compile configure install postinst postrm preinst test
+DEFINED_PHASES=compile configure install postinst postrm preinst prepare test
 DEPEND=python_targets_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_targets_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_targets_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) >=dev-python/colorama-0.4.4[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/PyQt5[svg,python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/PyQtWebEngine[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/distro[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/pygobject[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/python-openrazer[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/requests[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-python/setproctitle[python_targets_python3_8(-)?,python_targets_python3_9(-)?,python_targets_python3_10(-)?] dev-qt/qtsvg
 DESCRIPTION=RGB lighting management software
 EAPI=8
 HOMEPAGE=https://polychromatic.app
+IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
 INHERIT=python-r1 meson xdg
 IUSE=python_targets_python3_8 python_targets_python3_9 python_targets_python3_10
 KEYWORDS=~amd64
@@ -12,5 +13,5 @@ RDEPEND=python_targets_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_
 REQUIRED_USE=|| ( python_targets_python3_8 python_targets_python3_9 python_targets_python3_10 )
 SLOT=0
 SRC_URI=https://github.com/polychromatic/polychromatic/archive/refs/tags/v0.7.3.tar.gz -> polychromatic-0.7.3.tar.gz
-_eclasses_=meson	9f3e84959ae1d60e19bc91f212774dcc	multibuild	d79bd5b4bc4edcb1f5bc19591f8d4714	multilib	de4beb52bfa93c4c5d96792a6b5e1784	multiprocessing	61c959fc55c15c00bbb1079d6a71370b	ninja-utils	a4dab848a4490e8e48cf0baab3e61bc2	python-r1	bcd408f1e4a9669198ef4dfcd5ab8696	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	xdg	6024fbc93167fad782e2032933654857	xdg-utils	4f29a8b760a594a212abe9c2ba957c31
-_md5_=084961e8f6f37c4f2a799e8a616b98c4
+_eclasses_=multibuild	d79bd5b4bc4edcb1f5bc19591f8d4714	multiprocessing	61c959fc55c15c00bbb1079d6a71370b	toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	multilib	de4beb52bfa93c4c5d96792a6b5e1784	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	python-r1	bcd408f1e4a9669198ef4dfcd5ab8696	ninja-utils	a4dab848a4490e8e48cf0baab3e61bc2	meson	9f3e84959ae1d60e19bc91f212774dcc	xdg-utils	4f29a8b760a594a212abe9c2ba957c31	xdg	6024fbc93167fad782e2032933654857
+_md5_=aba328b99eef70854dac36e9fac7d0d2
