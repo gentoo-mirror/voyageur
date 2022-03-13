@@ -1,5 +1,7 @@
 app-admin/checkrestart 0.52: the sysadmin's rolling upgrade tool
 app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual machines
+app-misc/openrazer-daemon 3.2.0: Userspace daemon for OpenRazer
+app-misc/openrazer-driver 3.2.0: Drivers for Razer peripherals on GNU/Linux
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
@@ -7,6 +9,7 @@ dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/gTTS 2.2.3: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
 dev-python/python-crontab 2.6.0: Crontab module for reading and writing crontab files
+dev-python/python-openrazer 3.2.0: OpenRazer Python library
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
 games-arcade/skystreets 9999: A remake of the old DOS game Skyroads
@@ -29,3 +32,4 @@ x11-misc/3dfsb 1.2: 3-Dimensional File System Browser
 x11-misc/eaglemode 0.95.0 0.95.1: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 0.10_rc1: 3-Dimensional File System Visualizer
+x11-misc/polychromatic 0.7.3: RGB lighting management software
