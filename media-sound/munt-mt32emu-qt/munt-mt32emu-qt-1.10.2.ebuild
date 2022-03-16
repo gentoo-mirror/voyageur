@@ -1,7 +1,7 @@
 # Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit cmake xdg
 
 MY_P="mt32emu_qt_${PV//./_}"
@@ -17,7 +17,7 @@ IUSE="alsa pulseaudio"
 DEPEND="dev-qt/qtcore:5
 	dev-qt/qtgui:5
 	dev-qt/qtmultimedia:5
-	media-libs/munt-mt32emu
+	>=media-libs/munt-mt32emu-2.6.0
 	alsa? ( media-libs/alsa-lib )
 	pulseaudio? ( media-sound/pulseaudio )"
 RDEPEND="${DEPEND}"
