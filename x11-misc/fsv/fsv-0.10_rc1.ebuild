@@ -1,13 +1,13 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit flag-o-matic
 
 DESCRIPTION="3-Dimensional File System Visualizer"
 HOMEPAGE="https://bitbucket.org/legoscia/fsv/overview
 	http://fsv.sourceforge.net/"
-SRC_URI="https://bitbucket.org/legoscia/fsv/downloads/${P/_}.tar.gz"
+SRC_URI="https://cafarelli.fr/gentoo/${P/_}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
