@@ -3,7 +3,7 @@ app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual mac
 app-misc/openrazer-daemon 3.2.0: Userspace daemon for OpenRazer
 app-misc/openrazer-driver 3.2.0: Drivers for Razer peripherals on GNU/Linux
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
-app-misc/welcome2l 3.04-r1 9999: Welcome to Linux, ANSI login logo for Linux
+app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/gTTS 2.2.3: interface with Google Translate's text-to-speech API
@@ -16,7 +16,6 @@ games-arcade/skystreets 9999: A remake of the old DOS game Skyroads
 games-board/gnubg 9999: GNU BackGammon
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
-games-simulation/dangerdeep 9999: a World War II German submarine simulation
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and compressors
 media-libs/libldac 2.0.2.3: LDAC codec library from AOSP
@@ -25,11 +24,9 @@ media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI d
 net-misc/dagr 0.71.3 9999: a deviantArt image downloader script written in Python.
 net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
 sys-apps/earlyoom 1.6.2: Early OOM Daemon for Linux
-sys-apps/sensei-raw-ctl 9999: SteelSeries Sensei Raw configuration tool
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/ttyd 1.6.3: ttyd, a simple command-line tool for sharing terminal over the web
-x11-misc/3dfsb 1.2: 3-Dimensional File System Browser
 x11-misc/eaglemode 0.95.1: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
-x11-misc/fsv 0.10_rc1: 3-Dimensional File System Visualizer
+x11-misc/fsv 2.3_alpha20211113: 3-Dimensional File System Visualizer
 x11-misc/polychromatic 0.7.3: RGB lighting management software
