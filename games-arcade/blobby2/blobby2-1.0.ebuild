@@ -1,8 +1,8 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-inherit cmake-utils
+EAPI=8
+inherit cmake
 
 DESCRIPTION="a volley-game with colorful blobs"
 HOMEPAGE="http://blobby.sourceforge.net"
@@ -23,7 +23,3 @@ S="${WORKDIR}/blobby-${PV/_}"
 
 PATCHES=( "${FILESDIR}"/${P}-fix_install.patch
 	"${FILESDIR}"/${P}-fix_release.patch )
-
-src_install() {
-	cmake-utils_src_install
-}
