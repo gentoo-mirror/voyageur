@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit cmake
 
@@ -9,7 +9,7 @@ MY_PV="$(ver_rs 3 '-')"
 
 DESCRIPTION="ttyd, a simple command-line tool for sharing terminal over the web"
 HOMEPAGE="https://github.com/tsl0922/ttyd"
-SRC_URI="https://github.com/tsl0922/${PN}/archive/${PV}.tar.gz"
+SRC_URI="https://github.com/tsl0922/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -18,8 +18,7 @@ IUSE=""
 
 DEPEND="dev-libs/json-c:=
 	net-libs/libwebsockets:=[libuv]"
-RDEPEND="${DEPEND}
-	!net-misc/termpkg"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 

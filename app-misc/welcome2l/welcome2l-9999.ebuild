@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 inherit git-r3 toolchain-funcs
 
 DESCRIPTION="Welcome to Linux, ANSI login logo for Linux"
@@ -10,10 +10,16 @@ EGIT_REPO_URI="https://github.com/voyageur/welcome2l.git"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS=""
 IUSE=""
 
 DOCS=( AUTHORS README INSTALL ChangeLog BUGS TODO )
+
+src_prepare() {
+	sed -i -e "s:gcc:$(tc-getCC):g" Makefile || die
+
+	default
+}
 
 src_compile() {
 	emake CC=$(tc-getCC)

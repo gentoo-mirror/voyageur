@@ -1,21 +1,17 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
+inherit toolchain-funcs
 
-inherit flag-o-matic
-
-MY_P=${P}-gentoo
 DESCRIPTION="Welcome to Linux, ANSI login logo for Linux"
-HOMEPAGE="http://www.littleigloo.org/ https://github.com/voyageur/welcome2l"
-SRC_URI="https://github.com/voyageur/${PN}/archive/v${PV}-gentoo.tar.gz -> ${MY_P}.tar.gz"
+HOMEPAGE="https://github.com/voyageur/welcome2l"
+SRC_URI="https://github.com/voyageur/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~sparc ~x86"
 IUSE=""
-
-S=${WORKDIR}/${MY_P}
 
 DOCS=( AUTHORS README INSTALL ChangeLog BUGS TODO )
 
@@ -26,10 +22,7 @@ src_prepare() {
 }
 
 src_compile() {
-	# Does not seem to like optimizations
-	filter-flags -O?
-
-	emake
+	emake CC=$(tc-getCC)
 }
 
 src_install() {
@@ -39,7 +32,7 @@ src_install() {
 	doman ${MY_PN}.1
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initscript ${MY_PN}
+	newinitd "${FILESDIR}"/${PN}-r1.initscript ${MY_PN}
 }
 
 pkg_postinst() {
