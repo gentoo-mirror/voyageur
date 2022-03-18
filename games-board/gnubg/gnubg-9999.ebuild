@@ -1,9 +1,9 @@
 # Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{7..9} )
+PYTHON_COMPAT=( python3_{8..10} )
 inherit autotools cvs desktop python-single-r1 xdg
 
 DESCRIPTION="GNU BackGammon"
@@ -11,34 +11,39 @@ HOMEPAGE="https://www.gnu.org/software/gnubg/"
 ECVS_SERVER="cvs.savannah.gnu.org:/sources/gnubg"
 ECVS_MODULE="gnubg"
 
-LICENSE="GPL-3"
+LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS=""
-IUSE="cpu_flags_x86_avx gtk opengl python sqlite cpu_flags_x86_sse cpu_flags_x86_sse2 threads"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_sse cpu_flags_x86_sse2 +gui opengl python sqlite"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
+	opengl? ( gui )"
 
 RDEPEND="
-	dev-db/sqlite:3
 	dev-libs/glib:2
-	dev-libs/gmp:0=
-	dev-libs/libxml2
+	dev-libs/gmp:=
 	media-fonts/dejavu
 	media-libs/freetype:2
-	media-libs/libcanberra
-	media-libs/libpng:0=
-	sys-libs/readline:0=
-	x11-libs/cairo
+	media-libs/libpng:=
+	net-misc/curl
+	sys-libs/readline:=
+	virtual/libintl
+	x11-libs/cairo[svg]
 	x11-libs/pango
-	gtk? ( x11-libs/gtk+:2 )
+	gui? (
+		media-libs/libcanberra[gtk3]
+		x11-libs/gdk-pixbuf:2
+		x11-libs/gtk+:3
+	)
 	opengl? ( media-libs/libepoxy )
 	python? ( ${PYTHON_DEPS} )
-	virtual/libintl"
+	sqlite? ( dev-db/sqlite:3 )"
 DEPEND="${RDEPEND}"
 BDEPEND="
+	sys-devel/autoconf-archive
 	sys-devel/gettext
-	virtual/pkgconfig"
+	virtual/pkgconfig
+	python? ( ${PYTHON_DEPS} )"
 
-REQUIRED_USE="opengl? ( gtk )"
 S=${WORKDIR}/${PN}
 
 pkg_setup() {
@@ -50,18 +55,15 @@ src_prepare() {
 
 	#TODO: add ebuild for cglm
 	sh non-src/cglm.shar || die
+	#This was provided by gtkglext before
+	sed -i "s/\$(GTKGLEXT_LIBS)/-lGL/" Makefile.am || die
 
-	# use ${T} instead of /tmp for constructing credits (bug #298275)
-	sed -i -e 's:/tmp:${T}:' credits.sh || die
-	sed -i -e 's/fonts //' Makefile.am || die # handle font install ourself to fix bug #335774
-	sed -i \
-		-e '/^localedir / s#=.*$#= @localedir@#' \
-		-e '/^gnulocaledir / s#=.*$#= @localedir@#' \
-		po/Makefile.in.in || die
-	sed -i \
-		-e '/^gnubgiconsdir / s#=.*#= /usr/share#' \
-		-e '/^gnubgpixmapsdir / s#=.*#= /usr/share/pixmaps#' \
-		pixmaps/Makefile.am || die
+	sed -i "s|/tmp|${T}|" credits.sh || die #298275
+	sed -i 's/fonts //' Makefile.am || die #335774
+	sed -i 's/gzip/true/' doc/Makefile.am || die
+
+	# use system's copy so py3.10 distutils warning doesn't trigger a fatal error
+	rm m4/ax_python_devel.m4 || die
 
 	eautoreconf
 }
@@ -71,30 +73,32 @@ src_configure() {
 	use cpu_flags_x86_sse  && simd=sse
 	use cpu_flags_x86_sse2 && simd=sse2
 	use cpu_flags_x86_avx  && simd=avx
-	econf \
-		--localedir="${EPREFIX}"/usr/share/locale \
-		--docdir="${EPREFIX}"/usr/share/doc/${PF}/html \
-		--disable-cputest \
-		--enable-simd="${simd}" \
-		$(use_enable threads) \
-		$(use_with gtk) \
-		$(use_with gtk gtk3) \
-		$(use_with opengl board3d) \
-		$(use_with python python "${EPYTHON}") \
-		$(use_with sqlite sqlite)
+
+	local econfargs=(
+		$(use_with gui gtk)
+		$(use_with gui gtk3)
+		$(use_with opengl board3d)
+		$(use_with python)
+		$(use_with sqlite)
+		--disable-cputest
+		--docdir="${EPREFIX}"/usr/share/doc/${PF}/html
+		--enable-simd=${simd}
+	)
+
+	econf "${econfargs[@]}"
 }
 
 src_install() {
 	default
 
-	# installs pre-compressed man pages
-	gunzip "${ED}"/usr/share/man/man6/*.6.gz || die
+	mv "${ED}"/usr/share/doc/${PF}{/html/*.pdf,} || die
 
 	insinto /usr/share/${PN}
-	doins ${PN}.weights *bd
-	dodir /usr/share/${PN}/fonts
+	doins ${PN}.weights *.bd
+
 	dosym ../../fonts/dejavu/DejaVuSans.ttf /usr/share/${PN}/fonts/Vera.ttf
 	dosym ../../fonts/dejavu/DejaVuSans-Bold.ttf /usr/share/${PN}/fonts/VeraBd.ttf
 	dosym ../../fonts/dejavu/DejaVuSerif-Bold.ttf /usr/share/${PN}/fonts/VeraSeBd.ttf
-	make_desktop_entry "gnubg -w" "GNU Backgammon"
+
+	use gui && make_desktop_entry "gnubg -w" "GNU Backgammon"
 }

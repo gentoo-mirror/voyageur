@@ -1,15 +1,16 @@
-BDEPEND=sys-devel/gettext virtual/pkgconfig sys-devel/gnuconfig >=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.4:1.16 ) >=sys-devel/autoconf-2.71 >=sys-devel/libtool-2.4 dev-vcs/cvs
+BDEPEND=sys-devel/autoconf-archive sys-devel/gettext virtual/pkgconfig python? ( python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_single_target_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) ) sys-devel/gnuconfig >=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.4:1.16 ) >=sys-devel/autoconf-2.71 >=sys-devel/libtool-2.4 dev-vcs/cvs
 DEFINED_PHASES=configure install postinst postrm preinst prepare setup unpack
-DEPEND=dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmp:0= dev-libs/libxml2 media-fonts/dejavu media-libs/freetype:2 media-libs/libcanberra media-libs/libpng:0= sys-libs/readline:0= x11-libs/cairo x11-libs/pango gtk? ( x11-libs/gtk+:2 ) opengl? ( media-libs/libepoxy ) python? ( python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) ) virtual/libintl dev-util/desktop-file-utils x11-misc/shared-mime-info
+DEPEND=dev-libs/glib:2 dev-libs/gmp:= media-fonts/dejavu media-libs/freetype:2 media-libs/libpng:= net-misc/curl sys-libs/readline:= virtual/libintl x11-libs/cairo[svg] x11-libs/pango gui? ( media-libs/libcanberra[gtk3] x11-libs/gdk-pixbuf:2 x11-libs/gtk+:3 ) opengl? ( media-libs/libepoxy ) python? ( python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_single_target_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) ) sqlite? ( dev-db/sqlite:3 )
 DESCRIPTION=GNU BackGammon
-EAPI=7
+EAPI=8
 HOMEPAGE=https://www.gnu.org/software/gnubg/
+IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
 INHERIT=autotools cvs desktop python-single-r1 xdg
-IUSE=cpu_flags_x86_avx gtk opengl python sqlite cpu_flags_x86_sse cpu_flags_x86_sse2 threads python_single_target_python3_8 python_single_target_python3_9
-LICENSE=GPL-3
+IUSE=cpu_flags_x86_avx cpu_flags_x86_sse cpu_flags_x86_sse2 +gui opengl python sqlite python_single_target_python3_8 python_single_target_python3_9 python_single_target_python3_10
+LICENSE=GPL-3+
 PROPERTIES=live
-RDEPEND=dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmp:0= dev-libs/libxml2 media-fonts/dejavu media-libs/freetype:2 media-libs/libcanberra media-libs/libpng:0= sys-libs/readline:0= x11-libs/cairo x11-libs/pango gtk? ( x11-libs/gtk+:2 ) opengl? ( media-libs/libepoxy ) python? ( python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) ) virtual/libintl
-REQUIRED_USE=opengl? ( gtk )
+RDEPEND=dev-libs/glib:2 dev-libs/gmp:= media-fonts/dejavu media-libs/freetype:2 media-libs/libpng:= net-misc/curl sys-libs/readline:= virtual/libintl x11-libs/cairo[svg] x11-libs/pango gui? ( media-libs/libcanberra[gtk3] x11-libs/gdk-pixbuf:2 x11-libs/gtk+:3 ) opengl? ( media-libs/libepoxy ) python? ( python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_single_target_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) ) sqlite? ( dev-db/sqlite:3 )
+REQUIRED_USE=python? ( ^^ ( python_single_target_python3_8 python_single_target_python3_9 python_single_target_python3_10 ) ) opengl? ( gui )
 SLOT=0
-_eclasses_=autotools	6cc26735fa9dd59e8c62880beda05b6e	cvs	28fe561510cbf2a95dbbe4215a527855	desktop	c0d27bf73aa08ca05b663dbd31fbef28	eapi8-dosym	cd7d420bb5be5ee079f27239ce76b8f5	gnuconfig	262062cef0ba4f22b397193da514a350	libtool	241a8f577b9781a42a7421e53448a44e	multilib	de4beb52bfa93c4c5d96792a6b5e1784	multiprocessing	61c959fc55c15c00bbb1079d6a71370b	python-single-r1	3c5721adc30f98c39739c5970a4762d8	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	xdg	6024fbc93167fad782e2032933654857	xdg-utils	4f29a8b760a594a212abe9c2ba957c31
-_md5_=fe291c6079b1c2b21aa4ff7fe1343ad4
+_eclasses_=gnuconfig	262062cef0ba4f22b397193da514a350	toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	multilib	de4beb52bfa93c4c5d96792a6b5e1784	libtool	241a8f577b9781a42a7421e53448a44e	autotools	6cc26735fa9dd59e8c62880beda05b6e	cvs	28fe561510cbf2a95dbbe4215a527855	desktop	c0d27bf73aa08ca05b663dbd31fbef28	multiprocessing	61c959fc55c15c00bbb1079d6a71370b	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	python-single-r1	3c5721adc30f98c39739c5970a4762d8	xdg-utils	4f29a8b760a594a212abe9c2ba957c31	xdg	6024fbc93167fad782e2032933654857
+_md5_=fbe0488acfa583778ca451ca7e1188e3
