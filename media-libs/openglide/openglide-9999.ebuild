@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
 inherit autotools git-r3 multilib-minimal
 
@@ -11,16 +11,22 @@ SRC_URI=""
 
 EGIT_REPO_URI="https://github.com/voyageur/openglide.git"
 
-LICENSE="LGPL-2"
+LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS=""
 IUSE="+sdl static-libs"
 
-RDEPEND="
-	virtual/opengl
-	x11-libs/libXxf86vm
-	x11-libs/libX11
-	sdl? ( media-libs/libsdl )"
+RDEPEND="virtual/glu[${MULTILIB_USEDEP}]
+	virtual/opengl[${MULTILIB_USEDEP}]
+	sdl? (
+		media-libs/libsdl[${MULTILIB_USEDEP}]
+	)
+	!sdl? (
+		x11-libs/libICE[${MULTILIB_USEDEP}]
+		x11-libs/libSM[${MULTILIB_USEDEP}]
+		x11-libs/libXxf86vm[${MULTILIB_USEDEP}]
+	)"
+
 DEPEND="${RDEPEND}"
 
 MULTILIB_WRAPPED_HEADERS+=( /usr/include/openglide/sdk2_unix.h )
@@ -34,6 +40,8 @@ src_prepare() {
 
 multilib_src_configure() {
 	econf \
- 		$(use_enable sdl) \
- 		$(use_enable static-libs static)
+		--enable-shared \
+		--disable-sdltest \
+		$(use_enable sdl) \
+		$(use_enable static-libs static)
 }
