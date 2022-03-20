@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -19,6 +19,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	opengl? ( gui )"
 
 RDEPEND="
+	dev-libs/cglm
 	dev-libs/glib:2
 	dev-libs/gmp:=
 	media-fonts/dejavu
@@ -53,8 +54,6 @@ pkg_setup() {
 src_prepare() {
 	default
 
-	#TODO: add ebuild for cglm
-	sh non-src/cglm.shar || die
 	#This was provided by gtkglext before
 	sed -i "s/\$(GTKGLEXT_LIBS)/-lGL/" Makefile.am || die
 
