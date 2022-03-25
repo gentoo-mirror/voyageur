@@ -11,5 +11,5 @@ LICENSE=AGPL-3
 RDEPEND=dev-lang/php[curl,iconv,json(+),ssl,xml] virtual/httpd-php app-admin/webapp-config
 SLOT=1.16.0
 SRC_URI=https://github.com/RainLoop/rainloop-webmail/releases/download/v1.16.0/rainloop-1.16.0.zip
-_eclasses_=webapp	60f2eb31dec733d05e8114cc078ebc33
+_eclasses_=webapp	cbf94d7383f416c5ead4634aa89916a9
 _md5_=378e6600a3abd21044a96d4768d59828
