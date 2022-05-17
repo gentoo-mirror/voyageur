@@ -10,5 +10,5 @@ LICENSE=LGPL-2.1+ MIT ZLIB
 RDEPEND=dev-libs/cglm media-libs/libepoxy x11-libs/gdk-pixbuf x11-libs/gtk+:3
 SLOT=0
 SRC_URI=https://github.com/jabl/fsv/archive/09a10f96664b4c95d14479f0175f62c7a7a3a077.tar.gz -> fsv-2.3_alpha20211113.tar.gz
-_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	58ec4e54962bf45d065fb95030701514	toolchain-funcs	fd9cde67030b26e479eeadaced488253	multilib	4a33c9008e5ee30cb8840a3fdc24df2b	python-utils-r1	5dc84801daa87406aafaf535cb947a64	meson	8f48ffde53174aba67239f0da61ac9d3
+_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	58ec4e54962bf45d065fb95030701514	toolchain-funcs	fd9cde67030b26e479eeadaced488253	multilib	4fbbbc98f236f1b43acd99476bc3cd85	python-utils-r1	5dc84801daa87406aafaf535cb947a64	meson	8f48ffde53174aba67239f0da61ac9d3
 _md5_=b029f70ae4c27548d50d7963b4e9a64f
