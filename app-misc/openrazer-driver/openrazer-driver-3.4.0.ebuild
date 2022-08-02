@@ -30,3 +30,11 @@ src_install() {
 	exeinto "$(get_udevdir)"
 	doexe ../install_files/udev/razer_mount
 }
+
+pkg_postinst() {
+	udev_reload
+}
+
+pkg_postrm() {
+	udev_reload
+}
