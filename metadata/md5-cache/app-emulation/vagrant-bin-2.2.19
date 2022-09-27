@@ -9,5 +9,5 @@ RDEPEND=app-arch/libarchive net-misc/curl !app-emulation/vagrant
 RESTRICT=mirror
 SLOT=0
 SRC_URI=amd64? ( https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb ) x86? ( https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_i686.deb )
-_eclasses_=toolchain-funcs	1542e649be915f43f6908a9e93909961	multilib	5ca4e49abed8e3a2f7b56920eadee157	unpacker	697382d119fd3d195f110b7979184285	wrapper	4a1902f969e5718126434fc35f3a0d9c
+_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	toolchain-funcs	1542e649be915f43f6908a9e93909961	multilib	5ca4e49abed8e3a2f7b56920eadee157	unpacker	51227d3864ab15087e784b5d0db3270c	wrapper	4a1902f969e5718126434fc35f3a0d9c
 _md5_=f75b8c755a5e01fa7567c7e8c878250e
