@@ -2,8 +2,5 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-app-accessibility/speech-dispatcher:espeak - Adds support for espeak speech engine
-app-accessibility/speech-dispatcher:espeak-ng - Adds support for espeak-ng speech engine
-app-accessibility/speech-dispatcher:flite - Adds support for flite speech engine
 sys-apps/earlyoom:docs - Generate man page
 x11-misc/eaglemode:vlc - Play audio/video via media-video/vlc

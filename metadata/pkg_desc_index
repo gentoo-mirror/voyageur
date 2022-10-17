@@ -1,4 +1,3 @@
-app-accessibility/speech-dispatcher 0.11.3: Speech synthesis interface
 app-admin/checkrestart 0.52: the sysadmin's rolling upgrade tool
 app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual machines
 app-misc/openrazer-daemon 3.4.0: Userspace daemon for OpenRazer
