@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{8..11} )
 inherit autotools cvs desktop python-single-r1 xdg
 
 DESCRIPTION="GNU BackGammon"
@@ -28,7 +28,7 @@ RDEPEND="
 	net-misc/curl
 	sys-libs/readline:=
 	virtual/libintl
-	x11-libs/cairo[svg]
+	x11-libs/cairo[svg(+)]
 	x11-libs/pango
 	gui? (
 		media-libs/libcanberra[gtk3]
