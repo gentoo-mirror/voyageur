@@ -19,7 +19,7 @@ RDEPEND="
 	media-libs/libpng:0=
 	media-libs/tiff:0
 	sys-libs/zlib
-	virtual/jpeg:0
+	media-libs/libjpeg-turbo:0=
 	x11-libs/libX11
 "
 DEPEND="${RDEPEND}
@@ -34,7 +34,7 @@ DOCS=( ChangeLog README.md )
 
 pkg_pretend() {
 	if [[ ${MERGE_TYPE} != binary ]] && use openmp; then
-		tc-has-openmp || die "Please switch to an openmp compatible compiler"
+		tc-check-openmp || die "Please switch to an openmp compatible compiler"
 	fi
 }
 
