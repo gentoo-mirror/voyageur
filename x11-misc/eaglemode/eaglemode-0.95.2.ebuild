@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit multiprocessing toolchain-funcs
 
 DESCRIPTION="Zoomable user interface with plugin applications"
@@ -15,14 +15,14 @@ IUSE="+jpeg +pdf +png +svg +tiff +truetype +vlc +webp"
 
 DEPEND=">=dev-lang/perl-5.8
 	x11-libs/libX11
-	jpeg? ( virtual/jpeg:* )
-	png? ( media-libs/libpng:* )
-	tiff? ( media-libs/tiff:* )
+	jpeg? ( media-libs/libjpeg-turbo:= )
+	png? ( media-libs/libpng:= )
+	tiff? ( media-libs/tiff:= )
 	svg? ( gnome-base/librsvg:2 )
 	pdf? ( app-text/poppler[cairo] )
 	truetype? ( media-libs/freetype:2 )
 	vlc? ( media-video/vlc:= )
-	webp? ( media-libs/libwebp:* )"
+	webp? ( media-libs/libwebp:= )"
 RDEPEND="${DEPEND}
 	>=app-text/ghostscript-gpl-8"
 
