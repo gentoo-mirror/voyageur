@@ -26,3 +26,4 @@ www-apps/ttyd 1.7.2: ttyd, a simple command-line tool for sharing terminal over 
 x11-misc/eaglemode 0.95.2: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 2.3_alpha20211113: 3-Dimensional File System Visualizer
+x11-misc/xscreensaver 6.04: Modular screen saver and locker for the X Window System
