@@ -5,4 +5,8 @@
     <email>voyageur@gentoo.org</email>
     <name>Bernard Cafarelli</name>
   </maintainer>
+  <upstream>
+    <remote-id type="gitlab">doctormo/python-crontab</remote-id>
+    <remote-id type="pypi">python-crontab</remote-id>
+  </upstream>
 </pkgmetadata>
