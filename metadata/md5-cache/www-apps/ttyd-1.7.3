@@ -1,15 +1,14 @@
 BDEPEND=>=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5
 DEFINED_PHASES=compile configure install prepare test
-DEPEND=dev-games/physfs dev-libs/boost media-libs/libsdl2 virtual/opengl
-DESCRIPTION=a volley-game with colorful blobs
+DEPEND=dev-libs/json-c:= net-libs/libwebsockets:=[libuv]
+DESCRIPTION=ttyd, a simple command-line tool for sharing terminal over the web
 EAPI=8
-HOMEPAGE=http://blobby.sourceforge.net
+HOMEPAGE=https://github.com/tsl0922/ttyd
 INHERIT=cmake
-IUSE=debug
-KEYWORDS=~amd64 ~x86
-LICENSE=GPL-2
-RDEPEND=dev-games/physfs dev-libs/boost media-libs/libsdl2 virtual/opengl
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=dev-libs/json-c:= net-libs/libwebsockets:=[libuv]
 SLOT=0
-SRC_URI=mirror://sourceforge/blobby/blobby2-linux-1.0.tar.gz
+SRC_URI=https://github.com/tsl0922/ttyd/archive/1.7.3.tar.gz -> ttyd-1.7.3.tar.gz
 _eclasses_=toolchain-funcs	9a610728b9bcca1919234cceb35a1027	multilib	5ca4e49abed8e3a2f7b56920eadee157	flag-o-matic	69394e25812406faa1f90edaf4969395	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	38c85b725d0467e51954ea921b6c104b	xdg-utils	ac0e315a3688929e34ac75b139e7349a	cmake	449b4785acace35308fe747fc939bde1
-_md5_=71e6c64f6dc2b75d09415577f4e6fe9a
+_md5_=8af5d29cd431e17df4350c23ac162880
