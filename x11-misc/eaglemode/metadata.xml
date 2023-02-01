@@ -8,4 +8,7 @@
 	<use>
 		<flag name="vlc">Play audio/video via <pkg>media-video/vlc</pkg></flag>
 	</use>
+	<upstream>
+		<remote-id type="sourceforge">eaglemode</remote-id>
+	</upstream>
 </pkgmetadata>
