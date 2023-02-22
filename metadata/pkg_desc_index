@@ -3,7 +3,7 @@ app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual mac
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
-dev-libs/cglm 0.8.8: OpenGL Mathematics (glm) for C
+dev-libs/cglm 0.8.9: OpenGL Mathematics (glm) for C
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/gTTS 2.3.1: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
@@ -16,11 +16,9 @@ games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
 media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and compressors
-media-libs/libldac 2.0.2.3: LDAC codec library from AOSP
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
-sys-apps/earlyoom 1.6.2: Early OOM Daemon for Linux
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/ttyd 1.7.3: ttyd, a simple command-line tool for sharing terminal over the web
 x11-misc/eaglemode 0.96.0: Zoomable user interface with plugin applications
