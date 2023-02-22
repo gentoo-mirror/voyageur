@@ -4,12 +4,12 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
+PYPI_NO_NORMALIZE=1
 PYTHON_COMPAT=( python3_{8..11} )
-inherit distutils-r1
+inherit distutils-r1 pypi
 
 DESCRIPTION="Crontab module for reading and writing crontab files"
 HOMEPAGE="https://gitlab.com/doctormo/python-crontab/"
-SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
 LICENSE="LGPL-3+"
 SLOT="0"
