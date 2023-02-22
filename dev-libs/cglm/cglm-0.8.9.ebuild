@@ -11,9 +11,14 @@ SRC_URI="https://github.com/recp/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.t
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="test"
+
+RESTRICT="!test? ( test )"
+
 src_configure() {
 	local emesonargs=(
 		"-Dwerror=false"
+		$(meson_use test build_tests)
 	)
 	meson_src_configure
 }
