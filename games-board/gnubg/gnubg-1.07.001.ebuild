@@ -4,17 +4,18 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{9..11} )
-inherit autotools cvs desktop python-single-r1 xdg
+inherit autotools desktop python-single-r1 xdg
 
 DESCRIPTION="GNU BackGammon"
 HOMEPAGE="https://www.gnu.org/software/gnubg/"
-ECVS_SERVER="cvs.savannah.gnu.org:/sources/gnubg"
-ECVS_MODULE="gnubg"
+SRC_URI="mirror://gnu/${PN}/${PN}-release-${PV}-sources.tar.gz"
 
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS=""
-IUSE="cpu_flags_x86_avx cpu_flags_x86_sse cpu_flags_x86_sse2 +gui opengl python sqlite"
+KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
+IUSE="
+	cpu_flags_x86_avx cpu_flags_x86_sse cpu_flags_x86_sse2
+	gui opengl python sqlite"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	opengl? ( gui )"
 
@@ -44,8 +45,6 @@ BDEPEND="
 	sys-devel/gettext
 	virtual/pkgconfig
 	python? ( ${PYTHON_DEPS} )"
-
-S=${WORKDIR}/${PN}
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
