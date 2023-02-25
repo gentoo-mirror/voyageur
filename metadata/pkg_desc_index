@@ -3,7 +3,6 @@ app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual mac
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
-dev-libs/cglm 0.8.9: OpenGL Mathematics (glm) for C
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/gTTS 2.3.1: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
@@ -11,7 +10,6 @@ dev-python/python-crontab 2.7.1: Crontab module for reading and writing crontab 
 games-arcade/blobby2 1.0: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
 games-arcade/skystreets 9999: A remake of the old DOS game Skyroads
-games-board/gnubg 1.07.001 9999: GNU BackGammon
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
 games-misc/hot-babe 0.2.2: Displays the system activity in a very special way ;-)
 media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstration program
