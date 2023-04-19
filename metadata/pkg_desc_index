@@ -16,7 +16,6 @@ media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstratio
 media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and compressors
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
-media-video/mkvtoolnix 75.0.0: Tools to create, alter, and inspect Matroska files
 net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/ttyd 1.7.3: ttyd, a simple command-line tool for sharing terminal over the web
