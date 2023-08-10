@@ -7,7 +7,7 @@ dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/gTTS 2.3.1: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
 dev-python/python-crontab 2.7.1: Crontab module for reading and writing crontab files
-games-arcade/blobby2 1.0 1.1: a volley-game with colorful blobs
+games-arcade/blobby2 1.1.1: a volley-game with colorful blobs
 games-arcade/funnyboat 9999: A side scrolling shooter game starring a steamboat on the sea
 games-arcade/skystreets 9999: A remake of the old DOS game Skyroads
 games-misc/asciiquarium 1.1: an aquarium/sea animation in ASCII art
