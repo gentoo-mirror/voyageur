@@ -3,9 +3,9 @@ app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual mac
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
-app-text/calibre 6.27.0: Ebook management application
+app-text/calibre 6.28.1: Ebook management application
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
-dev-python/gTTS 2.3.2: interface with Google Translate's text-to-speech API
+dev-python/gTTS 2.4.0: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
 dev-python/python-crontab 3.0.0: Crontab module for reading and writing crontab files
 games-arcade/blobby2 1.1.1: a volley-game with colorful blobs
