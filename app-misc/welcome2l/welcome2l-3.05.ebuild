@@ -11,7 +11,6 @@ SRC_URI="https://github.com/voyageur/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~sparc ~x86"
-IUSE=""
 
 DOCS=( AUTHORS README INSTALL ChangeLog BUGS TODO )
 
