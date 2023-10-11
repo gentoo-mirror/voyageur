@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-inherit git-r3 toolchain-funcs
+inherit git-r3 systemd toolchain-funcs
 
 DESCRIPTION="Welcome to Linux, ANSI login logo for Linux"
 HOMEPAGE="https://github.com/voyageur/welcome2l"
@@ -10,8 +10,6 @@ EGIT_REPO_URI="https://github.com/voyageur/welcome2l.git"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS=""
-IUSE=""
 
 DOCS=( AUTHORS README INSTALL ChangeLog BUGS TODO )
 
@@ -32,7 +30,8 @@ src_install() {
 	doman ${MY_PN}.1
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}-r1.initscript ${MY_PN}
+	newinitd dist/${PN}-openrc.initscript ${MY_PN}
+	systemd_newunit dist/${PN}-systemd.service ${MY_PN}.service
 }
 
 pkg_postinst() {
