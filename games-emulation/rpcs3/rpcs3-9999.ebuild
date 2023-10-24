@@ -59,8 +59,6 @@ EGIT_SUBMODULES=(
 	"-3rdparty/zlib"
 	"-rpcs3-ffmpeg"
 )
-# Temp path?
-EGIT_OVERRIDE_COMMIT_RPCS3_YAML_CPP=0b67821f307e8c6bf0eba9b6d3250e3cf1441450
 
 PATCHES=(
 	"${FILESDIR}/rpcs3-9999-tests.patch"
