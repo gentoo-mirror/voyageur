@@ -1,5 +1,6 @@
 app-admin/checkrestart 0.52: the sysadmin's rolling upgrade tool
 app-emulation/vagrant-bin 2.2.19: Tool for building and distributing virtual machines
+app-misc/amdgpu_top 0.4.0: Tool to displays AMDGPU usage
 app-misc/silt 0.4: Silly translation library for l33t-speech, kenny, rot13, ...
 app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
