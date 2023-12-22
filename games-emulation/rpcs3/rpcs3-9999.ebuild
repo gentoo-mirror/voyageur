@@ -65,12 +65,11 @@ PATCHES=(
 )
 
 src_prepare() {
-	sed -i \
-		-e '/find_program(CCACHE_FOUND/d' \
-		CMakeLists.txt || die
-	sed -i \
-		-e '/-Werror/d' \
-		buildfiles/cmake/ConfigureCompiler.cmake || die
+	sed -e '/find_program(CCACHE_FOUND/d' \
+		-e "/project(rpcs3 /a ADD_DEFINITIONS(-DQT_NO_KEYWORDS)" \
+		-i CMakeLists.txt || die
+	sed -e '/-Werror/d' \
+		-i buildfiles/cmake/ConfigureCompiler.cmake || die
 
 	cmake_src_prepare
 }
