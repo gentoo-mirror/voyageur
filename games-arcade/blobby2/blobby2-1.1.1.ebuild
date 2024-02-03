@@ -14,8 +14,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="debug"
 
 RDEPEND=">=dev-games/physfs-2[zip]
-	dev-libs/boost
-	dev-libs/tinyxml2
+	dev-libs/boost:=
+	dev-libs/tinyxml2:=
 	media-libs/libsdl2[sound,joystick,opengl,video]
 	virtual/opengl"
 DEPEND="${RDEPEND}"
