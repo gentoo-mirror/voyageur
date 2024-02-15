@@ -2,12 +2,6 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-dev-util/google-perftools:debug - Build a set of libraries with debug support (so-called debugalloc). These are available by default but are not needed unless you're actually developing using tcmalloc.
-dev-util/google-perftools:largepages16k - Use (experimental) 16K pages for tcmalloc, this increases memory usage, but should speed up the allocation/free operations.
-dev-util/google-perftools:largepages32k - Use (experimental) 32K pages for tcmalloc, this increases memory usage, but should speed up the allocation/free operations.
-dev-util/google-perftools:largepages64k - Use (experimental) 64K pages for tcmalloc, this increases memory usage, but should speed up the allocation/free operations.
-dev-util/google-perftools:minimal - Only build the tcmalloc_minimal library, ignoring the heap checker and the profilers.
-dev-util/google-perftools:optimisememory - To build libtcmalloc with smaller internal caches.
 sys-power/pycircadian:network - Enable network activity detection
 x11-misc/eaglemode:vlc - Play audio/video via media-video/vlc
 x11-misc/xscreensaver:fonts - Install the fonts shipped with XScreenSaver that have clear licensing
