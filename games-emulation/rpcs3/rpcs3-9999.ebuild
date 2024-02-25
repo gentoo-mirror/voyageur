@@ -16,6 +16,7 @@ IUSE="alsa +faudio joystick +llvm pulseaudio sdl vulkan"
 
 RDEPEND="
 	${PYTHON_DEPS}
+	dev-debug/gdb
 	>=dev-libs/pugixml-1.11
 	>=dev-qt/qtbase-6.5.2[dbus,gui,widgets]
 	>=dev-qt/qtdeclarative-6.5.2:6
@@ -32,7 +33,6 @@ RDEPEND="
 	media-libs/openal
 	media-video/ffmpeg:=
 	pulseaudio? ( media-libs/libpulse )
-	sys-devel/gdb
 	sys-libs/zlib
 	virtual/opengl
 	vulkan? ( media-libs/vulkan-loader )
