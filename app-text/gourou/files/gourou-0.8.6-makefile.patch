@@ -1,0 +1,58 @@
+diff -Naur libgourou.orig/lib/updfparser/Makefile libgourou/lib/updfparser/Makefile
+--- libgourou.orig/lib/updfparser/Makefile	2024-03-23 18:28:23.000000000 +0100
++++ libgourou/lib/updfparser/Makefile	2024-04-22 14:30:15.021093091 +0200
+@@ -16,12 +16,6 @@
+   TARGETS += libupdfparser.so
+ endif
+ 
+-ifneq ($(DEBUG),)
+-CXXFLAGS += -ggdb -O0
+-else
+-CXXFLAGS += -O2
+-endif
+-
+ SRCDIR      := src
+ INCDIR      := inc
+ BUILDDIR    := obj
+diff -Naur libgourou.orig/Makefile libgourou/Makefile
+--- libgourou.orig/Makefile	2024-03-28 21:58:07.000000000 +0100
++++ libgourou/Makefile	2024-04-22 14:32:07.976608541 +0200
+@@ -35,12 +35,6 @@
+ endif
+ 
+ 
+-ifneq ($(DEBUG),)
+-CXXFLAGS += -ggdb -O0 -DDEBUG
+-else
+-CXXFLAGS += -O2
+-endif
+-
+ ifneq ($(STATIC_NONCE),)
+ CXXFLAGS += -DSTATIC_NONCE=1
+ endif
+@@ -53,7 +47,7 @@
+ SOURCES      = src/libgourou.cpp src/user.cpp src/device.cpp src/fulfillment_item.cpp src/loan_token.cpp src/bytearray.cpp
+ OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+ 
+-all: version lib obj $(TARGETS)
++all: $(TARGETS)
+ 
+ version:
+ 	@echo "Building libgourou $(VERSION)"
+diff -Naur libgourou.orig/utils/Makefile libgourou/utils/Makefile
+--- libgourou.orig/utils/Makefile	2024-03-28 21:58:07.000000000 +0100
++++ libgourou/utils/Makefile	2024-04-22 14:30:15.021093091 +0200
+@@ -17,13 +17,6 @@
+ LDFLAGS += -lgourou
+ endif
+ 
+-ifneq ($(DEBUG),)
+-CXXFLAGS += -ggdb -O0 -DDEBUG
+-else
+-CXXFLAGS += -O2
+-endif
+-
+-
+ COMMON_DEPS = drmprocessorclientimpl.cpp utils_common.cpp
+ COMMON_OBJECTS = $(COMMON_DEPS:.cpp=.o)
+ COMMON_LIB  = utils.a
