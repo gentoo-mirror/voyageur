@@ -5,7 +5,7 @@ EAPI=5
 
 DESCRIPTION="Silly translation library for l33t-speech, kenny, rot13, ..."
 HOMEPAGE="http://libsilt.sourceforge.net"
-SRC_URI="mirror://sourceforge/libsilt/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/libsilt/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"

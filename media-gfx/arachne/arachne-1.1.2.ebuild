@@ -5,7 +5,7 @@ EAPI=8
 
 DESCRIPTION="Seam carving resizing library and realtime demonstration program"
 HOMEPAGE="http://seam-carver.sourceforge.net/"
-SRC_URI="mirror://sourceforge/seam-carver/${PN/a/A}/${PV}/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/seam-carver/${PN/a/A}/${PV}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

@@ -5,7 +5,7 @@ EAPI=6
 
 DESCRIPTION="Displays the system activity in a very special way ;-)"
 HOMEPAGE="https://sourceforge.net/projects/hotbabe"
-SRC_URI="mirror://sourceforge/${PN/-}/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${PN/-}/${P}.tar.gz"
 
 LICENSE="Artistic"
 SLOT="0"
