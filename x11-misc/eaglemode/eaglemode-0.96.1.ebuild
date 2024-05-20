@@ -6,7 +6,7 @@ inherit multiprocessing toolchain-funcs
 
 DESCRIPTION="Zoomable user interface with plugin applications"
 HOMEPAGE="http://eaglemode.sourceforge.net"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
