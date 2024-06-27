@@ -16,7 +16,7 @@ CRATES="
 	android-activity@0.5.2
 	android-properties@0.2.2
 	android_system_properties@0.1.5
-	anyhow@1.0.83
+	anyhow@1.0.86
 	arboard@3.4.0
 	arc-swap@1.7.1
 	arrayvec@0.7.4
@@ -32,17 +32,17 @@ CRATES="
 	block-buffer@0.10.4
 	block-sys@0.2.1
 	block2@0.3.0
-	block2@0.5.0
+	block2@0.5.1
 	block@0.1.6
 	bstr@1.9.1
 	bumpalo@3.16.0
 	bytemuck@1.16.0
-	bytemuck_derive@1.6.0
+	bytemuck_derive@1.7.0
 	byteorder@1.5.0
 	bytes@1.6.0
 	calloop-wayland-source@0.2.0
 	calloop@0.12.4
-	cc@1.0.97
+	cc@1.0.98
 	cesu8@1.1.0
 	cfg-if@1.0.0
 	cfg_aliases@0.1.1
@@ -63,9 +63,9 @@ CRATES="
 	core-graphics-types@0.1.3
 	core-graphics@0.23.2
 	cpufeatures@0.2.12
-	crc32fast@1.4.0
-	crossbeam-channel@0.5.12
-	crossbeam-utils@0.8.19
+	crc32fast@1.4.2
+	crossbeam-channel@0.5.13
+	crossbeam-utils@0.8.20
 	crossterm@0.25.0
 	crossterm_winapi@0.9.1
 	crypto-common@0.1.6
@@ -120,7 +120,7 @@ CRATES="
 	generic-array@0.14.7
 	gethostname@0.4.3
 	getrandom@0.2.15
-	gix-actor@0.31.1
+	gix-actor@0.31.2
 	gix-chunk@0.4.8
 	gix-commitgraph@0.24.2
 	gix-config-value@0.14.6
@@ -128,29 +128,29 @@ CRATES="
 	gix-date@0.8.6
 	gix-diff@0.42.0
 	gix-discover@0.31.0
-	gix-features@0.38.1
+	gix-features@0.38.2
 	gix-fs@0.10.2
-	gix-glob@0.16.2
+	gix-glob@0.16.3
 	gix-hash@0.14.2
 	gix-hashtable@0.5.2
 	gix-lock@13.1.1
-	gix-macros@0.1.4
-	gix-object@0.42.1
+	gix-macros@0.1.5
+	gix-object@0.42.2
 	gix-odb@0.59.0
 	gix-pack@0.49.0
 	gix-path@0.10.7
 	gix-quote@0.4.12
 	gix-ref@0.43.0
 	gix-refspec@0.23.0
-	gix-revision@0.27.0
-	gix-revwalk@0.13.0
+	gix-revision@0.27.1
+	gix-revwalk@0.13.1
 	gix-sec@0.10.6
 	gix-tempfile@13.1.1
 	gix-trace@0.1.9
 	gix-traverse@0.38.0
 	gix-url@0.27.3
 	gix-utils@0.1.12
-	gix-validate@0.8.4
+	gix-validate@0.8.5
 	gix@0.61.0
 	gl_generator@0.14.0
 	glow@0.13.1
@@ -188,12 +188,12 @@ CRATES="
 	khronos-egl@6.0.0
 	khronos_api@3.1.0
 	lazy_static@1.4.0
-	libc@0.2.154
+	libc@0.2.155
 	libloading@0.7.4
 	libloading@0.8.3
 	libredox@0.0.2
 	libredox@0.1.3
-	linux-raw-sys@0.4.13
+	linux-raw-sys@0.4.14
 	litrs@0.4.1
 	locale_config@0.3.0
 	lock_api@0.4.12
@@ -203,7 +203,7 @@ CRATES="
 	memmap2@0.9.4
 	memoffset@0.9.1
 	metal@0.27.0
-	miniz_oxide@0.7.2
+	miniz_oxide@0.7.3
 	mio@0.8.11
 	naga@0.19.2
 	ndk-context@0.1.1
@@ -221,14 +221,17 @@ CRATES="
 	num_enum_derive@0.7.2
 	num_threads@0.1.7
 	objc-foundation@0.1.1
-	objc-sys@0.3.3
-	objc2-app-kit@0.2.0
-	objc2-core-data@0.2.0
+	objc-sys@0.3.5
+	objc2-app-kit@0.2.2
+	objc2-core-data@0.2.2
+	objc2-core-image@0.2.2
 	objc2-encode@3.0.0
-	objc2-encode@4.0.1
-	objc2-foundation@0.2.0
+	objc2-encode@4.0.3
+	objc2-foundation@0.2.2
+	objc2-metal@0.2.2
+	objc2-quartz-core@0.2.2
 	objc2@0.4.1
-	objc2@0.5.1
+	objc2@0.5.2
 	objc@0.2.7
 	objc_exception@0.1.2
 	objc_id@0.1.1
@@ -236,7 +239,7 @@ CRATES="
 	orbclient@0.3.47
 	owned_ttf_parser@0.21.0
 	owning_ref@0.4.1
-	parking_lot@0.12.2
+	parking_lot@0.12.3
 	parking_lot_core@0.9.10
 	paste@1.0.15
 	percent-encoding@2.3.1
@@ -249,13 +252,13 @@ CRATES="
 	proc-macro-crate@3.1.0
 	proc-macro-error-attr@1.0.4
 	proc-macro-error@1.0.4
-	proc-macro2@1.0.82
+	proc-macro2@1.0.84
 	prodash@28.0.0
 	profiling@1.0.15
 	quick-xml@0.31.0
 	quote@1.0.36
 	raw-window-handle@0.5.2
-	raw-window-handle@0.6.1
+	raw-window-handle@0.6.2
 	redox_syscall@0.3.5
 	redox_syscall@0.4.1
 	redox_syscall@0.5.1
@@ -276,8 +279,8 @@ CRATES="
 	scopeguard@1.2.0
 	self_cell@0.10.3
 	self_cell@1.0.4
-	serde@1.0.202
-	serde_derive@1.0.202
+	serde@1.0.203
+	serde_derive@1.0.203
 	serde_json@1.0.117
 	serde_spanned@0.6.6
 	sha1_smol@1.0.0
@@ -297,15 +300,15 @@ CRATES="
 	static_assertions@1.1.0
 	strsim@0.10.0
 	syn@1.0.109
-	syn@2.0.63
+	syn@2.0.66
 	tempfile@3.10.1
 	termcolor@1.4.1
-	thiserror-impl@1.0.60
-	thiserror@1.0.60
+	thiserror-impl@1.0.61
+	thiserror@1.0.61
 	time-core@0.1.2
 	time-macros@0.2.18
 	time@0.3.36
-	tinystr@0.7.5
+	tinystr@0.7.6
 	tinyvec@1.6.0
 	tinyvec_macros@0.1.1
 	toml@0.5.11
@@ -390,7 +393,7 @@ CRATES="
 	windows_x86_64_msvc@0.52.5
 	winit@0.29.15
 	winnow@0.5.40
-	winnow@0.6.8
+	winnow@0.6.9
 	x11-dl@2.21.0
 	x11rb-protocol@0.13.1
 	x11rb@0.13.1
@@ -404,7 +407,7 @@ CRATES="
 "
 
 declare -A GIT_CRATES=(
-	[libdrm_amdgpu_sys]='https://github.com/Umio-Yasuno/libdrm-amdgpu-sys-rs;5aae9ece0551b133cfcdd6b305465504b4f28e59;libdrm-amdgpu-sys-rs-%commit%'
+	[libdrm_amdgpu_sys]='https://github.com/Umio-Yasuno/libdrm-amdgpu-sys-rs;b5e281176c6ba5c15379b2bb832d1b37e83e673f;libdrm-amdgpu-sys-rs-%commit%'
 )
 
 inherit desktop cargo
@@ -419,8 +422,8 @@ SRC_URI="
 LICENSE="MIT"
 # Dependent crate licenses
 LICENSE+="
-	Apache-2.0 BSD Boost-1.0 CC0-1.0 ISC MIT OFL-1.1 Unicode-DFS-2016
-	ZLIB
+	Apache-2.0 BSD Boost-1.0 CC0-1.0 ISC MIT OFL-1.1 Unicode-3.0
+	Unicode-DFS-2016 ZLIB
 "
 # tinystr
 LICENSE+="
