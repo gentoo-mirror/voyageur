@@ -21,7 +21,6 @@ media-libs/oidn 2.3.0: Intel® Open Image Denoise library
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
-sys-apps/amdgpu_top 0.9.0: Tool to displays AMDGPU usage.
 sys-power/pycircadian 9999: Systemd suspend-on-idle daemon
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 x11-misc/eaglemode 0.96.1: Zoomable user interface with plugin applications
