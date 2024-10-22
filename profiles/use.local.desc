@@ -2,9 +2,6 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
-media-libs/oidn:apps - Build the standalone denoise, self test, and benchmark binaries.
-media-libs/oidn:hip - Build OIDN with AMD HIP support.
-media-libs/oidn:openimageio - Enable OpenImageIO Support
 sys-power/pycircadian:network - Enable network activity detection
 www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
 x11-misc/eaglemode:vlc - Play audio/video via media-video/vlc
