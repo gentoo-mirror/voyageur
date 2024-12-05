@@ -2,16 +2,16 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 
 inherit cmake git-r3 python-single-r1 xdg
 
 DESCRIPTION="PlayStation 3 emulator"
 HOMEPAGE="https://rpcs3.net/"
 EGIT_REPO_URI="https://github.com/RPCS3/rpcs3"
-KEYWORDS=""
 LICENSE="GPL-2"
 SLOT="0"
+KEYWORDS=""
 IUSE="alsa +faudio joystick +llvm pulseaudio sdl vulkan"
 
 RDEPEND="
