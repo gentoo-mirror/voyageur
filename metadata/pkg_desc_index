@@ -6,7 +6,7 @@ app-portage/euscan 9999: Ebuild upstream scan utility
 app-portage/euscan-ng 9999: Check if a given package has new upstream versions
 app-text/gourou 0.8.6: Download and decrypt adobe encrypted (acsm) pdf and epub files
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
-dev-python/CreateCloudMap 0.99.0: download a cloudmap for xplanet
+dev-python/createcloudmap 0.99.0: download a cloudmap for xplanet
 dev-python/gTTS 2.5.4: interface with Google Translate's text-to-speech API
 dev-python/gTTS-token 1.1.4: Google Translate token validation
 dev-python/python-crontab 3.2.0: Crontab module for reading and writing crontab files
@@ -28,4 +28,3 @@ www-apps/tt-rss 99999999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggre
 x11-misc/eaglemode 0.96.1: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 2.3_alpha20211113: 3-Dimensional File System Visualizer
-x11-misc/xscreensaver 6.04: Modular screen saver and locker for the X Window System
