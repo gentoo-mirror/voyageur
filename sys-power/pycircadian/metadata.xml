@@ -8,7 +8,4 @@
 	<upstream>
 		<remote-id type="github">mrmekon/circadian</remote-id>
 	</upstream>
-	<use>
-		<flag name="network">Enable network activity detection</flag>
-	</use>
 </pkgmetadata>

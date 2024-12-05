@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>voyageur@gentoo.org</email>
+		<name>Bernard Cafarelli</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">RPCS3/rpcs3</remote-id>
+	</upstream>
+	<use>
+		<flag name="faudio">Enable audio rendering with <pkg>app-emulation/faudio</pkg></flag>
+		<flag name="joystick">Enable support for input devices with evdev</flag>
+		<flag name="llvm">LLVM recompiler support</flag>
+		<flag name="vulkan">Enable Vulkan graphics library support</flag>
+	</use>
+</pkgmetadata>
