@@ -1,0 +1,49 @@
+From 682b6073c004a34ce744707861fc3ce18228482a Mon Sep 17 00:00:00 2001
+From: Bernard Cafarelli <bernard.cafarelli@gmail.com>
+Date: Tue, 31 Dec 2024 12:38:12 +0100
+Subject: [PATCH] For fmt 11, use report_error
+
+throw_format_error was deprecated and removed in fmt 11.1:
+https://github.com/fmtlib/fmt/commit/9a2aae37d4537b3de391ce29b905438cc84b4633
+
+It was just a redirect to report_error, so use this one for fmt 11
+---
+ src/celutil/formatnum.cpp | 4 +++-
+ src/celutil/formatnum.h   | 5 ++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/celutil/formatnum.cpp b/src/celutil/formatnum.cpp
+index bb86d084..561f8b54 100644
+--- a/src/celutil/formatnum.cpp
++++ b/src/celutil/formatnum.cpp
+@@ -57,7 +57,9 @@ struct fmt::formatter<ExtendedSubstring>
+         auto it = ctx.begin();
+         if (it != ctx.end() && *it != '}')
+         {
+-#if FMT_VERSION >= 100100
++#if FMT_VERSION >= 110002
++            report_error("invalid format");
++#elif FMT_VERSION >= 100100
+             throw_format_error("invalid format");
+ #else
+             assert(0);
+diff --git a/src/celutil/formatnum.h b/src/celutil/formatnum.h
+index 5b7fba9b..5368ef00 100644
+--- a/src/celutil/formatnum.h
++++ b/src/celutil/formatnum.h
+@@ -121,8 +121,11 @@ struct fmt::formatter<celestia::util::FormattedFloat<T>>
+         auto it = ctx.begin();
+         if (it != ctx.end() && *it != '}')
+         {
+-#if FMT_VERSION >= 100100
++#if FMT_VERSION >= 110000
++            report_error("invalid format");
++#elif FMT_VERSION >= 100100
+             throw_format_error("invalid format");
++            report_error("invalid format");
+ #else
+             assert(0);
+             return ctx.end();
+-- 
+2.47.1
+
