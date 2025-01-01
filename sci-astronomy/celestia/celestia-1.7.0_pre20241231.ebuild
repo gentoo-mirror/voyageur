@@ -12,7 +12,7 @@ if [[ ${PV} == *9999 ]] ; then
 	inherit git-r3
 else
 	if [[ ${PV} == *_p* ]] ; then
-		COMMIT_ID="e13024d723463388f8d35ca16e2b3b8a6f906789"
+		COMMIT_ID="9292455b420aa865482078c3149ae974367270e5"
 		COMMIT_ID_DATA="d20a4500410af19bd508eba567c9220890e9e316"
 		SRC_URI="
 			https://github.com/${PN^}Project/${PN^}/archive/${COMMIT_ID}.tar.gz -> ${P}.tar.gz
@@ -59,8 +59,6 @@ RDEPEND="${DEPEND}"
 PATCHES=(
 	# allow forcing CMake to look for a specific Lua version instead of the newest branch installed
 	"${FILESDIR}"/${PN}-1.7.0-cmake_lua_version-r1.patch
-	# Deprecated call removed in fmt 11.1
-	"${FILESDIR}"/${PN}-1.7.0-fmt_11.1.patch
 )
 
 src_prepare() {
