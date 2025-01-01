@@ -22,7 +22,7 @@ media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and co
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
 net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
-sci-astronomy/celestia 1.7.0_pre20241218: OpenGL 3D space simulator
+sci-astronomy/celestia 1.7.0_pre20241231: OpenGL 3D space simulator
 sys-power/pycircadian 9999: Systemd suspend-on-idle daemon
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/tt-rss 99999999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
