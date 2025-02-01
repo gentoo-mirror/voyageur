@@ -31,3 +31,5 @@ RDEPEND="
 	>=dev-python/beautifulsoup4-4.8.2[${PYTHON_USEDEP}]
 	sys-apps/portage
 "
+
+PATCHES=( "${FILESDIR}"/${P}-shell_quote.patch )
