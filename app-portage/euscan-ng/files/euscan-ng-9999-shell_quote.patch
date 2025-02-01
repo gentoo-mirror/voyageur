@@ -1,0 +1,29 @@
+diff -Naur euscan-ng-9999.orig/src/euscan/ebuild.py euscan-ng-9999/src/euscan/ebuild.py
+--- euscan-ng-9999.orig/src/euscan/ebuild.py	2025-02-01 22:31:09.043491213 +0100
++++ euscan-ng-9999/src/euscan/ebuild.py	2025-02-01 22:32:04.949599821 +0100
+@@ -7,7 +7,7 @@
+ import sys
+ 
+ import portage
+-from portage import _encodings, _shell_quote, _unicode_decode, _unicode_encode
++from portage import _encodings, _unicode_decode, _unicode_encode
+ from portage.const import VDB_PATH
+ 
+ 
+@@ -48,14 +48,14 @@
+             os.environ["PORTDIR_OVERLAY"] = (
+                 os.environ.get("PORTDIR_OVERLAY", "")
+                 + " "
+-                + _shell_quote(ebuild_portdir)
++                + shlex.quote(ebuild_portdir)
+             )
+         else:
+             os.environ["PORTDIR_OVERLAY"] = (
+                 os.environ.get("PORTDIR_OVERLAY", "")
+                 + " "
+                 + _unicode_encode(
+-                    _shell_quote(ebuild_portdir),
++                    shlex.quote(ebuild_portdir),
+                     encoding=_encodings["content"],
+                     errors="strict",
+                 )
