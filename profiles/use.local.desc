@@ -2,6 +2,11 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
+games-emulation/citron:compatibility-list - Downloads the latest compatibility list
+games-emulation/citron:cubeb - Enables the cubeb audio backend
+games-emulation/citron:system-libfmt - Use system dev-libs/libfmt
+games-emulation/citron:system-vulkan - Use system dev-util/vulkan-headers
+games-emulation/citron:webengine - Use QtWebEngine for web applet implementation
 games-emulation/rpcs3:faudio - Enable audio rendering with app-emulation/faudio
 games-emulation/rpcs3:joystick - Enable support for input devices with evdev
 games-emulation/rpcs3:llvm - LLVM recompiler support
