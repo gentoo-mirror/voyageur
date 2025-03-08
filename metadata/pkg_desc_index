@@ -22,7 +22,7 @@ media-gfx/arachne 1.1.2: Seam carving resizing library and realtime demonstratio
 media-gfx/nvidia-texture-tools 2.1.2: A set of cuda-enabled texture tools and compressors
 media-libs/openglide 9999: Glide to OpenGL wrapper
 media-sound/munt-mt32emu-qt 1.10.2: software synthesiser emulating pre-GM MIDI devices (Roland MT-32)
-net-misc/synology-assistant 7.0.2_p50046: Synology Assistant to setup DiskStations
+net-misc/synology-assistant 7.0.5_p50070: Synology Assistant to setup DiskStations
 sys-power/pycircadian 9999: Systemd suspend-on-idle daemon
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
 www-apps/tt-rss 99999999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
