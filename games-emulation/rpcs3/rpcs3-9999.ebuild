@@ -17,26 +17,27 @@ IUSE="alsa +faudio joystick +llvm pulseaudio sdl vulkan"
 RDEPEND="
 	${PYTHON_DEPS}
 	dev-debug/gdb
-	>=dev-libs/pugixml-1.11
+	dev-libs/flatbuffers
+	dev-libs/libusb
+	>=dev-libs/pugixml-1.15
+	dev-libs/xxhash
 	>=dev-qt/qtbase-6.5.2[dbus,gui,widgets]
 	>=dev-qt/qtdeclarative-6.5.2:6
 	>=dev-qt/qtmultimedia-6.5.2:6
 	>=dev-qt/qtsvg-6.5.2:6
-	alsa? ( media-libs/alsa-lib )
-	dev-libs/flatbuffers
-	dev-libs/libusb
-	dev-libs/xxhash
-	joystick? ( dev-libs/libevdev )
-	faudio? ( app-emulation/faudio )
 	media-libs/glew:0
 	media-libs/libpng:*
 	media-libs/openal
 	media-video/ffmpeg:=
-	pulseaudio? ( media-libs/libpulse )
 	sys-libs/zlib
 	virtual/opengl
-	vulkan? ( media-libs/vulkan-loader )
 	x11-libs/libX11
+	alsa? ( media-libs/alsa-lib )
+	faudio? ( app-emulation/faudio )
+	joystick? ( dev-libs/libevdev )
+	pulseaudio? ( media-libs/libpulse )
+	sdl? ( media-libs/libsdl3 )
+	vulkan? ( media-libs/vulkan-loader )
 "
 
 DEPEND="${RDEPEND}
