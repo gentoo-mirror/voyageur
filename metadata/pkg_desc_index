@@ -5,6 +5,7 @@ app-misc/welcome2l 3.05 9999: Welcome to Linux, ANSI login logo for Linux
 app-portage/euscan 9999: Ebuild upstream scan utility
 app-portage/euscan-ng 9999: Check if a given package has new upstream versions
 app-text/gourou 0.8.6: Download and decrypt adobe encrypted (acsm) pdf and epub files
+dev-libs/pugixml 1.15: Light-weight, simple, and fast XML parser for C++ with XPath support
 dev-perl/Term-Animation 2.6: Animated ASCII Art support for Perl
 dev-python/createcloudmap 0.99.0: download a cloudmap for xplanet
 dev-python/gTTS 2.5.4: interface with Google Translate's text-to-speech API
