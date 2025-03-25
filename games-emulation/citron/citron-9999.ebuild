@@ -28,7 +28,7 @@ RDEPEND="
 	>=media-video/ffmpeg-4.3:=
 	>=net-libs/enet-1.3
 	app-arch/lz4:=
-	dev-cpp/asio
+	<dev-cpp/asio-1.34
 	dev-libs/boost:=[context]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274

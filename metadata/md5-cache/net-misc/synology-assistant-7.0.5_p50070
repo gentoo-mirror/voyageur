@@ -8,5 +8,5 @@ LICENSE=all-rights-reserved
 RESTRICT=mirror strip
 SLOT=0
 SRC_URI=amd64? ( http://global.download.synology.com/download/Utility/Assistant/7.0.5-50070/Ubuntu/x86_64/synology-assistant_7.0.5-50070_amd64.deb ) x86? ( http://global.download.synology.com/download/Utility/Assistant/7.0.5-50070/Ubuntu/i686/synology-assistant_7.0.5-50070_i386.deb )
-_eclasses_=multilib	b2a329026f2e404e9e371097dda47f96	multiprocessing	1e32df7deee68372153dca65f4a7c21f	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	unpacker	fb4b84181244b3b9990fa0bf40232dd2
+_eclasses_=multilib	b2a329026f2e404e9e371097dda47f96	multiprocessing	1e32df7deee68372153dca65f4a7c21f	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	unpacker	13d8d65b19f96f31b38c39b57419304e
 _md5_=1d0db64737d1a39a33eebf8dc018892a
