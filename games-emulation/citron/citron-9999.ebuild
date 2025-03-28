@@ -13,13 +13,13 @@ EGIT_SUBMODULES=( '-*' 'cpp-httplib' 'cpp-jwt' 'dynarmic' 'mbedtls' 'simpleini' 
 # Dynarmic is not intended to be generic, it is tweaked to fit emulated processor
 # Bundled back some libs: cpp-* mbedtls
 
-# asio: use dev-cpp/asio until src/input_common/drivers/udp_client.cpp updated
-# system-vulkan: wait for 1.4.307 (also need vulkan-utility-libraries?)
+# asio: use old dev-cpp/asio until src/input_common/drivers/udp_client.cpp
+# is updated to support newer boost (and remove sed workaround)
 LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="-compatibility-list +cubeb lto +qt6 sdl +system-libfmt -system-vulkan test webengine"
+IUSE="-compatibility-list +cubeb lto +qt6 sdl +system-libfmt system-vulkan test webengine"
 
 RDEPEND="
 	>=app-arch/zstd-1.5
@@ -45,7 +45,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	system-vulkan? (
 		dev-util/spirv-headers
-		>=dev-util/vulkan-headers-1.3.274
+		>=dev-util/vulkan-headers-1.4.307
 		dev-util/vulkan-utility-libraries
 		x11-libs/libX11
 	)
@@ -100,7 +100,7 @@ src_prepare() {
 		sed -i '/fmt.*REQUIRED/d' CMakeLists.txt || die
 	fi
 
-	# asio fix
+	# asio workaround (drop when citron supports newer boost)
 	sed -e "/asio.hpp/a #include <asio.hpp>" -e "s/boost::asio/asio/g" \
 		-i src/input_common/drivers/udp_client.cpp || die
 
@@ -123,7 +123,7 @@ src_configure() {
 		-DUSE_DISCORD_PRESENCE=OFF
 		-DCITRON_TESTS=$(usex test)
 		-DCITRON_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
-		-DCITRON_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OF ON)
+		-DCITRON_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
 		-DCITRON_USE_EXTERNAL_SDL2=OFF
 		-DCITRON_CHECK_SUBMODULES=false
 		-DCITRON_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
