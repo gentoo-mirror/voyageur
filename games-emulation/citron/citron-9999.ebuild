@@ -12,9 +12,6 @@ EGIT_SUBMODULES=( '-*' 'cpp-httplib' 'cpp-jwt' 'dynarmic' 'mbedtls' 'simpleini' 
 	              'externals/nx_tzdb/tzdb_to_nx/externals/tz/tz' 'VulkanMemoryAllocator' )
 # Dynarmic is not intended to be generic, it is tweaked to fit emulated processor
 # Bundled back some libs: cpp-* mbedtls
-
-# asio: use old dev-cpp/asio until src/input_common/drivers/udp_client.cpp
-# is updated to support newer boost (and remove sed workaround)
 LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
@@ -28,7 +25,6 @@ RDEPEND="
 	>=media-video/ffmpeg-4.3:=
 	>=net-libs/enet-1.3
 	app-arch/lz4:=
-	<dev-cpp/asio-1.34
 	dev-libs/boost:=[context]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
@@ -100,8 +96,8 @@ src_prepare() {
 		sed -i '/fmt.*REQUIRED/d' CMakeLists.txt || die
 	fi
 
-	# asio workaround (drop when citron supports newer boost)
-	sed -e "/asio.hpp/a #include <asio.hpp>" -e "s/boost::asio/asio/g" \
+	# newer boost dropped io_service
+	sed -e "s/io_service/io_context/g" \
 		-i src/input_common/drivers/udp_client.cpp || die
 
 	cmake_src_prepare
