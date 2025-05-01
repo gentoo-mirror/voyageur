@@ -3,12 +3,12 @@ DESCRIPTION=the sysadmin's rolling upgrade tool
 EAPI=8
 HOMEPAGE=https://github.com/voyageur/checkrestart/
 INHERIT=python-single-r1
-IUSE=python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12
+IUSE=python_single_target_python3_11 python_single_target_python3_12 python_single_target_python3_13
 KEYWORDS=~amd64 ~arm ~hppa ~x86
 LICENSE=GPL-2
-RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) sys-apps/lsb-release >=app-portage/portage-utils-0.80 sys-process/lsof
-REQUIRED_USE=^^ ( python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12 )
+RDEPEND=python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) python_single_target_python3_13? ( dev-lang/python:3.13 ) sys-apps/lsb-release >=app-portage/portage-utils-0.80 sys-process/lsof
+REQUIRED_USE=^^ ( python_single_target_python3_11 python_single_target_python3_12 python_single_target_python3_13 )
 SLOT=0
 SRC_URI=https://github.com/voyageur/checkrestart/archive/0.53.tar.gz -> checkrestart-0.53.tar.gz
-_eclasses_=multiprocessing	1e32df7deee68372153dca65f4a7c21f	python-single-r1	47d8ac9be330c9366112b78fd4f8ce57	python-utils-r1	974462533ec80cd68e5f366ad8a86002	toolchain-funcs	f9d71a6efe9d083aec750dd13968e169
-_md5_=7d88880c8d2f203c575a2475aff4e169
+_eclasses_=multiprocessing	1e32df7deee68372153dca65f4a7c21f	python-single-r1	47d8ac9be330c9366112b78fd4f8ce57	python-utils-r1	b6ad054ea5bb201ed2fec9cac7a8d12b	toolchain-funcs	f9d71a6efe9d083aec750dd13968e169
+_md5_=f3dff6e64e4715eb76ffcb61e7915cd9
