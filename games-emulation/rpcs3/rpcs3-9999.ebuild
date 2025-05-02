@@ -63,6 +63,7 @@ EGIT_SUBMODULES=(
 
 PATCHES=(
 	"${FILESDIR}/rpcs3-9999-tests.patch"
+	"${FILESDIR}/rpcs3-9999-glslang_gcc15.patch"
 )
 
 src_prepare() {
