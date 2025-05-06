@@ -10,5 +10,5 @@ LICENSE=public-domain
 RDEPEND=x11-libs/libXext
 SLOT=0
 SRC_URI=mirror://debian/pool/main/x/xmille/xmille_2.0.orig.tar.gz mirror://debian/pool/main/x/xmille/xmille_2.0-13.diff.gz
-_eclasses_=desktop	3a72ffe0d8e1dd73af3a1c8c15a59fed	toolchain-funcs	f9d71a6efe9d083aec750dd13968e169	flag-o-matic	e8de74bac929ba17427e740e95707d00
+_eclasses_=desktop	3a72ffe0d8e1dd73af3a1c8c15a59fed	toolchain-funcs	f9d71a6efe9d083aec750dd13968e169	flag-o-matic	b892042b2667b8ac69ec8a2571dc290a
 _md5_=a20c150350853853790b3868696cecab
