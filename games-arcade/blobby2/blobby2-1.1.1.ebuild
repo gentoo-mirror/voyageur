@@ -20,4 +20,13 @@ RDEPEND=">=dev-games/physfs-2[zip]
 	virtual/opengl"
 DEPEND="${RDEPEND}"
 
+PATCHES=( "${FILESDIR}"/${P}-gcc15.patch )
+
 S="${WORKDIR}/blobby-${PV/_}"
+
+src_prepare() {
+	# Ugly tinyxml2 workaround
+	sed -e "s/9.0.0/10.0.0/" -i deps/tinyxml/CMakeLists.txt || die
+
+	cmake_src_prepare
+}
