@@ -55,6 +55,10 @@ BDEPEND="
 REQUIRED_USE="|| ( qt6 sdl ) "
 RESTRICT="!test? ( test )"
 
+PATCHES=(
+	"${FILESDIR}/${P}-boost188.patch"
+)
+
 src_unpack() {
 	if use !system-vulkan; then
 		EGIT_SUBMODULES+=('externals/sirit/externals/SPIRV-Headers')
