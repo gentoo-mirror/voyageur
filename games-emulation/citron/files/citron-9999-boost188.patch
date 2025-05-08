@@ -1,0 +1,27 @@
+diff '--color=auto' -Naur citron-9999.orig/src/core/debugger/debugger.cpp citron-9999/src/core/debugger/debugger.cpp
+--- citron-9999.orig/src/core/debugger/debugger.cpp	2025-05-08 22:02:14.409670709 +0200
++++ citron-9999/src/core/debugger/debugger.cpp	2025-05-08 22:03:06.265709107 +0200
+@@ -6,7 +6,11 @@
+ #include <thread>
+ 
+ #include <boost/asio.hpp>
++#if BOOST_VERSION < 108800
+ #include <boost/process/async_pipe.hpp>
++#else
++#include <boost/process/v1/async_pipe.hpp>
++#endif
+ 
+ #include "common/logging/log.h"
+ #include "common/polyfill_thread.h"
+@@ -326,7 +330,11 @@
+ 
+     struct ConnectionState {
+         boost::asio::ip::tcp::socket client_socket;
++#if BOOST_VERSION < 108800
+         boost::process::async_pipe signal_pipe;
++#else
++        boost::process::v1::async_pipe signal_pipe;
++#endif
+ 
+         SignalInfo info;
+         Kernel::KScopedAutoObject<Kernel::KThread> active_thread;
