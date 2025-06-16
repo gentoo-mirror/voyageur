@@ -26,7 +26,7 @@ S="${WORKDIR}/blobby-${PV/_}"
 
 src_prepare() {
 	# Ugly tinyxml2 workaround
-	sed -e "s/9.0.0/10.0.0/" -i deps/tinyxml/CMakeLists.txt || die
+	sed -e "s/9.0.0/11.0.0/" -i deps/tinyxml/CMakeLists.txt || die
 
 	cmake_src_prepare
 }
