@@ -110,6 +110,9 @@ src_prepare() {
 	# Relax vulkan version requirement
 	sed -i -e 's/(VulkanHeaders.*)/(VulkanHeaders REQUIRED)/' CMakeLists.txt || die
 
+	# Do not require qt-multimedia
+	sed -i -e '/find_package(Qt6/s/Multimedia //' CMakeLists.txt || die
+
 	cmake_src_prepare
 }
 
@@ -133,6 +136,7 @@ src_configure() {
 		-DYUZU_USE_EXTERNAL_SDL2=OFF
 		-DYUZU_USE_BUNDLED_FFMPEG=ON
 		-DYUZU_CHECK_SUBMODULES=false
+		-DYUZU_USE_QT_MULTIMEDIA=OFF
 		-DYUZU_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
 	)
 

@@ -103,6 +103,9 @@ src_prepare() {
 	# Relax vulkan version requirement
 	sed -i -e 's/(VulkanHeaders.*)/(VulkanHeaders REQUIRED)/' CMakeLists.txt || die
 
+	# Do not require qt-multimedia
+	sed -i -e '/find_package(Qt6/s/Multimedia //' CMakeLists.txt || die
+
 	cmake_src_prepare
 }
 
@@ -124,6 +127,7 @@ src_configure() {
 		-DCITRON_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
 		-DCITRON_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
 		-DCITRON_USE_EXTERNAL_SDL2=OFF
+		-DCITRON_USE_QT_MULTIMEDIA=OFF
 		-DCITRON_CHECK_SUBMODULES=false
 		-DCITRON_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
 	)
