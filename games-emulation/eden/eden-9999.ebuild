@@ -35,6 +35,7 @@ RDEPEND="
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
 	>=net-libs/enet-1.3
+	net-wireless/wireless-tools
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
