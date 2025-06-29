@@ -27,14 +27,14 @@ IUSE="-compatibility-list +cubeb lto +qt6 sdl +system-libfmt +system-vulkan test
 #	Change YUZU_USE_BUNDLED_FFMPEG and drop from EGIT_SUBMODULES when fixed
 #	>=media-video/ffmpeg-4.3:=
 RDEPEND="
+	app-arch/lz4:=
 	>=app-arch/zstd-1.5
+	dev-libs/boost:=[context]
 	>=dev-libs/inih-52
 	>=dev-libs/openssl-1.1:=
-	>=net-libs/enet-1.3
-	app-arch/lz4:=
-	dev-libs/boost:=[context]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
+	>=net-libs/enet-1.3
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
