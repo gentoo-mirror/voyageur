@@ -49,6 +49,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	system-vulkan? (
 		dev-util/spirv-headers
+		dev-util/spirv-tools
 		>=dev-util/vulkan-headers-1.4.307
 		dev-util/vulkan-utility-libraries
 		x11-libs/libX11
@@ -69,7 +70,8 @@ PATCHES=(
 
 src_unpack() {
 	if use !system-vulkan; then
-		EGIT_SUBMODULES+=('externals/sirit/externals/SPIRV-Headers')
+		EGIT_SUBMODULES+=('SPIRV-Headers')
+		EGIT_SUBMODULES+=('SPIRV-Tools')
 		EGIT_SUBMODULES+=('Vulkan-Headers')
 		EGIT_SUBMODULES+=('Vulkan-Utility-Libraries')
 	fi
@@ -128,10 +130,11 @@ src_configure() {
 		-DENABLE_QT=$(usex qt6 ON OFF)
 		-DENABLE_QT_TRANSLATION=$(usex qt6 ON OFF)
 		-DENABLE_SDL2=$(usex sdl ON OFF)
-		-DENABLE_WEB_SERVICE=OFF
+		-DENABLE_WEB_SERVICE=ON
 		-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=$(usex system-vulkan ON OFF)
 		-DUSE_DISCORD_PRESENCE=OFF
 		-DYUZU_TESTS=$(usex test)
+		-DYUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_SDL2=OFF
