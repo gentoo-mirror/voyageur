@@ -7,9 +7,7 @@ inherit cmake git-r3 xdg
 
 DESCRIPTION="An emulator for Nintendo Switch"
 HOMEPAGE="https://eden-emulator.github.io/"
-# Main server temporarily down, use mirror
-#EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
-EGIT_REPO_URI="https://github.com/pflyly/eden-mirror.git"
+EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
 
 EGIT_SUBMODULES=( '-*' 'VulkanMemoryAllocator' 'cpp-httplib' 'cpp-jwt' 'ffmpeg' 'mbedtls' 'simpleini' 'sirit' 'xbyak'
 	'externals/boost-headers'
