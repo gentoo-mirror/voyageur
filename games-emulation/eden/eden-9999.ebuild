@@ -22,7 +22,7 @@ LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="-compatibility-list +cubeb lto +qt6 sdl +system-libfmt +system-vulkan test webengine"
+IUSE="+cubeb lto sdl +system-libfmt +system-vulkan test webengine"
 
 #	external ffmpeg not supported by upstream, needs internal header and old API
 #	Change YUZU_USE_BUNDLED_FFMPEG and drop from EGIT_SUBMODULES when fixed
@@ -33,6 +33,8 @@ RDEPEND="
 	dev-libs/boost:=[context]
 	>=dev-libs/inih-52
 	>=dev-libs/openssl-1.1:=
+	dev-libs/quazip:=[qt6(+)]
+	>=dev-qt/qtbase-6.6.0:6[gui,widgets]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
 	>=net-libs/enet-1.3
@@ -40,12 +42,9 @@ RDEPEND="
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
-	qt6? (
-		>=dev-qt/qtbase-6.6.0:6[gui,widgets]
-		webengine? ( dev-qt/qtwebengine:6[widgets] )
-	)
 	sdl? ( >=media-libs/libsdl2-2.28 )
 	system-libfmt? ( >=dev-libs/libfmt-9:= )
+	webengine? ( dev-qt/qtwebengine:6[widgets] )
 "
 DEPEND="${RDEPEND}
 	system-vulkan? (
@@ -62,7 +61,6 @@ BDEPEND="
 	dev-cpp/robin-map
 	dev-util/glslang
 "
-REQUIRED_USE="|| ( qt6 sdl ) "
 RESTRICT="!test? ( test )"
 
 PATCHES=(
@@ -82,9 +80,6 @@ src_unpack() {
 	fi
 
 	git-r3_src_unpack
-
-	# Do not fetch via sources because this file always changes
-	use compatibility-list && curl https://api.citron-emu.org/gamedb/ > "${S}"/compatibility_list.json
 }
 
 src_prepare() {
@@ -117,6 +112,9 @@ src_prepare() {
 	# Do not require qt-multimedia
 	sed -i -e '/find_package(Qt6/s/Multimedia //' CMakeLists.txt || die
 
+	# System quazip
+	sed -i -e 's/add_subdirectory(externals)/find_package(QuaZip-Qt6)/' src/yuzu/CMakeLists.txt || die
+
 	cmake_src_prepare
 }
 
@@ -125,11 +123,11 @@ src_configure() {
 		# Libraries are private and rely on circular dependency resolution.
 		-DYUZU_ENABLE_LTO=$(usex lto ON OFF)
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
-		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=$(usex compatibility-list)
+		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF
 		-DENABLE_CUBEB=$(usex cubeb ON OFF)
 		-DENABLE_LIBUSB=ON
-		-DENABLE_QT=$(usex qt6 ON OFF)
-		-DENABLE_QT_TRANSLATION=$(usex qt6 ON OFF)
+		-DENABLE_QT=ON
+		-DENABLE_QT_TRANSLATION=ON
 		-DENABLE_SDL2=$(usex sdl ON OFF)
 		-DENABLE_WEB_SERVICE=ON
 		-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=$(usex system-vulkan ON OFF)
@@ -146,9 +144,4 @@ src_configure() {
 	)
 
 	cmake_src_configure
-
-	# This would be better in src_unpack but it would be unlinked
-	if use compatibility-list; then
-		mv "${S}"/compatibility_list.json "${BUILD_DIR}"/dist/compatibility_list/ || die
-	fi
 }

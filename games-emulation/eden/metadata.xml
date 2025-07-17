@@ -6,7 +6,6 @@
 		<name>Bernard Cafarelli</name>
 	</maintainer>
 	<use>
-		<flag name="compatibility-list">Downloads the latest compatibility list</flag>
 		<flag name="cubeb">Enables the cubeb audio backend</flag>
 		<flag name="system-libfmt">Use system dev-libs/libfmt</flag>
 		<flag name="system-vulkan">Use system dev-util/vulkan-headers</flag>
