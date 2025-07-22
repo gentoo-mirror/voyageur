@@ -9,7 +9,7 @@ DESCRIPTION="An emulator for Nintendo Switch"
 HOMEPAGE="https://eden-emulator.github.io/"
 EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
 
-EGIT_SUBMODULES=( '-*' 'VulkanMemoryAllocator' 'cpp-httplib' 'cpp-jwt' 'ffmpeg' 'mbedtls' 'simpleini' 'sirit' 'xbyak'
+EGIT_SUBMODULES=( '-*' 'VulkanMemoryAllocator' 'cpp-httplib' 'cpp-jwt' 'mbedtls' 'simpleini' 'sirit' 'xbyak'
 	'externals/boost-headers'
 	'externals/dynarmic/externals/unordered_dense'
 	'externals/dynarmic/externals/zycore-c'
@@ -22,11 +22,8 @@ LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="+cubeb lto sdl +system-libfmt +system-vulkan test webengine"
+IUSE="+cubeb lto sdl +system-ffmpeg +system-libfmt +system-vulkan test webengine"
 
-#	external ffmpeg not supported by upstream, needs internal header and old API
-#	Change YUZU_USE_BUNDLED_FFMPEG and drop from EGIT_SUBMODULES when fixed
-#	>=media-video/ffmpeg-4.3:=
 RDEPEND="
 	app-arch/lz4:=
 	>=app-arch/zstd-1.5
@@ -43,6 +40,7 @@ RDEPEND="
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
 	sdl? ( >=media-libs/libsdl2-2.28 )
+	system-ffmpeg? ( >=media-video/ffmpeg-4.3:= )
 	system-libfmt? ( >=dev-libs/libfmt-9:= )
 	webengine? ( dev-qt/qtwebengine:6[widgets] )
 "
@@ -68,6 +66,9 @@ PATCHES=(
 )
 
 src_unpack() {
+	if use !system-ffmpeg; then
+		EGIT_SUBMODULES+=('ffmpeg')
+	fi
 	if use !system-vulkan; then
 		EGIT_SUBMODULES+=('SPIRV-Headers')
 		EGIT_SUBMODULES+=('SPIRV-Tools')
@@ -137,7 +138,7 @@ src_configure() {
 		-DYUZU_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_SDL2=OFF
-		-DYUZU_USE_BUNDLED_FFMPEG=ON
+		-DYUZU_USE_BUNDLED_FFMPEG=$(usex system-ffmpeg OFF ON)
 		-DYUZU_CHECK_SUBMODULES=false
 		-DYUZU_USE_QT_MULTIMEDIA=OFF
 		-DYUZU_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)

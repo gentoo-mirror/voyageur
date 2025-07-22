@@ -7,6 +7,7 @@
 	</maintainer>
 	<use>
 		<flag name="cubeb">Enables the cubeb audio backend</flag>
+		<flag name="system-ffmpeg">Use system media-video/ffmpeg</flag>
 		<flag name="system-libfmt">Use system dev-libs/libfmt</flag>
 		<flag name="system-vulkan">Use system dev-util/vulkan-headers</flag>
 		<flag name="webengine">Use QtWebEngine for web applet implementation</flag>
