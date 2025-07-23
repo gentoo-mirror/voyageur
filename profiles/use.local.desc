@@ -8,6 +8,7 @@ games-emulation/citron:system-libfmt - Use system dev-libs/libfmt
 games-emulation/citron:system-vulkan - Use system dev-util/vulkan-headers
 games-emulation/citron:webengine - Use QtWebEngine for web applet implementation
 games-emulation/eden:cubeb - Enables the cubeb audio backend
+games-emulation/eden:system-ffmpeg - Use system media-video/ffmpeg
 games-emulation/eden:system-libfmt - Use system dev-libs/libfmt
 games-emulation/eden:system-vulkan - Use system dev-util/vulkan-headers
 games-emulation/eden:webengine - Use QtWebEngine for web applet implementation
