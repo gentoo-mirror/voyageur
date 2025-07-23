@@ -22,7 +22,7 @@ LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="+cubeb lto sdl +system-ffmpeg +system-libfmt +system-vulkan test webengine"
+IUSE="+cubeb lto sdl +system-ffmpeg +system-libfmt +system-vulkan test webengine wifi"
 
 RDEPEND="
 	app-arch/lz4:=
@@ -35,7 +35,6 @@ RDEPEND="
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
 	>=net-libs/enet-1.3
-	net-wireless/wireless-tools
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
@@ -43,6 +42,7 @@ RDEPEND="
 	system-ffmpeg? ( >=media-video/ffmpeg-4.3:= )
 	system-libfmt? ( >=dev-libs/libfmt-9:= )
 	webengine? ( dev-qt/qtwebengine:6[widgets] )
+	wifi? ( net-wireless/wireless-tools )
 "
 DEPEND="${RDEPEND}
 	system-vulkan? (
@@ -131,6 +131,7 @@ src_configure() {
 		-DENABLE_QT_TRANSLATION=ON
 		-DENABLE_SDL2=$(usex sdl ON OFF)
 		-DENABLE_WEB_SERVICE=ON
+		-DENABLE_WIFI_SCAN=$(usex wifi ON OFF)
 		-DSIRIT_USE_SYSTEM_SPIRV_HEADERS=$(usex system-vulkan ON OFF)
 		-DUSE_DISCORD_PRESENCE=OFF
 		-DYUZU_TESTS=$(usex test)
