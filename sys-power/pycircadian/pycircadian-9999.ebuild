@@ -17,6 +17,8 @@ SLOT="0"
 IUSE="X"
 
 RDEPEND="
+	dev-python/dbus-python[${PYTHON_USEDEP}]
+	dev-python/psutil[${PYTHON_USEDEP}]
 	X? (
 		x11-misc/xprintidle
 		x11-misc/xssstate
