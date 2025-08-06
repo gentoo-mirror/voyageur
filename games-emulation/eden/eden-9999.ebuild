@@ -22,13 +22,14 @@ LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="+cubeb lto sdl +system-ffmpeg +system-libfmt +system-vulkan test webengine wifi"
+IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine wifi"
 
 RDEPEND="
 	app-arch/lz4:=
 	>=app-arch/zstd-1.5
 	dev-libs/boost:=[context]
 	>=dev-libs/inih-52
+	>=dev-libs/libfmt-9:=
 	>=dev-libs/openssl-1.1:=
 	dev-libs/quazip:=[qt6(+)]
 	>=dev-qt/qtbase-6.6.0:6[gui,widgets]
@@ -40,7 +41,6 @@ RDEPEND="
 	cubeb? ( media-libs/cubeb )
 	sdl? ( >=media-libs/libsdl2-2.28 )
 	system-ffmpeg? ( >=media-video/ffmpeg-4.3:= )
-	system-libfmt? ( >=dev-libs/libfmt-9:= )
 	webengine? ( dev-qt/qtwebengine:6[widgets] )
 	wifi? ( net-wireless/wireless-tools )
 "
@@ -52,7 +52,7 @@ DEPEND="${RDEPEND}
 		dev-util/vulkan-utility-libraries
 		x11-libs/libX11
 	)
-	test? ( >dev-cpp/catch-3:0 )
+	test? ( >=dev-cpp/catch-3:0 )
 "
 BDEPEND="
 	>=dev-cpp/nlohmann_json-3.8.0
@@ -102,10 +102,6 @@ src_prepare() {
 
 	# LZ4 temporary fix: https://github.com/yuzu-emu/yuzu/pull/9054/commits/a8021f5a18bc5251aef54468fa6033366c6b92d9
 	sed -i 's/lz4::lz4/lz4/' src/common/CMakeLists.txt || die
-
-	if ! use system-libfmt; then # libfmt >= 9
-		sed -i '/fmt.*REQUIRED/d' CMakeLists.txt || die
-	fi
 
 	# Relax vulkan version requirement
 	sed -i -e 's/(VulkanHeaders.*)/(VulkanHeaders REQUIRED)/' CMakeLists.txt || die
