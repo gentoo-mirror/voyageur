@@ -1,0 +1,3753 @@
+From 111f2c3be5f11807217e0e24d120d8a5c626487a Mon Sep 17 00:00:00 2001
+From: lizzie <lizzie@eden-emu.dev>
+Date: Fri, 25 Jul 2025 02:22:38 +0200
+Subject: [PATCH] [dynarmic] remove mcl/assert.h and mcl/stdint.h (depends on
+ #81) (#89)
+
+Co-authored-by: crueter <crueter@crueter.xyz>
+Reviewed-on: https://git.eden-emu.dev/eden-emu/eden/pulls/89
+Co-authored-by: lizzie <lizzie@eden-emu.dev>
+Co-committed-by: lizzie <lizzie@eden-emu.dev>
+---
+ .../dynarmic/src/dynarmic/CMakeLists.txt      |  3 ++
+ .../dynarmic/backend/arm64/a32_interface.cpp  |  7 ++--
+ .../dynarmic/backend/arm64/a32_jitstate.cpp   |  5 ++-
+ .../src/dynarmic/backend/arm64/a32_jitstate.h |  5 ++-
+ .../dynarmic/backend/arm64/a64_interface.cpp  |  7 ++--
+ .../src/dynarmic/backend/arm64/a64_jitstate.h |  5 ++-
+ .../src/dynarmic/backend/arm64/abi.cpp        |  5 ++-
+ .../dynarmic/src/dynarmic/backend/arm64/abi.h |  5 ++-
+ .../dynarmic/backend/arm64/address_space.h    |  5 ++-
+ .../src/dynarmic/backend/arm64/devirtualize.h |  5 ++-
+ .../src/dynarmic/backend/arm64/emit_arm64.h   |  5 ++-
+ .../backend/arm64/emit_arm64_memory.h         |  5 ++-
+ .../backend/arm64/exclusive_monitor.cpp       |  5 ++-
+ .../src/dynarmic/backend/arm64/fastmem.h      |  5 ++-
+ .../src/dynarmic/backend/arm64/fpsr_manager.h |  5 ++-
+ .../src/dynarmic/backend/arm64/reg_alloc.cpp  |  7 ++--
+ .../src/dynarmic/backend/arm64/reg_alloc.h    |  7 ++--
+ .../src/dynarmic/backend/arm64/stack_layout.h |  5 ++-
+ .../backend/arm64/verbose_debugging_output.h  |  5 ++-
+ .../backend/block_range_information.cpp       |  5 ++-
+ .../src/dynarmic/backend/exception_handler.h  |  5 ++-
+ .../backend/exception_handler_macos.cpp       |  7 ++--
+ .../backend/exception_handler_posix.cpp       |  4 +--
+ .../backend/riscv64/a32_address_space.cpp     |  5 ++-
+ .../backend/riscv64/a32_interface.cpp         |  7 ++--
+ .../dynarmic/backend/riscv64/a32_jitstate.cpp |  5 ++-
+ .../dynarmic/backend/riscv64/a32_jitstate.h   |  5 ++-
+ .../dynarmic/backend/riscv64/emit_riscv64.h   |  5 ++-
+ .../dynarmic/backend/riscv64/reg_alloc.cpp    |  7 ++--
+ .../src/dynarmic/backend/riscv64/reg_alloc.h  |  7 ++--
+ .../dynarmic/backend/riscv64/stack_layout.h   |  5 ++-
+ .../src/dynarmic/backend/x64/a32_emit_x64.cpp |  7 ++--
+ .../dynarmic/backend/x64/a32_interface.cpp    |  7 ++--
+ .../src/dynarmic/backend/x64/a32_jitstate.cpp |  7 ++--
+ .../src/dynarmic/backend/x64/a32_jitstate.h   |  5 ++-
+ .../src/dynarmic/backend/x64/a64_emit_x64.cpp |  7 ++--
+ .../dynarmic/backend/x64/a64_interface.cpp    |  5 ++-
+ .../src/dynarmic/backend/x64/a64_jitstate.h   |  5 ++-
+ .../dynarmic/src/dynarmic/backend/x64/abi.cpp |  2 +-
+ .../dynarmic/src/dynarmic/backend/x64/abi.h   |  5 ++-
+ .../dynarmic/backend/x64/block_of_code.cpp    |  5 ++-
+ .../src/dynarmic/backend/x64/block_of_code.h  |  5 ++-
+ .../src/dynarmic/backend/x64/callback.h       |  5 ++-
+ .../dynarmic/backend/x64/constant_pool.cpp    |  5 ++-
+ .../src/dynarmic/backend/x64/constant_pool.h  |  5 ++-
+ .../src/dynarmic/backend/x64/constants.h      |  5 ++-
+ .../src/dynarmic/backend/x64/devirtualize.h   |  5 ++-
+ .../src/dynarmic/backend/x64/emit_x64.cpp     |  7 ++--
+ .../src/dynarmic/backend/x64/emit_x64_aes.cpp |  5 ++-
+ .../backend/x64/emit_x64_data_processing.cpp  |  7 ++--
+ .../backend/x64/emit_x64_floating_point.cpp   |  7 ++--
+ .../backend/x64/emit_x64_saturation.cpp       |  7 ++--
+ .../dynarmic/backend/x64/emit_x64_vector.cpp  |  7 ++--
+ .../x64/emit_x64_vector_floating_point.cpp    |  5 ++-
+ .../x64/emit_x64_vector_saturation.cpp        |  5 ++-
+ .../backend/x64/exception_handler_windows.cpp |  7 ++--
+ .../backend/x64/exclusive_monitor.cpp         |  5 ++-
+ .../src/dynarmic/backend/x64/host_feature.h   |  5 ++-
+ .../src/dynarmic/backend/x64/hostloc.h        |  7 ++--
+ .../src/dynarmic/backend/x64/nzcv_util.h      |  5 ++-
+ .../dynarmic/src/dynarmic/backend/x64/oparg.h |  5 ++-
+ .../src/dynarmic/backend/x64/reg_alloc.cpp    |  5 ++-
+ .../src/dynarmic/backend/x64/reg_alloc.h      |  5 ++-
+ .../src/dynarmic/backend/x64/stack_layout.h   |  5 ++-
+ .../backend/x64/verbose_debugging_output.h    |  5 ++-
+ .../dynarmic/src/dynarmic/common/assert.cpp   | 13 ++++++++
+ .../dynarmic/src/dynarmic/common/assert.h     | 32 +++++++++++++++++++
+ .../dynarmic/src/dynarmic/common/atomic.h     |  5 ++-
+ .../src/dynarmic/common/common_types.h        | 23 +++++++++++++
+ .../src/dynarmic/common/crypto/aes.cpp        |  5 ++-
+ .../dynarmic/src/dynarmic/common/crypto/aes.h |  5 ++-
+ .../src/dynarmic/common/crypto/crc32.cpp      |  5 ++-
+ .../src/dynarmic/common/crypto/crc32.h        |  5 ++-
+ .../src/dynarmic/common/crypto/sm4.cpp        |  5 ++-
+ .../dynarmic/src/dynarmic/common/crypto/sm4.h |  5 ++-
+ .../dynarmic/src/dynarmic/common/fp/fpcr.h    |  7 ++--
+ .../dynarmic/src/dynarmic/common/fp/fpsr.h    |  5 ++-
+ .../dynarmic/src/dynarmic/common/fp/info.h    |  5 ++-
+ .../src/dynarmic/common/fp/mantissa_util.h    |  5 ++-
+ .../src/dynarmic/common/fp/op/FPConvert.cpp   |  5 ++-
+ .../src/dynarmic/common/fp/op/FPMulAdd.cpp    |  5 ++-
+ .../dynarmic/common/fp/op/FPRSqrtEstimate.cpp |  5 ++-
+ .../dynarmic/common/fp/op/FPRecipEstimate.cpp |  7 ++--
+ .../dynarmic/common/fp/op/FPRecipExponent.cpp |  5 ++-
+ .../src/dynarmic/common/fp/op/FPRoundInt.cpp  |  7 ++--
+ .../src/dynarmic/common/fp/op/FPRoundInt.h    |  5 ++-
+ .../src/dynarmic/common/fp/op/FPToFixed.cpp   |  7 ++--
+ .../src/dynarmic/common/fp/op/FPToFixed.h     |  5 ++-
+ .../dynarmic/common/fp/process_exception.cpp  |  5 ++-
+ .../src/dynarmic/common/fp/process_nan.cpp    |  5 ++-
+ .../src/dynarmic/common/fp/unpacked.h         |  5 ++-
+ .../src/dynarmic/common/llvm_disassemble.cpp  |  7 ++--
+ .../src/dynarmic/common/llvm_disassemble.h    |  5 ++-
+ .../dynarmic/src/dynarmic/common/math_util.h  |  5 ++-
+ .../dynarmic/src/dynarmic/common/safe_ops.h   |  5 ++-
+ .../dynarmic/src/dynarmic/common/u128.cpp     |  5 ++-
+ externals/dynarmic/src/dynarmic/common/u128.h |  5 ++-
+ .../src/dynarmic/common/x64_disassemble.cpp   |  5 ++-
+ .../src/dynarmic/common/x64_disassemble.h     |  5 ++-
+ .../src/dynarmic/frontend/A32/FPSCR.h         |  5 ++-
+ .../src/dynarmic/frontend/A32/ITState.h       |  5 ++-
+ .../dynarmic/src/dynarmic/frontend/A32/PSR.h  |  5 ++-
+ .../dynarmic/frontend/A32/a32_ir_emitter.cpp  |  5 ++-
+ .../dynarmic/frontend/A32/a32_ir_emitter.h    |  5 ++-
+ .../frontend/A32/a32_location_descriptor.h    |  5 ++-
+ .../src/dynarmic/frontend/A32/a32_types.h     |  7 ++--
+ .../src/dynarmic/frontend/A32/decoder/arm.h   |  5 ++-
+ .../src/dynarmic/frontend/A32/decoder/asimd.h |  5 ++-
+ .../dynarmic/frontend/A32/decoder/thumb16.h   |  5 ++-
+ .../dynarmic/frontend/A32/decoder/thumb32.h   |  5 ++-
+ .../src/dynarmic/frontend/A32/decoder/vfp.h   |  5 ++-
+ .../frontend/A32/disassembler/disassembler.h  |  5 ++-
+ .../frontend/A32/translate/a32_translate.h    |  5 ++-
+ .../A32/translate/conditional_state.cpp       |  7 ++--
+ .../A32/translate/conditional_state.h         |  5 ++-
+ .../A32/translate/impl/a32_translate_impl.cpp |  5 ++-
+ .../A32/translate/impl/a32_translate_impl.h   |  5 ++-
+ .../A32/translate/impl/asimd_misc.cpp         |  5 ++-
+ .../impl/asimd_one_reg_modified_immediate.cpp |  5 ++-
+ .../translate/impl/asimd_two_regs_scalar.cpp  |  5 ++-
+ .../translate/impl/asimd_two_regs_shift.cpp   |  5 ++-
+ ...data_processing_plain_binary_immediate.cpp |  5 ++-
+ .../frontend/A32/translate/translate_arm.cpp  |  5 ++-
+ .../A32/translate/translate_thumb.cpp         |  5 ++-
+ .../dynarmic/frontend/A64/a64_ir_emitter.h    |  7 ++--
+ .../frontend/A64/a64_location_descriptor.h    |  5 ++-
+ .../src/dynarmic/frontend/A64/a64_types.h     |  7 ++--
+ .../src/dynarmic/frontend/A64/decoder/a64.h   |  5 ++-
+ .../frontend/A64/translate/a64_translate.h    |  5 ++-
+ .../impl/simd_vector_x_indexed_element.cpp    |  5 ++-
+ .../frontend/decoder/decoder_detail.h         |  5 ++-
+ .../src/dynarmic/frontend/decoder/matcher.h   |  5 ++-
+ .../dynarmic/src/dynarmic/frontend/imm.cpp    |  7 ++--
+ .../dynarmic/src/dynarmic/frontend/imm.h      |  7 ++--
+ .../dynarmic/src/dynarmic/ir/basic_block.cpp  |  5 ++-
+ .../dynarmic/src/dynarmic/ir/basic_block.h    |  5 ++-
+ .../dynarmic/src/dynarmic/ir/ir_emitter.cpp   |  5 ++-
+ .../dynarmic/src/dynarmic/ir/ir_emitter.h     |  7 ++--
+ .../src/dynarmic/ir/location_descriptor.h     |  5 ++-
+ .../src/dynarmic/ir/microinstruction.cpp      |  5 ++-
+ .../src/dynarmic/ir/microinstruction.h        |  5 ++-
+ externals/dynarmic/src/dynarmic/ir/opcodes.h  |  5 ++-
+ .../ir/opt/a32_get_set_elimination_pass.cpp   |  7 ++--
+ .../ir/opt/a64_get_set_elimination_pass.cpp   |  5 ++-
+ .../ir/opt/a64_merge_interpret_blocks.cpp     |  5 ++-
+ .../ir/opt/constant_propagation_pass.cpp      |  7 ++--
+ .../src/dynarmic/ir/opt/verification_pass.cpp |  7 ++--
+ externals/dynarmic/src/dynarmic/ir/terminal.h |  5 ++-
+ externals/dynarmic/src/dynarmic/ir/type.h     |  5 ++-
+ externals/dynarmic/src/dynarmic/ir/value.cpp  |  5 ++-
+ externals/dynarmic/src/dynarmic/ir/value.h    |  7 ++--
+ externals/dynarmic/tests/A32/fuzz_arm.cpp     |  5 ++-
+ externals/dynarmic/tests/A32/fuzz_thumb.cpp   |  5 ++-
+ .../tests/A32/test_thumb_instructions.cpp     |  5 ++-
+ externals/dynarmic/tests/A32/testenv.h        |  7 ++--
+ externals/dynarmic/tests/A64/fibonacci.cpp    |  5 ++-
+ externals/dynarmic/tests/A64/fp_min_max.cpp   |  5 ++-
+ .../dynarmic/tests/A64/fuzz_with_unicorn.cpp  |  5 ++-
+ externals/dynarmic/tests/A64/testenv.h        |  7 ++--
+ externals/dynarmic/tests/decoder_tests.cpp    |  5 ++-
+ externals/dynarmic/tests/fp/FPToFixed.cpp     |  5 ++-
+ .../dynarmic/tests/fp/mantissa_util_tests.cpp |  5 ++-
+ .../dynarmic/tests/fp/unpacked_tests.cpp      |  5 ++-
+ externals/dynarmic/tests/fuzz_util.cpp        |  5 ++-
+ externals/dynarmic/tests/fuzz_util.h          |  5 ++-
+ externals/dynarmic/tests/print_info.cpp       |  5 ++-
+ externals/dynarmic/tests/rsqrt_test.cpp       |  5 ++-
+ externals/dynarmic/tests/test_generator.cpp   |  5 ++-
+ externals/dynarmic/tests/test_reader.cpp      |  5 ++-
+ .../tests/unicorn_emu/a32_unicorn.cpp         |  5 ++-
+ .../dynarmic/tests/unicorn_emu/a32_unicorn.h  |  5 ++-
+ .../tests/unicorn_emu/a64_unicorn.cpp         |  5 ++-
+ .../dynarmic/tests/unicorn_emu/a64_unicorn.h  |  5 ++-
+ 173 files changed, 779 insertions(+), 207 deletions(-)
+ create mode 100644 externals/dynarmic/src/dynarmic/common/assert.cpp
+ create mode 100644 externals/dynarmic/src/dynarmic/common/assert.h
+ create mode 100644 externals/dynarmic/src/dynarmic/common/common_types.h
+
+diff --git a/externals/dynarmic/src/dynarmic/CMakeLists.txt b/externals/dynarmic/src/dynarmic/CMakeLists.txt
+index a43c9eae10..ab2d653152 100644
+--- a/externals/dynarmic/src/dynarmic/CMakeLists.txt
++++ b/externals/dynarmic/src/dynarmic/CMakeLists.txt
+@@ -5,7 +5,10 @@ add_library(dynarmic
+     backend/block_range_information.h
+     backend/exception_handler.h
+     common/always_false.h
++    common/assert.cpp
++    common/assert.h
+     common/cast_util.h
++    common/common_types.h
+     common/crypto/aes.cpp
+     common/crypto/aes.h
+     common/crypto/crc32.cpp
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/a32_interface.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/a32_interface.cpp
+index 6b38c41093..a22f296e94 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/a32_interface.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/a32_interface.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,9 +10,9 @@
+ #include <mutex>
+ 
+ #include <boost/icl/interval_set.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/arm64/a32_address_space.h"
+ #include "dynarmic/backend/arm64/a32_core.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.cpp
+index e24654c7db..67390a311d 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #include "dynarmic/backend/arm64/a32_jitstate.h"
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::Arm64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.h b/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.h
+index 978bf84ad2..b4fee9a4d0 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/a32_jitstate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/a32_location_descriptor.h"
+ #include "dynarmic/ir/location_descriptor.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/a64_interface.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/a64_interface.cpp
+index 7d7716783a..96170f08a8 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/a64_interface.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/a64_interface.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,9 +10,9 @@
+ #include <mutex>
+ 
+ #include <boost/icl/interval_set.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/arm64/a64_address_space.h"
+ #include "dynarmic/backend/arm64/a64_core.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/a64_jitstate.h b/externals/dynarmic/src/dynarmic/backend/arm64/a64_jitstate.h
+index 215e6987f3..3dd422b6d4 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/a64_jitstate.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/a64_jitstate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A64/a64_location_descriptor.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/abi.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/abi.cpp
+index 6d7b96379b..04d8ca2eaf 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/abi.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/abi.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <vector>
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <oaknut/oaknut.hpp>
+ 
+ namespace Dynarmic::Backend::Arm64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/abi.h b/externals/dynarmic/src/dynarmic/backend/arm64/abi.h
+index d3d5de963a..ca7c9187db 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/abi.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/abi.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <type_traits>
+ 
+ #include <mcl/mp/metavalue/lift_value.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <oaknut/oaknut.hpp>
+ 
+ #include "dynarmic/common/always_false.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/address_space.h b/externals/dynarmic/src/dynarmic/backend/arm64/address_space.h
+index 792ecf696b..25b1ab4b04 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/address_space.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/address_space.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <map>
+ #include <optional>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <oaknut/code_block.hpp>
+ #include <oaknut/oaknut.hpp>
+ #include <ankerl/unordered_dense.h>
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/devirtualize.h b/externals/dynarmic/src/dynarmic/backend/arm64/devirtualize.h
+index c433fd0126..14dc3809a5 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/devirtualize.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/devirtualize.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <mcl/bit_cast.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/function_info.hpp>
+ 
+ namespace Dynarmic::Backend::Arm64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64.h b/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64.h
+index f80f26898c..801ac42818 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <memory>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ 
+ #include "dynarmic/backend/arm64/fastmem.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64_memory.h b/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64_memory.h
+index bfc6d71f4e..3c50194689 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64_memory.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/emit_arm64_memory.h
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace oaknut {
+ struct CodeGenerator;
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/exclusive_monitor.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/exclusive_monitor.cpp
+index d57a29cd85..326ab4ad00 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/exclusive_monitor.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/exclusive_monitor.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <algorithm>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/fastmem.h b/externals/dynarmic/src/dynarmic/backend/arm64/fastmem.h
+index 7e14ce6d92..cae05bcf23 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/fastmem.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/fastmem.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <tuple>
+ 
+ #include <mcl/hash/xmrx.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ 
+ #include "dynarmic/backend/exception_handler.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/fpsr_manager.h b/externals/dynarmic/src/dynarmic/backend/arm64/fpsr_manager.h
+index 9e5d68bfcf..3bc5683153 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/fpsr_manager.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/fpsr_manager.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace oaknut {
+ struct CodeGenerator;
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.cpp b/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.cpp
+index fedee02f07..07440bd385 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,11 +12,11 @@
+ #include <array>
+ #include <iterator>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bit_cast.hpp>
+ #include <mcl/mp/metavalue/lift_value.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/arm64/abi.h"
+ #include "dynarmic/backend/arm64/emit_context.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.h b/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.h
+index 5ba8332d27..bde7c8e612 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/reg_alloc.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,8 +14,8 @@
+ #include <utility>
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/is_instance_of_template.hpp>
+ #include <oaknut/oaknut.hpp>
+ #include <ankerl/unordered_dense.h>
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/stack_layout.h b/externals/dynarmic/src/dynarmic/backend/arm64/stack_layout.h
+index cf7f3259a9..801b07c008 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/stack_layout.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/stack_layout.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::Arm64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/arm64/verbose_debugging_output.h b/externals/dynarmic/src/dynarmic/backend/arm64/verbose_debugging_output.h
+index 73c6646139..84beda4057 100644
+--- a/externals/dynarmic/src/dynarmic/backend/arm64/verbose_debugging_output.h
++++ b/externals/dynarmic/src/dynarmic/backend/arm64/verbose_debugging_output.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2023 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/arm64/stack_layout.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/block_range_information.cpp b/externals/dynarmic/src/dynarmic/backend/block_range_information.cpp
+index ab83ce6a78..0e5904ae1c 100644
+--- a/externals/dynarmic/src/dynarmic/backend/block_range_information.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/block_range_information.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <boost/icl/interval_map.hpp>
+ #include <boost/icl/interval_set.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ 
+ namespace Dynarmic::Backend {
+diff --git a/externals/dynarmic/src/dynarmic/backend/exception_handler.h b/externals/dynarmic/src/dynarmic/backend/exception_handler.h
+index ed5c41c7b9..173949628c 100644
+--- a/externals/dynarmic/src/dynarmic/backend/exception_handler.h
++++ b/externals/dynarmic/src/dynarmic/backend/exception_handler.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <optional>
+ 
+ #include <mcl/macro/architecture.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #if defined(MCL_ARCHITECTURE_X86_64)
+ namespace Dynarmic::Backend::X64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/exception_handler_macos.cpp b/externals/dynarmic/src/dynarmic/backend/exception_handler_macos.cpp
+index bac8d9c951..52bcf5972f 100644
+--- a/externals/dynarmic/src/dynarmic/backend/exception_handler_macos.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/exception_handler_macos.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2019 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -15,10 +18,10 @@
+ #include <vector>
+ 
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ #include <mcl/macro/architecture.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/exception_handler.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/exception_handler_posix.cpp b/externals/dynarmic/src/dynarmic/backend/exception_handler_posix.cpp
+index 8a523267e5..7695df57d2 100644
+--- a/externals/dynarmic/src/dynarmic/backend/exception_handler_posix.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/exception_handler_posix.cpp
+@@ -28,9 +28,9 @@
+ #include <optional>
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #if defined(MCL_ARCHITECTURE_X86_64)
+ #    include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_address_space.cpp b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_address_space.cpp
+index 986ae4ca79..efa211618b 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_address_space.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_address_space.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/backend/riscv64/a32_address_space.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/backend/riscv64/abi.h"
+ #include "dynarmic/backend/riscv64/emit_riscv64.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_interface.cpp b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_interface.cpp
+index dac4d2d2a7..7ad0fd90b0 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_interface.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_interface.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,9 +10,9 @@
+ #include <mutex>
+ 
+ #include <boost/icl/interval_set.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/riscv64/a32_address_space.h"
+ #include "dynarmic/backend/riscv64/a32_core.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.cpp b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.cpp
+index 70482d0a7c..87eeab6b0f 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #include "dynarmic/backend/riscv64/a32_jitstate.h"
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::RV64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.h b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.h
+index 9bf6834088..2fbb5819d9 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.h
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/a32_jitstate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/a32_location_descriptor.h"
+ #include "dynarmic/ir/location_descriptor.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/emit_riscv64.h b/externals/dynarmic/src/dynarmic/backend/riscv64/emit_riscv64.h
+index 5cfd0212c7..68d30d5e15 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/emit_riscv64.h
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/emit_riscv64.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <vector>
+ 
+ #include <biscuit/label.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace biscuit {
+ class Assembler;
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.cpp b/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.cpp
+index 6c89d7b005..e09bd696b8 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,9 +11,9 @@
+ #include <algorithm>
+ #include <array>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/mp/metavalue/lift_value.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/always_false.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.h b/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.h
+index c94027d931..e8fd471ae1 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.h
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/reg_alloc.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -13,8 +16,8 @@
+ 
+ #include <biscuit/assembler.hpp>
+ #include <biscuit/registers.hpp>
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/is_instance_of_template.hpp>
+ #include <ankerl/unordered_dense.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/riscv64/stack_layout.h b/externals/dynarmic/src/dynarmic/backend/riscv64/stack_layout.h
+index 03c0e6f099..082e68aa6d 100644
+--- a/externals/dynarmic/src/dynarmic/backend/riscv64/stack_layout.h
++++ b/externals/dynarmic/src/dynarmic/backend/riscv64/stack_layout.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2024 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::RV64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a32_emit_x64.cpp b/externals/dynarmic/src/dynarmic/backend/x64/a32_emit_x64.cpp
+index 740625c982..43e0750d68 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a32_emit_x64.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a32_emit_x64.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,10 +14,10 @@
+ 
+ #include <fmt/format.h>
+ #include <fmt/ostream.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <boost/container/static_vector.hpp>
+ 
+ #include "dynarmic/backend/x64/a32_jitstate.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a32_interface.cpp b/externals/dynarmic/src/dynarmic/backend/x64/a32_interface.cpp
+index d690aadade..b116ec180e 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a32_interface.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a32_interface.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,10 +12,10 @@
+ 
+ #include <boost/icl/interval_set.hpp>
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/a32_emit_x64.h"
+ #include "dynarmic/backend/x64/a32_jitstate.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.cpp b/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.cpp
+index 2e201c1cc4..ed5a8f9454 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,9 +8,9 @@
+ 
+ #include "dynarmic/backend/x64/a32_jitstate.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+ #include "dynarmic/backend/x64/nzcv_util.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.h b/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.h
+index cc13abf8e2..99510c91cf 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a32_jitstate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::X64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a64_emit_x64.cpp b/externals/dynarmic/src/dynarmic/backend/x64/a64_emit_x64.cpp
+index 4d7bb0d7b1..47a2236a87 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a64_emit_x64.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a64_emit_x64.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,9 +10,9 @@
+ 
+ #include <fmt/format.h>
+ #include <fmt/ostream.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/integer_of_size.hpp>
+ #include <boost/container/static_vector.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a64_interface.cpp b/externals/dynarmic/src/dynarmic/backend/x64/a64_interface.cpp
+index 7c0fa8d205..ddd2327395 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a64_interface.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a64_interface.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <mutex>
+ 
+ #include <boost/icl/interval_set.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ #include <mcl/scope_exit.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/a64_jitstate.h b/externals/dynarmic/src/dynarmic/backend/x64/a64_jitstate.h
+index 0929e81ec5..22fd94e5c9 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/a64_jitstate.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/a64_jitstate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/nzcv_util.h"
+ #include "dynarmic/frontend/A64/a64_location_descriptor.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/abi.cpp b/externals/dynarmic/src/dynarmic/backend/x64/abi.cpp
+index 1d0b32fac9..e8eaddcbac 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/abi.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/abi.cpp
+@@ -11,7 +11,7 @@
+ #include <algorithm>
+ 
+ #include <mcl/iterator/reverse.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <xbyak/xbyak.h>
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/abi.h b/externals/dynarmic/src/dynarmic/backend/x64/abi.h
+index 4bddf51bad..32f2bdac67 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/abi.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/abi.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/hostloc.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.cpp b/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.cpp
+index e5fb25573b..41603abf86 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -21,7 +24,7 @@
+ #include <array>
+ #include <cstring>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <xbyak/xbyak.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.h b/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.h
+index 6a31d13857..4cc8663e11 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/block_of_code.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,7 +14,7 @@
+ #include <type_traits>
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <xbyak/xbyak.h>
+ #include <xbyak/xbyak_util.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/callback.h b/externals/dynarmic/src/dynarmic/backend/x64/callback.h
+index 716555daed..3254eea66c 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/callback.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/callback.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <functional>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <xbyak/xbyak.h>
+ 
+ namespace Dynarmic::Backend::X64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.cpp b/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.cpp
+index ba003262b3..7dbd46bc2a 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <cstring>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.h b/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.h
+index dcf1e9cdc7..8115dcff26 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/constant_pool.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <span>
+ #include <utility>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ #include <xbyak/xbyak.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/constants.h b/externals/dynarmic/src/dynarmic/backend/x64/constants.h
+index f817324142..65c5a09a53 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/constants.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/constants.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <optional>
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/rounding_mode.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/devirtualize.h b/externals/dynarmic/src/dynarmic/backend/x64/devirtualize.h
+index 778536a3bb..318a702194 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/devirtualize.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/devirtualize.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <utility>
+ 
+ #include <mcl/bit_cast.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/function_info.hpp>
+ 
+ #include "dynarmic/backend/x64/callback.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64.cpp
+index b9a705813f..d428199585 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,10 +10,10 @@
+ 
+ #include <iterator>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_aes.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_aes.cpp
+index 9430f0726b..2ec9bce068 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_aes.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_aes.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/abi.h"
+ #include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_data_processing.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_data_processing.cpp
+index cb1afdec9e..4128ef1721 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_data_processing.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_data_processing.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,8 +9,8 @@
+ #include <cstddef>
+ #include <type_traits>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+ #include "dynarmic/backend/x64/emit_x64.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_floating_point.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_floating_point.cpp
+index aeb4ceac3c..63b9659618 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_floating_point.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_floating_point.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,14 +10,14 @@
+ #include <type_traits>
+ #include <utility>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/mp/metavalue/lift_value.hpp>
+ #include <mcl/mp/typelist/cartesian_product.hpp>
+ #include <mcl/mp/typelist/get.hpp>
+ #include <mcl/mp/typelist/lift_sequence.hpp>
+ #include <mcl/mp/typelist/list.hpp>
+ #include <mcl/mp/typelist/lower_to_tuple.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/integer_of_size.hpp>
+ #include <xbyak/xbyak.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_saturation.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_saturation.cpp
+index 24fb895b61..d36a75426a 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_saturation.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_saturation.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,9 +8,9 @@
+ 
+ #include <limits>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/integer_of_size.hpp>
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector.cpp
+index 5d5ea17422..e9b8866b52 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,11 +12,11 @@
+ #include <cstdlib>
+ #include <type_traits>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_count.hpp>
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <mcl/type_traits/function_info.hpp>
+ #include <xbyak/xbyak.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_floating_point.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_floating_point.cpp
+index 88d0786b03..b24120c346 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_floating_point.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_floating_point.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <type_traits>
+ #include <utility>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/mp/metavalue/lift_value.hpp>
+ #include <mcl/mp/typelist/cartesian_product.hpp>
+ #include <mcl/mp/typelist/get.hpp>
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_saturation.cpp b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_saturation.cpp
+index 5bab9c93f4..88bd41a47e 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_saturation.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/emit_x64_vector_saturation.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/block_of_code.h"
+ #include "dynarmic/backend/x64/constants.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/exception_handler_windows.cpp b/externals/dynarmic/src/dynarmic/backend/x64/exception_handler_windows.cpp
+index 633e1aac9d..95eacaae9b 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/exception_handler_windows.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/exception_handler_windows.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,9 +12,9 @@
+ #include <cstring>
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/exception_handler.h"
+ #include "dynarmic/backend/x64/block_of_code.h"
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/exclusive_monitor.cpp b/externals/dynarmic/src/dynarmic/backend/x64/exclusive_monitor.cpp
+index 984b67bb02..09ef60205f 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/exclusive_monitor.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/exclusive_monitor.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <algorithm>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/host_feature.h b/externals/dynarmic/src/dynarmic/backend/x64/host_feature.h
+index 8e3b14c7bb..7246ed18d4 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/host_feature.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/host_feature.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::X64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/hostloc.h b/externals/dynarmic/src/dynarmic/backend/x64/hostloc.h
+index d8de3931da..1b27edbdee 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/hostloc.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/hostloc.h
+@@ -1,11 +1,14 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ #pragma once
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ #include <xbyak/xbyak.h>
+ 
+ namespace Dynarmic::Backend::X64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/nzcv_util.h b/externals/dynarmic/src/dynarmic/backend/x64/nzcv_util.h
+index 3a70cf4f0b..1ee0ed4329 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/nzcv_util.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/nzcv_util.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::X64::NZCV {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/oparg.h b/externals/dynarmic/src/dynarmic/backend/x64/oparg.h
+index 70c60dfb15..4e165b9df9 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/oparg.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/oparg.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <xbyak/xbyak.h>
+ 
+ namespace Dynarmic::Backend::X64 {
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.cpp b/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.cpp
+index db7c692f07..ab3172a7f3 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.cpp
++++ b/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <utility>
+ 
+ #include <fmt/ostream.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ #include <xbyak/xbyak.h>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.h b/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.h
+index 64f7c1ec40..f9b6477b60 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/reg_alloc.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <functional>
+ #include <optional>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <xbyak/xbyak.h>
+ #include <boost/container/static_vector.hpp>
+ #include <boost/container/flat_set.hpp>
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/stack_layout.h b/externals/dynarmic/src/dynarmic/backend/x64/stack_layout.h
+index 7e6799f1cf..50737f12eb 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/stack_layout.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/stack_layout.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Backend::X64 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/backend/x64/verbose_debugging_output.h b/externals/dynarmic/src/dynarmic/backend/x64/verbose_debugging_output.h
+index 70183a6073..68d0ccff24 100644
+--- a/externals/dynarmic/src/dynarmic/backend/x64/verbose_debugging_output.h
++++ b/externals/dynarmic/src/dynarmic/backend/x64/verbose_debugging_output.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2023 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/backend/x64/stack_layout.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/assert.cpp b/externals/dynarmic/src/dynarmic/common/assert.cpp
+new file mode 100644
+index 0000000000..b0d3450c36
+--- /dev/null
++++ b/externals/dynarmic/src/dynarmic/common/assert.cpp
+@@ -0,0 +1,13 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++// SPDX-FileCopyrightText: Copyright 2021 yuzu Emulator Project
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <fmt/format.h>
++
++[[noreturn]] void assert_terminate_impl(const char* expr_str, fmt::string_view msg, fmt::format_args args) {
++    fmt::print(stderr, "assertion failed: {}\n", expr_str);
++    fmt::vprint(stderr, msg, args);
++    std::fflush(stderr);
++    std::terminate();
++}
+diff --git a/externals/dynarmic/src/dynarmic/common/assert.h b/externals/dynarmic/src/dynarmic/common/assert.h
+new file mode 100644
+index 0000000000..48482275ff
+--- /dev/null
++++ b/externals/dynarmic/src/dynarmic/common/assert.h
+@@ -0,0 +1,32 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++// SPDX-FileCopyrightText: 2013 Dolphin Emulator Project
++// SPDX-FileCopyrightText: 2014 Citra Emulator Project
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#pragma once
++
++#include <fmt/format.h>
++
++[[noreturn]] void assert_terminate_impl(const char* expr_str, fmt::string_view msg, fmt::format_args args);
++template<typename... Ts>
++[[noreturn]] void assert_terminate(const char* expr_str, fmt::string_view msg, Ts... args) {
++    assert_terminate_impl(expr_str, msg, fmt::make_format_args(args...));
++}
++
++#define ASSERT_MSG(_a_, ...)                                                                       \
++    ([&]() {                                                                        \
++        if (!(_a_)) [[unlikely]] {                                                                 \
++            assert_terminate(#_a_, __VA_ARGS__);                                                   \
++        }                                                                                          \
++    }())
++
++#define ASSERT(_a_) ASSERT_MSG(_a_, "")
++#define UNREACHABLE() ASSERT(false, "unreachable")
++#ifdef _DEBUG
++#define DEBUG_ASSERT(_a_) ASSERT(_a_)
++#define DEBUG_ASSERT_MSG(_a_, ...) ASSERT_MSG(_a_, __VA_ARGS__)
++#else // not debug
++#define DEBUG_ASSERT(_a_)
++#define DEBUG_ASSERT_MSG(_a_, _desc_, ...)
++#endif
+diff --git a/externals/dynarmic/src/dynarmic/common/atomic.h b/externals/dynarmic/src/dynarmic/common/atomic.h
+index 34042d3802..966921eb9a 100644
+--- a/externals/dynarmic/src/dynarmic/common/atomic.h
++++ b/externals/dynarmic/src/dynarmic/common/atomic.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Atomic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/common_types.h b/externals/dynarmic/src/dynarmic/common/common_types.h
+new file mode 100644
+index 0000000000..8127df3623
+--- /dev/null
++++ b/externals/dynarmic/src/dynarmic/common/common_types.h
+@@ -0,0 +1,23 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
++#pragma once
++
++#include <cstdint>
++#include <array>
++
++using u8 = std::uint8_t;   ///< 8-bit unsigned byte
++using u16 = std::uint16_t; ///< 16-bit unsigned short
++using u32 = std::uint32_t; ///< 32-bit unsigned word
++using u64 = std::uint64_t; ///< 64-bit unsigned int
++
++using s8 = std::int8_t;   ///< 8-bit signed byte
++using s16 = std::int16_t; ///< 16-bit signed short
++using s32 = std::int32_t; ///< 32-bit signed word
++using s64 = std::int64_t; ///< 64-bit signed int
++
++using f32 = float;  ///< 32-bit floating point
++using f64 = double; ///< 64-bit floating point
++
++using u128 = std::array<std::uint64_t, 2>;
++static_assert(sizeof(u128) == 16, "u128 must be 128 bits wide");
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/aes.cpp b/externals/dynarmic/src/dynarmic/common/crypto/aes.cpp
+index c431758e57..c72481fbe3 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/aes.cpp
++++ b/externals/dynarmic/src/dynarmic/common/crypto/aes.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::AES {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/aes.h b/externals/dynarmic/src/dynarmic/common/crypto/aes.h
+index fa6d5a81b3..f5d68fe166 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/aes.h
++++ b/externals/dynarmic/src/dynarmic/common/crypto/aes.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::AES {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/crc32.cpp b/externals/dynarmic/src/dynarmic/common/crypto/crc32.cpp
+index c00385078b..c2821fa2c3 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/crc32.cpp
++++ b/externals/dynarmic/src/dynarmic/common/crypto/crc32.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::CRC32 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/crc32.h b/externals/dynarmic/src/dynarmic/common/crypto/crc32.h
+index 30942327d4..391bd8074b 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/crc32.h
++++ b/externals/dynarmic/src/dynarmic/common/crypto/crc32.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::CRC32 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/sm4.cpp b/externals/dynarmic/src/dynarmic/common/crypto/sm4.cpp
+index 5743e5be9a..d775e1bf6d 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/sm4.cpp
++++ b/externals/dynarmic/src/dynarmic/common/crypto/sm4.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::SM4 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/crypto/sm4.h b/externals/dynarmic/src/dynarmic/common/crypto/sm4.h
+index 417e9b9263..af7a67f871 100644
+--- a/externals/dynarmic/src/dynarmic/common/crypto/sm4.h
++++ b/externals/dynarmic/src/dynarmic/common/crypto/sm4.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common::Crypto::SM4 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/fpcr.h b/externals/dynarmic/src/dynarmic/common/fp/fpcr.h
+index 287f6d2889..803c9cb2a4 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/fpcr.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/fpcr.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,9 +10,9 @@
+ 
+ #include <optional>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/rounding_mode.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/fpsr.h b/externals/dynarmic/src/dynarmic/common/fp/fpsr.h
+index fba58ebbb7..9308132879 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/fpsr.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/fpsr.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::FP {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/info.h b/externals/dynarmic/src/dynarmic/common/fp/info.h
+index 8cc2d29de4..3969843f0f 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/info.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/info.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <mcl/bit/bit_count.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::FP {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/mantissa_util.h b/externals/dynarmic/src/dynarmic/common/fp/mantissa_util.h
+index 31be52f761..3999f97c27 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/mantissa_util.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/mantissa_util.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::FP {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPConvert.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPConvert.cpp
+index 85f1eaf899..906aa781a1 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPConvert.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPConvert.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2019 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPMulAdd.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPMulAdd.cpp
+index f97f88de17..6990b135f6 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPMulAdd.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPMulAdd.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/common/fp/op/FPMulAdd.h"
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPRSqrtEstimate.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPRSqrtEstimate.cpp
+index ed28bcc5cc..6b2d43e1ce 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPRSqrtEstimate.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPRSqrtEstimate.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/common/fp/op/FPRSqrtEstimate.h"
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipEstimate.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipEstimate.cpp
+index 1fd4b924b2..edab4bf147 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipEstimate.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipEstimate.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,8 +10,8 @@
+ 
+ #include <tuple>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipExponent.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipExponent.cpp
+index 171b94e96e..e932e02803 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipExponent.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPRecipExponent.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #include "dynarmic/common/fp/op/FPRecipExponent.h"
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.cpp
+index 7325909075..198a71c807 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,9 +8,9 @@
+ 
+ #include "dynarmic/common/fp/op/FPRoundInt.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.h b/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.h
+index e326627ce1..1eb2bd8877 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPRoundInt.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::FP {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.cpp b/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.cpp
+index b1a57d3104..8e3474952a 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,10 +9,10 @@
+ #include "dynarmic/common/fp/op/FPToFixed.h"
+ 
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_count.hpp>
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.h b/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.h
+index 53a952836e..6e19607d51 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/op/FPToFixed.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::FP {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/process_exception.cpp b/externals/dynarmic/src/dynarmic/common/fp/process_exception.cpp
+index a97e0ec820..4f34ee0f34 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/process_exception.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/process_exception.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/common/fp/process_exception.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/process_nan.cpp b/externals/dynarmic/src/dynarmic/common/fp/process_nan.cpp
+index 516b92adb6..ff1b09f4ba 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/process_nan.cpp
++++ b/externals/dynarmic/src/dynarmic/common/fp/process_nan.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <optional>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+diff --git a/externals/dynarmic/src/dynarmic/common/fp/unpacked.h b/externals/dynarmic/src/dynarmic/common/fp/unpacked.h
+index 77f33d8966..49dca74304 100644
+--- a/externals/dynarmic/src/dynarmic/common/fp/unpacked.h
++++ b/externals/dynarmic/src/dynarmic/common/fp/unpacked.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <tuple>
+ 
+ #include <mcl/bit/bit_count.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/llvm_disassemble.cpp b/externals/dynarmic/src/dynarmic/common/llvm_disassemble.cpp
+index 636ee3a250..31d55c134c 100644
+--- a/externals/dynarmic/src/dynarmic/common/llvm_disassemble.cpp
++++ b/externals/dynarmic/src/dynarmic/common/llvm_disassemble.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -12,9 +15,9 @@
+ #    include <llvm-c/Target.h>
+ #endif
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/llvm_disassemble.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/llvm_disassemble.h b/externals/dynarmic/src/dynarmic/common/llvm_disassemble.h
+index 56de791a56..226b742ec5 100644
+--- a/externals/dynarmic/src/dynarmic/common/llvm_disassemble.h
++++ b/externals/dynarmic/src/dynarmic/common/llvm_disassemble.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <string>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/math_util.h b/externals/dynarmic/src/dynarmic/common/math_util.h
+index 5c1f784c89..8915100ae4 100644
+--- a/externals/dynarmic/src/dynarmic/common/math_util.h
++++ b/externals/dynarmic/src/dynarmic/common/math_util.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <utility>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/safe_ops.h b/externals/dynarmic/src/dynarmic/common/safe_ops.h
+index aef3134762..f494bdb24b 100644
+--- a/externals/dynarmic/src/dynarmic/common/safe_ops.h
++++ b/externals/dynarmic/src/dynarmic/common/safe_ops.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <type_traits>
+ 
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/u128.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/u128.cpp b/externals/dynarmic/src/dynarmic/common/u128.cpp
+index dd78ac97ef..fb7de7a495 100644
+--- a/externals/dynarmic/src/dynarmic/common/u128.cpp
++++ b/externals/dynarmic/src/dynarmic/common/u128.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/common/u128.h"
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/u128.h b/externals/dynarmic/src/dynarmic/common/u128.h
+index f6df1ae6cc..9ab4aa0bd5 100644
+--- a/externals/dynarmic/src/dynarmic/common/u128.h
++++ b/externals/dynarmic/src/dynarmic/common/u128.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ 
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/x64_disassemble.cpp b/externals/dynarmic/src/dynarmic/common/x64_disassemble.cpp
+index 854de23a77..af37c93c02 100644
+--- a/externals/dynarmic/src/dynarmic/common/x64_disassemble.cpp
++++ b/externals/dynarmic/src/dynarmic/common/x64_disassemble.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <Zydis/Zydis.h>
+ #include <fmt/printf.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/common/x64_disassemble.h b/externals/dynarmic/src/dynarmic/common/x64_disassemble.h
+index 03c511bfda..0f56464175 100644
+--- a/externals/dynarmic/src/dynarmic/common/x64_disassemble.h
++++ b/externals/dynarmic/src/dynarmic/common/x64_disassemble.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <string>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::Common {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/FPSCR.h b/externals/dynarmic/src/dynarmic/frontend/A32/FPSCR.h
+index 28414e9fa1..7a4c738e9e 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/FPSCR.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/FPSCR.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <optional>
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/rounding_mode.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/ITState.h b/externals/dynarmic/src/dynarmic/frontend/A32/ITState.h
+index ae69fa1e3f..eeddaeb6b5 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/ITState.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/ITState.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2019 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/cond.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/PSR.h b/externals/dynarmic/src/dynarmic/frontend/A32/PSR.h
+index 9af78eaae5..328fdb17c0 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/PSR.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/PSR.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/ITState.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.cpp
+index 343e521aba..396ab938f7 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/frontend/A32/a32_ir_emitter.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/frontend/A32/a32_types.h"
+ #include "dynarmic/interface/A32/arch_version.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.h b/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.h
+index 38160f96d4..0492b872ec 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/a32_ir_emitter.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <utility>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/a32_location_descriptor.h"
+ #include "dynarmic/ir/ir_emitter.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/a32_location_descriptor.h b/externals/dynarmic/src/dynarmic/frontend/A32/a32_location_descriptor.h
+index c53e75d4b7..cd850d0087 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/a32_location_descriptor.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/a32_location_descriptor.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <tuple>
+ 
+ #include <fmt/format.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/FPSCR.h"
+ #include "dynarmic/frontend/A32/ITState.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/a32_types.h b/externals/dynarmic/src/dynarmic/frontend/A32/a32_types.h
+index 6f56bea51a..5afd82f77f 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/a32_types.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/a32_types.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,8 +12,8 @@
+ #include <utility>
+ 
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/interface/A32/coprocessor_util.h"
+ #include "dynarmic/ir/cond.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/arm.h b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/arm.h
+index e4cf4a2865..0257c28ddb 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/arm.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/arm.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -13,7 +16,7 @@
+ #include <vector>
+ 
+ #include <mcl/bit/bit_count.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/asimd.h b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/asimd.h
+index cfcd28c6e6..f2e206695b 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/asimd.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/asimd.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -12,7 +15,7 @@
+ #include <vector>
+ 
+ #include <mcl/bit/bit_count.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb16.h b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb16.h
+index 6a4275f726..8073ee5d47 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb16.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb16.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <optional>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb32.h b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb32.h
+index f3f4b3b9ee..86a4d767a7 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb32.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/thumb32.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <optional>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/vfp.h b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/vfp.h
+index f79a859bf7..5fcacd2bda 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/decoder/vfp.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/decoder/vfp.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2032 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <optional>
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/disassembler/disassembler.h b/externals/dynarmic/src/dynarmic/frontend/A32/disassembler/disassembler.h
+index 6a61afdefa..1b16584dcf 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/disassembler/disassembler.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/disassembler/disassembler.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <string>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::A32 {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/a32_translate.h b/externals/dynarmic/src/dynarmic/frontend/A32/translate/a32_translate.h
+index 0f2c3a121f..df0b86e9ff 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/a32_translate.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/a32_translate.h
+@@ -1,10 +1,13 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/interface/A32/arch_version.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.cpp
+index 2675657483..725418ec04 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,8 +10,8 @@
+ 
+ #include <algorithm>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/a32_ir_emitter.h"
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.h b/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.h
+index 27e1c98da7..ab52dd7198 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/conditional_state.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::IR {
+ enum class Cond;
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.cpp
+index c83529f343..64040124fe 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/interface/A32/config.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.h b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.h
+index d33069c6e0..0a3cab3c12 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/a32_translate_impl.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #pragma once
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bit/rotate.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_misc.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_misc.cpp
+index e30c438eff..9d73e7d4ae 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_misc.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_misc.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_count.hpp>
+ #include <mcl/bit/bit_field.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_one_reg_modified_immediate.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_one_reg_modified_immediate.cpp
+index 94e3e841e8..459cbfea06 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_one_reg_modified_immediate.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_one_reg_modified_immediate.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ 
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_scalar.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_scalar.cpp
+index 8d1876a05d..4d6855f1ed 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_scalar.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_scalar.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include <utility>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ 
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_shift.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_shift.cpp
+index cbdfea04ce..27e94628a8 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_shift.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/asimd_two_regs_shift.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_count.hpp>
+ #include <mcl/bit/bit_field.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/thumb32_data_processing_plain_binary_immediate.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/thumb32_data_processing_plain_binary_immediate.cpp
+index 14a3fef2d1..874edd4e16 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/thumb32_data_processing_plain_binary_immediate.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/impl/thumb32_data_processing_plain_binary_immediate.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bitsizeof.hpp>
+ 
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_arm.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_arm.cpp
+index 24b5797de8..05316f8992 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_arm.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_arm.cpp
+@@ -1,9 +1,12 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/frontend/A32/a32_location_descriptor.h"
+ #include "dynarmic/frontend/A32/a32_types.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_thumb.cpp b/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_thumb.cpp
+index d61d8ccbff..5bb516ccfd 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_thumb.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A32/translate/translate_thumb.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include <tuple>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bit/swap.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/a64_ir_emitter.h b/externals/dynarmic/src/dynarmic/frontend/A64/a64_ir_emitter.h
+index 3bf633a3da..18f32cdcc9 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/a64_ir_emitter.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/a64_ir_emitter.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,8 +10,8 @@
+ 
+ #include <optional>
+ 
+-#include <mcl/stdint.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/common_types.h"
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/frontend/A64/a64_location_descriptor.h"
+ #include "dynarmic/frontend/A64/a64_types.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/a64_location_descriptor.h b/externals/dynarmic/src/dynarmic/frontend/A64/a64_location_descriptor.h
+index 122bebbcb7..4bfc5f890e 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/a64_location_descriptor.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/a64_location_descriptor.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,7 +14,7 @@
+ 
+ #include <fmt/format.h>
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/ir/location_descriptor.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/a64_types.h b/externals/dynarmic/src/dynarmic/frontend/A64/a64_types.h
+index 6bc7a24536..8d0f0abe80 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/a64_types.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/a64_types.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,8 +11,8 @@
+ #include <string>
+ 
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/cond.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/decoder/a64.h b/externals/dynarmic/src/dynarmic/frontend/A64/decoder/a64.h
+index e807490d16..c651dd7cde 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/decoder/a64.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/decoder/a64.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -13,7 +16,7 @@
+ #include <vector>
+ 
+ #include <mcl/bit/bit_count.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/decoder/decoder_detail.h"
+ #include "dynarmic/frontend/decoder/matcher.h"
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/translate/a64_translate.h b/externals/dynarmic/src/dynarmic/frontend/A64/translate/a64_translate.h
+index 2f62ac6e50..be55fb3970 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/translate/a64_translate.h
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/translate/a64_translate.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ #include <functional>
+ #include <optional>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/A64/translate/impl/simd_vector_x_indexed_element.cpp b/externals/dynarmic/src/dynarmic/frontend/A64/translate/impl/simd_vector_x_indexed_element.cpp
+index d23b5fc144..1956c53acc 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/A64/translate/impl/simd_vector_x_indexed_element.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/A64/translate/impl/simd_vector_x_indexed_element.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include <utility>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/frontend/A64/translate/impl/impl.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/decoder/decoder_detail.h b/externals/dynarmic/src/dynarmic/frontend/decoder/decoder_detail.h
+index cf7d0e64bc..bd76efda2a 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/decoder/decoder_detail.h
++++ b/externals/dynarmic/src/dynarmic/frontend/decoder/decoder_detail.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <array>
+ #include <tuple>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bitsizeof.hpp>
+ #include <mcl/type_traits/function_info.hpp>
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/decoder/matcher.h b/externals/dynarmic/src/dynarmic/frontend/decoder/matcher.h
+index adf9556dd4..7e5c9c5a8f 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/decoder/matcher.h
++++ b/externals/dynarmic/src/dynarmic/frontend/decoder/matcher.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <functional>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ namespace Dynarmic::Decoder {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/imm.cpp b/externals/dynarmic/src/dynarmic/frontend/imm.cpp
+index c802864df9..95e24206d7 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/imm.cpp
++++ b/externals/dynarmic/src/dynarmic/frontend/imm.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,9 +8,9 @@
+ 
+ #include "dynarmic/frontend/imm.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/frontend/imm.h b/externals/dynarmic/src/dynarmic/frontend/imm.h
+index 7d86abbb61..2d529a23b8 100644
+--- a/externals/dynarmic/src/dynarmic/frontend/imm.h
++++ b/externals/dynarmic/src/dynarmic/frontend/imm.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,10 +10,10 @@
+ 
+ #include <type_traits>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ #include <mcl/bitsizeof.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/math_util.h"
+ 
+diff --git a/externals/dynarmic/src/dynarmic/ir/basic_block.cpp b/externals/dynarmic/src/dynarmic/ir/basic_block.cpp
+index c818fe0b17..12765e26a8 100644
+--- a/externals/dynarmic/src/dynarmic/ir/basic_block.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/basic_block.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,7 +14,7 @@
+ #include <string>
+ 
+ #include <fmt/format.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/common/memory_pool.h"
+ #include "dynarmic/frontend/A32/a32_types.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/basic_block.h b/externals/dynarmic/src/dynarmic/ir/basic_block.h
+index 6608f0e3a2..45b1f4ecde 100644
+--- a/externals/dynarmic/src/dynarmic/ir/basic_block.h
++++ b/externals/dynarmic/src/dynarmic/ir/basic_block.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,7 +14,7 @@
+ #include <string>
+ 
+ #include <mcl/container/intrusive_list.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/location_descriptor.h"
+ #include "dynarmic/ir/microinstruction.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/ir_emitter.cpp b/externals/dynarmic/src/dynarmic/ir/ir_emitter.cpp
+index 3734aae4d5..a8ef7e2989 100644
+--- a/externals/dynarmic/src/dynarmic/ir/ir_emitter.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/ir_emitter.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ 
+ #include "dynarmic/ir/opcodes.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/ir_emitter.h b/externals/dynarmic/src/dynarmic/ir/ir_emitter.h
+index 23cfb47498..dba34bcc56 100644
+--- a/externals/dynarmic/src/dynarmic/ir/ir_emitter.h
++++ b/externals/dynarmic/src/dynarmic/ir/ir_emitter.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,8 +10,8 @@
+ 
+ #include <vector>
+ 
+-#include <mcl/stdint.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/common_types.h"
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit_cast.hpp>
+ 
+ #include "dynarmic/ir/opcodes.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/location_descriptor.h b/externals/dynarmic/src/dynarmic/ir/location_descriptor.h
+index 48e5e32bb1..5c7c954d38 100644
+--- a/externals/dynarmic/src/dynarmic/ir/location_descriptor.h
++++ b/externals/dynarmic/src/dynarmic/ir/location_descriptor.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ #include <string>
+ 
+ #include <fmt/format.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::IR {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/ir/microinstruction.cpp b/externals/dynarmic/src/dynarmic/ir/microinstruction.cpp
+index 3f67a3ad78..f0ea4ac2c2 100644
+--- a/externals/dynarmic/src/dynarmic/ir/microinstruction.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/microinstruction.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <algorithm>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/ir/opcodes.h"
+ #include "dynarmic/ir/type.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/microinstruction.h b/externals/dynarmic/src/dynarmic/ir/microinstruction.h
+index a26a9d80b3..bc5a355793 100644
+--- a/externals/dynarmic/src/dynarmic/ir/microinstruction.h
++++ b/externals/dynarmic/src/dynarmic/ir/microinstruction.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <array>
+ 
+ #include <mcl/container/intrusive_list.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/value.h"
+ #include "dynarmic/ir/opcodes.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/opcodes.h b/externals/dynarmic/src/dynarmic/ir/opcodes.h
+index 2af7a9b24f..c11ad549da 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opcodes.h
++++ b/externals/dynarmic/src/dynarmic/ir/opcodes.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <string>
+ 
+ #include <fmt/format.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::IR {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/ir/opt/a32_get_set_elimination_pass.cpp b/externals/dynarmic/src/dynarmic/ir/opt/a32_get_set_elimination_pass.cpp
+index 06e159ba48..499b38b120 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opt/a32_get_set_elimination_pass.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/opt/a32_get_set_elimination_pass.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,8 +10,8 @@
+ #include <array>
+ #include <functional>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A32/a32_ir_emitter.h"
+ #include "dynarmic/frontend/A32/a32_types.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/opt/a64_get_set_elimination_pass.cpp b/externals/dynarmic/src/dynarmic/ir/opt/a64_get_set_elimination_pass.cpp
+index 4034eebfc3..53e3b27176 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opt/a64_get_set_elimination_pass.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/opt/a64_get_set_elimination_pass.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include <array>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A64/a64_types.h"
+ #include "dynarmic/ir/basic_block.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/opt/a64_merge_interpret_blocks.cpp b/externals/dynarmic/src/dynarmic/ir/opt/a64_merge_interpret_blocks.cpp
+index 00a0e1b672..25b7ef0ff1 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opt/a64_merge_interpret_blocks.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/opt/a64_merge_interpret_blocks.cpp
+@@ -1,10 +1,13 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+ #include <boost/variant/get.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/frontend/A64/a64_location_descriptor.h"
+ #include "dynarmic/frontend/A64/translate/a64_translate.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/opt/constant_propagation_pass.cpp b/externals/dynarmic/src/dynarmic/ir/opt/constant_propagation_pass.cpp
+index 83530fc453..86ebca87d2 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opt/constant_propagation_pass.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/opt/constant_propagation_pass.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,10 +8,10 @@
+ 
+ #include <optional>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/rotate.hpp>
+ #include <mcl/bit/swap.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/safe_ops.h"
+ #include "dynarmic/ir/basic_block.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/opt/verification_pass.cpp b/externals/dynarmic/src/dynarmic/ir/opt/verification_pass.cpp
+index 9252997fcf..c6c2cff231 100644
+--- a/externals/dynarmic/src/dynarmic/ir/opt/verification_pass.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/opt/verification_pass.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,8 +9,8 @@
+ #include <cstdio>
+ #include <map>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ #include <ankerl/unordered_dense.h>
+ 
+ #include "dynarmic/ir/basic_block.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/terminal.h b/externals/dynarmic/src/dynarmic/ir/terminal.h
+index d437ffd5b6..130dfc6574 100644
+--- a/externals/dynarmic/src/dynarmic/ir/terminal.h
++++ b/externals/dynarmic/src/dynarmic/ir/terminal.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #pragma once
+ 
+ #include <boost/variant.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/cond.h"
+ #include "dynarmic/ir/location_descriptor.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/type.h b/externals/dynarmic/src/dynarmic/ir/type.h
+index 65fe76dd65..0aaf9d9414 100644
+--- a/externals/dynarmic/src/dynarmic/ir/type.h
++++ b/externals/dynarmic/src/dynarmic/ir/type.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <string>
+ 
+ #include <fmt/format.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ namespace Dynarmic::IR {
+ 
+diff --git a/externals/dynarmic/src/dynarmic/ir/value.cpp b/externals/dynarmic/src/dynarmic/ir/value.cpp
+index 957e78d8fa..6f8a386827 100644
+--- a/externals/dynarmic/src/dynarmic/ir/value.cpp
++++ b/externals/dynarmic/src/dynarmic/ir/value.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "dynarmic/ir/value.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ 
+ #include "dynarmic/ir/microinstruction.h"
+diff --git a/externals/dynarmic/src/dynarmic/ir/value.h b/externals/dynarmic/src/dynarmic/ir/value.h
+index e396641144..4eca82ae94 100644
+--- a/externals/dynarmic/src/dynarmic/ir/value.h
++++ b/externals/dynarmic/src/dynarmic/ir/value.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,8 +11,8 @@
+ #include <array>
+ #include <type_traits>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/ir/type.h"
+ 
+diff --git a/externals/dynarmic/tests/A32/fuzz_arm.cpp b/externals/dynarmic/tests/A32/fuzz_arm.cpp
+index cda424e27d..9498f86d9b 100644
+--- a/externals/dynarmic/tests/A32/fuzz_arm.cpp
++++ b/externals/dynarmic/tests/A32/fuzz_arm.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -15,7 +18,7 @@
+ #include <mcl/bit/bit_count.hpp>
+ #include <mcl/bit/swap.hpp>
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../fuzz_util.h"
+ #include "../rand_int.h"
+diff --git a/externals/dynarmic/tests/A32/fuzz_thumb.cpp b/externals/dynarmic/tests/A32/fuzz_thumb.cpp
+index f13c5ee018..dfd5672772 100644
+--- a/externals/dynarmic/tests/A32/fuzz_thumb.cpp
++++ b/externals/dynarmic/tests/A32/fuzz_thumb.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -14,7 +17,7 @@
+ 
+ #include <catch2/catch_test_macros.hpp>
+ #include <mcl/bit/bit_field.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../rand_int.h"
+ #include "../unicorn_emu/a32_unicorn.h"
+diff --git a/externals/dynarmic/tests/A32/test_thumb_instructions.cpp b/externals/dynarmic/tests/A32/test_thumb_instructions.cpp
+index dda0fc46b5..b34e60749b 100644
+--- a/externals/dynarmic/tests/A32/test_thumb_instructions.cpp
++++ b/externals/dynarmic/tests/A32/test_thumb_instructions.cpp
+@@ -1,10 +1,13 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2016 MerryMage
+  * SPDX-License-Identifier: 0BSD
+  */
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "./testenv.h"
+ #include "dynarmic/interface/A32/a32.h"
+diff --git a/externals/dynarmic/tests/A32/testenv.h b/externals/dynarmic/tests/A32/testenv.h
+index 4345663b34..b196c5e568 100644
+--- a/externals/dynarmic/tests/A32/testenv.h
++++ b/externals/dynarmic/tests/A32/testenv.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -11,8 +14,8 @@
+ #include <string>
+ #include <vector>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/interface/A32/a32.h"
+ 
+diff --git a/externals/dynarmic/tests/A64/fibonacci.cpp b/externals/dynarmic/tests/A64/fibonacci.cpp
+index 29dcbdcd72..cbb02d1b01 100644
+--- a/externals/dynarmic/tests/A64/fibonacci.cpp
++++ b/externals/dynarmic/tests/A64/fibonacci.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2023 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <map>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ #include <oaknut/oaknut.hpp>
+ 
+ #include "dynarmic/interface/A64/a64.h"
+diff --git a/externals/dynarmic/tests/A64/fp_min_max.cpp b/externals/dynarmic/tests/A64/fp_min_max.cpp
+index a857005d15..3d997d956d 100644
+--- a/externals/dynarmic/tests/A64/fp_min_max.cpp
++++ b/externals/dynarmic/tests/A64/fp_min_max.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #include <vector>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "./testenv.h"
+ 
+diff --git a/externals/dynarmic/tests/A64/fuzz_with_unicorn.cpp b/externals/dynarmic/tests/A64/fuzz_with_unicorn.cpp
+index 27d014f71e..8eda62f21e 100644
+--- a/externals/dynarmic/tests/A64/fuzz_with_unicorn.cpp
++++ b/externals/dynarmic/tests/A64/fuzz_with_unicorn.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ 
+ #include <catch2/catch_test_macros.hpp>
+ #include <mcl/scope_exit.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../fuzz_util.h"
+ #include "../rand_int.h"
+diff --git a/externals/dynarmic/tests/A64/testenv.h b/externals/dynarmic/tests/A64/testenv.h
+index 73525242c3..2c5a500f75 100644
+--- a/externals/dynarmic/tests/A64/testenv.h
++++ b/externals/dynarmic/tests/A64/testenv.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,8 +11,8 @@
+ #include <array>
+ #include <map>
+ 
+-#include <mcl/assert.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/assert.h"
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/interface/A64/a64.h"
+ 
+diff --git a/externals/dynarmic/tests/decoder_tests.cpp b/externals/dynarmic/tests/decoder_tests.cpp
+index 2028ac98cd..e545309960 100644
+--- a/externals/dynarmic/tests/decoder_tests.cpp
++++ b/externals/dynarmic/tests/decoder_tests.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2020 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <iostream>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "dynarmic/frontend/A32/decoder/asimd.h"
+ #include "dynarmic/frontend/A32/translate/impl/a32_translate_impl.h"
+diff --git a/externals/dynarmic/tests/fp/FPToFixed.cpp b/externals/dynarmic/tests/fp/FPToFixed.cpp
+index 31a684a687..570ebcbbd7 100644
+--- a/externals/dynarmic/tests/fp/FPToFixed.cpp
++++ b/externals/dynarmic/tests/fp/FPToFixed.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ #include <vector>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../rand_int.h"
+ #include "dynarmic/common/fp/fpcr.h"
+diff --git a/externals/dynarmic/tests/fp/mantissa_util_tests.cpp b/externals/dynarmic/tests/fp/mantissa_util_tests.cpp
+index cff942c73f..de29d51865 100644
+--- a/externals/dynarmic/tests/fp/mantissa_util_tests.cpp
++++ b/externals/dynarmic/tests/fp/mantissa_util_tests.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ #include <vector>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../rand_int.h"
+ #include "dynarmic/common/fp/mantissa_util.h"
+diff --git a/externals/dynarmic/tests/fp/unpacked_tests.cpp b/externals/dynarmic/tests/fp/unpacked_tests.cpp
+index 827b85ac9e..919f21bf2f 100644
+--- a/externals/dynarmic/tests/fp/unpacked_tests.cpp
++++ b/externals/dynarmic/tests/fp/unpacked_tests.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ #include <vector>
+ 
+ #include <catch2/catch_test_macros.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../rand_int.h"
+ #include "dynarmic/common/fp/fpcr.h"
+diff --git a/externals/dynarmic/tests/fuzz_util.cpp b/externals/dynarmic/tests/fuzz_util.cpp
+index 12dc850b42..351eb1e10f 100644
+--- a/externals/dynarmic/tests/fuzz_util.cpp
++++ b/externals/dynarmic/tests/fuzz_util.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -9,7 +12,7 @@
+ 
+ #include <fmt/format.h>
+ #include <fmt/ostream.h>
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #include "./rand_int.h"
+ #include "dynarmic/common/fp/fpcr.h"
+diff --git a/externals/dynarmic/tests/fuzz_util.h b/externals/dynarmic/tests/fuzz_util.h
+index 9530307725..a0b8666969 100644
+--- a/externals/dynarmic/tests/fuzz_util.h
++++ b/externals/dynarmic/tests/fuzz_util.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -8,7 +11,7 @@
+ #include <array>
+ #include <iosfwd>
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ using Vector = std::array<u64, 2>;
+ 
+diff --git a/externals/dynarmic/tests/print_info.cpp b/externals/dynarmic/tests/print_info.cpp
+index a8580b7b03..ef8b87bbd1 100644
+--- a/externals/dynarmic/tests/print_info.cpp
++++ b/externals/dynarmic/tests/print_info.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -15,7 +18,7 @@
+ #include <fmt/format.h>
+ #include <fmt/ostream.h>
+ #include <mcl/bit/swap.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/llvm_disassemble.h"
+ #include "dynarmic/frontend/A32/a32_location_descriptor.h"
+diff --git a/externals/dynarmic/tests/rsqrt_test.cpp b/externals/dynarmic/tests/rsqrt_test.cpp
+index 7adbe39e12..6af71ede64 100644
+--- a/externals/dynarmic/tests/rsqrt_test.cpp
++++ b/externals/dynarmic/tests/rsqrt_test.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2021 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -6,7 +9,7 @@
+ #include <catch2/benchmark/catch_benchmark.hpp>
+ #include <catch2/catch_test_macros.hpp>
+ #include <fmt/printf.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "dynarmic/common/fp/fpcr.h"
+ #include "dynarmic/common/fp/fpsr.h"
+diff --git a/externals/dynarmic/tests/test_generator.cpp b/externals/dynarmic/tests/test_generator.cpp
+index 450d3e3fc4..c8f05d06f8 100644
+--- a/externals/dynarmic/tests/test_generator.cpp
++++ b/externals/dynarmic/tests/test_generator.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2022 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -15,7 +18,7 @@
+ 
+ #include <mcl/bit/swap.hpp>
+ #include <mcl/macro/architecture.hpp>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "./A32/testenv.h"
+ #include "./A64/testenv.h"
+diff --git a/externals/dynarmic/tests/test_reader.cpp b/externals/dynarmic/tests/test_reader.cpp
+index 211d26adda..dd7fccc7d7 100644
+--- a/externals/dynarmic/tests/test_reader.cpp
++++ b/externals/dynarmic/tests/test_reader.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2023 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -10,7 +13,7 @@
+ #include <vector>
+ 
+ #include <fmt/format.h>
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "./A32/testenv.h"
+ #include "./A64/testenv.h"
+diff --git a/externals/dynarmic/tests/unicorn_emu/a32_unicorn.cpp b/externals/dynarmic/tests/unicorn_emu/a32_unicorn.cpp
+index db704c97df..415ad311e5 100644
+--- a/externals/dynarmic/tests/unicorn_emu/a32_unicorn.cpp
++++ b/externals/dynarmic/tests/unicorn_emu/a32_unicorn.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -7,7 +10,7 @@
+ 
+ #include <type_traits>
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ #include <mcl/bit/bit_field.hpp>
+ 
+ #include "../A32/testenv.h"
+diff --git a/externals/dynarmic/tests/unicorn_emu/a32_unicorn.h b/externals/dynarmic/tests/unicorn_emu/a32_unicorn.h
+index d4fe3c41a4..79831b8111 100644
+--- a/externals/dynarmic/tests/unicorn_emu/a32_unicorn.h
++++ b/externals/dynarmic/tests/unicorn_emu/a32_unicorn.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -16,7 +19,7 @@
+ #    include <unicorn/unicorn.h>
+ #endif
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../A32/testenv.h"
+ 
+diff --git a/externals/dynarmic/tests/unicorn_emu/a64_unicorn.cpp b/externals/dynarmic/tests/unicorn_emu/a64_unicorn.cpp
+index 3c202c7c8e..42b72bdb91 100644
+--- a/externals/dynarmic/tests/unicorn_emu/a64_unicorn.cpp
++++ b/externals/dynarmic/tests/unicorn_emu/a64_unicorn.cpp
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -5,7 +8,7 @@
+ 
+ #include "./a64_unicorn.h"
+ 
+-#include <mcl/assert.hpp>
++#include "dynarmic/common/assert.h"
+ 
+ #define CHECKED(expr)                                                                                    \
+     do {                                                                                                 \
+diff --git a/externals/dynarmic/tests/unicorn_emu/a64_unicorn.h b/externals/dynarmic/tests/unicorn_emu/a64_unicorn.h
+index 57759605f0..54f09c3b28 100644
+--- a/externals/dynarmic/tests/unicorn_emu/a64_unicorn.h
++++ b/externals/dynarmic/tests/unicorn_emu/a64_unicorn.h
+@@ -1,3 +1,6 @@
++// SPDX-FileCopyrightText: Copyright 2025 Eden Emulator Project
++// SPDX-License-Identifier: GPL-3.0-or-later
++
+ /* This file is part of the dynarmic project.
+  * Copyright (c) 2018 MerryMage
+  * SPDX-License-Identifier: 0BSD
+@@ -16,7 +19,7 @@
+ #    include <unicorn/unicorn.h>
+ #endif
+ 
+-#include <mcl/stdint.hpp>
++#include "dynarmic/common/common_types.h"
+ 
+ #include "../A64/testenv.h"
+ 
