@@ -8,6 +8,7 @@ inherit cmake git-r3 xdg
 DESCRIPTION="An emulator for Nintendo Switch"
 HOMEPAGE="https://eden-emulator.github.io/"
 EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
+EGIT_COMMIT="v${PV/_/-}"
 
 EGIT_SUBMODULES=( '-*'
 	'VulkanMemoryAllocator' 'sirit'
@@ -20,7 +21,7 @@ EGIT_SUBMODULES=( '-*'
 LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
-KEYWORDS=""
+KEYWORDS="~amd64"
 IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine +web-service wifi"
 
 RDEPEND="
@@ -63,7 +64,7 @@ BDEPEND="
 RESTRICT="!test? ( test )"
 
 PATCHES=(
-	"${FILESDIR}/${P}-cstdlib.patch"
+	"${FILESDIR}/${PN}-0.0.3-cstdlib.patch"
 )
 
 src_unpack() {
@@ -88,6 +89,9 @@ src_unpack() {
 }
 
 src_prepare() {
+	# Need to investigate, but reverts cleanly in 0.0.3
+	eapply -R "${FILESDIR}"/${PN}-0.0.3-assert_111f2c3be5.patch
+
 	# boost: system version, no Boost::headers
 	sed -i -e '/add_subdirectory(boost-headers)/d' externals/CMakeLists.txt || die
 	sed -i -e 's/Boost::headers//' src/*/CMakeLists.txt || die
