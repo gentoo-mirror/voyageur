@@ -64,7 +64,7 @@ BDEPEND="
 RESTRICT="!test? ( test )"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-9999-cstdlib.patch"
+	"${FILESDIR}/${PN}-0.0.3-cstdlib.patch"
 )
 
 src_unpack() {
