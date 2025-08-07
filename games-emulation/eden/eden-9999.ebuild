@@ -9,14 +9,6 @@ DESCRIPTION="An emulator for Nintendo Switch"
 HOMEPAGE="https://eden-emulator.github.io/"
 EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
 
-EGIT_SUBMODULES=( '-*'
-	'VulkanMemoryAllocator' 'sirit'
-	'externals/dynarmic/externals/unordered_dense'
-	'externals/dynarmic/externals/zycore-c'
-	'externals/dynarmic/externals/zydis'
-	'externals/nx_tzdb/tzdb_to_nx/externals/tz/tz'
-)
-# Dynarmic is not intended to be generic, it is tweaked to fit emulated processor
 LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
@@ -66,25 +58,16 @@ PATCHES=(
 	"${FILESDIR}/${P}-cstdlib.patch"
 )
 
-src_unpack() {
-	if use !system-ffmpeg; then
-		EGIT_SUBMODULES+=('ffmpeg')
+pkg_pretend() {
+	if has network-sandbox ${FEATURES}; then
+		ewarn 'This live version requires network access during compilation'
+		einfo 'This can be achieved via /etc/portage/package.env'
+		einfo 'In /etc/portage/env/no_net_sandbox :'
+		einfo ' FEATURES="${FEATURES} -network-sandbox"'
+		einfo 'In /etc/portage/package.env :'
+		einfo ' ~games-emulation/eden-9999 no_net_sandbox'
+		die
 	fi
-	if use !system-vulkan; then
-		EGIT_SUBMODULES+=('SPIRV-Headers')
-		EGIT_SUBMODULES+=('SPIRV-Tools')
-		EGIT_SUBMODULES+=('Vulkan-Headers')
-		EGIT_SUBMODULES+=('Vulkan-Utility-Libraries')
-	fi
-	if use web-service; then
-		EGIT_SUBMODULES+=('cpp-httplib')
-		EGIT_SUBMODULES+=('cpp-jwt')
-	fi
-	if use test; then
-		EGIT_SUBMODULES+=('Catch2')
-	fi
-
-	git-r3_src_unpack
 }
 
 src_prepare() {
@@ -107,6 +90,8 @@ src_prepare() {
 src_configure() {
 	local -a mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
+		-DCMAKE_DISABLE_PRECOMPILE_HEADERS=OFF
+		-DDYNARMIC_TESTS=$(usex test)
 		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF
 		-DENABLE_CUBEB=$(usex cubeb ON OFF)
 		-DENABLE_LIBUSB=ON
