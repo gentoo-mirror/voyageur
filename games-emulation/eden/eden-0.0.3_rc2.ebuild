@@ -63,10 +63,6 @@ BDEPEND="
 "
 RESTRICT="!test? ( test )"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-0.0.3-cstdlib.patch"
-)
-
 src_unpack() {
 	if use !system-ffmpeg; then
 		EGIT_SUBMODULES+=('ffmpeg')
@@ -89,9 +85,6 @@ src_unpack() {
 }
 
 src_prepare() {
-	# Need to investigate, but reverts cleanly in 0.0.3
-	eapply -R "${FILESDIR}"/${PN}-0.0.3-assert_111f2c3be5.patch
-
 	# boost: system version, no Boost::headers
 	sed -i -e '/add_subdirectory(boost-headers)/d' externals/CMakeLists.txt || die
 	sed -i -e 's/Boost::headers//' src/*/CMakeLists.txt || die
@@ -111,6 +104,7 @@ src_prepare() {
 src_configure() {
 	local -a mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
+		-DCMAKE_DISABLE_PRECOMPILE_HEADERS=OFF
 		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF
 		-DENABLE_CUBEB=$(usex cubeb ON OFF)
 		-DENABLE_LIBUSB=ON
