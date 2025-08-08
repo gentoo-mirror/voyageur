@@ -54,10 +54,6 @@ BDEPEND="
 "
 RESTRICT="!test? ( test )"
 
-PATCHES=(
-	"${FILESDIR}/${P}-cstdlib.patch"
-)
-
 pkg_pretend() {
 	if has network-sandbox ${FEATURES}; then
 		ewarn 'This live version requires network access during compilation'

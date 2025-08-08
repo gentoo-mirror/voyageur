@@ -63,10 +63,6 @@ BDEPEND="
 "
 RESTRICT="!test? ( test )"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-0.0.3-cstdlib.patch"
-)
-
 src_unpack() {
 	if use !system-ffmpeg; then
 		EGIT_SUBMODULES+=('ffmpeg')
