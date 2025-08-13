@@ -13,7 +13,7 @@ LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS=""
-IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine +web-service wifi"
+IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine web-service wifi"
 
 RDEPEND="
 	app-arch/lz4:=
