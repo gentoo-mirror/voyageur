@@ -24,7 +24,6 @@ RDEPEND="
 	>=dev-libs/libfmt-9:=
 	>=dev-libs/openssl-1.1:=
 	dev-libs/quazip:=[qt6(+)]
-	>=dev-libs/xbyak-7:=
 	>=dev-qt/qtbase-6.6.0:6[gui,widgets]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
