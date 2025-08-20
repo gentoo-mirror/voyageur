@@ -3,26 +3,18 @@
 
 EAPI=8
 
-inherit cmake git-r3 xdg
+inherit cmake unpacker xdg
 
 DESCRIPTION="An emulator for Nintendo Switch"
 HOMEPAGE="https://eden-emulator.github.io/"
-EGIT_REPO_URI="https://git.eden-emu.dev/eden-emu/eden.git"
-EGIT_COMMIT="v${PV/_/-}"
+SRC_URI="https://github.com/eden-emulator/Releases/releases/download/v${PV/_/-}/Eden-Source-v${PV/_/-}.tar.zst"
+S=${WORKDIR}/source
 
-EGIT_SUBMODULES=( '-*'
-	'VulkanMemoryAllocator' 'sirit'
-	'externals/dynarmic/externals/unordered_dense'
-	'externals/dynarmic/externals/zycore-c'
-	'externals/dynarmic/externals/zydis'
-	'externals/nx_tzdb/tzdb_to_nx/externals/tz/tz'
-)
-# Dynarmic is not intended to be generic, it is tweaked to fit emulated processor
 LICENSE="|| ( Apache-2.0 GPL-2+ ) 0BSD BSD GPL-2+ ISC MIT
 	!system-vulkan? ( Apache-2.0 )"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine +web-service wifi"
+IUSE="+cubeb lto sdl +system-ffmpeg +system-vulkan test webengine web-service wifi"
 
 RDEPEND="
 	app-arch/lz4:=
@@ -33,7 +25,6 @@ RDEPEND="
 	>=dev-libs/libfmt-9:=
 	>=dev-libs/openssl-1.1:=
 	dev-libs/quazip:=[qt6(+)]
-	>=dev-libs/xbyak-7:=
 	>=dev-qt/qtbase-6.6.0:6[gui,widgets]
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
@@ -63,27 +54,6 @@ BDEPEND="
 "
 RESTRICT="!test? ( test )"
 
-src_unpack() {
-	if use !system-ffmpeg; then
-		EGIT_SUBMODULES+=('ffmpeg')
-	fi
-	if use !system-vulkan; then
-		EGIT_SUBMODULES+=('SPIRV-Headers')
-		EGIT_SUBMODULES+=('SPIRV-Tools')
-		EGIT_SUBMODULES+=('Vulkan-Headers')
-		EGIT_SUBMODULES+=('Vulkan-Utility-Libraries')
-	fi
-	if use web-service; then
-		EGIT_SUBMODULES+=('cpp-httplib')
-		EGIT_SUBMODULES+=('cpp-jwt')
-	fi
-	if use test; then
-		EGIT_SUBMODULES+=('Catch2')
-	fi
-
-	git-r3_src_unpack
-}
-
 src_prepare() {
 	# boost: system version, no Boost::headers
 	sed -i -e '/add_subdirectory(boost-headers)/d' externals/CMakeLists.txt || die
@@ -105,6 +75,7 @@ src_configure() {
 	local -a mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
 		-DCMAKE_DISABLE_PRECOMPILE_HEADERS=OFF
+		-DDYNARMIC_TESTS=$(usex test)
 		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF
 		-DENABLE_CUBEB=$(usex cubeb ON OFF)
 		-DENABLE_LIBUSB=ON
@@ -124,6 +95,7 @@ src_configure() {
 		-DYUZU_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
+		-DYUZU_USE_FASTER_LD=OFF
 		-DYUZU_USE_QT_MULTIMEDIA=OFF
 		-DYUZU_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
 	)
