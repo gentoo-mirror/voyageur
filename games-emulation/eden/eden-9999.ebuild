@@ -40,7 +40,6 @@ DEPEND="${RDEPEND}
 	system-vulkan? (
 		dev-util/spirv-headers
 		dev-util/spirv-tools
-		>=dev-util/vulkan-headers-1.4.307
 		dev-util/vulkan-utility-libraries
 		x11-libs/libX11
 	)
@@ -103,7 +102,6 @@ src_configure() {
 		-DYUZU_TESTS=$(usex test)
 		-DYUZU_USE_BUNDLED_FFMPEG=$(usex system-ffmpeg OFF ON)
 		-DYUZU_USE_EXTERNAL_SDL2=OFF
-		-DYUZU_USE_EXTERNAL_VULKAN_HEADERS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=$(usex system-vulkan OFF ON)
 		-DYUZU_USE_FASTER_LD=OFF
