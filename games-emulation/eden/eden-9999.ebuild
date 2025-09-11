@@ -28,6 +28,7 @@ RDEPEND="
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
 	>=net-libs/enet-1.3
+	net-libs/mbedtls:0[cmac]
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
@@ -65,18 +66,8 @@ pkg_pretend() {
 }
 
 src_prepare() {
-	# boost: system version, no Boost::headers
-	sed -i -e '/add_subdirectory(boost-headers)/d' externals/CMakeLists.txt || die
-	sed -i -e 's/Boost::headers//' src/*/CMakeLists.txt || die
-
 	# lz4: temporary fix https://github.com/yuzu-emu/yuzu/pull/9054/commits/a8021f5a18bc5251aef54468fa6033366c6b92d9
 	sed -i 's/lz4::lz4/lz4/' src/common/CMakeLists.txt || die
-
-	# quazip: use system version
-	sed -i -e 's/add_subdirectory(externals)/find_package(QuaZip-Qt6)/' src/yuzu/CMakeLists.txt || die
-
-	# vulkan:relax vulkan version requirement
-	sed -i -e 's/(VulkanHeaders.*)/(VulkanHeaders REQUIRED)/' CMakeLists.txt || die
 
 	cmake_src_prepare
 }
@@ -85,6 +76,7 @@ src_configure() {
 	local -a mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
 		-DCMAKE_DISABLE_PRECOMPILE_HEADERS=OFF
+		-DDYNARMIC_ENABLE_LTO=$(usex lto ON OFF)
 		-DDYNARMIC_TESTS=$(usex test)
 		-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF
 		-DENABLE_CUBEB=$(usex cubeb ON OFF)
@@ -107,6 +99,17 @@ src_configure() {
 		-DYUZU_USE_FASTER_LD=OFF
 		-DYUZU_USE_QT_MULTIMEDIA=OFF
 		-DYUZU_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
+
+		# May be shorter to switch to
+		# -DCPMUTIL_FORCE_SYSTEM=yes and -D*FORCE_BUNDLED
+		-DQuaZip-Qt6_FORCE_SYSTEM=ON
+		-DSPIRV-Headers_FORCE_SYSTEM=ON
+		-DSPIRV-Tools_FORCE_SYSTEM=ON
+		-DSimpleIni_FORCE_SYSTEM=ON
+		-DVulkanUtilityLibraries_FORCE_SYSTEM=ON
+		-Dcubeb_FORCE_SYSTEM=ON
+		-Dlibusb_FORCE_SYSTEM=ON
+		-Dmbedtls_FORCE_SYSTEM=ON
 	)
 
 	cmake_src_configure
