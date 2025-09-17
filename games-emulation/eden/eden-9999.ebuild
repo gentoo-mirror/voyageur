@@ -28,7 +28,7 @@ RDEPEND="
 	media-libs/opus
 	>=media-libs/vulkan-loader-1.3.274
 	>=net-libs/enet-1.3
-	net-libs/mbedtls:0[cmac]
+	net-libs/mbedtls:3
 	sys-libs/zlib
 	virtual/libusb:1
 	cubeb? ( media-libs/cubeb )
@@ -65,13 +65,6 @@ pkg_pretend() {
 	fi
 }
 
-src_prepare() {
-	# lz4: temporary fix https://github.com/yuzu-emu/yuzu/pull/9054/commits/a8021f5a18bc5251aef54468fa6033366c6b92d9
-	sed -i 's/lz4::lz4/lz4/' src/common/CMakeLists.txt || die
-
-	cmake_src_prepare
-}
-
 src_configure() {
 	local -a mycmakeargs=(
 		-DBUILD_SHARED_LIBS=OFF # dynarmic
@@ -100,12 +93,11 @@ src_configure() {
 		-DYUZU_USE_QT_MULTIMEDIA=OFF
 		-DYUZU_USE_QT_WEB_ENGINE=$(usex webengine ON OFF)
 
-		# May be shorter to switch to
-		# -DCPMUTIL_FORCE_SYSTEM=yes and -D*FORCE_BUNDLED
 		-DQuaZip-Qt6_FORCE_SYSTEM=ON
 		-DSPIRV-Headers_FORCE_SYSTEM=ON
 		-DSPIRV-Tools_FORCE_SYSTEM=ON
 		-DSimpleIni_FORCE_SYSTEM=ON
+		-DVulkanHeaders_FORCE_SYSTEM=ON
 		-DVulkanUtilityLibraries_FORCE_SYSTEM=ON
 		-Dcubeb_FORCE_SYSTEM=ON
 		-Dlibusb_FORCE_SYSTEM=ON
