@@ -1,2 +1,0 @@
-Please read https://tt-rss.org/wiki/GlobalConfig. Note that the configuration
-syntax changed in 2021.
