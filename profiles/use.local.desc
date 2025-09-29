@@ -11,5 +11,4 @@ games-emulation/rpcs3:faudio - Enable audio rendering with app-emulation/faudio
 games-emulation/rpcs3:joystick - Enable support for input devices with evdev
 games-emulation/rpcs3:llvm - LLVM recompiler support
 games-emulation/rpcs3:vulkan - Enable Vulkan graphics library support
-www-apps/tt-rss:daemon - Install additional init scripts for automated RSS updates
 x11-misc/eaglemode:vlc - Play audio/video via media-video/vlc

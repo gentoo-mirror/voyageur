@@ -25,7 +25,6 @@ media-sound/munt-mt32emu-qt 1.11.1: software synthesiser emulating pre-GM MIDI d
 net-misc/synology-assistant 7.0.5_p50070: Synology Assistant to setup DiskStations
 sys-power/pycircadian 9999: Systemd suspend-on-idle daemon
 www-apps/rainloop 1.16.0: Simple, modern and fast web-based email client
-www-apps/tt-rss 99999999: Tiny Tiny RSS - A web-based news feed (RSS/Atom) aggregator using AJAX
 x11-misc/eaglemode 0.96.1: Zoomable user interface with plugin applications
 x11-misc/emiclock 2.0.2: Hyper-animated face analog clock for X11
 x11-misc/fsv 2.3_alpha20211113: 3-Dimensional File System Visualizer
